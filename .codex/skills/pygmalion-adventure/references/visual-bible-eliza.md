@@ -25,6 +25,13 @@ Flower Girl canonical visual identity: APPROVED / LOCKED
 
 Budoucí generování Elizy musí zachovat stejný obličej, stejné vlasy, stejný věk, stejnou základní tělesnou stavbu a stejnou vizuální identitu. Měnit se smí výraz, póza, lighting, prostředí a pozdější outfit podle canonical stage. Bez explicitního pokynu se nesmí vytvořit nová odlišná „verze tváře“ Elizy.
 
+## Chapter I supporting character visual locks
+
+- Higgins canonical master: `assets/images/characters/higgins/higgins_master.webp` — APPROVED.
+- Pickering canonical master: `assets/images/characters/pickering/pickering_master.webp` — APPROVED.
+- Freddy canonical master: `assets/images/characters/freddy/freddy_master.webp` — APPROVED.
+- Budoucí generování těchto postav musí zachovat stejnou tvář a základní vizuální identitu; měnit se smí pouze scéna, póza, výraz, lighting nebo canonical stage context.
+
 ## Vývojové fáze
 
 ### Stage 1 – Flower Girl
