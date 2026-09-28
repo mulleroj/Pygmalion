@@ -6,7 +6,10 @@ Production backlog only. No audio is generated or included in this pass.
 
 - Eliza uses `Eliza - young_cockney`, voice ID `124kaYCknTDsnwUFdWl9`, model `eleven_v3`.
 - Eliza BEFORE delivery: young, lively, defensive, quick, with strong Cockney delivery.
-- Higgins, Pickering, Freddy, and supporting speakers have no assigned voice IDs yet: mark them `VOICE CASTING REQUIRED`.
+- Higgins uses `Severin - Powerful & Commanding`, voice ID `ib8aaABAPZQpTo6hx8Jr`, model `eleven_v3`.
+- Pickering uses `George - Warm, Captivating Storyteller`, voice ID `JBFqnCBsd6RMkjVDRZzb`, model `eleven_v3`.
+- Freddy uses `Ned - Casual, Young British Male, General Southern Accent`, voice ID `fNYuJl2dBlX9V7NxmjnV`, model `eleven_v3`.
+- Supporting speakers remain unassigned and must be marked `VOICE CASTING REQUIRED` until separately approved.
 - Every pedagogically important audio item has a visible transcript and replay.
 - Audio moment and audio file are not one-to-one. LC01 has three files and LC02 has three files.
 - Approval status for every item below is `PLANNED — script-approved; recording not started`.
@@ -49,7 +52,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Speaker: Freddy
 - Text/transcript: “Oh! I'm sorry. I didn't see the basket. I can pay for the damaged ones.”
 - Delivery direction: Embarrassed and sincere, with rain and crowd movement behind him. Do not make him cruel or foolish.
-- Voice ID: `VOICE CASTING REQUIRED`
+- Voice ID: `fNYuJl2dBlX9V7NxmjnV` (`Ned - Casual, Young British Male, General Southern Accent`); model `eleven_v3`
 - Expected path: `assets/audio/characters/freddy/freddy_ch01_scene02_001.mp3`
 - Replay required: yes
 - Transcript required: yes
@@ -77,7 +80,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Speaker: Higgins
 - Text/transcript: “Your speech carries a local pattern. I can hear where a person has learned to live. I can hear several things at once. It's interesting.” / “Perhaps I could. That's fair. I'm Henry Higgins.”
 - Delivery direction: Fascinated and self-assured, precise, occasionally insensitive; never a cartoon villain.
-- Voice ID: `VOICE CASTING REQUIRED`
+- Voice ID: `ib8aaABAPZQpTo6hx8Jr` (`Severin - Powerful & Commanding`); model `eleven_v3`
 - Expected path: `assets/audio/characters/higgins/higgins_ch01_scene03_001.mp3`
 - Replay required: yes
 - Transcript required: yes
@@ -91,7 +94,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Speaker: Higgins
 - Text/transcript: “Listen to who is speaking, where they are, and what they want. A voice gives clues, but it doesn't tell you everything. Yes. That's why you ask.”
 - Delivery direction: Demonstrative and thoughtful; Higgins is beginning to acknowledge the limit of inference.
-- Voice ID: `VOICE CASTING REQUIRED`
+- Voice ID: `ib8aaABAPZQpTo6hx8Jr` (`Severin - Powerful & Commanding`); model `eleven_v3`
 - Expected path: `assets/audio/characters/higgins/higgins_ch01_scene04_001.mp3`
 - Replay required: yes
 - Transcript required: yes
@@ -105,7 +108,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Speaker: Pickering
 - Text/transcript: “And the clues can be wrong.” / “What do you think, Eliza?”
 - Delivery direction: Calm, observant, respectful. He offers a different way of listening without becoming a lecturer.
-- Voice ID: `VOICE CASTING REQUIRED`
+- Voice ID: `JBFqnCBsd6RMkjVDRZzb` (`George - Warm, Captivating Storyteller`); model `eleven_v3`
 - Expected path: `assets/audio/characters/pickering/pickering_ch01_scene04_001.mp3`
 - Replay required: yes
 - Transcript required: yes
@@ -137,7 +140,7 @@ All three items belong to `AM04`. They should be short, clearly separated, and r
 - Speaker: Freddy
 - Text/transcript: “I'm sorry. I wasn't looking where I was going.”
 - Delivery direction: Clear acceptance of responsibility; natural embarrassment.
-- Voice ID: `VOICE CASTING REQUIRED`
+- Voice ID: `fNYuJl2dBlX9V7NxmjnV` (`Ned - Casual, Young British Male, General Southern Accent`); model `eleven_v3`
 - Expected path: `assets/audio/listening/ch01_lc01_001.mp3`
 - Replay required: yes
 - Transcript required: yes
@@ -151,7 +154,7 @@ All three items belong to `AM04`. They should be short, clearly separated, and r
 - Speaker: Freddy
 - Text/transcript: “It was the rain. Anyone could've slipped.”
 - Delivery direction: Defensive explanation; do not overplay guilt or dishonesty.
-- Voice ID: `VOICE CASTING REQUIRED`
+- Voice ID: `fNYuJl2dBlX9V7NxmjnV` (`Ned - Casual, Young British Male, General Southern Accent`); model `eleven_v3`
 - Expected path: `assets/audio/listening/ch01_lc01_002.mp3`
 - Replay required: yes
 - Transcript required: yes
@@ -165,7 +168,7 @@ All three items belong to `AM04`. They should be short, clearly separated, and r
 - Speaker: Freddy
 - Text/transcript: “I'll pick these up and pay for the damaged ones.”
 - Delivery direction: Concrete and willing; make the future action easy to hear.
-- Voice ID: `VOICE CASTING REQUIRED`
+- Voice ID: `fNYuJl2dBlX9V7NxmjnV` (`Ned - Casual, Young British Male, General Southern Accent`); model `eleven_v3`
 - Expected path: `assets/audio/listening/ch01_lc01_003.mp3`
 - Replay required: yes
 - Transcript required: yes
@@ -251,9 +254,9 @@ All three items belong to `AM07`. Use distinct supporting voices only after cast
 
 - Planned audio files: **16**.
 - Eliza files using the canonical voice: **3** (`A02`, `A04`, `A08`; any future alternate takes must keep the same voice ID).
-- Higgins files: **2**, `VOICE CASTING REQUIRED`.
-- Pickering files: **1**, `VOICE CASTING REQUIRED`.
-- Freddy files: **4** including LC01, `VOICE CASTING REQUIRED`.
+- Higgins files: **2**, canonical voice ID `ib8aaABAPZQpTo6hx8Jr`.
+- Pickering files: **1**, canonical voice ID `JBFqnCBsd6RMkjVDRZzb`.
+- Freddy files: **4** including LC01, canonical voice ID `fNYuJl2dBlX9V7NxmjnV`.
 - Supporting listening voices: **3**, `VOICE CASTING REQUIRED`.
 - SFX/ambience files: **3** (`A01`, `A15`, `A16`), no speaker casting.
 - No audio is approved for delivery until recording, transcript, clarity, replay, local ownership, and scene fit are reviewed.
