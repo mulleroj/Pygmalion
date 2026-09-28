@@ -42,7 +42,7 @@ Sociální původ nesmí být zobrazen jako morální nebo intelektuální nedos
 - stále jasně tatáž Eliza;
 - žádná pohádková princezna.
 
-Možné finální větve: `Social Success Eliza`, `Independent Eliza`, `Conflicted Eliza`.
+Možné finální směry: `Social Success`, `Independent Voice`, `Integrated Identity`. Všechny zachovávají stejnou Elizu; případná vnitřní konfliktnost je vlastnost cesty, ne samostatný trestný ending.
 
 ## Význam proměny
 

@@ -2,6 +2,8 @@
 
 Detailní scene map všech kapitol je canonical v [`SCENE_MAP.md`](SCENE_MAP.md). Tento dokument drží pouze stabilní top-level architekturu, hodnoty a schválený směr Chapter I; nezdvojuje jednotlivé scény.
 
+Teacher Mode je povinná chapter-level contextual support vrstva pro všech šest kapitol. Jeho canonical kontrakt, jednotná struktura, budoucí header placement a progress-safe preview jsou v [`TEACHER_MODE_SPEC.md`](TEACHER_MODE_SPEC.md).
+
 ## Hlavní herní smyčka
 
 `Story → Decision → Listen → Language Challenge → Consequence → Story`

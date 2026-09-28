@@ -2,6 +2,8 @@
 
 Tento dokument je canonical detailní mapa všech šesti kapitol. Určuje stabilní identifikátory scén, uzly rozhodnutí, jazykové výzvy, dlouhodobě ukládané hodnoty a minimální assetové potřeby. Není to finální dialogový scénář.
 
+Scénově specifické Teacher Mode poznámky zůstávají u jednotlivých scén. Jednotnou chapter-level strukturu, contextualitu, answer keys a progress-safe replay definuje [`TEACHER_MODE_SPEC.md`](TEACHER_MODE_SPEC.md).
+
 ## Map conventions
 
 - Hlavní smyčka: `Story → Decision → Listen → Language Challenge → Consequence → Story`.

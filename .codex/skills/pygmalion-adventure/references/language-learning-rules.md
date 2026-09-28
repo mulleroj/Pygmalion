@@ -18,6 +18,12 @@ Obsah cílí přibližně na A2+/B1 a má podporovat porozumění, poslech, prag
 
 `Higgins' Ear` a další poslechové výzvy mají testovat porozumění řeči, registru, intonaci nebo sociálnímu kontextu. Kritická informace musí být dostupná i prostřednictvím textu a ovládacích prvků, nikoli pouze poslechem.
 
+## Teacher Mode
+
+Každá kapitola má vlastní Teacher section ve stejné struktuře: overview, learning goals, language focus, listening focus, vocabulary, cultural context, decision notes, challenge key, discussion, sensitive framing, classroom use a scene navigation. Teacher Mode se váže na aktuální chapter/scene/challenge a jeho preview replay je read-only vůči student progressu.
+
+Objektivní listening/pronunciation challenge může mít answer key se správným řešením, vysvětlením, slyšitelným signálem a běžnou chybou. Otevřené register, identity a motivation choices se nemají převádět na falešné správné/špatné odpovědi.
+
 ## Kontrola nové aktivity
 
 Před zařazením ověř:

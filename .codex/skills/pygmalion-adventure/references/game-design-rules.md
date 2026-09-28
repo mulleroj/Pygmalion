@@ -39,6 +39,15 @@ V mapě `docs/SCENE_MAP.md` je v této verzi přibližně 12 potenciálních př
 - lokální ukládání progressu;
 - žádná kritická informace pouze barvou nebo zvukem.
 
+## Teacher Mode contract
+
+- Teacher Mode je povinná contextual support vrstva pro všech šest kapitol, nikoli samostatná druhá aplikace.
+- Vstup je vpravo v hlavní hlavičce na desktopu; na mobilu zůstává dostupný bez horizontálního overflow, s keyboard/touch access a accessible label.
+- Context vždy zná aktuální kapitolu, scénu a případný challenge. Chapter-level struktura je canonical v `docs/TEACHER_MODE_SPEC.md`.
+- Otevření Teacher Mode ani teacher preview/replay nesmí měnit student progress, state-changing eventy, development signals ani ending state.
+- Answer keys patří do Teacher Mode a nesmí se odhalit během běžné studentské hry. Otevřené register/identity choices nemají answer key.
+- Progress summary je popisný; `Pronunciation`, `Confidence` a `Independence` se nesmí zobrazovat jako známky nebo psychologický profil.
+
 Příběhové větvení má být testovatelné automaticky. Datový model a scény mají zůstat čitelné a oddělené od prezentační vrstvy.
 
 ## Kontinuita
