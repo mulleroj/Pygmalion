@@ -1,5 +1,9 @@
 # Story Bible
 
+## Canonical scene map
+
+Detailní mapa scén, rozhodnutí, jazykových výzev, ukládaných hodnot a assetových potřeb je v [`docs/SCENE_MAP.md`](../../../../docs/SCENE_MAP.md). Tato bible drží příběhový canon a kontinuitu; jednotlivé scény zde neduplikujeme.
+
 ## Premisa
 
 Vlastní vzdělávací adaptace inspirovaná především hrou *Pygmalion* George Bernarda Shawa. Eliza se učí vědomě měnit jazykový registr a pohybovat se mezi sociálními prostředími; neučí se proto, aby byla opravena podle cizí představy.
@@ -37,10 +41,14 @@ Cockney není vadná ani hloupá angličtina. Charakteristická replika smí bý
 
 `Pronunciation`, `Confidence` a `Independence` nejsou good/bad skóre. Mohou vést k různým legitimním výsledkům a společně vyjadřují dovednost, sebejistotu a schopnost volby.
 
+Pravidla eventů, replay a budoucího balance auditu jsou canonical v `game-design-rules.md`. Chapter VI používá historii hry přes `docs/SCENE_MAP.md`; žádný směr není blokován nízkým stavem jedné hodnoty.
+
 ## Finální větve
 
-- `Social Success Eliza`
-- `Independent Eliza`
-- `Conflicted Eliza`
+- `Social Success`
+- `Independent Voice`
+- `Integrated Identity`
+
+Scene map dále specifikuje tři kvalitativní finální směry: `Social Success`, `Independent Voice` a `Integrated Identity`. Případná vnitřní konfliktnost je dramatická vlastnost cesty, ne trest za „špatné“ volby.
 
 Výsledek nesmí redukovat Elizu na to, zda přijala „správný“ přízvuk. Hlavní otázkou je, zda a jak si volí vlastní hlas.

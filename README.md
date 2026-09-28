@@ -15,6 +15,8 @@ Hra bude statická nebo velmi lehká, bez runtime AI. Audio, obrázky a další 
 - [`AGENTS.md`](AGENTS.md) – pracovní pravidla a release hranice
 - [`docs/PROJECT_VISION.md`](docs/PROJECT_VISION.md) – účel, publikum a technická filozofie
 - [`docs/STORY_ARCHITECTURE.md`](docs/STORY_ARCHITECTURE.md) – šest kapitol, hodnoty a herní smyčka
+- [`docs/SCENE_MAP.md`](docs/SCENE_MAP.md) – detailní canonical mapa scén, rozhodnutí, výzev a assetů
+- [`docs/TEACHER_MODE_SPEC.md`](docs/TEACHER_MODE_SPEC.md) – chapter-level Teacher Mode, answer keys, navigace a progress-safe preview
 - [`docs/ASSET_PLAN.md`](docs/ASSET_PLAN.md) – počáteční plán obrázků, audia a naming convention
 
 ## Projektové bible
