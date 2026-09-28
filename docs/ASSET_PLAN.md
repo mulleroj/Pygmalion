@@ -76,3 +76,9 @@ Všechny varianty musí zachovat rozpoznatelnou stejnou osobu podle `.codex/skil
 - SFX: déšť, ulice, květiny a jemné přechodové zvuky bez závislosti na zvuku jako jediném nosiči informace.
 
 Každý pedagogicky důležitý audio asset potřebuje přepis a jasné ovládání replay. Před schválením kontrolovat hlasovou kontinuitu, srozumitelnost, délku, licenci/původ a vazbu na konkrétní scénu.
+
+## Scene-map derived planning totals
+
+`docs/SCENE_MAP.md` plánuje 31 hlavních scén, 60 prioritních audio momentů a 15 language/listening challenges. Audio backlog proto počítá s krátkými, selektivně namluvenými momenty `VOICE`, `LISTENING`, `PRONUNCIATION`, `SFX` a `AMBIENCE`, nikoli s namluvením každé věty.
+
+Character visuals zůstávají ve třech canonical fázích (`Flower Girl`, `In Training`, `Her Own Voice`) s variantami výrazu a držení těla. Pro Chapter V je potřeba vlastní prostředí `Southbank Civic Rooms` a pro Chapter VI tři větevní varianty prostředí; žádná z nich nemá kopírovat scénografii `My Fair Lady`.

@@ -1,5 +1,7 @@
 # Story Architecture
 
+Detailní scene map všech kapitol je canonical v [`SCENE_MAP.md`](SCENE_MAP.md). Tento dokument drží pouze stabilní top-level architekturu, hodnoty a schválený směr Chapter I; nezdvojuje jednotlivé scény.
+
 ## Hlavní herní smyčka
 
 `Story → Decision → Listen → Language Challenge → Consequence → Story`
@@ -23,7 +25,9 @@ Nejde o jednoduché good/bad statistiky. Jejich kombinace vytvářejí různé l
 3. **The Lessons** – proces učení, opakování a chyb; rozdíl mezi technickou dovedností, společenským očekáváním a Eliziným vlastním rozhodnutím.
 4. **The First Test** – první veřejná zkouška registru a poslechu, kde výsledek závisí na kombinaci dovednosti, sebejistoty a volby strategie.
 5. **The Reception** – společenské prostředí, ve kterém je úspěch zvenčí lákavý, ale zároveň vzniká otázka, kdo Elizu definuje.
-6. **Her Own Voice** – vyústění, v němž Eliza vědomě volí, jak bude mluvit a žít; možné legitimní větve jsou `Social Success Eliza`, `Independent Eliza` a `Conflicted Eliza`.
+6. **Her Own Voice** – vyústění, v němž Eliza vědomě volí, jak bude mluvit a žít; možné legitimní směry jsou `Social Success`, `Independent Voice` a `Integrated Identity`.
+
+Podrobná mapa používá pro Chapter VI tři kvalitativní směry: `Social Success`, `Independent Voice` a `Integrated Identity`. Nejde o good/neutral/bad pořadí; všechny větve zachovávají Elizinu agency.
 
 ## Chapter I – schválený směr
 

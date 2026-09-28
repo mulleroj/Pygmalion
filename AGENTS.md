@@ -8,6 +8,7 @@ Projekt `pygmalion-adventure` je ve stavu `PRE-PRODUCTION`. Tato fáze buduje pr
 
 - Vize projektu a cílová skupina: `docs/PROJECT_VISION.md`
 - Příběhové kapitoly a herní smyčka: `docs/STORY_ARCHITECTURE.md`
+- Detailní canonical scene map: `docs/SCENE_MAP.md`
 - Plán lokálních assetů a naming convention: `docs/ASSET_PLAN.md`
 - Stabilní rozhodnutí a pravidla: odpovídající soubor v `.codex/skills/pygmalion-adventure/references/`
 - Pravidla práce s těmito materiály: `.codex/skills/pygmalion-adventure/SKILL.md`
