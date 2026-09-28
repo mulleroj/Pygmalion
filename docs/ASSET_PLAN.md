@@ -1,0 +1,78 @@
+# Asset Plan
+
+## Principy
+
+Assety jsou předgenerované, vlastní a uložené lokálně. V bootstrap fázi se pouze připravují adresáře a naming convention; negeneruje se žádné finální audio ani artwork.
+
+## Adresářová struktura
+
+```text
+assets/
+├── images/
+│   ├── characters/
+│   │   └── eliza/
+│   └── locations/
+└── audio/
+    ├── eliza/
+    ├── higgins/
+    ├── pickering/
+    ├── narrator/
+    └── sfx/
+```
+
+## Naming convention
+
+### Audio
+
+Scénové audio používá:
+
+`{speaker}_ch{chapter}_scene{scene}_{take}.mp3`
+
+Příklad: `eliza_ch01_scene02_001.mp3`
+
+Doporučené doplňky:
+
+- lowercase ASCII a pomlčky pouze tam, kde jsou součástí významového názvu;
+- kapitoly a scény vždy dvoumístně (`ch01`, `scene02`);
+- pořadí take vždy třímístně;
+- přepis ukládat vedle audia pod stejným základem, například `eliza_ch01_scene02_001.txt` nebo v budoucím datovém manifestu;
+- voice a režijní metadata udržovat v textové evidenci, ne pouze v názvu souboru.
+
+### Character visuals
+
+`eliza_{stage}_{descriptor}.webp`
+
+Příklady:
+
+- `eliza_flower-girl_defiant.webp`
+- `eliza_training_focused.webp`
+- `eliza_after_confident.webp`
+
+Všechny varianty musí zachovat rozpoznatelnou stejnou osobu podle `.codex/skills/pygmalion-adventure/references/visual-bible-eliza.md`.
+
+## Počáteční asset backlog
+
+### Characters – Eliza
+
+- Flower Girl: defiant, alert, spontaneous, listening;
+- In Training: focused, uncertain, practicing;
+- Her Own Voice: confident, independent, conflicted;
+- případné expression varianty musí měnit výraz a držení těla, ne základní identitu.
+
+### Locations
+
+- Covent Garden v dešti;
+- portico / místo úkrytu;
+- květinářství nebo jeho okolí;
+- pozdější tréninkový prostor;
+- recepce.
+
+### Audio
+
+- Eliza: BEFORE, DURING a AFTER projevy podle audio bible;
+- Higgins: první poslechové instrukce a ukázky registru;
+- Pickering: dialogové a kulturně kontextové repliky;
+- narrator: krátké přechody a případné Teacher Mode vysvětlivky;
+- SFX: déšť, ulice, květiny a jemné přechodové zvuky bez závislosti na zvuku jako jediném nosiči informace.
+
+Každý pedagogicky důležitý audio asset potřebuje přepis a jasné ovládání replay. Před schválením kontrolovat hlasovou kontinuitu, srozumitelnost, délku, licenci/původ a vazbu na konkrétní scénu.

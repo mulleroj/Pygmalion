@@ -1,0 +1,34 @@
+# Dependencies and generated output
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+.cache/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE metadata
+.idea/
+.vscode/
+
+# Keep repo-scoped Codex skills tracked.
+!.codex/
+!.codex/skills/
+!.codex/skills/**
