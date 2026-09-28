@@ -12,6 +12,13 @@ Her clothing is practical, worn Edwardian layering in muted earth colours. She m
 
 The five requested expressions are planned as five distinct exported variants because gaze, posture, and silhouette carry scene information. They may share one approved base character design and turnaround; production should not create five unrelated Elizas. `Alert` and `listening` may share the same base render with different gaze/crop treatment if the final composition remains clear.
 
+### Approved canonical Flower Girl master
+
+- Asset ID: `ELZ-FG-MASTER`
+- Runtime path: `assets/images/characters/eliza/eliza_flower-girl_master.webp`
+- Source path: `assets/images/characters/eliza/source/eliza_flower-girl_master.png`
+- Approval status: `APPROVED / CANONICAL`
+
 ### V01 – Eliza alert
 
 - Asset ID: `ELZ-FG-ALERT`
@@ -19,6 +26,8 @@ The five requested expressions are planned as five distinct exported variants be
 - Type: character expression variant
 - Aspect/use case: half-body, portrait-safe, looking across the market with one hand near the basket
 - Continuity notes: spontaneous posture, quick eyes, practical sales energy; Flower Girl clothing and basket visible
+- Runtime path: `assets/images/characters/eliza/eliza_flower-girl_alert.webp`
+- Source path: `assets/images/characters/eliza/source/eliza_flower-girl_alert.png`
 - Production priority: **P0 – required for vertical slice**
 
 ### V02 – Eliza defiant
@@ -28,6 +37,8 @@ The five requested expressions are planned as five distinct exported variants be
 - Type: character expression variant
 - Aspect/use case: half-body or three-quarter, angled toward Freddy, protective hand near fallen flowers
 - Continuity notes: proud and direct, not aggressive caricature; same face, hair, age, and clothing as V01
+- Runtime path: `assets/images/characters/eliza/eliza_flower-girl_defiant.webp`
+- Source path: `assets/images/characters/eliza/source/eliza_flower-girl_defiant.png`
 - Production priority: **P0 – required for vertical slice**
 
 ### V03 – Eliza guarded
@@ -37,6 +48,8 @@ The five requested expressions are planned as five distinct exported variants be
 - Type: character expression variant
 - Aspect/use case: medium portrait, shoulders slightly closed, eyes on Higgins’ notebook
 - Continuity notes: defensive because she is being observed; never fearful, passive, or unintelligent
+- Runtime path: `assets/images/characters/eliza/eliza_flower-girl_guarded.webp`
+- Source path: `assets/images/characters/eliza/source/eliza_flower-girl_guarded.png`
 - Production priority: **P0 – required for vertical slice**
 
 ### V04 – Eliza listening
@@ -46,6 +59,8 @@ The five requested expressions are planned as five distinct exported variants be
 - Type: character expression variant
 - Aspect/use case: medium portrait, head turned toward an off-screen sample, clear attentive gaze
 - Continuity notes: retain Flower Girl styling; expression shows concentration, not submission
+- Runtime path: `assets/images/characters/eliza/eliza_flower-girl_listening.webp`
+- Source path: `assets/images/characters/eliza/source/eliza_flower-girl_listening.png`
 - Production priority: **P0 – required for vertical slice**
 
 ### V05 – Eliza thoughtful
@@ -55,6 +70,8 @@ The five requested expressions are planned as five distinct exported variants be
 - Type: character expression variant
 - Aspect/use case: three-quarter portrait beside warm window light, looking toward the opportunity
 - Continuity notes: reflective and purposeful; no makeover and no sudden Stage 2 clothing
+- Runtime path: `assets/images/characters/eliza/eliza_flower-girl_thoughtful.webp`
+- Source path: `assets/images/characters/eliza/source/eliza_flower-girl_thoughtful.png`
 - Production priority: **P0 – required for vertical slice**
 
 ## Environments

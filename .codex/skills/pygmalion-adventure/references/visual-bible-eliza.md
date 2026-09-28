@@ -13,6 +13,18 @@ Eliza je přibližně 19–22 let. V každé vizuální fázi musí být jasně 
 
 Sociální původ nesmí být zobrazen jako morální nebo intelektuální nedostatek. Eliza nesmí působit jako špinavá karikatura chudoby ani jako bezmocná oběť.
 
+## Flower Girl canonical visual lock
+
+Flower Girl canonical visual identity: APPROVED / LOCKED
+
+- Canonical Flower Girl visual master: `assets/images/characters/eliza/eliza_flower-girl_master.webp`.
+- The PNG mastery is preserved at `assets/images/characters/eliza/source/eliza_flower-girl_master.png`.
+- The five expression variants are APPROVED: `ELZ-FG-ALERT`, `ELZ-FG-DEFIANT`, `ELZ-FG-GUARDED`, `ELZ-FG-LISTENING`, and `ELZ-FG-THOUGHTFUL`.
+- All five variants represent the same Eliza as the canonical Flower Girl master.
+- These assets are the reference base for future `In Training` and `Her Own Voice` artwork.
+
+Budoucí generování Elizy musí zachovat stejný obličej, stejné vlasy, stejný věk, stejnou základní tělesnou stavbu a stejnou vizuální identitu. Měnit se smí výraz, póza, lighting, prostředí a pozdější outfit podle canonical stage. Bez explicitního pokynu se nesmí vytvořit nová odlišná „verze tváře“ Elizy.
+
 ## Vývojové fáze
 
 ### Stage 1 – Flower Girl
