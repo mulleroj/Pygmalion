@@ -11,6 +11,18 @@ Tento dokument je canonical detailní mapa všech šesti kapitol. Určuje stabil
 - Všechny nové dialogy jsou pouze pracovní záměr. Signature line z Chapter I je jediný zde uvedený pevný text.
 - Eliza používá pouze canonical vizuální fáze `Flower Girl`, `In Training` a `Her Own Voice`.
 
+## State rules
+
+- `Pronunciation`, `Confidence` a `Independence` jsou interní development signals, ne známky; standardní hráčské rozhraní je nezobrazuje jako numerické skóre.
+- Každý state-changing event má stabilní event ID a může přidat změnu nejvýše jednou. Replay, opakování challenge ani opakované načtení scény nesmí stejný increment farmit.
+- Chyba v language challenge nesnižuje morální hodnotu Elizy ani hráče.
+- Rozdílný počet příležitostí pro jednotlivé hodnoty nesmí sám o sobě odemknout nebo zablokovat ending.
+- Thresholdy pro „výhru“ ani minimální skóre pro ending zatím neexistují; Chapter VI používá Ending Synthesis Matrix níže.
+
+## Visual continuity across Chapters V–VI
+
+Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fázi pro veřejné vystoupení, nikoli jako tvrzení, že Elizin osobní vývoj skončil. Chapter VI používá tutéž rozpoznatelnou Elizu a završuje její agency a identity synthesis; výraz, outfit a prostředí mohou reagovat na větev, ale nemění canonical osobu.
+
 ## Chapter I – The Flower Girl
 
 **Dramatic arc:** Eliza se v dešti brání okamžitému společenskému soudu, poprvé slyší, že řeč může otevírat nebo zavírat příležitosti, a sama pojmenuje důvod, proč chce hledat další možnosti.
@@ -181,11 +193,11 @@ Tento dokument je canonical detailní mapa všech šesti kapitol. Určuje stabil
 - **Lokace:** chodba před pracovnou, později práh učebny.
 - **Čas / atmosféra:** odpoledne; první klid po vyjednávání, směs očekávání a obav.
 - **Postavy:** Eliza, Higgins, Pickering, Mrs Pearce.
-- **Děj:** Eliza musí před začátkem lekcí jasně říct, proč vstupuje do výuky. Její odpověď může rozvinout motivaci z Chapter I, ne ji nahradit Higginsovým cílem.
+- **Děj:** Eliza musí před začátkem lekcí jasně říct, proč vstupuje do výuky. Její odpověď může původní motivaci z Chapter I potvrdit, zpřesnit nebo změnit; nesmí ji nahradit Higginsovým cílem.
 - **Hlavní účel:** uzavřít kapitolu explicitním vstupním závazkem.
 - **Rozhodnutí hráče:** `D05` – potvrdit hlavní důvod: `Opportunity`, `Respect`, `Learning` nebo `Independence`, s možností krátkého vlastního upřesnění.
-- **Možné hodnotové změny:** `origin_motivation` zůstává canonical; při konzistentní volbě `Confidence +1`, při jiné formulaci vznikne `motivation_nuance`.
-- **Uložení:** `long-term: ano`; uloží se potvrzení motivace a nuance.
+- **Možné hodnotové změny:** žádný increment za konzistenci ani za změnu motivace. `origin_motivation` zůstává historický údaj; aktuální volba se zapíše jako `confirmed_motivation`, při odlišné volbě také `motivation_shift` a případně `motivation_nuance`.
+- **Uložení:** `long-term: ano`; uloží se historická motivace, potvrzená motivace a případný posun bez good/bad hodnocení.
 - **Audio momenty:** `AM19 VOICE` Elizino jasné prohlášení cíle; `AM20 AMBIENCE` dům přechází do rytmu prvního vyučování.
 - **Challenge:** žádná samostatná; volba je příběhový jazykový akt.
 - **Teacher Mode:** explaining purpose, future forms and register of self-advocacy.
@@ -233,19 +245,19 @@ Tento dokument je canonical detailní mapa všech šesti kapitol. Určuje stabil
 - **Audio assety:** `higgins_ch03_scene02_001.mp3`, `eliza_ch03_scene02_001.mp3`, `listening_minimal-pairs_001.mp3` a přepisy.
 - **Návaznost:** `ch03_s03`.
 
-### ch03_s03 – Stress Changes Meaning
+### ch03_s03 – Finding the Main Stress
 
 - **Lokace:** učebna a krátká simulace stánku s květinami.
 - **Čas / atmosféra:** další den; živější tempo, první malý úspěch a nové chyby.
 - **Postavy:** Eliza, Higgins, Mrs Pearce jako zákaznice.
-- **Děj:** Stejná slova se změnou word stress vytvoří jiný význam nebo jinou míru jistoty. Mrs Pearce přinese praktický scénář, aby cvičení nebylo izolované.
-- **Hlavní účel:** ukázat, že technika mění možnosti významu v reálném rozhovoru.
+- **Děj:** Eliza hledá hlavní přízvuk ve víceslabičných slovech z praktické objednávky. Word stress podporuje srozumitelnost, rozpoznání slabik a správné umístění hlavního přízvuku; významový kontrast se použije jen tam, kde skutečně jazykově dává smysl.
+- **Hlavní účel:** ukázat, že správný word stress pomáhá posluchači rozpoznat slovo. Změny významového fokusu, postoje a míry jistoty patří primárně do `ch03_s04` se sentence stress a intonation.
 - **Rozhodnutí hráče:** žádné hlavní; volba pořadí důrazu mění lokální výsledek scénky.
-- **Možné hodnotové změny:** `Pronunciation +1` při přesném stress; `Confidence +1` při opravení vlastního pokusu.
+- **Možné hodnotové změny:** `Pronunciation +1` při správném umístění hlavního přízvuku; žádný samostatný Confidence increment za word stress.
 - **Uložení:** `long-term: ne`.
 - **Audio momenty:** `AM25 PRONUNCIATION` word-stress kontrasty; `AM26 VOICE` Mrs Pearce reaguje jako zákaznice.
-- **Challenge:** `LC07` – zvolit stressed syllable podle zamýšleného významu a situace.
-- **Teacher Mode:** word stress, syllables, why listeners use stress cues.
+- **Challenge:** `LC07` – rozpoznat slabiky a zvolit hlavní přízvuk ve víceslabičném slově; významový kontrast pouze u jazykově platného páru.
+- **Teacher Mode:** word stress, syllables, intelligibility; rozdíl mezi word stress a sentence stress.
 - **Vizuální assety:** improvizovaný květinový stánek, kartičky slov, Eliza `In Training / practicing`.
 - **Audio assety:** `mrs-pearce_ch03_scene03_001.mp3`, `eliza_ch03_scene03_001.mp3`, `pronunciation_word-stress_001.mp3` a přepis.
 - **Návaznost:** `ch03_s04`.
@@ -396,11 +408,11 @@ Tento dokument je canonical detailní mapa všech šesti kapitol. Určuje stabil
 
 **Dramatic arc:** Eliza vstupuje do vlastní, nově vytvořené společenské události. Pod tlakem poslouchá, přepíná registr a zjišťuje, že Higgins a Pickering začínají její úspěch vyprávět jako svůj experimentální výsledek.
 
-**Audio profile:** `VOICE` organizátorka, hosté, Eliza, Higgins a Pickering; `LISTENING` social inference under pressure; `PRONUNCIATION` srozumitelnost v ruchu a code-switching; `SFX` civic room, schody a městská doprava; `AMBIENCE` vlastní veřejná výstava a noční odchod.
+**Audio profile:** `VOICE` organizátorka, hosté, Eliza, Higgins a Pickering; `LISTENING` social inference under pressure; `PRONUNCIATION` srozumitelnost v ruchu a code-switching; `SFX` public rooms, schody a městská doprava; `AMBIENCE` vlastní veřejná výstava a noční odchod.
 
 ### ch05_s01 – The Borough Exhibition Evening
 
-- **Lokace:** Southbank Civic Rooms; vlastní veřejná večerní událost s výstavou květinářů, krátkými představeními a občanským programem.
+- **Lokace:** Lambeth Public Rooms; vlastní veřejná večerní událost s výstavou květinářů, krátkými představeními a občanským programem.
 - **Čas / atmosféra:** podvečer; světla, program, více skupin posluchačů a tlak veřejnosti.
 - **Postavy:** Eliza, Higgins, Pickering, Mrs Pearce, organizátorka, květináři, hosté.
 - **Děj:** Eliza není vystavena jako Higginsův experiment; má uvést část programu a představit práci květinářů. Událost není ples ani mechanická kopie známé muzikálové scény.
@@ -408,10 +420,10 @@ Tento dokument je canonical detailní mapa všech šesti kapitol. Určuje stabil
 - **Rozhodnutí hráče:** `D10` – zvolit plán code-switchingu pro organizátorku, patrona a kolegyni z květinářství.
 - **Možné hodnotové změny:** `Pronunciation +1` za vědomou artikulaci, `Confidence +1` za vstup do skupiny, `Independence +1` za vlastní pořadí a obsah.
 - **Uložení:** `long-term: ano`; uloží se `reception_register_plan`.
-- **Audio momenty:** `AM43 VOICE` organizátorka vysvětluje program; `AM44 AMBIENCE` civic room, květiny a více překrývajících se hlasů.
+- **Audio momenty:** `AM43 VOICE` organizátorka vysvětluje program; `AM44 AMBIENCE` public rooms, květiny a více překrývajících se hlasů.
 - **Challenge:** žádná; hráč nastavuje strategii pro následující poslech.
 - **Teacher Mode:** formal register, audience, switching without erasing identity.
-- **Vizuální assety:** Eliza `Her Own Voice / prepared` v přechodové variantě, vlastní civic hall, květinová výstava.
+- **Vizuální assety:** Eliza `Her Own Voice / prepared` jako již dosažená vizuální fáze, nikoli hotový osobní vývoj; vlastní public rooms, květinová výstava.
 - **Audio assety:** `organizer_ch05_scene01_001.mp3`, `ambience_borough-exhibition_001.mp3` a přepisy.
 - **Návaznost:** `ch05_s02`.
 
@@ -451,7 +463,7 @@ Tento dokument je canonical detailní mapa všech šesti kapitol. Určuje stabil
 
 ### ch05_s04 – What Happens to Me Now?
 
-- **Lokace:** tichý balkon nebo boční místnost Civic Rooms.
+- **Lokace:** tichý balkon nebo boční místnost Lambeth Public Rooms.
 - **Čas / atmosféra:** noc; zvuk události je za dveřmi, otázka se poprvé vysloví naplno.
 - **Postavy:** Eliza, Pickering nebo Mrs Pearce podle předchozí volby.
 - **Děj:** Eliza se ptá: `What happens to me now?` Nejde o žádost o záchranu, ale o otázku vlastnictví budoucnosti. Druhá postava může nabídnout cestu, ne odpověď místo ní.
@@ -468,19 +480,19 @@ Tento dokument je canonical detailní mapa všech šesti kapitol. Určuje stabil
 
 ### ch05_s05 – Leaving the Hall
 
-- **Lokace:** schody před Civic Rooms.
+- **Lokace:** schody před Lambeth Public Rooms.
 - **Čas / atmosféra:** pozdní noc; hosté odcházejí, město se zklidňuje.
 - **Postavy:** Eliza, Higgins, Pickering, Mrs Pearce podle větvení.
 - **Děj:** Eliza odchází z události s úspěchem, který není konečnou odpovědí. Původní motivace z Chapter I se střetne s novou možností volby.
 - **Hlavní účel:** připravit poslední kapitolu a zachovat několik legitimních cest vpřed.
-- **Rozhodnutí hráče:** žádné hlavní; závěrečná lokální volba, komu Eliza napíše nebo zavolá jako první.
+- **Rozhodnutí hráče:** žádné hlavní; závěrečná lokální volba, komu Eliza napíše, koho navštíví nebo s kým naváže kontakt jako první.
 - **Možné hodnotové změny:** uloží se `next_contact`; hodnoty beze změny.
 - **Uložení:** `long-term: ano` jako vstup do Chapter VI.
 - **Audio momenty:** `AM51 VOICE` krátké rozloučení; `AM52 SFX` schody, kočár nebo městská doprava bez melodické citace.
 - **Challenge:** žádná; kapitola vrcholí otevřenou otázkou.
 - **Teacher Mode:** reflecting on success, options and uncertainty.
-- **Vizuální assety:** schody Civic Rooms, Eliza `Her Own Voice / composed`, městská noc.
-- **Audio assety:** `eliza_ch05_scene05_001.mp3`, `sfx_civic-rooms_exit_001.mp3` a přepisy.
+- **Vizuální assety:** schody Lambeth Public Rooms, Eliza `Her Own Voice / composed`, městská noc.
+- **Audio assety:** `eliza_ch05_scene05_001.mp3`, `sfx_lambeth-public-rooms_exit_001.mp3` a přepisy.
 - **Návaznost:** `ch06_s01`; načte `origin_motivation`, `reception_register_plan` a `credit_response`.
 
 ## Chapter VI – Her Own Voice
@@ -541,6 +553,31 @@ Tento dokument je canonical detailní mapa všech šesti kapitol. Určuje stabil
 - **Audio assety:** `eliza_ch06_scene03_social-success_001.mp3`, `eliza_ch06_scene03_independent-voice_001.mp3`, `eliza_ch06_scene03_integrated-identity_001.mp3` a přepisy.
 - **Návaznost:** všechny větve vedou do `ch06_s04` s parametrem `ending_direction`.
 
+### Ending Synthesis Matrix
+
+`D12` nikdy nepoužívá jediný práh ani mechanické pořadí dobrý/špatný. Všechny tři směry zůstávají dostupné; uložená historie pouze mění formulaci, delivery, vedlejší reakce, vizuální variantu, epilog a Teacher Mode summary.
+
+| Historie / stav | Použití při syntéze | Co nesmí způsobit |
+| --- | --- | --- |
+| `origin_motivation` | Historický výchozí důvod; zabarví jazyk nabídky a vzpomínkovou formulaci. | Nesmí předurčit ending ani zablokovat změnu. |
+| `confirmed_motivation` / `motivation_shift` | Aktuální vlastní pojmenování cíle; při rozdílu vznikne dramatická varianta formulace. | Změna motivace není chyba ani ztráta hodnoty. |
+| `practice_preference` | Ovlivní, jak Eliza popíše cestu učení a jakou podporu přijme. | Nesmí být skrytým testem poslušnosti. |
+| `intonation_strategy` | Určí míru jistoty, otázkovosti a vědomého postoje ve finálním projevu. | Nesmí zaměnit intonaci za morální sebejistotu. |
+| `first_test_strategy` | Přidá variantu registru a přípravy v sociálním prostředí. | Nesmí odstranit spontánní možnost. |
+| `recovery_style` | Změní reakci na dřívější nesoulad a podobu sebereflexe. | Chyba nesmí snížit lidskou hodnotu Elizy. |
+| `reception_register_plan` | Vybere adresáty a přirozenější code-switching ve finálním statementu. | Nesmí označit jeden registr za jediný správný. |
+| `credit_response` | Ovlivní, zda vedlejší postavy v epilogu uznají Elizinu práci, kolektiv nebo vlastní experiment. | Strategický odklad nesmí být trest. |
+| `Pronunciation` | Dodá míru artikulační jistoty a dostupné varianty formulace. | Číselný stav nesmí sám blokovat směr. |
+| `Confidence` | Dodá míru přímého vstupu, pauzy a podpory od vedlejších postav. | Vyšší počet příležitostí nesmí vytvořit vítězný ending. |
+| `Independence` | Dodá míru vlastního rámování budoucnosti a přesměrování uznání. | Nízký stav nesmí uzamknout agency. |
+| `ending_direction` | Explicitní finální volba `Social Success`, `Independent Voice` nebo `Integrated Identity`. | Nesmí být přejmenována na good/neutral/bad. |
+
+| Směr | Formulace a delivery | Vedlejší postavy / vizuál | Epilog a Teacher Mode |
+| --- | --- | --- | --- |
+| `Social Success` | Eliza volí sebejistý veřejný registr, ale může ponechat vlastní spontánní obrat. | Publikum a organizátorka reagují na její autorství; `Her Own Voice` je veřejně otevřená, ne „hotová“. | Epilog sleduje veřejnou práci, přepis zdůrazní strategickou volbu registru. |
+| `Independent Voice` | Eliza používá přímější, vlastním cílem řízený projev a sama volí míru formálnosti. | Higgins/Pickering ustupují z centra; vizuál zdůrazní vlastní pracovní prostor a hranice. | Epilog sleduje vlastní projekt; Teacher Mode zdůrazní agency a requests/boundaries. |
+| `Integrated Identity` | Eliza vědomě kombinuje registry podle vztahu a situace bez rozštěpení na „starou“ a „novou“ osobu. | Květinářská komunita a učební svět se propojí; vizuál ukáže stejnou Elizu v několika prostředích. | Epilog sleduje sdílenou práci a repertoár; Teacher Mode shrne code-switching bez hierarchie přízvuků. |
+
 ### ch06_s04 – Her Own Statement
 
 - **Lokace:** veřejný nebo komunitní prostor podle finální větve.
@@ -583,7 +620,7 @@ Tento dokument je canonical detailní mapa všech šesti kapitol. Určuje stabil
 - **Language challenges:** 15 (`LC01`–`LC15`).
 - **Plánované audio moments:** 60 (`AM01`–`AM60`), vždy s kategorií `VOICE`, `LISTENING`, `PRONUNCIATION`, `SFX` nebo `AMBIENCE`.
 - **Canonical visual stages:** 3 (`Flower Girl`, `In Training`, `Her Own Voice`).
-- **Ukládané dlouhodobé osy:** `origin_motivation`, významné strategie a rozhodnutí, tři hodnoty a `ending_direction`.
+- **Ukládané dlouhodobé osy:** `origin_motivation`, `confirmed_motivation`, případný `motivation_shift` / `motivation_nuance`, významné strategie a rozhodnutí, tři hodnoty a `ending_direction`.
 
 ## Scope guard
 

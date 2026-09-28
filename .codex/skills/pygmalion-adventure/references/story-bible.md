@@ -41,6 +41,8 @@ Cockney není vadná ani hloupá angličtina. Charakteristická replika smí bý
 
 `Pronunciation`, `Confidence` a `Independence` nejsou good/bad skóre. Mohou vést k různým legitimním výsledkům a společně vyjadřují dovednost, sebejistotu a schopnost volby.
 
+Pravidla eventů, replay a budoucího balance auditu jsou canonical v `game-design-rules.md`. Chapter VI používá historii hry přes `docs/SCENE_MAP.md`; žádný směr není blokován nízkým stavem jedné hodnoty.
+
 ## Finální větve
 
 - `Social Success`

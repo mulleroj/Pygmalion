@@ -18,6 +18,8 @@ Hra sleduje tři propojené hodnoty:
 
 Nejde o jednoduché good/bad statistiky. Jejich kombinace vytvářejí různé legitimní podoby Elizina vývoje a nemají redukovat její příběh na „opravu“ přízvuku.
 
+Pravidla pro interní development signals, jednorázové eventy, replay a budoucí balance audit jsou canonical v [`game-design-rules.md`](../.codex/skills/pygmalion-adventure/references/game-design-rules.md). Detailní Ending Synthesis Matrix je v `SCENE_MAP.md`.
+
 ## Kapitoly
 
 1. **The Flower Girl** – Covent Garden, déšť, lidé pod portikem; první setkání s Freddym, Higginsem a Pickeringem, první `Higgins' Ear` challenge a volba hlavní motivace.
