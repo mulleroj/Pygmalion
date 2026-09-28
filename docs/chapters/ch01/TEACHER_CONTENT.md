@@ -78,7 +78,7 @@ Options:
 - `d02_request_explanation`: requests a plain explanation; no development-signal change.
 - `d02_reject_and_return`: rejects the observation and returns to work; `Independence +1` once.
 
-All three protect a different need: answer, accountability, or control of time. The local field `higgins_first_impression` records the narrative trace only.
+All three protect a different need: answer, accountability, or control of time. The local field `higgins_first_impression` records the narrative trace only. The middle option is intentionally not an omitted reward: development signals are not reward points, and `seeks_accountability` can create a later narrative consequence.
 
 ### D03 – Origin motivation
 
@@ -96,11 +96,23 @@ The objective is to identify speech purpose in context. A common error is to tre
 
 ### LC02 – Higgins' Ear
 
-- Sample 1: `“Could you wait by the door, please? I need both hands.”` → polite request during a busy task; cooperation is intended.
-- Sample 2: `“Oi, Sam, hold the cart! I am coming through.”` → familiar, informal, urgent market instruction.
-- Sample 3: `“Good evening. May I ask whether the meeting has started?”` → formal, polite request for information in an unfamiliar or public setting.
+- `lc02_sample_01` transcript: `“Could you wait by the door, please? I need both hands.”`
+  - `lc02_s01_worker_request` — A worker asks someone nearby to wait while she carries something. **Correct.**
+  - `lc02_s01_formal_question` — A speaker asks a stranger whether a meeting has started.
+  - `lc02_s01_urgent_command` — A market worker orders a stranger to move away.
+  - Explanation: `Could you… please?` is a polite request, and the busy task explains why waiting is useful.
+- `lc02_sample_02` transcript: `“Oi, Sam, hold the cart! I'm coming through.”`
+  - `lc02_s02_formal_information` — A speaker politely asks a stranger about a meeting.
+  - `lc02_s02_familiar_instruction` — A familiar co-worker gives a quick instruction in a busy market. **Correct.**
+  - `lc02_s02_apology_repair` — A speaker apologises to a customer and offers to pay.
+  - Explanation: the name, short command, and market setting point to a familiar working relationship and a practical need.
+- `lc02_sample_03` transcript: `“Good evening. May I ask whether the meeting has started?”`
+  - `lc02_s03_familiar_instruction` — A friend gives an urgent instruction beside a market cart.
+  - `lc02_s03_worker_request` — A worker asks someone to wait while she carries something.
+  - `lc02_s03_formal_question` — A speaker politely asks an unfamiliar person for information. **Correct.**
+  - Explanation: the greeting and `May I ask…?` create a formal request for information.
 
-The correct category is situation, relationship, formality, or intention—not intelligence and not a “correct accent”. If all three are identified, `Pronunciation +1` is recorded once as an attention/listening signal. A wrong answer has no morality penalty.
+Retry support should ask the learner to listen for action, relationship, setting, and purpose. LC02 stores completion/attempt metadata and `ear_test_intro_seen = true`; it never changes `Pronunciation`, `Confidence`, or `Independence`. A wrong answer has no morality penalty.
 
 ## 9. Discussion Questions
 

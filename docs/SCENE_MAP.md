@@ -90,7 +90,7 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 - **Děj:** Higgins předloží Pickeringovi několik krátkých ukázek řeči a vysvětlí, co v nich slyší. Hráč sleduje, jak lze slyšet registr, intonaci a sociální kontext bez tvrzení, že jeden přízvuk je lepší.
 - **Hlavní účel:** zavést `Higgins' Ear` jako opakovanou herní formu.
 - **Rozhodnutí hráče:** žádné hlavní; hráč volí pořadí poslechových stop.
-- **Možné hodnotové změny:** při správném rozlišení `Pronunciation +1` jako dovednost pozornosti; při chybě žádný morality penalty.
+- **Možné hodnotové změny:** žádné; `LC02` testuje contextual listening, register, pragmatics a intention. Při chybě nevzniká morality penalty.
 - **Uložení:** `long-term: ne`; uloží se `ear_test_intro_seen`.
 - **Audio momenty:** `AM07 LISTENING` tři krátké stylizované ukázky registru; `AM08 VOICE` Pickeringova reakce a Higginsovo vysvětlení.
 - **Challenge:** `LC02` – určit vztah, situaci nebo míru formálnosti z hlasu a kontextu, ne „inteligenci“ mluvčího.

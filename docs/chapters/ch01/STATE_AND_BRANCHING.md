@@ -88,7 +88,7 @@ The exact option does not return as a new decision in Chapter I. `freddy_first_i
 
 ### Does it return later?
 
-The exact option does not return as a new decision in Chapter I. `higgins_first_impression` may affect later wording or relationship nuance. The signal increment is idempotent and cannot be farmed by replay.
+The exact option does not return as a new decision in Chapter I. `higgins_first_impression` may affect later wording or relationship nuance. The middle option intentionally has no signal increment: development signals are not reward points, and `seeks_accountability` can carry a later narrative consequence. Any signal increment from the other two options is idempotent and cannot be farmed by replay.
 
 ## D03 – A Window of Possibility
 
@@ -129,8 +129,17 @@ Yes. `origin_motivation` returns in Chapter VI as historical context. A later `c
 
 - Stable challenge ID: `ch01_lc02`.
 - Stores `ear_test_intro_seen = true` when the challenge is first entered.
-- Correctly identifying all three samples may apply `Pronunciation +1` through event `ch01_lc02_attention`.
-- `ch01_lc02_attention` can be applied once only. A retry after a wrong answer may complete the challenge, but repeated success, replay, or transcript opening cannot add another increment.
+- Stores completion and attempt metadata only; LC02 does not change `Pronunciation`, `Confidence`, or `Independence`.
+- Stable sample and option IDs are:
+
+| Sample ID | Option IDs | Correct option |
+| --- | --- | --- |
+| `lc02_sample_01` | `lc02_s01_worker_request`, `lc02_s01_formal_question`, `lc02_s01_urgent_command` | `lc02_s01_worker_request` |
+| `lc02_sample_02` | `lc02_s02_formal_information`, `lc02_s02_familiar_instruction`, `lc02_s02_apology_repair` | `lc02_s02_familiar_instruction` |
+| `lc02_sample_03` | `lc02_s03_familiar_instruction`, `lc02_s03_worker_request`, `lc02_s03_formal_question` | `lc02_s03_formal_question` |
+
+- Each sample has exactly one best answer and two contextual distractors.
+- A retry after a wrong answer may complete the challenge, but repeated success, replay, or transcript opening changes no development signal.
 - Incorrect answers create no morality penalty and no negative signal.
 
 ## Opening tone and non-state-changing traces
@@ -152,7 +161,7 @@ else:
 The guard applies to:
 
 - D01, D02, D03;
-- the one-time LC02 listening-attention signal;
+- LC02 completion/attempt metadata only;
 - audio replay;
 - transcript opening;
 - challenge retry;
@@ -170,7 +179,7 @@ ch01_s01
   → ch01_s03
       D02: d02_direct_question | d02_request_explanation | d02_reject_and_return
   → ch01_s04
-      LC02: three context/register samples; optional one-time Pronunciation signal
+      LC02: three context/register samples; metadata only
   → ch01_s05
       D03: opportunity | respect | learning | independence
   → ch02_s01

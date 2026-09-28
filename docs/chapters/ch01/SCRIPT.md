@@ -17,17 +17,17 @@ Rain turns the paving stones bright. Under the portico, people wait, hurry, and 
 
 **ELIZA:** Flowers, sir? Fresh flowers for a wet day!
 
-**ELIZA:** Come on, do not hide behind the rain. A flower makes a room look kinder.
+**ELIZA:** Come on, don't hide behind the rain. A flower makes a room look kinder.
 
-**ELIZA:** Two flowers for a penny. I will choose the brighter ones for you.
+**ELIZA:** Two flowers for a penny. I'll choose the brighter ones for you.
 
 **PASSER-BY:** Not today, girl. I have no time.
 
-**ELIZA:** Then take one small flower. It will not slow you down.
+**ELIZA:** Then take one small flower. It won't slow you down.
 
-**PASSER-BY:** You are quick with an answer.
+**PASSER-BY:** You're quick with an answer.
 
-**ELIZA:** I have to be. The rain does not wait, and neither do customers.
+**ELIZA:** I have to be. The rain doesn't wait, and neither do customers.
 
 ### Opening tone response
 
@@ -53,9 +53,9 @@ Freddy hurries under the portico. The crowd shifts. Eliza lifts her basket—and
 
 Freddy stops too late. Flowers fall across the wet stones. A few petals stick to the mud. Eliza moves first: she protects the flowers, then looks up at him.
 
-**FREDDY:** Oh! I am sorry. I did not see the basket.
+**FREDDY:** Oh! I'm sorry. I didn't see the basket.
 
-**ELIZA:** The rain is not going to pick them up for me.
+**ELIZA:** The rain won't pick them up for me.
 
 **FREDDY:** I can pay for the damaged ones.
 
@@ -65,9 +65,9 @@ Freddy stops too late. Flowers fall across the wet stones. A few petals stick to
 
 **PROMPT:** Freddy is waiting. Choose Eliza’s next reply.
 
-1. `d01_ask_help` — **Ask for help:** “Could you help me gather them, please? The clean ones go in the basket.”
-2. `d01_name_damage` — **Name the damage:** “You knocked them down. Look at the stems. I cannot sell them like this.”
-3. `d01_accept_and_work` — **Accept the apology and return to work:** “All right. You are sorry. I will pick them up and get back to work.”
+1. `d01_ask_help` — **Ask for help:** “Could you help me gather them? The clean ones go in the basket.”
+2. `d01_name_damage` — **Name the damage:** “You knocked them down. Look at the stems. I can't sell them like this.”
+3. `d01_accept_and_work` — **Accept the apology and return to work:** “All right. You're sorry. I'll pick them up and get back to work.”
 
 No option is correct or best. Each is a plausible Eliza response under pressure.
 
@@ -87,19 +87,19 @@ The local value `freddy_first_impression` is set to `asks_for_repair`, `direct_b
 
 **LC01-AUDIO-01**
 
-> “I am sorry. I was not looking where I was going.”
+> “I'm sorry. I wasn't looking where I was going.”
 
 **Answer:** `apology`
 
 **LC01-AUDIO-02**
 
-> “It was the rain. Anyone could have slipped.”
+> “It was the rain. Anyone could've slipped.”
 
 **Answer:** `excuse`
 
 **LC01-AUDIO-03**
 
-> “I will pick these up and pay for the damaged ones.”
+> “I'll pick these up and pay for the damaged ones.”
 
 **Answer:** `intention to repair`
 
@@ -123,29 +123,29 @@ Higgins closes his notebook halfway, as if that makes the watching less obvious.
 
 **HIGGINS:** Your speech carries a local pattern. I can hear where a person has learned to live.
 
-**ELIZA:** Can you hear when a person is trying to sell flowers in the rain?
+**ELIZA:** Can you hear when someone's trying to sell flowers in the rain?
 
-**HIGGINS:** I can hear several things at once. The pattern is interesting.
+**HIGGINS:** I can hear several things at once. It's interesting.
 
-**ELIZA:** I am not a pattern on your page.
+**ELIZA:** I'm not a pattern on your page.
 
-**HIGGINS:** No. You are a speaker. That is why the example is useful.
+**HIGGINS:** No. But your voice tells me something. That's why I wrote it down.
 
 **ELIZA:** I ain't done nothing wrong. I'm a good girl, I am.
 
 The line is an emotional defence, not a pronunciation model. Eliza is demanding to be treated as a person while others discuss her speech.
 
-**FREDDY:** Mr Higgins, perhaps you could ask before you write.
+**FREDDY:** Sir, perhaps you could ask before you write.
 
-**HIGGINS:** Perhaps I could. That is a fair point.
+**HIGGINS:** Perhaps I could. That's fair. I'm Henry Higgins.
 
 Pickering arrives beneath the portico.
 
-**PICKERING:** Good evening. I heard a voice worth listening to, not merely a sound to classify.
+**PICKERING:** Good evening. I'm Pickering. What are you writing?
 
-**HIGGINS:** I am studying how speech travels through a city.
+**HIGGINS:** I'm studying how people speak across the city.
 
-**PICKERING:** Then study the speaker as well.
+**PICKERING:** Have you asked her?
 
 ### D02 – Eliza’s response to observation
 
@@ -179,7 +179,7 @@ The rain makes a soft wall around the portico. Higgins looks at the notebook. Pi
 
 Higgins turns the notebook so Pickering can see it. Three brief voices rise above the rain. The task is not to rank the speakers. It is to hear what each person is trying to do in a particular situation.
 
-**HIGGINS:** Listen for relationship, place, and purpose. A voice gives clues. It does not give a complete truth about a person.
+**HIGGINS:** Listen to who is speaking, where they are, and what they want. A voice gives clues, but it doesn't tell you everything.
 
 **PICKERING:** And the clues can be wrong.
 
@@ -193,45 +193,65 @@ Higgins turns the notebook so Pickering can see it. Three brief voices rise abov
 
 > “Could you wait by the door, please? I need both hands.”
 
-**Best answer:** A worker is making a polite request to someone nearby during a busy task. The intention is cooperation, not authority.
+**OPTIONS:**
 
-**Why:** *Could you… please?* signals a polite request. The context explains why waiting is useful.
+1. `lc02_s01_worker_request` — A worker asks someone nearby to wait while she carries something.
+2. `lc02_s01_formal_question` — A speaker asks a stranger whether a meeting has started.
+3. `lc02_s01_urgent_command` — A market worker orders a stranger to move away.
 
-**Teacher Mode note:** A polite form suggests a chosen register in this moment. It does not prove that the speaker is kinder, smarter, or higher in status.
+**IMPLEMENTATION ANSWER KEY (not shown in play mode):** `lc02_s01_worker_request`
+
+**FEEDBACK – correct:** Good. The speaker makes a polite request because both hands are busy.
+
+**FEEDBACK – retry:** Listen for the action. Is the speaker asking someone to wait, asking for information, or ordering someone away?
 
 #### Sample 2 – `lc02_sample_02`
 
-> “Oi, Sam, hold the cart! I am coming through.”
+> “Oi, Sam, hold the cart! I'm coming through.”
 
-**Best answer:** A familiar speaker gives an urgent informal instruction to a colleague or friend in a busy market.
+**OPTIONS:**
 
-**Why:** The name, short command, and urgency point to a familiar relationship and a practical need.
+1. `lc02_s02_formal_information` — A speaker politely asks a stranger about a meeting.
+2. `lc02_s02_familiar_instruction` — A familiar co-worker gives a quick instruction in a busy market.
+3. `lc02_s02_apology_repair` — A speaker apologises to a customer and offers to pay.
 
-**Teacher Mode note:** Informal wording can be efficient and cooperative. It is not evidence of low ability or low intelligence.
+**IMPLEMENTATION ANSWER KEY (not shown in play mode):** `lc02_s02_familiar_instruction`
+
+**FEEDBACK – correct:** Good. The name, short command, and busy market point to a familiar working relationship.
+
+**FEEDBACK – retry:** Listen for the relationship and the place. Is this a formal question, a familiar market instruction, or an apology?
 
 #### Sample 3 – `lc02_sample_03`
 
 > “Good evening. May I ask whether the meeting has started?”
 
-**Best answer:** A speaker addresses an unfamiliar person or a formal setting and politely asks for information.
+**OPTIONS:**
 
-**Why:** The greeting and *May I ask…?* create a more formal register. The purpose is information, not performance.
+1. `lc02_s03_familiar_instruction` — A friend gives an urgent instruction beside a market cart.
+2. `lc02_s03_worker_request` — A worker asks someone to wait while she carries something.
+3. `lc02_s03_formal_question` — A speaker politely asks an unfamiliar person for information.
 
-**Teacher Mode note:** Formality depends on audience, setting, relationship, and purpose. Accent and dialect remain different concepts from register.
+**IMPLEMENTATION ANSWER KEY (not shown in play mode):** `lc02_s03_formal_question`
 
-**FEEDBACK – success:** You used context, relationship, and intention. You did not turn a speech pattern into a judgement about the speaker.
+**FEEDBACK – correct:** Good. The greeting and *May I ask…?* make this a polite request for information.
+
+**FEEDBACK – retry:** Listen for the purpose. Is the speaker giving an urgent instruction, asking for help with a task, or asking for information?
+
+**FEEDBACK – success:** You used context, relationship, formality, and intention. You did not turn a speech pattern into a judgement about the speaker.
 
 **FEEDBACK – retry:** Replay the sample and read the transcript. Look for who is speaking to whom, where they are, and what action the speaker wants.
 
-**REPLAY / TRANSCRIPT CUE:** Each sample has its own replay control and visible transcript. Replay never adds `Pronunciation` again.
+**REPLAY / TRANSCRIPT CUE:** Each sample has its own replay control and visible transcript. Replay and retry do not change any development signal.
 
 ### Immediate consequence
 
-If the player identifies the intended situation in all three samples, `Pronunciation +1` is recorded once as an attention/listening signal. A wrong answer has no morality penalty and no negative development change.
+If the player identifies the intended situation in all three samples, LC02 stores completion metadata and `ear_test_intro_seen = true`. A wrong answer has no morality penalty and no development-signal change.
 
-**PICKERING:** You can hear a pattern and still ask a question.
+**PICKERING:** What do you think, Eliza?
 
-**HIGGINS:** That may be the more useful skill.
+**ELIZA:** I think people hear what they expect to hear.
+
+**HIGGINS:** Perhaps. That's worth writing down.
 
 ### Transition
 
@@ -245,23 +265,23 @@ The rain thins. Across the street, warm light appears in a flower-shop window.
 
 The rain has softened to a mist. Eliza stands before a flower-shop window. Inside, the flowers are arranged for people who have time to choose. She studies the door, the counter, and the language written on the small sign.
 
-**ELIZA:** Look at that window. The flowers are not hiding from anyone.
+**ELIZA:** Look at that window. The flowers aren't hiding from anyone.
 
 **ELIZA:** People hear the way I speak before they see what I can do.
 
-**ELIZA:** Maybe another register could open a door. It would not make me worth more. It would give me another way to be heard.
+**ELIZA:** Maybe speaking another way could open a door. It wouldn't make me worth more. It would give me another way to be heard.
 
 **FREDDY:** What would you do if the door opened?
 
-**ELIZA:** I would decide for myself what to say when I walked through it.
+**ELIZA:** I'd decide for myself what to say when I walked through it.
 
 ### D03 – Origin motivation
 
 **PROMPT:** Why does Eliza want more ways to speak? Choose the motivation that feels true at the end of Chapter I.
 
-1. `opportunity` — **Opportunity:** “I want language that helps me reach better work and more chances.”
+1. `opportunity` — **Opportunity:** “I want to speak in a way that can lead to better work and more chances.”
 2. `respect` — **Respect:** “I want people to listen to me before they decide what I am.”
-3. `learning` — **Learning:** “I want to learn how speech works and choose what I use.”
+3. `learning` — **Learning:** “I want to learn how people speak and choose what I use.”
 4. `independence` — **Independence:** “I want more ways to speak so no one else can choose my future for me.”
 
 No motivation is correct, best, or more mature than another. Changing motivation later is also allowed; this choice records the starting point of Eliza’s journey.
@@ -272,11 +292,11 @@ Save `origin_motivation` with exactly one of: `opportunity`, `respect`, `learnin
 
 ### Chapter-end text
 
-**ELIZA:** Tomorrow, I will find the door myself. If they want to teach me, they will have to hear what I am asking for.
+**ELIZA:** Tomorrow, I'll find the door myself. If they want to teach me, they'll have to hear what I'm asking for.
 
 **NARRATION:** The flower-shop lights stay on as Covent Garden grows dark. Eliza leaves the window with a plan—and a question about the price of being heard.
 
-**CHAPTER I END / HOOK:** In Chapter II, Eliza will choose whether to seek lessons, what she will ask for, and what conditions she will accept.
+**CHAPTER I END / HOOK:** In Chapter II, Eliza will go and ask for lessons. She will have to say what she wants and set her own terms.
 
 `ch01_s05 → ch02_s01`
 

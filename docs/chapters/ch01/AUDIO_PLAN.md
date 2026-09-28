@@ -33,7 +33,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Scene: `ch01_s01`
 - Category: `VOICE`
 - Speaker: Eliza
-- Text/transcript: “Flowers, sir? Fresh flowers for a wet day! Come on, do not hide behind the rain. A flower makes a room look kinder. Two flowers for a penny. I will choose the brighter ones for you.”
+- Text/transcript: “Flowers, sir? Fresh flowers for a wet day! Come on, don't hide behind the rain. A flower makes a room look kinder. Two flowers for a penny. I'll choose the brighter ones for you.”
 - Delivery direction: Quick, bright, practical, and alert. Sales energy, not a comic caricature.
 - Voice ID: `124kaYCknTDsnwUFdWl9` (`Eliza - young_cockney`); model `eleven_v3`
 - Expected path: `assets/audio/characters/eliza/eliza_ch01_scene01_001.mp3`
@@ -47,7 +47,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Scene: `ch01_s02`
 - Category: `VOICE`
 - Speaker: Freddy
-- Text/transcript: “Oh! I am sorry. I did not see the basket. I can pay for the damaged ones.”
+- Text/transcript: “Oh! I'm sorry. I didn't see the basket. I can pay for the damaged ones.”
 - Delivery direction: Embarrassed and sincere, with rain and crowd movement behind him. Do not make him cruel or foolish.
 - Voice ID: `VOICE CASTING REQUIRED`
 - Expected path: `assets/audio/characters/freddy/freddy_ch01_scene02_001.mp3`
@@ -75,7 +75,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Scene: `ch01_s03`
 - Category: `VOICE`
 - Speaker: Higgins
-- Text/transcript: “Your speech carries a local pattern. I can hear where a person has learned to live. I can hear several things at once. The pattern is interesting.”
+- Text/transcript: “Your speech carries a local pattern. I can hear where a person has learned to live. I can hear several things at once. It's interesting.” / “Perhaps I could. That's fair. I'm Henry Higgins.”
 - Delivery direction: Fascinated and self-assured, precise, occasionally insensitive; never a cartoon villain.
 - Voice ID: `VOICE CASTING REQUIRED`
 - Expected path: `assets/audio/characters/higgins/higgins_ch01_scene03_001.mp3`
@@ -89,7 +89,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Scene: `ch01_s04`
 - Category: `VOICE`
 - Speaker: Higgins
-- Text/transcript: “Listen for relationship, place, and purpose. A voice gives clues. It does not give a complete truth about a person. Context matters. So does asking.”
+- Text/transcript: “Listen to who is speaking, where they are, and what they want. A voice gives clues, but it doesn't tell you everything. Yes. That's why you ask.”
 - Delivery direction: Demonstrative and thoughtful; Higgins is beginning to acknowledge the limit of inference.
 - Voice ID: `VOICE CASTING REQUIRED`
 - Expected path: `assets/audio/characters/higgins/higgins_ch01_scene04_001.mp3`
@@ -103,7 +103,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Scene: `ch01_s04`
 - Category: `VOICE`
 - Speaker: Pickering
-- Text/transcript: “And the clues can be wrong.” / “You can hear a pattern and still ask a question.”
+- Text/transcript: “And the clues can be wrong.” / “What do you think, Eliza?”
 - Delivery direction: Calm, observant, respectful. He offers a different way of listening without becoming a lecturer.
 - Voice ID: `VOICE CASTING REQUIRED`
 - Expected path: `assets/audio/characters/pickering/pickering_ch01_scene04_001.mp3`
@@ -117,7 +117,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Scene: `ch01_s05`
 - Category: `VOICE`
 - Speaker: Eliza
-- Text/transcript: “People hear the way I speak before they see what I can do. Maybe another register could open a door. It would not make me worth more. It would give me another way to be heard.”
+- Text/transcript: “People hear the way I speak before they see what I can do. Maybe speaking another way could open a door. It wouldn't make me worth more. It would give me another way to be heard.”
 - Delivery direction: Thoughtful but still grounded and practical; no sudden “transformed” voice.
 - Voice ID: `124kaYCknTDsnwUFdWl9` (`Eliza - young_cockney`); model `eleven_v3`
 - Expected path: `assets/audio/characters/eliza/eliza_ch01_scene05_001.mp3`
@@ -135,7 +135,7 @@ All three items belong to `AM04`. They should be short, clearly separated, and r
 - Scene: `ch01_s02`
 - Category: `LISTENING`
 - Speaker: Freddy
-- Text/transcript: “I am sorry. I was not looking where I was going.”
+- Text/transcript: “I'm sorry. I wasn't looking where I was going.”
 - Delivery direction: Clear acceptance of responsibility; natural embarrassment.
 - Voice ID: `VOICE CASTING REQUIRED`
 - Expected path: `assets/audio/listening/ch01_lc01_001.mp3`
@@ -149,7 +149,7 @@ All three items belong to `AM04`. They should be short, clearly separated, and r
 - Scene: `ch01_s02`
 - Category: `LISTENING`
 - Speaker: Freddy
-- Text/transcript: “It was the rain. Anyone could have slipped.”
+- Text/transcript: “It was the rain. Anyone could've slipped.”
 - Delivery direction: Defensive explanation; do not overplay guilt or dishonesty.
 - Voice ID: `VOICE CASTING REQUIRED`
 - Expected path: `assets/audio/listening/ch01_lc01_002.mp3`
@@ -163,7 +163,7 @@ All three items belong to `AM04`. They should be short, clearly separated, and r
 - Scene: `ch01_s02`
 - Category: `LISTENING`
 - Speaker: Freddy
-- Text/transcript: “I will pick these up and pay for the damaged ones.”
+- Text/transcript: “I'll pick these up and pay for the damaged ones.”
 - Delivery direction: Concrete and willing; make the future action easy to hear.
 - Voice ID: `VOICE CASTING REQUIRED`
 - Expected path: `assets/audio/listening/ch01_lc01_003.mp3`
@@ -195,7 +195,7 @@ All three items belong to `AM07`. Use distinct supporting voices only after cast
 - Scene: `ch01_s04`
 - Category: `LISTENING`
 - Speaker: supporting speaker 02
-- Text/transcript: “Oi, Sam, hold the cart! I am coming through.”
+- Text/transcript: “Oi, Sam, hold the cart! I'm coming through.”
 - Delivery direction: Familiar, urgent, efficient; not aggressive for its own sake.
 - Voice ID: `VOICE CASTING REQUIRED`
 - Expected path: `assets/audio/listening/ch01_lc02_002.mp3`
@@ -250,10 +250,10 @@ All three items belong to `AM07`. Use distinct supporting voices only after cast
 ## Backlog totals and casting gate
 
 - Planned audio files: **16**.
-- Eliza files using the canonical voice: **4** (`A02`, `A04`, `A08`, plus any future alternate takes must keep the same voice ID).
+- Eliza files using the canonical voice: **3** (`A02`, `A04`, `A08`; any future alternate takes must keep the same voice ID).
 - Higgins files: **2**, `VOICE CASTING REQUIRED`.
 - Pickering files: **1**, `VOICE CASTING REQUIRED`.
 - Freddy files: **4** including LC01, `VOICE CASTING REQUIRED`.
 - Supporting listening voices: **3**, `VOICE CASTING REQUIRED`.
-- SFX/ambience files: **2**, no speaker casting.
+- SFX/ambience files: **3** (`A01`, `A15`, `A16`), no speaker casting.
 - No audio is approved for delivery until recording, transcript, clarity, replay, local ownership, and scene fit are reviewed.
