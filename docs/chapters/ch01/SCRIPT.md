@@ -8,6 +8,9 @@ Canonical player-facing script for the Chapter I vertical slice.
 - Canonical Eliza voice: `Eliza - young_cockney` (`124kaYCknTDsnwUFdWl9`, `eleven_v3`)
 - All dialogue in this file is newly written for this adaptation, except the approved signature line.
 - Teacher notes, answer keys and internal state are not shown in normal play mode.
+- This file is the primary player-facing book content for Chapter I. Story narration and dialogue remain readable with sound disabled.
+- Audio is optional enhancement for ordinary story voice; only explicit `LC01` and `LC02` listening challenges may make listening pedagogically necessary.
+- Story text in this file is not interchangeable with an accessibility transcript for an audio asset.
 
 ## ch01_s01 – Under the Portico
 

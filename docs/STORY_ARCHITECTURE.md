@@ -4,11 +4,25 @@ Detailní scene map všech kapitol je canonical v [`SCENE_MAP.md`](SCENE_MAP.md)
 
 Teacher Mode je povinná chapter-level contextual support vrstva pro všech šest kapitol. Jeho canonical kontrakt, jednotná struktura, budoucí header placement a progress-safe preview jsou v [`TEACHER_MODE_SPEC.md`](TEACHER_MODE_SPEC.md).
 
+## Canonical presentation model
+
+Pygmalion Adventure je `interactive illustrated storybook / story adventure`, nikoli audio-first listening application.
+
+`BOOK FIRST → AUDIO ENHANCED`
+
+Každá scéna musí fungovat jako čitelná část digitální knihy. Hráč musí být schopen celý příběh číst, pochopit, rozhodovat se, pokračovat mezi scénami a dokončit kapitolu se zvukem vypnutým. Ilustrace a player-facing text jsou primární story presentation; audio je podpůrná vrstva.
+
 ## Hlavní herní smyčka
 
-`Story → Decision → Listen → Language Challenge → Consequence → Story`
+`Read / Story → Decision or Challenge → Consequence → Transition`
 
-Každá významná sekvence má hráči nabídnout čitelný příběhový kontext, volbu, smysluplný poslech nebo jazykový úkol a důsledek. Důsledky nemusí být trest; mohou změnit scénu, dostupnou možnost, Elizinu sebedůvěru nebo podobu jejího dalšího vývoje.
+Každá významná sekvence má hráči nabídnout čitelný příběhový kontext, ilustraci, volbu nebo explicitní jazykovou challenge a důsledek. Listening je povinný pouze uvnitř explicitně označené listening challenge; běžný story dialog zůstává čitelný. Důsledky nemusí být trest; mohou změnit scénu, dostupnou možnost, Elizinu sebedůvěru nebo podobu jejího dalšího vývoje.
+
+Story engine contract pro budoucí implementaci je:
+
+`chapter → scene → illustration → readable narrative/dialogue → decision/challenge`
+
+Audio se k těmto částem připojuje jako volitelná story voice, explicitní listening challenge nebo doplňková atmosphere/SFX vrstva.
 
 ## Hodnoty vývoje
 

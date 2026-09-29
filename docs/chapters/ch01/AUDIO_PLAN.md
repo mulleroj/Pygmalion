@@ -1,6 +1,15 @@
 # Chapter I Audio Plan – The Flower Girl
 
-Production backlog only. No audio is generated or included in this pass.
+Supporting audio plan derived from the canonical player-facing script. No audio is generated or included in this pass.
+
+## Book-first contract
+
+`BOOK FIRST → AUDIO ENHANCED`
+
+- `docs/chapters/ch01/SCRIPT.md` is the primary story content. Its narration and dialogue must remain readable and sufficient to complete Chapter I with sound disabled.
+- Ordinary story dialogue may receive an `OPTIONAL STORY VOICE` recording. Audio adds personality, pronunciation support, or atmosphere; it does not replace the visible story text.
+- Only explicit listening challenges, currently `LC01` and `LC02`, may make listening pedagogically necessary. Their challenge rules determine transcript availability; a story text line is not automatically an accessibility transcript.
+- Atmosphere and SFX are optional enhancement and never carry critical information required for story progress.
 
 ## Production rules
 
@@ -21,6 +30,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Asset ID: `AM01`
 - Scene: `ch01_s01`
 - Category: `AMBIENCE`
+- Audio role: `ATMOSPHERE / SFX`
 - Speaker: none
 - Text/transcript: No speech. Rain on paving, covered market movement, distant calls, footsteps.
 - Delivery direction: Keep the portico readable; rain must support, not cover, dialogue.
@@ -35,6 +45,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Asset ID: `AM02`
 - Scene: `ch01_s01`
 - Category: `VOICE`
+- Audio role: `OPTIONAL STORY VOICE`
 - Speaker: Eliza
 - Text/transcript: “Flowers, sir? Fresh flowers for a wet day! Come on, don't hide behind the rain. A flower makes a room look kinder. Two flowers for a penny. I'll choose the brighter ones for you.”
 - Delivery direction: Quick, bright, practical, and alert. Sales energy, not a comic caricature.
@@ -49,6 +60,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Asset ID: `AM03`
 - Scene: `ch01_s02`
 - Category: `VOICE`
+- Audio role: `OPTIONAL STORY VOICE`
 - Speaker: Freddy
 - Text/transcript: “Oh! I'm sorry. I didn't see the basket. I can pay for the damaged ones.”
 - Delivery direction: Embarrassed and sincere, with rain and crowd movement behind him. Do not make him cruel or foolish.
@@ -63,6 +75,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Asset ID: `AM06`
 - Scene: `ch01_s03`
 - Category: `VOICE`
+- Audio role: `OPTIONAL STORY VOICE`
 - Speaker: Eliza
 - Text/transcript: “I ain't done nothing wrong. I'm a good girl, I am.”
 - Delivery direction: Canonical BEFORE moment: young, lively, defensive, quick, emotionally exposed but not helpless. Preserve wording exactly.
@@ -77,6 +90,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Asset ID: `AM05`
 - Scene: `ch01_s03`
 - Category: `VOICE`
+- Audio role: `OPTIONAL STORY VOICE`
 - Speaker: Higgins
 - Text/transcript: “Your speech carries a local pattern. I can hear where a person has learned to live. I can hear several things at once. It's interesting.” / “Perhaps I could. That's fair. I'm Henry Higgins.”
 - Delivery direction: Fascinated and self-assured, precise, occasionally insensitive; never a cartoon villain.
@@ -91,6 +105,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Asset ID: `AM08A`
 - Scene: `ch01_s04`
 - Category: `VOICE`
+- Audio role: `OPTIONAL STORY VOICE`
 - Speaker: Higgins
 - Text/transcript: “Listen to who is speaking, where they are, and what they want. A voice gives clues, but it doesn't tell you everything. Yes. That's why you ask.”
 - Delivery direction: Demonstrative and thoughtful; Higgins is beginning to acknowledge the limit of inference.
@@ -105,6 +120,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Asset ID: `AM08B`
 - Scene: `ch01_s04`
 - Category: `VOICE`
+- Audio role: `OPTIONAL STORY VOICE`
 - Speaker: Pickering
 - Text/transcript: “And the clues can be wrong.” / “What do you think, Eliza?”
 - Delivery direction: Calm, observant, respectful. He offers a different way of listening without becoming a lecturer.
@@ -119,6 +135,7 @@ Production backlog only. No audio is generated or included in this pass.
 - Asset ID: `AM09`
 - Scene: `ch01_s05`
 - Category: `VOICE`
+- Audio role: `OPTIONAL STORY VOICE`
 - Speaker: Eliza
 - Text/transcript: “People hear the way I speak before they see what I can do. Maybe speaking another way could open a door. It wouldn't make me worth more. It would give me another way to be heard.”
 - Delivery direction: Thoughtful but still grounded and practical; no sudden “transformed” voice.
@@ -132,11 +149,14 @@ Production backlog only. No audio is generated or included in this pass.
 
 All three items belong to `AM04`. They should be short, clearly separated, and replayable individually.
 
+Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary listening layer for LC01; the challenge remains explicitly identified as listening work.
+
 ### A09 – LC01 apology
 
 - Asset ID: `LC01-01`
 - Scene: `ch01_s02`
 - Category: `LISTENING`
+- Audio role: `LISTENING CHALLENGE`
 - Speaker: Freddy
 - Text/transcript: “I'm sorry. I wasn't looking where I was going.”
 - Delivery direction: Clear acceptance of responsibility; natural embarrassment.
@@ -178,11 +198,14 @@ All three items belong to `AM04`. They should be short, clearly separated, and r
 
 All three items belong to `AM07`. Use distinct supporting voices only after casting; do not assign ad hoc voice IDs. The samples must differ by register and context, not by “smart” versus “not smart” performance.
 
+Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary listening layer for LC02; ordinary story dialogue around them remains readable in `SCRIPT.md`.
+
 ### A12 – LC02 polite work request
 
 - Asset ID: `LC02-01`
 - Scene: `ch01_s04`
 - Category: `LISTENING`
+- Audio role: `LISTENING CHALLENGE`
 - Speaker: supporting speaker 01
 - Text/transcript: “Could you wait by the door, please? I need both hands.”
 - Delivery direction: Polite, cooperative, busy task in progress.
@@ -227,6 +250,7 @@ All three items belong to `AM07`. Use distinct supporting voices only after cast
 - Asset ID: `AM04-SFX`
 - Scene: `ch01_s02`
 - Category: `SFX`
+- Audio role: `ATMOSPHERE / SFX`
 - Speaker: none
 - Text/transcript: No speech. Basket bump, stems and flowers hitting wet paving, brief crowd reaction.
 - Delivery direction: Short and readable; do not make Freddy’s accident slapstick.
@@ -241,6 +265,7 @@ All three items belong to `AM07`. Use distinct supporting voices only after cast
 - Asset ID: `AM10`
 - Scene: `ch01_s05`
 - Category: `AMBIENCE`
+- Audio role: `ATMOSPHERE / SFX`
 - Speaker: none
 - Text/transcript: No speech. Light evening market, receding rain, shop door, distant footsteps.
 - Delivery direction: A small sense of possibility; keep the transition grounded, not sentimental.
@@ -254,6 +279,8 @@ All three items belong to `AM07`. Use distinct supporting voices only after cast
 
 - Planned audio files: **16**.
 - Eliza files using the canonical voice: **3** (`A02`, `A04`, `A08`; any future alternate takes must keep the same voice ID).
+- Story voice files: **7**, all `OPTIONAL STORY VOICE`.
+- Listening challenge files: **6**, `LC01` and `LC02`.
 - Higgins files: **2**, canonical voice ID `ib8aaABAPZQpTo6hx8Jr`.
 - Pickering files: **1**, canonical voice ID `JBFqnCBsd6RMkjVDRZzb`.
 - Freddy files: **4** including LC01, canonical voice ID `fNYuJl2dBlX9V7NxmjnV`.

@@ -6,7 +6,8 @@ Scénově specifické Teacher Mode poznámky zůstávají u jednotlivých scén.
 
 ## Map conventions
 
-- Hlavní smyčka: `Story → Decision → Listen → Language Challenge → Consequence → Story`.
+- Hlavní storybook smyčka: `Read / Story → Decision or Challenge → Consequence → Transition`.
+- Audio momenty jsou podpůrná metadata. `VOICE` je optional story voice, `SFX` a `AMBIENCE` jsou doplňkové; pouze explicitní `LCxx` listening challenge může vyžadovat poslech.
 - Hodnoty `Pronunciation`, `Confidence` a `Independence` jsou vývojové signály, nikoli good/bad nebo morality scores.
 - `Dxx` označuje hlavní rozhodnutí; `LCxx` jazykovou nebo poslechovou výzvu; `AMxx` plánovaný audio moment.
 - `long-term: ano` znamená, že se volba nebo významný výsledek ukládá do progressu. `long-term: ne` označuje lokální důsledek nebo scénovou stopu.
