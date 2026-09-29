@@ -22,7 +22,8 @@ By the end of the chapter, learners should be able to:
 ## 3. Language Focus
 
 - Vocabulary: `flower`, `basket`, `drop`, `stem`, `rain`, `market`, `apology`, `excuse`, `help`, `listen`, `opportunity`, `respect`.
-- Functional language: `Could you help me…?`, `I cannot…`, `I am sorry…`, `I will…`, `Why are you…?`, `Tell me plainly.`
+- Functional language: `Give us a hand, will you?`, `Why d'you…?`, `Tell me straight.`, `I've got…`, `I'll…`
+- Eliza uses features of informal working-class London English in her Flower Girl stage. These forms are part of character, identity, register and dialect. They must not be presented as evidence of lower intelligence.
 - Register: direct, polite, defensive, informal, and formal.
 - Pragmatics: apology versus excuse; request versus instruction; intention versus explanation.
 - Grammar and form: `Could you… please?`, `May I ask…?`, present explanation, and future intention with `will`.

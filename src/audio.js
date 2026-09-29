@@ -5,6 +5,12 @@ const AMBIENCE_FILES = {
   covent_garden_evening_light_rain: './assets/audio/ambience/covent-garden-evening-001.mp3'
 };
 
+export const SFX_MIX = {
+  flowers_fall: { gain: 1, ambienceDuck: 0.42 }
+};
+
+export const STORY_VOICE_AMBIENCE_DUCK = 0.78;
+
 export function shouldRestartAmbience(previousScene, nextScene) {
   return ambienceForScene(previousScene) !== ambienceForScene(nextScene);
 }
@@ -20,7 +26,7 @@ export class AudioManager {
     this.ambience = null;
     this.ambienceId = null;
     this.ambienceVolume = 0.18;
-    this.activeDucks = new Set();
+    this.activeDucks = new Map();
     this.playedOneShots = new Set();
     this.lastError = null;
   }
@@ -32,13 +38,21 @@ export class AudioManager {
   }
 
   duck(category, amount = 0.58) {
-    this.activeDucks.add(category);
-    if (this.ambience) this.ambience.volume = this.ambienceVolume * amount;
+    this.activeDucks.set(category, amount);
+    this.applyAmbienceDuck();
   }
 
   unduck(category) {
     this.activeDucks.delete(category);
-    if (this.ambience) this.ambience.volume = this.activeDucks.size ? this.ambienceVolume * 0.58 : this.ambienceVolume;
+    this.applyAmbienceDuck();
+  }
+
+  getAmbienceDuckAmount() {
+    return this.activeDucks.size ? Math.min(...this.activeDucks.values()) : 1;
+  }
+
+  applyAmbienceDuck() {
+    if (this.ambience) this.ambience.volume = this.ambienceVolume * this.getAmbienceDuckAmount();
   }
 
   async safePlay(element, kind) {
@@ -71,7 +85,7 @@ export class AudioManager {
     const previousVolume = previous?.volume || this.ambienceVolume;
     const played = await this.safePlay(next, 'ambience');
     if (played && previous) {
-      const targetVolume = this.activeDucks.size ? this.ambienceVolume * 0.58 : this.ambienceVolume;
+      const targetVolume = this.ambienceVolume * this.getAmbienceDuckAmount();
       const startedAt = Date.now();
       const fadeMs = 700;
       const fade = () => {
@@ -87,7 +101,7 @@ export class AudioManager {
       fade();
     } else {
       if (previous) previous.pause();
-      next.volume = this.activeDucks.size ? this.ambienceVolume * 0.58 : this.ambienceVolume;
+      next.volume = this.ambienceVolume * this.getAmbienceDuckAmount();
     }
     if (played) this.onStatus({ type: 'ambience', id });
     return { id, restarted: Boolean(previous), blocked: !played };
@@ -95,18 +109,31 @@ export class AudioManager {
 
   async playOneShot(id, src) {
     if (!isOneShotAvailable(this.playedOneShots, id)) return false;
-    this.playedOneShots.add(id);
     if (!this.enabled) return false;
+    this.playedOneShots.add(id);
     const sound = new Audio(src);
     sound.preload = 'auto';
-    await this.safePlay(sound, 'sfx');
-    return true;
+    sound.volume = SFX_MIX[id]?.gain ?? 1;
+    const mix = SFX_MIX[id];
+    const duckCategory = `sfx:${id}`;
+    let released = false;
+    const release = () => {
+      if (released) return;
+      released = true;
+      if (mix?.ambienceDuck < 1) this.unduck(duckCategory);
+    };
+    if (mix?.ambienceDuck < 1) this.duck(duckCategory, mix.ambienceDuck);
+    sound.addEventListener('ended', release, { once: true });
+    sound.addEventListener('error', release, { once: true });
+    const played = await this.safePlay(sound, 'sfx');
+    if (!played) release();
+    return played;
   }
 
   async playVoice(src) {
     const voice = new Audio(src);
     voice.preload = 'auto';
-    this.duck('voice', 0.62);
+    this.duck('voice', STORY_VOICE_AMBIENCE_DUCK);
     voice.addEventListener('ended', () => this.unduck('voice'), { once: true });
     const played = await this.safePlay(voice, 'voice');
     if (!played) this.unduck('voice');

@@ -26,11 +26,13 @@ Všechny čtyři hlavní hlasy byly v ElevenLabs úspěšně otestovány přes m
 
 ### Henry Higgins
 
-- voice name: `Severin - Powerful & Commanding`
-- Voice ID: `ib8aaABAPZQpTo6hx8Jr`
+- voice name: `Kelvin - Calm Young British Male`
+- Voice ID: `JlptfLxaUpd8pZcw9dKd`
 - model: `eleven_v3`
 - character delivery: refined British; intelligent; self-assured; precise; authoritative; occasionally insensitive; never cartoonishly villainous
 - status: `APPROVED / CANONICAL`
+
+Historical note: `Severin - Powerful & Commanding` (`ib8aaABAPZQpTo6hx8Jr`) was the former Higgins voice; it is legacy / replaced and remains only as historical audit information.
 
 ### Colonel Pickering
 
@@ -87,7 +89,8 @@ The previously considered `Ali` voice is not canonical and must not be listed as
 
 ## Casting evidence
 
-- Higgins / Severin: ElevenLabs test úspěšně proveden přes `eleven_v3`; uživatelsky schváleno.
+- Higgins / Kelvin: human QA approved as the canonical Higgins voice; Voice ID `JlptfLxaUpd8pZcw9dKd`, model `eleven_v3`.
+- Higgins / Severin: historical former voice; legacy / replaced after Kelvin A06 installation.
 - Pickering / George: ElevenLabs test úspěšně proveden přes `eleven_v3`; uživatelsky schváleno.
 - Freddy / Ned: ElevenLabs test úspěšně proveden přes `eleven_v3`; uživatelsky schváleno.
 

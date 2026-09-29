@@ -15,10 +15,13 @@ import {
   recordOpeningTone,
   applyDecision,
   recordChallengeAnswer,
+  ensureChallengeOptionOrders,
   markChallengeEntered,
   markChapterComplete,
   setSoundPreference,
-  isChallengeComplete
+  isChallengeComplete,
+  getSceneAdvanceBlock,
+  canAdvanceScene
 } from './state.js';
 import { AudioManager } from './audio.js';
 
@@ -30,6 +33,7 @@ const teacherContext = document.querySelector('#teacher-context');
 let state = loadState();
 let lastTeacherTrigger = null;
 let previousScene = null;
+const LC01_OPTIONS = ['apology', 'excuse', 'intention to repair'];
 const audioManager = new AudioManager({
   onStatus: (status) => {
     if (status.type === 'blocked') {
@@ -148,7 +152,7 @@ function renderDecision(scene) {
 
 function renderLc01(scene) {
   const challenge = state.challenges.lc01;
-  const options = ['apology', 'excuse', 'intention to repair'];
+  const optionOrder = challenge.optionOrders.shared || LC01_OPTIONS;
   return `<section class="challenge-block" aria-labelledby="lc01-title">
     <div class="challenge-heading"><div><p class="eyebrow">Listening challenge</p><h2 id="lc01-title">${escapeHtml(scene.challenge.title)}</h2></div><span class="challenge-badge">Listen · replay · decide</span></div>
     <p>${escapeHtml(scene.challenge.intro)}</p>
@@ -158,11 +162,11 @@ function renderLc01(scene) {
         <div class="sample-top"><h3 id="lc01-sample-${index}">Sample ${index + 1}</h3>${renderAudioControl({ ...sample, label: `Replay sample ${index + 1}` }, 'challenge')}</div>
         <p class="sample-transcript">“${escapeHtml(sample.transcript)}”</p>
         <p class="sample-prompt">What is the speaker’s main intention?</p>
-        <div class="answer-row">${options.map((option) => `<button class="answer-button ${result?.answer === option ? 'selected' : ''}" type="button" data-action="answer-lc01" data-sample="${sample.id}" data-answer="${option}">${escapeHtml(option)}</button>`).join('')}</div>
+        <div class="answer-row">${optionOrder.map((option) => `<button class="answer-button ${result?.answer === option ? 'selected' : ''}" type="button" data-action="answer-lc01" data-sample="${sample.id}" data-answer="${option}">${escapeHtml(option)}</button>`).join('')}</div>
         ${result ? `<p class="answer-feedback ${result.correct ? 'success' : 'retry'}">${result.correct ? 'Good. You heard the purpose of the line.' : 'Listen again: responsibility, explanation, or a promised action?'}</p>` : ''}
       </article>`;
     }).join('')}</div>
-    ${challenge.completed ? '<p class="challenge-complete">LC01 complete. Replay remains available and does not change your story state.</p><button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the notebook <span aria-hidden="true">→</span></button>' : ''}
+    ${challenge.completed ? `<p class="challenge-complete">LC01 complete. Replay remains available and does not change your story state.</p>${canAdvanceScene(state, scene) ? '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the notebook <span aria-hidden="true">→</span></button>' : ''}` : ''}
   </section>`;
 }
 
@@ -176,11 +180,14 @@ function renderLc02(scene) {
       return `<article class="sample-card ${result?.correct ? 'correct' : ''}" aria-labelledby="lc02-sample-${index}">
         <div class="sample-top"><h3 id="lc02-sample-${index}">Sample ${index + 1}</h3>${renderAudioControl({ ...sample, label: `Replay sample ${index + 1}` }, 'challenge')}</div>
         <p class="sample-transcript">“${escapeHtml(sample.transcript)}”</p>
-        <div class="answer-stack">${sample.options.map(([id, label]) => `<button class="answer-button ${result?.answer === id ? 'selected' : ''}" type="button" data-action="answer-lc02" data-sample="${sample.id}" data-answer="${id}">${escapeHtml(label)}</button>`).join('')}</div>
+        <div class="answer-stack">${(challenge.optionOrders[sample.id] || sample.options.map(([id]) => id)).map((id) => {
+          const [, label] = sample.options.find(([optionId]) => optionId === id) || [];
+          return `<button class="answer-button ${result?.answer === id ? 'selected' : ''}" type="button" data-action="answer-lc02" data-sample="${sample.id}" data-answer="${id}">${escapeHtml(label || id)}</button>`;
+        }).join('')}</div>
         ${result ? `<p class="answer-feedback ${result.correct ? 'success' : 'retry'}">${result.correct ? 'Good. You used context, relationship, and intention.' : 'Listen again and look for the action, relationship, and setting.'}</p>` : ''}
       </article>`;
     }).join('')}</div>
-    ${challenge.completed ? '<p class="challenge-complete">Higgins’ Ear complete. The challenge stores context, not a judgement about the speaker.</p><button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the flower-shop window <span aria-hidden="true">→</span></button>' : ''}
+    ${challenge.completed ? `<p class="challenge-complete">Higgins’ Ear complete. The challenge stores context, not a judgement about the speaker.</p>${canAdvanceScene(state, scene) ? '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the flower-shop window <span aria-hidden="true">→</span></button>' : ''}` : ''}
   </section>`;
 }
 
@@ -245,22 +252,31 @@ function render() {
       state = setScene(state, scene.id);
       save();
     }
+    if (scene.id === 'ch01_s02') {
+      const nextState = ensureChallengeOptionOrders(state, 'LC01', [{ key: 'shared', optionIds: LC01_OPTIONS }]);
+      if (nextState !== state) { state = nextState; save(); }
+    }
+    if (scene.id === 'ch01_s04') {
+      const nextState = ensureChallengeOptionOrders(state, 'LC02', LISTENING.lc02.map((sample) => ({
+        key: sample.id,
+        optionIds: sample.options.map(([id]) => id)
+      })));
+      if (nextState !== state) { state = nextState; save(); }
+    }
     app.innerHTML = renderScene(scene);
     updateHeader();
     document.querySelector('#story-root')?.focus({ preventScroll: true });
     const currentSceneId = scene.id;
     audioManager.setEnabled(state.soundEnabled);
     audioManager.ensureAmbience(currentSceneId);
-    if (scene.sfx) audioManager.playOneShot(scene.sfx.id, scene.sfx.src);
     previousScene = currentSceneId;
   }
 }
 
 function moveNext() {
   const scene = currentScene();
-  if (scene.id === 'ch01_s01' && !state.opening_tone) return announce('Choose a first response before continuing.');
-  if (scene.decision && !state.decisions[scene.decision.id]) return announce('Choose a response to continue.');
-  if (scene.challenge && !isChallengeComplete(state, scene.challenge.id)) return announce('Complete the listening challenge to continue.');
+  const advanceBlock = getSceneAdvanceBlock(state, scene);
+  if (advanceBlock) return announce(advanceBlock);
   const next = SCENES[scene.number];
   if (!next) {
     state = markChapterComplete(state);
@@ -273,6 +289,9 @@ function moveNext() {
   save();
   setLocation(next.id);
   render();
+  if (scene.id === 'ch01_s01' && next.id === 'ch01_s02' && next.sfx) {
+    audioManager.playOneShot(next.sfx.id, next.sfx.src);
+  }
 }
 
 function openStory() {
@@ -327,12 +346,12 @@ document.addEventListener('click', async (event) => {
   }
   if (action === 'answer-lc01') {
     const sample = LISTENING.lc01.find((item) => item.id === target.dataset.sample);
-    state = recordChallengeAnswer(state, 'LC01', target.dataset.sample, target.dataset.answer, sample.answer === target.dataset.answer);
+    state = recordChallengeAnswer(state, 'LC01', target.dataset.sample, target.dataset.answer, sample.answer);
     save(); render();
   }
   if (action === 'answer-lc02') {
     const sample = LISTENING.lc02.find((item) => item.id === target.dataset.sample);
-    state = recordChallengeAnswer(state, 'LC02', target.dataset.sample, target.dataset.answer, sample.answer === target.dataset.answer);
+    state = recordChallengeAnswer(state, 'LC02', target.dataset.sample, target.dataset.answer, sample.answer);
     save(); render();
   }
   if (action === 'play-voice') await audioManager.playVoice(target.dataset.src);

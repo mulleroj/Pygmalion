@@ -1,12 +1,16 @@
 # Chapter I Visual Plan – The Flower Girl
 
-Production plan and approved asset mapping. No new images are generated in this pass.
+Production plan and approved asset mapping. Canonical source images remain locked; the runtime may use transparent presentation derivatives when needed for compositing.
 
 ## Visual direction
 
 Chapter I stays in Eliza’s canonical `Flower Girl` phase. The visual arc is not `ugly → beautiful`; it is `spontaneous and socially constrained → skilled, self-aware, and able to choose`. Eliza remains the same 19–22-year-old person in every image: young oval/soft heart-shaped face, lively eyes, light European complexion, dark-blond to light-brown slightly wavy hair, slim young build, and expressive features.
 
 Her clothing is practical, worn Edwardian layering in muted earth colours. She must not look like a dirty poverty caricature or a helpless victim. Do not copy a film likeness, iconic *My Fair Lady* costume, or specific film staging.
+
+## Runtime compositing treatment
+
+The approved WebP sources remain the identity authority. Chapter I runtime presentation uses non-canonical transparent PNG derivatives for character and interaction overlays, removing only the neutral studio/scene rectangle. Eliza’s carried basket remains part of her canonical cutouts; the standalone basket prop is retained as a canonical source/reference but is not rendered as a second photo tile. Runtime CSS adds a restrained contact shadow, atmospheric color blend, and explicit foreground layering over the canonical rain/shop plates.
 
 ## Expression and character assets
 

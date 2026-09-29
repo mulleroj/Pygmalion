@@ -57,19 +57,21 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .story-page { width: min(1280px, calc(100% - 2rem)); margin: 1.5rem auto 4rem; }
 .story-progress { display: flex; justify-content: space-between; gap: 1rem; margin: 0 auto .8rem; width: min(1120px, 100%); color: var(--muted); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
 .storybook-spread { display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, .96fr); background: var(--paper); box-shadow: var(--shadow); overflow: hidden; }
-.storybook-art { position: relative; min-height: 650px; margin: 0; overflow: hidden; background: #b4c2c0; }
+.storybook-art { position: relative; align-self: start; min-height: 650px; height: min(78vh, 760px); margin: 0; overflow: hidden; background: #b4c2c0; isolation: isolate; }
 .art-background, .art-plate { position: absolute; inset: 0; }
 .art-background img, .art-plate img { width: 100%; height: 100%; display: block; object-fit: cover; }
-.art-background { filter: saturate(.88); }
-.art-plate { opacity: .78; mix-blend-mode: multiply; }
+.art-background { z-index: 0; filter: saturate(.82) contrast(1.02) brightness(.96); }
+.art-plate { z-index: 1; opacity: .58; mix-blend-mode: multiply; filter: saturate(.76) contrast(.96); }
 .art-layer { position: absolute; inset: 0; pointer-events: none; }
-.art-eliza { display: flex; align-items: flex-end; justify-content: center; padding: 7% 8% 0; }
-.art-eliza img { max-width: min(80%, 480px); max-height: 82%; width: auto; height: auto; object-fit: contain; filter: drop-shadow(0 16px 12px rgba(42, 31, 37, .22)); }
-.art-support { display: flex; align-items: flex-end; justify-content: space-around; padding: 7% 1% 2%; opacity: .9; }
-.supporting-character { align-self: flex-end; max-width: 28%; max-height: 47%; object-fit: contain; filter: drop-shadow(0 12px 9px rgba(42, 31, 37, .18)); }
-.art-props { display: flex; align-items: flex-end; justify-content: space-between; padding: 0 6% 8%; }
-.scene-prop { max-width: 25%; max-height: 24%; object-fit: contain; filter: drop-shadow(0 9px 7px rgba(42, 31, 37, .2)); }
-.storybook-art figcaption { position: absolute; right: 1rem; bottom: 1rem; padding: .35rem .6rem; color: rgba(255, 250, 239, .9); background: rgba(39, 35, 40, .48); border-radius: 3px; font-size: .7rem; letter-spacing: .06em; }
+.art-support { z-index: 2; display: flex; align-items: flex-end; justify-content: space-around; gap: 2%; padding: 7% 3% 3%; opacity: .88; }
+.art-eliza { z-index: 3; display: flex; align-items: flex-end; justify-content: center; padding: 4% 8% 0; }
+.art-eliza::before { content: ''; position: absolute; left: 24%; bottom: 3.8%; width: 52%; height: 6%; border-radius: 50%; background: rgba(31, 28, 28, .28); filter: blur(15px); opacity: .72; }
+.art-eliza img { position: relative; z-index: 1; max-width: min(78%, 520px); max-height: 90%; width: auto; height: auto; object-fit: contain; filter: saturate(.9) contrast(.97) sepia(.04) drop-shadow(0 13px 11px rgba(42, 31, 37, .24)); }
+.supporting-character { align-self: flex-end; max-width: 26%; max-height: 52%; object-fit: contain; filter: saturate(.88) contrast(.98) sepia(.03) drop-shadow(0 10px 8px rgba(42, 31, 37, .2)); }
+.art-props { z-index: 4; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 6% 7%; }
+.scene-prop { max-width: 34%; max-height: 25%; object-fit: contain; opacity: .92; filter: saturate(.86) contrast(.98) sepia(.03) drop-shadow(0 8px 8px rgba(42, 31, 37, .24)); }
+.storybook-art::after { content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none; background: linear-gradient(145deg, rgba(225, 231, 222, .08), rgba(35, 35, 42, .17)); mix-blend-mode: soft-light; }
+.storybook-art figcaption { position: absolute; right: 1rem; bottom: 1rem; z-index: 6; padding: .35rem .6rem; color: rgba(255, 250, 239, .9); background: rgba(39, 35, 40, .48); border-radius: 3px; font-size: .7rem; letter-spacing: .06em; }
 .story-copy { padding: clamp(1.5rem, 4vw, 3.4rem); min-width: 0; }
 .story-copy h1 { margin: 0 0 1.4rem; color: var(--rose-dark); font-size: clamp(2.1rem, 4vw, 3.5rem); line-height: .98; letter-spacing: -.035em; }
 .narrative p { margin: 0 0 1rem; color: #4b4248; line-height: 1.75; }
@@ -142,8 +144,8 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .cover-page { grid-template-columns: 1fr; }
   .cover-art { min-height: 430px; }
   .storybook-spread { grid-template-columns: 1fr; }
-  .storybook-art { min-height: min(75vw, 560px); }
-  .art-plate { opacity: .62; }
+  .storybook-art { min-height: min(75vw, 560px); height: min(75vw, 560px); }
+  .art-plate { opacity: .46; }
   .art-eliza img { max-height: 88%; }
   .story-copy { padding: clamp(1.25rem, 5vw, 2.4rem); }
 }
@@ -160,7 +162,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .cover-copy h1 { font-size: 3.5rem; }
   .cover-subtitle { font-size: 1.2rem; }
   .story-progress { font-size: .62rem; }
-  .storybook-art { min-height: 390px; }
+  .storybook-art { min-height: 390px; height: 390px; }
   .storybook-art figcaption { right: .5rem; bottom: .5rem; font-size: .6rem; }
   .dialogue-line { grid-template-columns: 1fr; gap: .2rem; padding: .65rem 0; }
   .choice-button { grid-template-columns: 1fr; gap: .25rem; }

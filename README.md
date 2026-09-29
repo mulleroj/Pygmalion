@@ -52,4 +52,4 @@ python -m http.server 4173
 
 Poté otevři `http://localhost:4173/`. Testy se spouštějí příkazem `npm test`.
 
-Audio status všech 16 canonical souborů zůstává `HUMAN QA PENDING`; technická existence souborů je kontrolována automaticky. Produkční deploy není součástí tohoto checkpointu.
+Audio status: A04, A05, and A06 are `APPROVED / CANONICAL`; remaining unreviewed audio stays `HUMAN QA PENDING`. Technická existence souborů je kontrolována automaticky. Produkční deploy není součástí tohoto checkpointu.

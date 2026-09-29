@@ -17,8 +17,8 @@ export function createInitialState() {
     applied_events: [],
     decisions: {},
     challenges: {
-      lc01: { answers: {}, completed: false },
-      lc02: { answers: {}, completed: false }
+      lc01: { answers: {}, completed: false, optionOrders: {} },
+      lc02: { answers: {}, completed: false, optionOrders: {} }
     },
     soundEnabled: true
   };
@@ -109,11 +109,11 @@ export function applyDecision(state, decisionId, optionId) {
   return next;
 }
 
-export function recordChallengeAnswer(state, challengeId, sampleId, answer, correct) {
+export function recordChallengeAnswer(state, challengeId, sampleId, answer, canonicalAnswerId) {
   const key = challengeId.toLowerCase();
   if (!state.challenges[key]) return state;
   const challenge = state.challenges[key];
-  const answers = { ...challenge.answers, [sampleId]: { answer, correct: Boolean(correct) } };
+  const answers = { ...challenge.answers, [sampleId]: { answer, correct: isChallengeAnswerCorrect(answer, canonicalAnswerId) } };
   const sampleCount = key === 'lc01' ? 3 : 3;
   const completed = Object.values(answers).filter((item) => item.correct).length >= sampleCount;
   const next = {
@@ -124,6 +124,52 @@ export function recordChallengeAnswer(state, challengeId, sampleId, answer, corr
   return next;
 }
 
+export function isChallengeAnswerCorrect(answer, canonicalAnswerId) {
+  return typeof answer === 'string' && typeof canonicalAnswerId === 'string' && answer === canonicalAnswerId;
+}
+
+function shuffleOptionIds(optionIds, random = Math.random) {
+  const shuffled = [...optionIds];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomValue = Math.max(0, Math.min(0.999999999, Number(random()) || 0));
+    const swapIndex = Math.floor(randomValue * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
+function isExactOptionPermutation(order, canonicalOptionIds) {
+  if (!Array.isArray(order) || order.length !== canonicalOptionIds.length) return false;
+  const canonical = new Set(canonicalOptionIds);
+  return new Set(order).size === canonicalOptionIds.length && order.every((optionId) => canonical.has(optionId));
+}
+
+export function ensureChallengeOptionOrders(state, challengeId, optionGroups, random = Math.random) {
+  const key = challengeId.toLowerCase();
+  const challenge = state.challenges[key];
+  if (!challenge || !Array.isArray(optionGroups)) return state;
+
+  const currentOrders = challenge.optionOrders && typeof challenge.optionOrders === 'object' ? challenge.optionOrders : {};
+  const optionOrders = { ...currentOrders };
+  let changed = false;
+
+  for (const group of optionGroups) {
+    if (!group?.key || !Array.isArray(group.optionIds)) continue;
+    if (isExactOptionPermutation(optionOrders[group.key], group.optionIds)) continue;
+    optionOrders[group.key] = shuffleOptionIds(group.optionIds, random);
+    changed = true;
+  }
+
+  if (!changed) return state;
+  return {
+    ...state,
+    challenges: {
+      ...state.challenges,
+      [key]: { ...challenge, optionOrders }
+    }
+  };
+}
+
 export function markChallengeEntered(state, challengeId) {
   if (challengeId !== 'LC02' || state.ear_test_intro_seen) return state;
   return { ...state, ear_test_intro_seen: true };
@@ -131,6 +177,17 @@ export function markChallengeEntered(state, challengeId) {
 
 export function isChallengeComplete(state, challengeId) {
   return Boolean(state.challenges[challengeId.toLowerCase()]?.completed);
+}
+
+export function getSceneAdvanceBlock(state, scene) {
+  if (scene.id === 'ch01_s01' && !state.opening_tone) return 'Choose a first response before continuing.';
+  if (scene.decision && !state.decisions[scene.decision.id]) return 'Choose a response to continue.';
+  if (scene.challenge && !isChallengeComplete(state, scene.challenge.id)) return 'Complete the listening challenge to continue.';
+  return '';
+}
+
+export function canAdvanceScene(state, scene) {
+  return !getSceneAdvanceBlock(state, scene);
 }
 
 export function markChapterComplete(state) {

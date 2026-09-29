@@ -38,9 +38,9 @@ The initial numeric values are an engine concern and are not specified by this c
 
 | Option ID | Player-facing option | Saved local data |
 | --- | --- | --- |
-| `d01_ask_help` | “Could you help me gather them, please? The clean ones go in the basket.” | `freddy_first_impression = "asks_for_repair"` |
-| `d01_name_damage` | “You knocked them down. Look at the stems. I cannot sell them like this.” | `freddy_first_impression = "direct_boundary"` |
-| `d01_accept_and_work` | “All right. You are sorry. I will pick them up and get back to work.” | `freddy_first_impression = "practical_recovery"` |
+| `d01_ask_help` | “Give us a hand, will you? Clean ones go back in the basket.” | `freddy_first_impression = "asks_for_repair"` |
+| `d01_name_damage` | “You knocked 'em down. Look at the stems. I can't sell 'em like that.” | `freddy_first_impression = "direct_boundary"` |
+| `d01_accept_and_work` | “All right, you're sorry. I'll get 'em up and get back to work.” | `freddy_first_impression = "practical_recovery"` |
 
 ### Event and development signal
 
@@ -67,9 +67,9 @@ The exact option does not return as a new decision in Chapter I. `freddy_first_i
 
 | Option ID | Player-facing option | Saved local data |
 | --- | --- | --- |
-| `d02_direct_question` | “Why are you writing down the way I speak?” | `higgins_first_impression = "challenged_directly"` |
-| `d02_request_explanation` | “What are you trying to learn from me? Tell me plainly.” | `higgins_first_impression = "seeks_accountability"` |
-| `d02_reject_and_return` | “Write what you like. I have flowers to sell, and I am going back to them.” | `higgins_first_impression = "refused_objectification"` |
+| `d02_direct_question` | “Why d'you want to write down the way I talk?” | `higgins_first_impression = "challenged_directly"` |
+| `d02_request_explanation` | “What d'you want to learn off me? Tell me straight.” | `higgins_first_impression = "seeks_accountability"` |
+| `d02_reject_and_return` | “Write what you like. I've got flowers to sell, and I'm getting back to 'em.” | `higgins_first_impression = "refused_objectification"` |
 
 ### Event and development signal
 
@@ -96,10 +96,10 @@ The exact option does not return as a new decision in Chapter I. `higgins_first_
 
 | Option ID | Player-facing option | Saved long-term data |
 | --- | --- | --- |
-| `opportunity` | “I want language that helps me reach better work and more chances.” | `origin_motivation = "opportunity"` |
-| `respect` | “I want people to listen to me before they decide what I am.” | `origin_motivation = "respect"` |
-| `learning` | “I want to learn how speech works and choose what I use.” | `origin_motivation = "learning"` |
-| `independence` | “I want more ways to speak so no one else can choose my future for me.” | `origin_motivation = "independence"` |
+| `opportunity` | “I want to speak in a way that gets me better work and a proper chance.” | `origin_motivation = "opportunity"` |
+| `respect` | “I want 'em to hear me before they decide what I am.” | `origin_motivation = "respect"` |
+| `learning` | “I want to learn how they talk, then choose what suits me.” | `origin_motivation = "learning"` |
+| `independence` | “I want more ways to speak so nobody gets to choose my future but me.” | `origin_motivation = "independence"` |
 
 ### Event and development signal
 
@@ -123,6 +123,7 @@ Yes. `origin_motivation` returns in Chapter VI as historical context. A later `c
 - Stable challenge ID: `ch01_lc01`.
 - Stores completion/attempt metadata only if the engine needs it; answer selection does not change a development signal.
 - Correct categories: `apology`, `excuse`, `intention_to_repair`.
+- The shared category presentation order is shuffled once on first entry, then persisted by stable option ID for replay, retry, rerender, and refresh.
 - Retry and replay are read-only with respect to `Pronunciation`, `Confidence`, and `Independence`.
 
 ### LC02
@@ -139,6 +140,7 @@ Yes. `origin_motivation` returns in Chapter VI as historical context. A later `c
 | `lc02_sample_03` | `lc02_s03_familiar_instruction`, `lc02_s03_worker_request`, `lc02_s03_formal_question` | `lc02_s03_formal_question` |
 
 - Each sample has exactly one best answer and two contextual distractors.
+- Each sample's presentation order is shuffled once on first entry and persisted by stable option ID; validation compares the selected ID with the canonical answer ID, never with an option position.
 - A retry after a wrong answer may complete the challenge, but repeated success, replay, or transcript opening changes no development signal.
 - Incorrect answers create no morality penalty and no negative signal.
 

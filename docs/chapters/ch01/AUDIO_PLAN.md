@@ -1,6 +1,6 @@
 # Chapter I Audio Plan – The Flower Girl
 
-Supporting audio plan derived from the canonical player-facing script. The Chapter I production set is generated, local, and technically verified; human listening QA remains pending.
+Supporting audio plan derived from the canonical player-facing script. The Chapter I production set is generated, local, and technically verified; human listening approval is recorded per asset below.
 
 ## Book-first contract
 
@@ -30,14 +30,15 @@ These IDs are canonical design identifiers and map to the local runtime files do
 
 - Eliza uses `Eliza - young_cockney`, voice ID `124kaYCknTDsnwUFdWl9`, model `eleven_v3`.
 - Eliza BEFORE delivery: young, lively, defensive, quick, with strong Cockney delivery.
-- Higgins uses `Severin - Powerful & Commanding`, voice ID `ib8aaABAPZQpTo6hx8Jr`, model `eleven_v3`.
+- Higgins canonical voice is `Kelvin - Calm Young British Male`, voice ID `JlptfLxaUpd8pZcw9dKd`, model `eleven_v3`.
+- A05 and A06 now use the canonical Kelvin Higgins voice; A06 human listening status remains `HUMAN QA PENDING`.
 - Pickering uses `George - Warm, Captivating Storyteller`, voice ID `JBFqnCBsd6RMkjVDRZzb`, model `eleven_v3`.
 - Freddy uses `Ned - Casual, Young British Male, General Southern Accent`, voice ID `fNYuJl2dBlX9V7NxmjnV`, model `eleven_v3`.
 - LC02 production casting is assigned: `LC02-01` uses voice ID `vBRU4ztAu1MfP8arDoB3` for a polite work request; `LC02-02` uses `Hugo` / `WAppqUXeqDqXjNTaQxG9` for an informal market instruction; `LC02-03` uses `Ruby` / `Q6HPFg7bazU61NeyrvBp` for a formal information request. The previously considered Ali is not canonical and is not a production voice.
 - Every pedagogically important audio item has a visible transcript and replay.
 - Audio moment and audio file are not one-to-one. LC01 has three files and LC02 has three files.
 - Technical status for every item below is `GENERATED / LOCAL / TECHNICALLY VERIFIED`.
-- Human listening status for every item below is `HUMAN QA PENDING`.
+- Human listening status is tracked per item: A04, A05, and A06 are `HUMAN QA APPROVED`; the remaining unreviewed items remain `HUMAN QA PENDING`.
 
 ## VOICE and story audio
 
@@ -66,13 +67,16 @@ These IDs are canonical design identifiers and map to the local runtime files do
 - Category: `VOICE`
 - Audio role: `OPTIONAL STORY VOICE`
 - Speaker: Eliza
-- Text/transcript: “Flowers, sir? Fresh flowers for a wet day! Come on, don't hide behind the rain. A flower makes a room look kinder. Two flowers for a penny. I'll choose the brighter ones for you.”
+- Text/transcript: “Flowers, sir? Fresh ones! Ain't no sense standin' there in the rain. Go on. A flower'll make the room look kinder. Two for a penny, they are. I'll pick you the bright ones.”
 - Delivery direction: Quick, bright, practical, and alert. Sales energy, not a comic caricature.
 - Voice ID: `124kaYCknTDsnwUFdWl9` (`Eliza - young_cockney`); model `eleven_v3`
 - Expected path: `assets/audio/characters/eliza/eliza_ch01_scene01_001.mp3`
 - Replay required: yes
 - Transcript required: yes
 - Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Verified duration: `~11.26 s`
+- Verified file size: `197020 B`
+- Content verification: clean MP3 containing canonical Eliza dialogue only; no spoken direction
 - Human listening status: `HUMAN QA PENDING`
 
 ### A03 – Freddy’s apology
@@ -99,13 +103,17 @@ These IDs are canonical design identifiers and map to the local runtime files do
 - Audio role: `OPTIONAL STORY VOICE`
 - Speaker: Eliza
 - Text/transcript: “I ain't done nothing wrong. I'm a good girl, I am.”
-- Delivery direction: Canonical BEFORE moment: young, lively, defensive, quick, emotionally exposed but not helpless. Preserve wording exactly.
+- Delivery direction: Canonical BEFORE moment: young, lively, defensive, quick, with clear emotional vulnerability conveyed through performance. The TTS prompt contains dialogue only; preserve wording exactly.
 - Voice ID: `124kaYCknTDsnwUFdWl9` (`Eliza - young_cockney`); model `eleven_v3`
 - Expected path: `assets/audio/characters/eliza/eliza_ch01_scene03_001.mp3`
 - Replay required: yes
 - Transcript required: yes
 - Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
-- Human listening status: `HUMAN QA PENDING`
+- Verified replacement: `CLEAN REPLACEMENT INSTALLED — STT VERIFIED; dialogue only; no spoken direction or extra words`
+- Verified duration: `~2.72 s`
+- Verified file size: `61601 B`
+- Canonical status: `APPROVED / CANONICAL`
+- Human listening status: `HUMAN QA APPROVED`
 
 ### A05 – Higgins observation
 
@@ -116,12 +124,16 @@ These IDs are canonical design identifiers and map to the local runtime files do
 - Speaker: Higgins
 - Text/transcript: “Your speech carries a local pattern. I can hear where a person has learned to live. I can hear several things at once. It's interesting.” / “Perhaps I could. That's fair. I'm Henry Higgins.”
 - Delivery direction: Fascinated and self-assured, precise, occasionally insensitive; never a cartoon villain.
-- Voice ID: `ib8aaABAPZQpTo6hx8Jr` (`Severin - Powerful & Commanding`); model `eleven_v3`
+- Voice ID: `JlptfLxaUpd8pZcw9dKd` (`Kelvin - Calm Young British Male`); model `eleven_v3`
 - Expected path: `assets/audio/characters/higgins/higgins_ch01_scene03_001.mp3`
 - Replay required: yes
 - Transcript required: yes
 - Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
-- Human listening status: `HUMAN QA PENDING`
+- Duration / size: `~12.00 s` / `209977 B`
+- Canonical status: `APPROVED / CANONICAL`
+- Human listening status: `HUMAN QA APPROVED`
+
+The approved Kelvin QA bytes were installed into the canonical A05 and A06 paths. Temporary A/B assets were removed after hash verification.
 
 ### A06 – Pickering and Higgins response
 
@@ -132,12 +144,14 @@ These IDs are canonical design identifiers and map to the local runtime files do
 - Speaker: Higgins
 - Text/transcript: “Listen to who is speaking, where they are, and what they want. A voice gives clues, but it doesn't tell you everything. Yes. That's why you ask.”
 - Delivery direction: Demonstrative and thoughtful; Higgins is beginning to acknowledge the limit of inference.
-- Voice ID: `ib8aaABAPZQpTo6hx8Jr` (`Severin - Powerful & Commanding`); model `eleven_v3`
+- Voice ID: `JlptfLxaUpd8pZcw9dKd` (`Kelvin - Calm Young British Male`); model `eleven_v3`
 - Expected path: `assets/audio/characters/higgins/higgins_ch01_scene04_001.mp3`
+- Verified duration: `~9.92 s` (measured 9.9788 s)
 - Replay required: yes
 - Transcript required: yes
 - Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
-- Human listening status: `HUMAN QA PENDING`
+- Canonical status: `APPROVED / CANONICAL`
+- Human listening status: `HUMAN QA APPROVED`
 
 ### A07 – Pickering reaction
 
@@ -162,13 +176,16 @@ These IDs are canonical design identifiers and map to the local runtime files do
 - Category: `VOICE`
 - Audio role: `OPTIONAL STORY VOICE`
 - Speaker: Eliza
-- Text/transcript: “People hear the way I speak before they see what I can do. Maybe speaking another way could open a door. It wouldn't make me worth more. It would give me another way to be heard.”
+- Text/transcript: “People hear how I talk before they see what I can do. Maybe if I could talk another way, it'd open a door or two. Wouldn't make me worth more. Just give me another way to make 'em listen.”
 - Delivery direction: Thoughtful but still grounded and practical; no sudden “transformed” voice.
 - Voice ID: `124kaYCknTDsnwUFdWl9` (`Eliza - young_cockney`); model `eleven_v3`
 - Expected path: `assets/audio/characters/eliza/eliza_ch01_scene05_001.mp3`
 - Replay required: yes
 - Transcript required: yes
 - Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Verified duration: `~11.83 s`
+- Verified file size: `206215 B`
+- Content verification: clean MP3 containing canonical Eliza dialogue only; no spoken direction
 - Human listening status: `HUMAN QA PENDING`
 
 ## LC01 listening files
@@ -290,6 +307,7 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Audio role: `ATMOSPHERE / SFX`
 - SFX ID: `flowers_fall`
 - Layering: one-shot over the current `covent_garden_rain_market` ambience; do not restart the ambience
+- Runtime mix: source gain `1.0` (0 dB); ambience ducks to `0.42` of its baseline (approximately -7.5 dB) for the one-shot, then restores when it ends.
 - Speaker: none
 - Text/transcript: No speech. Basket bump, stems and flowers hitting wet paving, brief crowd reaction.
 - Delivery direction: Short and readable; do not make Freddy’s accident slapstick.
@@ -324,9 +342,9 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Eliza files using the canonical voice: **3** (`A02`, `A04`, `A08`; any future alternate takes must keep the same voice ID).
 - Story voice files: **7**, all `OPTIONAL STORY VOICE`.
 - Listening challenge files: **6**, `LC01` and `LC02`.
-- Higgins files: **2**, canonical voice ID `ib8aaABAPZQpTo6hx8Jr`.
+- Higgins files: **2**, both canonical Kelvin (`JlptfLxaUpd8pZcw9dKd`); A05 and A06 are `HUMAN QA APPROVED` with continuity confirmed.
 - Pickering files: **1**, canonical voice ID `JBFqnCBsd6RMkjVDRZzb`.
 - Freddy files: **4** including LC01, canonical voice ID `fNYuJl2dBlX9V7NxmjnV`.
 - Supporting listening voices: **3**, production-assigned for LC02 (`vBRU4ztAu1MfP8arDoB3`, `WAppqUXeqDqXjNTaQxG9`, `Q6HPFg7bazU61NeyrvBp`).
 - SFX/ambience files: **3** (`A01`, `A15`, `A16`), no speaker casting.
-- No audio is marked `APPROVED` for delivery until human listening review confirms recording, transcript, clarity, replay, local ownership, and scene fit. The current human listening status remains `HUMAN QA PENDING` for all 16 files.
+- Audio approval is recorded per asset after human listening review confirms recording, transcript, clarity, replay, local ownership, and scene fit. A04, A05, and A06 are approved; the remaining assets retain their listed statuses.

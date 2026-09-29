@@ -22,7 +22,25 @@ Runtime assets use WebP. PNG files are preserved as source mastery. The canonica
 | `LOC-FLOWER-SHOP-WINDOW-DUSK` | `flower-shop-window-dusk.webp` | location background | `CANONICAL` | `assets/images/locations/ch01/flower-shop-window-dusk.webp` | `assets/images/locations/ch01/source/flower-shop-window-dusk.png` | `ch01_s05` | Warm, non-luxury flower-shop window at dusk with a readable door area and grounded Covent Garden continuity. | `APPROVED` |
 | `PROP-FLOWER-BASKET-FG` | `flower-basket.webp` | prop / foreground detail | `CANONICAL` | `assets/images/props/ch01/flower-basket.webp` | `assets/images/props/ch01/source/flower-basket.png` | `ch01_s01`–`ch01_s02` | Practical woven flower basket suitable for carrying sellable market flowers. | `APPROVED` |
 | `PROP-FALLEN-FLOWERS-WET` | `fallen-flowers-wet.webp` | prop / interaction detail | `CANONICAL` | `assets/images/props/ch01/fallen-flowers-wet.webp` | `assets/images/props/ch01/source/fallen-flowers-wet.png` | `ch01_s02` | A few damaged stems and petals on wet paving after the basket accident. | `APPROVED` |
-| `PROP-HIGGINS-NOTEBOOK` | `higgins-notebook.webp` | prop / interaction detail | `CANONICAL` | `assets/images/props/ch01/higgins-notebook.webp` | `assets/images/props/ch01/source/higgins-notebook.png` | `ch01_s03`–`ch01_s04` | Research notebook with observation marks about speech, not a magical diagnostic or intelligence score. | `APPROVED` |
+| `PROP-HIGGINS-NOTEBOOK` | `higgins-notebook.webp` | prop / interaction detail | `CANONICAL` | `assets/images/props/ch01/higgins-notebook.webp` | `assets/images/props/ch01/source/higgins-notebook.png` | `ch01_s03`; continuity reference for `ch01_s04` | Research notebook with observation marks about speech, not a magical diagnostic or intelligence score. In `ch01_s04`, Higgins' integrated writing motif is retained without rendering this asset as a standalone inset. | `APPROVED` |
+
+## Derived runtime presentation variants
+
+These PNGs are non-canonical presentation derivatives. Their corresponding approved WebP source assets remain unchanged and remain the identity/continuity authority. The derivatives remove only the neutral studio or scene rectangle so the runtime can layer subjects into the canonical location plates.
+
+| Derived asset | Source asset | Runtime use | Treatment |
+|---|---|---|---|
+| `assets/images/characters/eliza/runtime/eliza_flower-girl_alert_cutout.png` | `ELZ-FG-ALERT` | `ch01_s01` | Transparent cutout; integrated basket retained |
+| `assets/images/characters/eliza/runtime/eliza_flower-girl_defiant_cutout.png` | `ELZ-FG-DEFIANT` | `ch01_s02` | Transparent cutout; integrated basket retained |
+| `assets/images/characters/eliza/runtime/eliza_flower-girl_guarded_cutout.png` | `ELZ-FG-GUARDED` | `ch01_s03` | Transparent cutout |
+| `assets/images/characters/eliza/runtime/eliza_flower-girl_listening_cutout.png` | `ELZ-FG-LISTENING` | `ch01_s04` | Transparent cutout |
+| `assets/images/characters/eliza/runtime/eliza_flower-girl_thoughtful_cutout.png` | `ELZ-FG-THOUGHTFUL` | `ch01_s05` | Transparent cutout |
+| `assets/images/characters/freddy/runtime/freddy_master_cutout.png` | `CHAR-FREDDY-MASTER` | `ch01_s02`–`ch01_s03` | Transparent cutout |
+| `assets/images/characters/higgins/runtime/higgins_master_cutout.png` | `CHAR-HIGGINS-MASTER` | `ch01_s03`–`ch01_s04` | Transparent cutout |
+| `assets/images/characters/pickering/runtime/pickering_master_cutout.png` | `CHAR-PICKERING-MASTER` | `ch01_s03`–`ch01_s04` | Transparent cutout |
+| `assets/images/props/ch01/runtime/fallen-flowers-wet_cutout.png` | `PROP-FALLEN-FLOWERS-WET` | `ch01_s02` | Transparent object cutout; wet detail retained |
+
+The standalone `flower-basket.webp` remains canonical but is no longer rendered as a second photo tile in Chapter I; the basket carried by Eliza is already present in each canonical Eliza cutout.
 
 ## Alternate and reference location candidates
 

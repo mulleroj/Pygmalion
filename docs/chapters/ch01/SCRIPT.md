@@ -18,19 +18,19 @@ Canonical player-facing script for the Chapter I vertical slice.
 
 Rain turns the paving stones bright. Under the portico, people wait, hurry, and try not to get wet. Eliza keeps her basket close and watches every possible customer.
 
-**ELIZA:** Flowers, sir? Fresh flowers for a wet day!
+**ELIZA:** Flowers, sir? Fresh ones! Ain't no sense standin' there in the rain.
 
-**ELIZA:** Come on, don't hide behind the rain. A flower makes a room look kinder.
+**ELIZA:** Go on. A flower'll make the room look kinder.
 
-**ELIZA:** Two flowers for a penny. I'll choose the brighter ones for you.
+**ELIZA:** Two for a penny, they are. I'll pick you the bright ones.
 
 **PASSER-BY:** Not today, girl. I have no time.
 
-**ELIZA:** Then take one small flower. It won't slow you down.
+**ELIZA:** Then have one little flower. Won't slow you down.
 
 **PASSER-BY:** You're quick with an answer.
 
-**ELIZA:** I have to be. The rain doesn't wait, and neither do customers.
+**ELIZA:** Got to be quick, ain't I? Rain don't wait, and neither do customers.
 
 ### Opening tone response
 
@@ -38,9 +38,9 @@ This is a local scene response, not a major decision. No development signal chan
 
 **PROMPT:** A customer looks away. What does Eliza say?
 
-1. **Bright:** “A flower for your coat, sir? It will make the walk less grey.”
-2. **Practical:** “One penny, one flower. You can decide quickly.”
-3. **Defensive:** “You looked at them, so do not pretend they are not worth seeing.”
+1. **Bright:** “A flower for your coat, sir? Make the walk less grey, it will.”
+2. **Practical:** “Penny a flower. Quick as that.”
+3. **Defensive:** “You looked at 'em. Don't go saying they ain't worth seeing.”
 
 **CONSEQUENCE:** The customer reacts to the chosen tone, but Eliza remains in control of her pitch. The local trace `opening_tone` is recorded only for scene flavour.
 
@@ -58,19 +58,19 @@ Freddy stops too late. Flowers fall across the wet stones. A few petals stick to
 
 **FREDDY:** Oh! I'm sorry. I didn't see the basket.
 
-**ELIZA:** The rain won't pick them up for me.
+**ELIZA:** The rain ain't gonna pick 'em up for me.
 
 **FREDDY:** I can pay for the damaged ones.
 
-**ELIZA:** Then look before you move next time.
+**ELIZA:** Then mind where you're going next time.
 
 ### D01 – Eliza’s response
 
 **PROMPT:** Freddy is waiting. Choose Eliza’s next reply.
 
-1. `d01_ask_help` — **Ask for help:** “Could you help me gather them? The clean ones go in the basket.”
-2. `d01_name_damage` — **Name the damage:** “You knocked them down. Look at the stems. I can't sell them like this.”
-3. `d01_accept_and_work` — **Accept the apology and return to work:** “All right. You're sorry. I'll pick them up and get back to work.”
+1. `d01_ask_help` — **Ask for help:** “Give us a hand, will you? Clean ones go back in the basket.”
+2. `d01_name_damage` — **Name the damage:** “You knocked 'em down. Look at the stems. I can't sell 'em like that.”
+3. `d01_accept_and_work` — **Accept the apology and return to work:** “All right, you're sorry. I'll get 'em up and get back to work.”
 
 No option is correct or best. Each is a plausible Eliza response under pressure.
 
@@ -126,11 +126,11 @@ Higgins closes his notebook halfway, as if that makes the watching less obvious.
 
 **HIGGINS:** Your speech carries a local pattern. I can hear where a person has learned to live.
 
-**ELIZA:** Can you hear when someone's trying to sell flowers in the rain?
+**ELIZA:** Can you hear when someone's trying to sell flowers in the rain, can you?
 
 **HIGGINS:** I can hear several things at once. It's interesting.
 
-**ELIZA:** I'm not a pattern on your page.
+**ELIZA:** I ain't no pattern on your page.
 
 **HIGGINS:** No. But your voice tells me something. That's why I wrote it down.
 
@@ -154,9 +154,9 @@ Pickering arrives beneath the portico.
 
 **PROMPT:** Higgins has written about your speech without asking. What does Eliza do?
 
-1. `d02_direct_question` — **Ask directly:** “Why are you writing down the way I speak?”
-2. `d02_request_explanation` — **Request an explanation:** “What are you trying to learn from me? Tell me plainly.”
-3. `d02_reject_and_return` — **Reject the observation:** “Write what you like. I have flowers to sell, and I am going back to them.”
+1. `d02_direct_question` — **Ask directly:** “Why d'you want to write down the way I talk?”
+2. `d02_request_explanation` — **Request an explanation:** “What d'you want to learn off me? Tell me straight.”
+3. `d02_reject_and_return` — **Reject the observation:** “Write what you like. I've got flowers to sell, and I'm getting back to 'em.”
 
 No option is correct or best. Each protects a different immediate need: a direct answer, a clear explanation, or control of Eliza’s time.
 
@@ -252,7 +252,7 @@ If the player identifies the intended situation in all three samples, LC02 store
 
 **PICKERING:** What do you think, Eliza?
 
-**ELIZA:** I think people hear what they expect to hear.
+**ELIZA:** I reckon people hear what they expect to hear.
 
 **HIGGINS:** Perhaps. That's worth writing down.
 
@@ -268,24 +268,24 @@ The rain thins. Across the street, warm light appears in a flower-shop window.
 
 The rain has softened to a mist. Eliza stands before a flower-shop window. Inside, the flowers are arranged for people who have time to choose. She studies the door, the counter, and the language written on the small sign.
 
-**ELIZA:** Look at that window. The flowers aren't hiding from anyone.
+**ELIZA:** Look at that window. Them flowers ain't hiding from nobody.
 
-**ELIZA:** People hear the way I speak before they see what I can do.
+**ELIZA:** People hear how I talk before they see what I can do.
 
-**ELIZA:** Maybe speaking another way could open a door. It wouldn't make me worth more. It would give me another way to be heard.
+**ELIZA:** Maybe if I could talk another way, it'd open a door or two. Wouldn't make me worth more. Just give me another way to make 'em listen.
 
 **FREDDY:** What would you do if the door opened?
 
-**ELIZA:** I'd decide for myself what to say when I walked through it.
+**ELIZA:** I'd make my own mind up what to say before I walked through.
 
 ### D03 – Origin motivation
 
 **PROMPT:** Why does Eliza want more ways to speak? Choose the motivation that feels true at the end of Chapter I.
 
-1. `opportunity` — **Opportunity:** “I want to speak in a way that can lead to better work and more chances.”
-2. `respect` — **Respect:** “I want people to listen to me before they decide what I am.”
-3. `learning` — **Learning:** “I want to learn how people speak and choose what I use.”
-4. `independence` — **Independence:** “I want more ways to speak so no one else can choose my future for me.”
+1. `opportunity` — **Opportunity:** “I want to speak in a way that gets me better work and a proper chance.”
+2. `respect` — **Respect:** “I want 'em to hear me before they decide what I am.”
+3. `learning` — **Learning:** “I want to learn how they talk, then choose what suits me.”
+4. `independence` — **Independence:** “I want more ways to speak so nobody gets to choose my future but me.”
 
 No motivation is correct, best, or more mature than another. Changing motivation later is also allowed; this choice records the starting point of Eliza’s journey.
 
@@ -295,7 +295,7 @@ Save `origin_motivation` with exactly one of: `opportunity`, `respect`, `learnin
 
 ### Chapter-end text
 
-**ELIZA:** Tomorrow, I'll find the door myself. If they want to teach me, they'll have to hear what I'm asking for.
+**ELIZA:** Tomorrow, I'll find that door myself. If they're going to teach me, they'll hear what I'm asking for first.
 
 **NARRATION:** The flower-shop lights stay on as Covent Garden grows dark. Eliza leaves the window with a plan—and a question about the price of being heard.
 
