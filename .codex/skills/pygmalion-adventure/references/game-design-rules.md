@@ -14,6 +14,7 @@ Player-facing narration a dialog jsou primární obsah a musí zůstat čitelné
 - `Listening challenge`: pouze explicitně označené `LCxx` sample mohou být pedagogicky zásadní pro poslechový úkol.
 - `Atmosphere / SFX`: déšť, tržiště, kroky a další zvuky jsou doplňkové a nikdy nenesou kritickou informaci potřebnou pro postup.
 - Story text a accessibility transcript nejsou stejný artefakt. Story text je primární player-facing obsah; transcript podporuje konkrétní audio/challenge podle jeho pravidel.
+- `CONTEXTUAL AMBIENCE` je volitelná, kontinuální scénická vrstva pro čtení; její canonical autoplay, continuity, crossfade, ducking, persistence a accessibility contract je v `docs/AUDIO_AND_AMBIENCE_SPEC.md`.
 
 ## Hodnoty
 

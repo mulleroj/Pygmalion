@@ -6,10 +6,25 @@ Supporting audio plan derived from the canonical player-facing script. No audio 
 
 `BOOK FIRST → AUDIO ENHANCED`
 
+Canonical audio chain: `BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE`.
+
 - `docs/chapters/ch01/SCRIPT.md` is the primary story content. Its narration and dialogue must remain readable and sufficient to complete Chapter I with sound disabled.
 - Ordinary story dialogue may receive an `OPTIONAL STORY VOICE` recording. Audio adds personality, pronunciation support, or atmosphere; it does not replace the visible story text.
 - Only explicit listening challenges, currently `LC01` and `LC02`, may make listening pedagogically necessary. Their challenge rules determine transcript availability; a story text line is not automatically an accessibility transcript.
 - Atmosphere and SFX are optional enhancement and never carry critical information required for story progress.
+- Canonical ambience behavior (autoplay, continuity, crossfade, ducking, sound control, persistence, loop quality, and accessibility) is defined in [`docs/AUDIO_AND_AMBIENCE_SPEC.md`](../../AUDIO_AND_AMBIENCE_SPEC.md).
+
+## Chapter I contextual ambience map
+
+| Scene | Ambience ID | Behavior |
+|---|---|---|
+| `ch01_s01` | `covent_garden_rain_market` | Start after first conscious story interaction; low rain, distant market, footsteps, and muted crowd. |
+| `ch01_s02` | `covent_garden_rain_market` | Continue without restart; play `flowers_fall` once over the ambience. Pronounced ducking during LC01. |
+| `ch01_s03` | `covent_garden_rain_market` | Continue the same rain/market ambience without a gap. |
+| `ch01_s04` | `covent_garden_rain_market` | Continue the same ambience; pronounced ducking during LC02 for speech intelligibility. |
+| `ch01_s05` | `covent_garden_evening_light_rain` | Short gentle crossfade to weaker rain, distant market, and calmer shop/street ambience. Crossfade duration is not locked. |
+
+These IDs are design identifiers. No ambience files are generated in this pass.
 
 ## Production rules
 
@@ -31,6 +46,8 @@ Supporting audio plan derived from the canonical player-facing script. No audio 
 - Scene: `ch01_s01`
 - Category: `AMBIENCE`
 - Audio role: `ATMOSPHERE / SFX`
+- Ambience ID: `covent_garden_rain_market`
+- Continuity group: `ch01_s01`–`ch01_s04`; do not restart at ordinary scene transitions
 - Speaker: none
 - Text/transcript: No speech. Rain on paving, covered market movement, distant calls, footsteps.
 - Delivery direction: Keep the portico readable; rain must support, not cover, dialogue.
@@ -171,6 +188,7 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Asset ID: `LC01-02`
 - Scene: `ch01_s02`
 - Category: `LISTENING`
+- Audio role: `LISTENING CHALLENGE`
 - Speaker: Freddy
 - Text/transcript: “It was the rain. Anyone could've slipped.”
 - Delivery direction: Defensive explanation; do not overplay guilt or dishonesty.
@@ -185,6 +203,7 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Asset ID: `LC01-03`
 - Scene: `ch01_s02`
 - Category: `LISTENING`
+- Audio role: `LISTENING CHALLENGE`
 - Speaker: Freddy
 - Text/transcript: “I'll pick these up and pay for the damaged ones.”
 - Delivery direction: Concrete and willing; make the future action easy to hear.
@@ -220,6 +239,7 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Asset ID: `LC02-02`
 - Scene: `ch01_s04`
 - Category: `LISTENING`
+- Audio role: `LISTENING CHALLENGE`
 - Speaker: supporting speaker 02
 - Text/transcript: “Oi, Sam, hold the cart! I'm coming through.”
 - Delivery direction: Familiar, urgent, efficient; not aggressive for its own sake.
@@ -234,6 +254,7 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Asset ID: `LC02-03`
 - Scene: `ch01_s04`
 - Category: `LISTENING`
+- Audio role: `LISTENING CHALLENGE`
 - Speaker: supporting speaker 03
 - Text/transcript: “Good evening. May I ask whether the meeting has started?”
 - Delivery direction: Formal, careful, polite request for information; avoid sounding unnatural.
@@ -251,6 +272,8 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Scene: `ch01_s02`
 - Category: `SFX`
 - Audio role: `ATMOSPHERE / SFX`
+- SFX ID: `flowers_fall`
+- Layering: one-shot over the current `covent_garden_rain_market` ambience; do not restart the ambience
 - Speaker: none
 - Text/transcript: No speech. Basket bump, stems and flowers hitting wet paving, brief crowd reaction.
 - Delivery direction: Short and readable; do not make Freddy’s accident slapstick.
@@ -266,6 +289,8 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Scene: `ch01_s05`
 - Category: `AMBIENCE`
 - Audio role: `ATMOSPHERE / SFX`
+- Ambience ID: `covent_garden_evening_light_rain`
+- Transition: short gentle crossfade from `covent_garden_rain_market`; exact duration not locked
 - Speaker: none
 - Text/transcript: No speech. Light evening market, receding rain, shop door, distant footsteps.
 - Delivery direction: A small sense of possibility; keep the transition grounded, not sentimental.

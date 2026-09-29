@@ -8,7 +8,9 @@ Teacher Mode je povinná chapter-level contextual support vrstva pro všech šes
 
 Pygmalion Adventure je `interactive illustrated storybook / story adventure`, nikoli audio-first listening application.
 
-`BOOK FIRST → AUDIO ENHANCED`
+`BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE`
+
+Třetí princip je `CONTEXTUAL AMBIENCE`: jemná, volitelná scénická vrstva pro průběh čtení. Ambient se mění podle prostředí, ale nenese kritický story obsah. Detailní chování je canonical v [`AUDIO_AND_AMBIENCE_SPEC.md`](AUDIO_AND_AMBIENCE_SPEC.md).
 
 Každá scéna musí fungovat jako čitelná část digitální knihy. Hráč musí být schopen celý příběh číst, pochopit, rozhodovat se, pokračovat mezi scénami a dokončit kapitolu se zvukem vypnutým. Ilustrace a player-facing text jsou primární story presentation; audio je podpůrná vrstva.
 

@@ -20,7 +20,9 @@ Základní vzdělávací myšlenka je: `Accent ≠ intelligence.` Přízvuk nen�
 
 ## Canonical experience model
 
-`BOOK FIRST → AUDIO ENHANCED`
+`BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE`
+
+Třetí princip je `CONTEXTUAL AMBIENCE`: ambientní zvuk je jemná scénická vrstva, která podporuje čtení a mění se podle prostředí, ale nikdy nenahrazuje text ani není nutná pro pochopení příběhu. Canonical kontrakt je v [`AUDIO_AND_AMBIENCE_SPEC.md`](AUDIO_AND_AMBIENCE_SPEC.md).
 
 Pygmalion Adventure není audio-first listening application. Hráč musí být schopen číst, pochopit, rozhodovat se, pokračovat mezi scénami a dokončit Chapter I bez zvuku. Každá běžná story replika a narration zůstává player-facing textem v knize; audio může tutéž repliku doplnit, ale nenahrazuje ji.
 

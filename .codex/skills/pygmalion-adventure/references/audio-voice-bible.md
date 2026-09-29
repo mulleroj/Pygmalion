@@ -95,3 +95,7 @@ První test Eliza BEFORE byl uživatelsky schválen jako finální základ pro E
 - soubory používají convention z `docs/ASSET_PLAN.md`;
 - před schválením se kontroluje srozumitelnost, délka, návaznost na scénu a bezpečné licenční vlastnictví;
 - zvuk nesmí být jediným nosičem kritické informace.
+
+## Ambientní zvuk
+
+Ambientní zvuk je podpůrná contextual ambience vrstva, nikoli voice asset a nikoli náhrada story textu. Canonical pravidla pro ambience ID, kontinuitu, autoplay omezení, crossfade, ducking, ovládání, persistence a accessibility jsou v `docs/AUDIO_AND_AMBIENCE_SPEC.md`.
