@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Pygmalion Adventure — an illustrated Chapter I storybook about language, opportunity, and choosing your own voice." />
+    <title>Pygmalion — The Flower Girl</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" data-action="go-cover" aria-label="Pygmalion home">
+        <span class="brand-mark" aria-hidden="true">✦</span>
+        <span>
+          <strong>Pygmalion</strong>
+          <small>an illustrated storybook</small>
+        </span>
+      </a>
+      <div class="header-actions">
+        <button class="quiet-button" type="button" data-action="open-teacher" aria-haspopup="dialog">Teacher Mode</button>
+        <button class="sound-button" type="button" data-action="toggle-sound" aria-pressed="true">Sound: on</button>
+      </div>
+    </header>
+
+    <div id="app" class="app-shell"></div>
+    <div id="live-region" class="visually-hidden" aria-live="polite"></div>
+
+    <dialog id="teacher-dialog" class="teacher-dialog" aria-labelledby="teacher-title">
+      <div class="teacher-dialog-inner">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">Contextual support</p>
+            <h2 id="teacher-title">Teacher Mode</h2>
+            <p id="teacher-context" class="dialog-context"></p>
+          </div>
+          <button class="icon-button" type="button" data-action="close-teacher" aria-label="Close Teacher Mode">×</button>
+        </div>
+        <div id="teacher-content" class="teacher-content"></div>
+      </div>
+    </dialog>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

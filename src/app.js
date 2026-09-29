@@ -1,0 +1,360 @@
+import {
+  SCENES,
+  SCENE_BY_ID,
+  LISTENING,
+  TEACHER_SECTIONS,
+  ambienceForScene,
+  isContinuousAmbienceTransition
+} from './content.js';
+import {
+  loadState,
+  saveState,
+  startChapter,
+  resetChapter,
+  setScene,
+  recordOpeningTone,
+  applyDecision,
+  recordChallengeAnswer,
+  markChallengeEntered,
+  markChapterComplete,
+  setSoundPreference,
+  isChallengeComplete
+} from './state.js';
+import { AudioManager } from './audio.js';
+
+const app = document.querySelector('#app');
+const liveRegion = document.querySelector('#live-region');
+const teacherDialog = document.querySelector('#teacher-dialog');
+const teacherContent = document.querySelector('#teacher-content');
+const teacherContext = document.querySelector('#teacher-context');
+let state = loadState();
+let lastTeacherTrigger = null;
+let previousScene = null;
+const audioManager = new AudioManager({
+  onStatus: (status) => {
+    if (status.type === 'blocked') {
+      announce('Sound could not start automatically. The story continues; use the Sound control or a replay button when ready.');
+    }
+  }
+});
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
+}
+
+function announce(message) {
+  liveRegion.textContent = '';
+  window.setTimeout(() => { liveRegion.textContent = message; }, 20);
+}
+
+function currentScene() {
+  return SCENE_BY_ID[state.scene] || SCENES[0];
+}
+
+function updateHeader() {
+  const soundButton = document.querySelector('[data-action="toggle-sound"]');
+  if (soundButton) {
+    soundButton.textContent = `Sound: ${state.soundEnabled ? 'on' : 'off'}`;
+    soundButton.setAttribute('aria-pressed', String(state.soundEnabled));
+    soundButton.setAttribute('aria-label', state.soundEnabled ? 'Turn sound off' : 'Turn sound on');
+  }
+}
+
+function save() {
+  saveState(state);
+  updateHeader();
+}
+
+function setLocation(sceneId = null, replace = false) {
+  const url = sceneId ? `#${sceneId}` : window.location.pathname;
+  const method = replace ? 'replaceState' : 'pushState';
+  window.history[method]({ scene: sceneId }, '', url);
+}
+
+function renderCover() {
+  app.innerHTML = `
+    <main class="cover-page" aria-labelledby="cover-title">
+      <div class="cover-art" aria-hidden="true">
+        <div class="cover-glow"></div>
+        <div class="cover-flowers">✦<span>❈</span>✧</div>
+        <p class="cover-chapter">Chapter I</p>
+        <p class="cover-name">The Flower Girl</p>
+      </div>
+      <section class="cover-copy">
+        <p class="eyebrow">An interactive illustrated storybook</p>
+        <h1 id="cover-title">Pygmalion</h1>
+        <p class="cover-subtitle">A story about language, opportunity, and choosing your own voice.</p>
+        <p class="cover-description">Rain gathers over Covent Garden. Eliza has flowers to sell, questions to ask, and a future she intends to choose for herself.</p>
+        <button class="primary-button open-book" type="button" data-action="open-story">${state.started ? 'CONTINUE THE BOOK' : 'OPEN THE BOOK'}</button>
+        ${state.started ? '<button class="text-button" type="button" data-action="restart-chapter">Start Chapter I again</button>' : ''}
+        <p class="sound-note"><span aria-hidden="true">◌</span> Sound is optional. Your first click may unlock the rain ambience.</p>
+      </section>
+    </main>`;
+  updateHeader();
+}
+
+function renderAudioControl(item, kind = 'voice') {
+  const action = kind === 'voice' ? 'play-voice' : 'play-challenge';
+  const transcript = kind === 'voice' ? `<details open class="transcript"><summary>Transcript</summary><p>${escapeHtml(item.transcript)}</p></details>` : '';
+  return `<div class="audio-cue ${kind}-cue">
+    <button class="audio-button" type="button" data-action="${action}" data-src="${escapeHtml(item.src)}" aria-label="${escapeHtml(item.label || 'Replay audio')}"><span aria-hidden="true">▶</span> ${escapeHtml(item.label || 'Replay audio')}</button>
+    ${transcript}
+  </div>`;
+}
+
+function renderSfxControl(item) {
+  return `<div class="audio-cue sfx-cue"><button class="audio-button" type="button" data-action="play-sfx" data-src="${escapeHtml(item.src)}" aria-label="${escapeHtml(item.label)}"><span aria-hidden="true">▶</span> Replay the fallen flowers sound</button><span class="sfx-note">SFX · one short basket-and-flowers sound</span></div>`;
+}
+
+function renderArt(scene) {
+  const support = scene.supporting.map((asset) => `<img class="supporting-character" src="${asset.src}" alt="${escapeHtml(asset.alt)}" loading="lazy">`).join('');
+  const props = scene.props.map((asset) => `<img class="scene-prop" src="${asset.src}" alt="${escapeHtml(asset.alt)}" loading="lazy">`).join('');
+  const plate = scene.plate.src === scene.background.src ? '' : `<div class="art-plate"><img src="${scene.plate.src}" alt="${escapeHtml(scene.plate.alt)}" loading="lazy"></div>`;
+  return `<figure class="storybook-art">
+    <div class="art-background"><img src="${scene.background.src}" alt="${escapeHtml(scene.background.alt)}"></div>
+    ${plate}
+    <div class="art-layer art-support">${support}</div>
+    <div class="art-layer art-eliza"><img src="${scene.eliza.src}" alt="${escapeHtml(scene.eliza.alt)}" loading="lazy"></div>
+    <div class="art-layer art-props">${props}</div>
+    <figcaption>Chapter I · ${escapeHtml(scene.title)}</figcaption>
+  </figure>`;
+}
+
+function renderDialogue(scene) {
+  return scene.dialogue.map(([speaker, text], index) => `<div class="dialogue-line ${speaker.toLowerCase().replace(/[^a-z]+/g, '-')}" data-line="${index}"><span class="speaker">${escapeHtml(speaker)}</span><p>${escapeHtml(text)}</p></div>`).join('');
+}
+
+function renderOpeningTone(scene) {
+  const selected = state.opening_tone;
+  return `<section class="choice-block local-choice" aria-labelledby="opening-tone-title">
+    <p class="eyebrow">A small first response</p>
+    <h2 id="opening-tone-title">A customer looks away. What does Eliza say?</h2>
+    <div class="choice-grid">${scene.openingTones.map((item) => `<button class="choice-button ${selected === item.id ? 'selected' : ''}" type="button" data-action="choose-tone" data-tone="${item.id}" ${selected ? 'disabled' : ''}><strong>${escapeHtml(item.title)}</strong><span>“${escapeHtml(item.text)}”</span></button>`).join('')}</div>
+    ${selected ? `<p class="choice-feedback">Eliza keeps control of her pitch. The moment changes its tone, not her worth.</p><button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the fallen flowers <span aria-hidden="true">→</span></button>` : ''}
+  </section>`;
+}
+
+function renderDecision(scene) {
+  const decision = scene.decision;
+  if (!decision) return '';
+  const selected = state.decisions[decision.id];
+  return `<section class="choice-block" aria-labelledby="${decision.id}-title">
+    <p class="eyebrow">A choice in the story</p>
+    <h2 id="${decision.id}-title">${escapeHtml(decision.prompt)}</h2>
+    <div class="choice-grid">${decision.choices.map((item) => `<button class="choice-button ${selected === item.id ? 'selected' : ''}" type="button" data-action="choose-decision" data-decision="${decision.id}" data-option="${item.id}" ${selected ? 'disabled' : ''}><strong>${escapeHtml(item.title)}</strong><span>“${escapeHtml(item.text)}”</span></button>`).join('')}</div>
+    ${selected ? `<div class="choice-feedback"><strong>Your choice stays with the scene.</strong><p>${escapeHtml(scene.consequence?.[selected] || 'Eliza moves forward on her own terms.')}</p></div>` : ''}
+  </section>`;
+}
+
+function renderLc01(scene) {
+  const challenge = state.challenges.lc01;
+  const options = ['apology', 'excuse', 'intention to repair'];
+  return `<section class="challenge-block" aria-labelledby="lc01-title">
+    <div class="challenge-heading"><div><p class="eyebrow">Listening challenge</p><h2 id="lc01-title">${escapeHtml(scene.challenge.title)}</h2></div><span class="challenge-badge">Listen · replay · decide</span></div>
+    <p>${escapeHtml(scene.challenge.intro)}</p>
+    <div class="sample-list">${LISTENING.lc01.map((sample, index) => {
+      const result = challenge.answers[sample.id];
+      return `<article class="sample-card ${result?.correct ? 'correct' : ''}" aria-labelledby="lc01-sample-${index}">
+        <div class="sample-top"><h3 id="lc01-sample-${index}">Sample ${index + 1}</h3>${renderAudioControl({ ...sample, label: `Replay sample ${index + 1}` }, 'challenge')}</div>
+        <p class="sample-transcript">“${escapeHtml(sample.transcript)}”</p>
+        <p class="sample-prompt">What is the speaker’s main intention?</p>
+        <div class="answer-row">${options.map((option) => `<button class="answer-button ${result?.answer === option ? 'selected' : ''}" type="button" data-action="answer-lc01" data-sample="${sample.id}" data-answer="${option}">${escapeHtml(option)}</button>`).join('')}</div>
+        ${result ? `<p class="answer-feedback ${result.correct ? 'success' : 'retry'}">${result.correct ? 'Good. You heard the purpose of the line.' : 'Listen again: responsibility, explanation, or a promised action?'}</p>` : ''}
+      </article>`;
+    }).join('')}</div>
+    ${challenge.completed ? '<p class="challenge-complete">LC01 complete. Replay remains available and does not change your story state.</p><button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the notebook <span aria-hidden="true">→</span></button>' : ''}
+  </section>`;
+}
+
+function renderLc02(scene) {
+  const challenge = state.challenges.lc02;
+  return `<section class="challenge-block" aria-labelledby="lc02-title">
+    <div class="challenge-heading"><div><p class="eyebrow">Listening challenge</p><h2 id="lc02-title">${escapeHtml(scene.challenge.title)}</h2></div><span class="challenge-badge">Context · relationship · purpose</span></div>
+    <p>${escapeHtml(scene.challenge.intro)}</p>
+    <div class="sample-list">${LISTENING.lc02.map((sample, index) => {
+      const result = challenge.answers[sample.id];
+      return `<article class="sample-card ${result?.correct ? 'correct' : ''}" aria-labelledby="lc02-sample-${index}">
+        <div class="sample-top"><h3 id="lc02-sample-${index}">Sample ${index + 1}</h3>${renderAudioControl({ ...sample, label: `Replay sample ${index + 1}` }, 'challenge')}</div>
+        <p class="sample-transcript">“${escapeHtml(sample.transcript)}”</p>
+        <div class="answer-stack">${sample.options.map(([id, label]) => `<button class="answer-button ${result?.answer === id ? 'selected' : ''}" type="button" data-action="answer-lc02" data-sample="${sample.id}" data-answer="${id}">${escapeHtml(label)}</button>`).join('')}</div>
+        ${result ? `<p class="answer-feedback ${result.correct ? 'success' : 'retry'}">${result.correct ? 'Good. You used context, relationship, and intention.' : 'Listen again and look for the action, relationship, and setting.'}</p>` : ''}
+      </article>`;
+    }).join('')}</div>
+    ${challenge.completed ? '<p class="challenge-complete">Higgins’ Ear complete. The challenge stores context, not a judgement about the speaker.</p><button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the flower-shop window <span aria-hidden="true">→</span></button>' : ''}
+  </section>`;
+}
+
+function renderEnd(scene) {
+  const selected = state.decisions.D03;
+  if (!selected) return '';
+  return `<section class="chapter-end" aria-labelledby="chapter-end-title">
+    <p class="eyebrow">Chapter I complete</p>
+    <h2 id="chapter-end-title">The door is still ahead. This time, Eliza chooses where to knock.</h2>
+    ${scene.chapterEnd.map((line) => `<p class="end-line">${escapeHtml(line)}</p>`).join('')}
+    <p class="end-note">Chapter II is not part of this vertical slice. Your Chapter I progress is saved locally.</p>
+    <button class="secondary-button" type="button" data-action="restart-chapter">Start Chapter I again</button>
+  </section>`;
+}
+
+function renderScene(scene) {
+  const decisionSelected = scene.decision ? Boolean(state.decisions[scene.decision.id]) : true;
+  const challengeComplete = scene.challenge ? isChallengeComplete(state, scene.challenge.id) : true;
+  const sceneIndex = scene.number;
+  const voiceMarkup = scene.voice.map((item) => renderAudioControl(item)).join('');
+  const sfxMarkup = scene.sfx ? renderSfxControl(scene.sfx) : '';
+  let body = '';
+  if (scene.id === 'ch01_s01') body += renderOpeningTone(scene);
+  body += renderDecision(scene);
+  if (scene.id === 'ch01_s02') body += renderLc01(scene);
+  if (scene.id === 'ch01_s04') body += renderLc02(scene);
+  if (scene.id === 'ch01_s05') body += renderEnd(scene);
+  if (scene.id !== 'ch01_s05' && !scene.challenge && decisionSelected && challengeComplete && scene.id !== 'ch01_s01') {
+    body += `<button class="secondary-button next-button" type="button" data-action="next-scene">Continue the story <span aria-hidden="true">→</span></button>`;
+  }
+  if (scene.id === 'ch01_s03' && decisionSelected) body += `<p class="read-only-note">The exchange is saved as a story detail. Replaying it will not apply the response again.</p>`;
+
+  return `<main class="story-page" id="story-root" tabindex="-1" aria-labelledby="scene-title">
+    <div class="story-progress"><span>Chapter I · The Flower Girl</span><span>Scene ${sceneIndex} of 5</span></div>
+    <div class="storybook-spread">
+      ${renderArt(scene)}
+      <article class="story-copy">
+        <p class="eyebrow">${escapeHtml(scene.kicker)}</p>
+        <h1 id="scene-title">${escapeHtml(scene.title)}</h1>
+        <div class="narrative">${scene.narration.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div>
+        <div class="dialogue-block" aria-label="Story dialogue">${renderDialogue(scene)}</div>
+        ${voiceMarkup ? `<div class="story-voices" aria-label="Optional story voice">${voiceMarkup}</div>` : ''}
+        ${sfxMarkup ? `<div class="story-voices" aria-label="Optional sound effect">${sfxMarkup}</div>` : ''}
+        ${body}
+        ${scene.transition && scene.id !== 'ch01_s05' ? `<p class="transition-line">${escapeHtml(scene.transition)}</p>` : ''}
+      </article>
+    </div>
+  </main>`;
+}
+
+function render() {
+  const hashScene = window.location.hash.replace(/^#/, '');
+  if (hashScene && SCENE_BY_ID[hashScene] && !state.started) {
+    state = startChapter(state);
+    state = setScene(state, hashScene);
+    save();
+  }
+  if (!state.started && !hashScene) renderCover();
+  else {
+    const scene = SCENE_BY_ID[hashScene] || currentScene();
+    if (state.scene !== scene.id) {
+      state = setScene(state, scene.id);
+      save();
+    }
+    app.innerHTML = renderScene(scene);
+    updateHeader();
+    document.querySelector('#story-root')?.focus({ preventScroll: true });
+    const currentSceneId = scene.id;
+    audioManager.setEnabled(state.soundEnabled);
+    audioManager.ensureAmbience(currentSceneId);
+    if (scene.sfx) audioManager.playOneShot(scene.sfx.id, scene.sfx.src);
+    previousScene = currentSceneId;
+  }
+}
+
+function moveNext() {
+  const scene = currentScene();
+  if (scene.id === 'ch01_s01' && !state.opening_tone) return announce('Choose a first response before continuing.');
+  if (scene.decision && !state.decisions[scene.decision.id]) return announce('Choose a response to continue.');
+  if (scene.challenge && !isChallengeComplete(state, scene.challenge.id)) return announce('Complete the listening challenge to continue.');
+  const next = SCENES[scene.number];
+  if (!next) {
+    state = markChapterComplete(state);
+    save();
+    render();
+    announce('Chapter I complete.');
+    return;
+  }
+  state = setScene(state, next.id);
+  save();
+  setLocation(next.id);
+  render();
+}
+
+function openStory() {
+  state = startChapter(state);
+  save();
+  const sceneId = state.scene || 'ch01_s01';
+  setLocation(sceneId);
+  render();
+  announce(`Chapter I, ${SCENE_BY_ID[sceneId].title}.`);
+}
+
+function openTeacher(trigger) {
+  lastTeacherTrigger = trigger;
+  const scene = state.started ? currentScene() : null;
+  teacherContext.textContent = scene ? `Chapter I · ${scene.title}${scene.challenge ? ` · ${scene.challenge.title}` : ''}` : 'Chapter I · Cover';
+  teacherContent.innerHTML = `${TEACHER_SECTIONS.map(([heading, content]) => `<section class="teacher-section"><h3>${escapeHtml(heading)}</h3><p>${escapeHtml(content)}</p></section>`).join('')}
+    ${scene ? `<button class="secondary-button teacher-preview" type="button" data-action="teacher-preview">Open / replay this scene (read-only preview)</button>` : ''}`;
+  if (typeof teacherDialog.showModal === 'function') teacherDialog.showModal();
+  else teacherDialog.setAttribute('open', '');
+  teacherDialog.querySelector('[data-action="close-teacher"]')?.focus();
+}
+
+function closeTeacher() {
+  if (teacherDialog.open) teacherDialog.close();
+  else teacherDialog.removeAttribute('open');
+  lastTeacherTrigger?.focus();
+}
+
+document.addEventListener('click', async (event) => {
+  const target = event.target.closest('[data-action]');
+  if (!target) return;
+  const action = target.dataset.action;
+  if (action === 'toggle-sound') {
+    state = setSoundPreference(state, !state.soundEnabled);
+    save();
+    audioManager.setEnabled(state.soundEnabled);
+    announce(state.soundEnabled ? 'Sound on.' : 'Sound off. The story remains complete without sound.');
+  }
+  if (action === 'open-story') openStory();
+  if (action === 'go-cover') { event.preventDefault(); setLocation(null); render(); }
+  if (action === 'open-teacher') openTeacher(target);
+  if (action === 'close-teacher') closeTeacher();
+  if (action === 'next-scene') moveNext();
+  if (action === 'choose-tone') {
+    state = recordOpeningTone(state, target.dataset.tone);
+    save(); render(); announce('Opening tone saved for this scene.');
+  }
+  if (action === 'choose-decision') {
+    state = applyDecision(state, target.dataset.decision, target.dataset.option);
+    if (target.dataset.decision === 'D03') state = markChapterComplete(state);
+    save(); render(); announce('Choice saved.');
+  }
+  if (action === 'answer-lc01') {
+    const sample = LISTENING.lc01.find((item) => item.id === target.dataset.sample);
+    state = recordChallengeAnswer(state, 'LC01', target.dataset.sample, target.dataset.answer, sample.answer === target.dataset.answer);
+    save(); render();
+  }
+  if (action === 'answer-lc02') {
+    const sample = LISTENING.lc02.find((item) => item.id === target.dataset.sample);
+    state = recordChallengeAnswer(state, 'LC02', target.dataset.sample, target.dataset.answer, sample.answer === target.dataset.answer);
+    save(); render();
+  }
+  if (action === 'play-voice') await audioManager.playVoice(target.dataset.src);
+  if (action === 'play-challenge') await audioManager.playChallenge(target.dataset.src);
+  if (action === 'play-sfx') await audioManager.playOneShot('flowers_fall', target.dataset.src);
+  if (action === 'teacher-preview') {
+    closeTeacher();
+    document.querySelector('#story-root')?.focus();
+    announce('Read-only scene preview. Student progress was not changed.');
+  }
+  if (action === 'restart-chapter') {
+    if (window.confirm('Start Chapter I again? This clears the saved Chapter I choices and challenge results.')) {
+      state = resetChapter(state);
+      save(); setLocation(null); render(); announce('Chapter I progress cleared.');
+    }
+  }
+});
+
+teacherDialog.addEventListener('cancel', (event) => { event.preventDefault(); closeTeacher(); });
+window.addEventListener('popstate', () => render());
+window.addEventListener('hashchange', () => render());
+audioManager.setEnabled(state.soundEnabled);
+render();
+
+export { render, moveNext };
