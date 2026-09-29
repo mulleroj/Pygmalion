@@ -1,6 +1,6 @@
 # Chapter I Audio Plan – The Flower Girl
 
-Supporting audio plan derived from the canonical player-facing script. No audio is generated or included in this pass.
+Supporting audio plan derived from the canonical player-facing script. The Chapter I production set is generated, local, and technically verified; human listening QA remains pending.
 
 ## Book-first contract
 
@@ -24,7 +24,7 @@ Canonical audio chain: `BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE`.
 | `ch01_s04` | `covent_garden_rain_market` | Continue the same ambience; pronounced ducking during LC02 for speech intelligibility. |
 | `ch01_s05` | `covent_garden_evening_light_rain` | Short gentle crossfade to weaker rain, distant market, and calmer shop/street ambience. Crossfade duration is not locked. |
 
-These IDs are design identifiers. No ambience files are generated in this pass.
+These IDs are canonical design identifiers and map to the local runtime files documented below.
 
 ## Production rules
 
@@ -33,10 +33,11 @@ These IDs are design identifiers. No ambience files are generated in this pass.
 - Higgins uses `Severin - Powerful & Commanding`, voice ID `ib8aaABAPZQpTo6hx8Jr`, model `eleven_v3`.
 - Pickering uses `George - Warm, Captivating Storyteller`, voice ID `JBFqnCBsd6RMkjVDRZzb`, model `eleven_v3`.
 - Freddy uses `Ned - Casual, Young British Male, General Southern Accent`, voice ID `fNYuJl2dBlX9V7NxmjnV`, model `eleven_v3`.
-- Supporting speakers remain unassigned and must be marked `VOICE CASTING REQUIRED` until separately approved.
+- LC02 production casting is assigned: `LC02-01` uses voice ID `vBRU4ztAu1MfP8arDoB3` for a polite work request; `LC02-02` uses `Hugo` / `WAppqUXeqDqXjNTaQxG9` for an informal market instruction; `LC02-03` uses `Ruby` / `Q6HPFg7bazU61NeyrvBp` for a formal information request. The previously considered Ali is not canonical and is not a production voice.
 - Every pedagogically important audio item has a visible transcript and replay.
 - Audio moment and audio file are not one-to-one. LC01 has three files and LC02 has three files.
-- Approval status for every item below is `PLANNED — script-approved; recording not started`.
+- Technical status for every item below is `GENERATED / LOCAL / TECHNICALLY VERIFIED`.
+- Human listening status for every item below is `HUMAN QA PENDING`.
 
 ## VOICE and story audio
 
@@ -55,7 +56,8 @@ These IDs are design identifiers. No ambience files are generated in this pass.
 - Expected path: `assets/audio/ambience/covent-garden-rain-market-001.mp3`
 - Replay required: no
 - Transcript required: no speech transcript; provide a content label in the manifest
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ### A02 – Eliza sales pitch
 
@@ -70,7 +72,8 @@ These IDs are design identifiers. No ambience files are generated in this pass.
 - Expected path: `assets/audio/characters/eliza/eliza_ch01_scene01_001.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ### A03 – Freddy’s apology
 
@@ -85,7 +88,8 @@ These IDs are design identifiers. No ambience files are generated in this pass.
 - Expected path: `assets/audio/characters/freddy/freddy_ch01_scene02_001.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ### A04 – Eliza signature line
 
@@ -100,7 +104,8 @@ These IDs are design identifiers. No ambience files are generated in this pass.
 - Expected path: `assets/audio/characters/eliza/eliza_ch01_scene03_001.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ### A05 – Higgins observation
 
@@ -115,7 +120,8 @@ These IDs are design identifiers. No ambience files are generated in this pass.
 - Expected path: `assets/audio/characters/higgins/higgins_ch01_scene03_001.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ### A06 – Pickering and Higgins response
 
@@ -130,7 +136,8 @@ These IDs are design identifiers. No ambience files are generated in this pass.
 - Expected path: `assets/audio/characters/higgins/higgins_ch01_scene04_001.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ### A07 – Pickering reaction
 
@@ -145,7 +152,8 @@ These IDs are design identifiers. No ambience files are generated in this pass.
 - Expected path: `assets/audio/characters/pickering/pickering_ch01_scene04_001.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ### A08 – Eliza closing reflection
 
@@ -160,7 +168,8 @@ These IDs are design identifiers. No ambience files are generated in this pass.
 - Expected path: `assets/audio/characters/eliza/eliza_ch01_scene05_001.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ## LC01 listening files
 
@@ -181,7 +190,8 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Expected path: `assets/audio/listening/ch01_lc01_001.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ### A10 – LC01 excuse
 
@@ -196,7 +206,8 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Expected path: `assets/audio/listening/ch01_lc01_002.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ### A11 – LC01 intention to repair
 
@@ -211,7 +222,8 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Expected path: `assets/audio/listening/ch01_lc01_003.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ## LC02 listening files
 
@@ -228,11 +240,13 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Speaker: supporting speaker 01
 - Text/transcript: “Could you wait by the door, please? I need both hands.”
 - Delivery direction: Polite, cooperative, busy task in progress.
-- Voice ID: `VOICE CASTING REQUIRED`
+- Voice ID: `vBRU4ztAu1MfP8arDoB3`
+- Voice name: `not provided in the production casting brief`
 - Expected path: `assets/audio/listening/ch01_lc02_001.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ### A13 – LC02 informal market instruction
 
@@ -243,11 +257,12 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Speaker: supporting speaker 02
 - Text/transcript: “Oi, Sam, hold the cart! I'm coming through.”
 - Delivery direction: Familiar, urgent, efficient; not aggressive for its own sake.
-- Voice ID: `VOICE CASTING REQUIRED`
+- Voice ID: `WAppqUXeqDqXjNTaQxG9` (`Hugo`)
 - Expected path: `assets/audio/listening/ch01_lc02_002.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ### A14 – LC02 formal information request
 
@@ -258,11 +273,12 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Speaker: supporting speaker 03
 - Text/transcript: “Good evening. May I ask whether the meeting has started?”
 - Delivery direction: Formal, careful, polite request for information; avoid sounding unnatural.
-- Voice ID: `VOICE CASTING REQUIRED`
+- Voice ID: `Q6HPFg7bazU61NeyrvBp` (`Ruby`)
 - Expected path: `assets/audio/listening/ch01_lc02_003.mp3`
 - Replay required: yes
 - Transcript required: yes
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ## SFX and closing ambience
 
@@ -281,7 +297,8 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Expected path: `assets/audio/sfx/flowers-fall-001.mp3`
 - Replay required: no
 - Transcript required: no speech transcript; provide a content label in the manifest
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
 ### A16 – Evening Covent Garden bed
 
@@ -298,17 +315,18 @@ Audio role: `LISTENING CHALLENGE`. These samples are the pedagogically necessary
 - Expected path: `assets/audio/ambience/covent-garden-evening-001.mp3`
 - Replay required: no
 - Transcript required: no speech transcript; provide a content label in the manifest
-- Approval status: `PLANNED — script-approved; recording not started`
+- Technical status: `GENERATED / LOCAL / TECHNICALLY VERIFIED`
+- Human listening status: `HUMAN QA PENDING`
 
-## Backlog totals and casting gate
+## Production totals and QA gate
 
-- Planned audio files: **16**.
+- Finalized local audio files: **16**.
 - Eliza files using the canonical voice: **3** (`A02`, `A04`, `A08`; any future alternate takes must keep the same voice ID).
 - Story voice files: **7**, all `OPTIONAL STORY VOICE`.
 - Listening challenge files: **6**, `LC01` and `LC02`.
 - Higgins files: **2**, canonical voice ID `ib8aaABAPZQpTo6hx8Jr`.
 - Pickering files: **1**, canonical voice ID `JBFqnCBsd6RMkjVDRZzb`.
 - Freddy files: **4** including LC01, canonical voice ID `fNYuJl2dBlX9V7NxmjnV`.
-- Supporting listening voices: **3**, `VOICE CASTING REQUIRED`.
+- Supporting listening voices: **3**, production-assigned for LC02 (`vBRU4ztAu1MfP8arDoB3`, `WAppqUXeqDqXjNTaQxG9`, `Q6HPFg7bazU61NeyrvBp`).
 - SFX/ambience files: **3** (`A01`, `A15`, `A16`), no speaker casting.
-- No audio is approved for delivery until recording, transcript, clarity, replay, local ownership, and scene fit are reviewed.
+- No audio is marked `APPROVED` for delivery until human listening review confirms recording, transcript, clarity, replay, local ownership, and scene fit. The current human listening status remains `HUMAN QA PENDING` for all 16 files.

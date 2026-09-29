@@ -48,6 +48,36 @@ Všechny čtyři hlavní hlasy byly v ElevenLabs úspěšně otestovány přes m
 - character delivery: young British male; friendly; sincere; natural; slightly embarrassed when appropriate; conversational rather than narrator-like
 - status: `APPROVED / CANONICAL`
 
+## Chapter I LC02 production casting
+
+These supporting voices are assigned to the Chapter I LC02 production files. Their technical asset status is tracked in `docs/chapters/ch01/CH01_AUDIO_ASSET_MANIFEST.md`; human listening QA remains pending.
+
+### LC02-01 — polite work request
+
+- voice name: not provided in the production casting brief
+- Voice ID: `vBRU4ztAu1MfP8arDoB3`
+- model: not provided in the production casting brief
+- production role: polite work request
+- status: `PRODUCTION ASSIGNED / HUMAN QA PENDING`
+
+### LC02-02 — informal market instruction
+
+- voice name: `Hugo`
+- Voice ID: `WAppqUXeqDqXjNTaQxG9`
+- model: not provided in the production casting brief
+- production role: informal market instruction
+- status: `PRODUCTION ASSIGNED / HUMAN QA PENDING`
+
+### LC02-03 — formal information request
+
+- voice name: `Ruby`
+- Voice ID: `Q6HPFg7bazU61NeyrvBp`
+- model: not provided in the production casting brief
+- production role: formal information request
+- status: `PRODUCTION ASSIGNED / HUMAN QA PENDING`
+
+The previously considered `Ali` voice is not canonical and must not be listed as a Chapter I production voice.
+
 ## Voice locking rules
 
 - Canonical voice IDs hlavních postav se nesmí měnit bez explicitního pokynu uživatelky.
