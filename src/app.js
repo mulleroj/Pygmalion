@@ -146,7 +146,7 @@ function renderDialogue(scene) {
 function renderStoryBeats(scene) {
   return `<div class="story-beats" aria-label="Story narration and dialogue">${scene.storyBeats.map((beat, index) => beat.type === 'narration'
     ? `<p class="narrative-beat">${escapeHtml(beat.text)}</p>`
-    : `<div class="dialogue-line ${beat.speaker.toLowerCase().replace(/[^a-z]+/g, '-')}" data-line="${index}"><span class="speaker">${escapeHtml(beat.speaker)}</span><p>${escapeHtml(beat.text)}</p></div>`).join('')}</div>`;
+    : `<div class="dialogue-line ${beat.speaker.toLowerCase().replace(/[^a-z]+/g, '-')}" data-line="${index}"><span class="speaker">${escapeHtml(beat.speaker)}</span>${scene.voice.some((voice) => voice.inline && voice.transcript === beat.text) ? `<div><p>${escapeHtml(beat.text)}</p>${scene.voice.filter((voice) => voice.inline && voice.transcript === beat.text).map((voice) => renderAudioControl(voice)).join('')}</div>` : `<p>${escapeHtml(beat.text)}</p>`}</div>`).join('')}</div>`;
 }
 
 function renderOpeningTone(scene) {
@@ -269,7 +269,7 @@ function renderScene(scene) {
   const decisionSelected = scene.decision ? Boolean(state.decisions[scene.decision.id]) : true;
   const challengeComplete = scene.id === 'ch02_s01' ? state.ch02_lc03_completed : scene.id === 'ch02_s02' ? state.ch02_lc04_completed : scene.challenge ? isChallengeComplete(state, scene.challenge.id) : true;
   const sceneIndex = scene.number;
-  const voiceMarkup = scene.voice.map((item) => renderAudioControl(item)).join('');
+  const voiceMarkup = scene.voice.filter((item) => !item.inline).map((item) => renderAudioControl(item)).join('');
   const sfxMarkup = scene.sfx ? renderSfxControl(scene.sfx) : '';
   let body = '';
   if (scene.id === 'ch01_s01') body += renderOpeningTone(scene);

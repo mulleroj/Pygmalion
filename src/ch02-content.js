@@ -102,7 +102,12 @@ export const CH02_SCENE_03 = {
     { ...image('images/characters/higgins/runtime/higgins_master_cutout.png', 'Higgins stands further back with his notebook.'), placement: 'higgins' },
     { ...image('images/characters/mrs-pearce/runtime/mrs-pearce_practical-questioning_cutout.png', 'Mrs Pearce leads the practical conversation with an open questioning gesture.'), placement: 'mrs-pearce' }
   ],
-  props: [], voice: [],
+  props: [],
+  voice: [{
+    id: 'AM16', src: './assets/audio/characters/eliza/eliza_ch02_scene03_001.mp3',
+    transcript: "I'm paying for lessons. I'm not giving up my say in them.",
+    label: 'Play Eliza’s boundary statement', inline: true
+  }], // Exact supplied take; human approved in S03 mix. Explicit play only.
   storyBeats: [
     { type: 'narration', text: "Away from Higgins's notes, the questions become ordinary and serious: time, money, clothes, rest, and what happens when a lesson becomes too much." },
     { type: 'dialogue', speaker: 'Mrs Pearce', text: 'Before we begin, we must know the hours, the cost, and what you need.' },
@@ -158,7 +163,7 @@ export const CH02_SCENE_02_TEACHER_SECTIONS = CH02_TEACHER_SECTIONS.map(([headin
 const CH02_S03_TEACHER_OVERRIDES = {
   'Learning Goals': 'Ask for clarification about practical terms; name boundaries and recognise learner agency within an unequal agreement.',
   'Language Focus': 'Could you explain…? expresses a request for clarification. I will ask. I will not pretend. names a boundary without aggression. Discuss hours, cost, rest and understanding.',
-  'Listening Focus': 'This scene is book-first. No story voice is available yet; all meaning is present in the visible dialogue. There is no listening task.',
+  'Listening Focus': 'This scene is book-first. Eliza’s boundary statement has optional story voice, human approved in the scene mix. Mrs Pearce’s voice is unavailable. All meaning is present in the visible dialogue; there is no listening task.',
   'Decisions – Teacher Notes': 'Both optional responses are legitimate. Asking for clarification records that Eliza asked a boundary question; confirming understanding adds no persistent outcome. Neither changes development signals.',
   'Challenge Key': 'There is no answer key and no scored challenge. The optional response is a conversational choice.',
   'Discussion Questions': 'Why can it be difficult to ask an authority for clarification? How does payment affect the power imbalance? How does Mrs Pearce support Eliza without deciding for her?',

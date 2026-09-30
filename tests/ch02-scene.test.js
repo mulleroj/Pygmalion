@@ -286,7 +286,13 @@ test('s03 uses only canonical hallway characters and exact locked story and resp
   for (const beat of scene.storyBeats) assert.ok(script.includes(beat.text));
   assert.deepEqual(scene.response.choices.map(({ id }) => id), ['s03_ask_for_clarification', 's03_confirm_understanding']);
   for (const option of scene.response.choices) { assert.ok(script.includes(option.id)); assert.ok(script.includes(option.text)); }
-  assert.deepEqual(scene.voice, []);
+  assert.deepEqual(scene.voice.map(({ id, src, transcript, inline }) => ({ id, src, transcript, inline })), [{
+    id: 'AM16', src: './assets/audio/characters/eliza/eliza_ch02_scene03_001.mp3',
+    transcript: scene.storyBeats[8].text, inline: true
+  }]);
+  const mp3 = fs.readFileSync(path.join(root, scene.voice[0].src));
+  assert.equal(mp3.length, 70378);
+  assert.ok(mp3.subarray(0, 3).toString() === 'ID3' || (mp3[0] === 0xff && (mp3[1] & 0xe0) === 0xe0));
   assert.equal(scene.contextual, undefined);
   assert.equal(scene.sfx, undefined);
   assert.equal(scene.challenge, undefined);
@@ -350,8 +356,14 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   await click('next-scene');
   assert.deepEqual(JSON.parse(saved), { ...completed, scene: 'ch02_s03' });
   assert.match(node('#app').innerHTML, /This response is optional/);
-  assert.doesNotMatch(node('#app').innerHTML, /data-action="next-scene"|data-action="play-voice"|pickering_master|ch02_s04/);
+  assert.doesNotMatch(node('#app').innerHTML, /data-action="next-scene"|pickering_master|ch02_s04|mrs-pearce_ch02_scene03_001/);
+  assert.equal((node('#app').innerHTML.match(/data-action="play-voice"/g) || []).length, 1);
+  const finalLine = node('#app').innerHTML.split('data-line="8"')[1].split('class="scene-response"')[0];
+  assert.match(finalLine, /I&#39;m paying for lessons/);
+  assert.match(finalLine, /eliza_ch02_scene03_001\.mp3/);
   const before = saved;
+  await click('play-voice', { src: CH02_SCENE_03.voice[0].src });
+  assert.equal(saved, before);
   moveNext(); render(); await click('open-teacher'); await click('teacher-preview');
   assert.equal(saved, before);
   await click('respond-s03', { option: 's03_confirm_understanding' });

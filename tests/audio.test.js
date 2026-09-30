@@ -101,6 +101,38 @@ function audioHarness(t, options = {}) {
 
 const gramophoneSpec = { id: 'gramophone_distant', src: AMBIENCE_FILES.gramophone_distant };
 
+test('AM16 explicit replay owns speech and restores the same s03 interior; Sound on never replays it', async (t) => {
+  const { manager, elements } = audioHarness(t);
+  const src = './assets/audio/characters/eliza/eliza_ch02_scene03_001.mp3';
+  await manager.ensureAmbience('ch02_s03');
+  assert.equal(elements.length, 0);
+  manager.unlock();
+  await manager.ensureAmbience('ch02_s03');
+  const base = manager.ambience;
+  base.currentTime = 7;
+  const first = await manager.playVoice(src);
+  assert.equal(base.volume, 0.10 * 0.28);
+  const second = await manager.playVoice(src);
+  assert.equal(first.paused, true);
+  assert.equal(second.paused, false);
+  first.emit('ended');
+  assert.equal(base.volume, 0.10 * 0.28);
+  second.emit('ended');
+  assert.equal(base.volume, 0.10);
+  assert.equal(manager.ambience, base);
+  assert.equal(base.currentTime, 7);
+  assert.equal(base.playCalls, 1);
+  const third = await manager.playVoice(src);
+  await manager.setEnabled(false);
+  assert.equal(third.paused, true);
+  await manager.setEnabled(true);
+  await manager.ensureAmbience('ch02_s03');
+  assert.equal(third.playCalls, 1);
+  assert.equal(third.paused, true);
+  assert.equal(manager.contextual, null);
+  assert.equal(elements.filter((item) => item.src === src).length, 3);
+});
+
 test('gramophone is a quiet non-looping cue: fade starts at 18s and stops at 21s per visit', async (t) => {
   t.mock.timers.enable({ apis: ['Date', 'setInterval'] });
   assert.deepEqual(GRAMOPHONE_CUE_TIMING, { fadeOutAfterMs: 18000, fadeOutMs: 3000 });
