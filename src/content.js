@@ -209,6 +209,7 @@ export const AUDIO_FILES = [
 export const VISUAL_FILES = Object.values(VISUALS).map((asset) => asset.src.replace(/^\.\/assets\//, ''));
 
 export function ambienceForScene(sceneId) {
+  if (sceneId.startsWith('ch02_')) return null; // Chapter II ambience is not approved for runtime yet.
   return sceneId === 'ch01_s05' ? 'covent_garden_evening_light_rain' : 'covent_garden_rain_market';
 }
 

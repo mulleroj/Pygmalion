@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { CH02_SCENE_01, CH02_TEACHER_SECTIONS } from '../src/ch02-content.js';
-import { SCENES } from '../src/content.js';
+import { CH02_SCENE_01, CH02_SCENE_02, CH02_TEACHER_SECTIONS, CH02_SCENE_02_TEACHER_SECTIONS } from '../src/ch02-content.js';
+import { SCENES, ambienceForScene } from '../src/content.js';
 import { AudioManager } from '../src/audio.js';
-import { createInitialState, applyDecision, recordLc03Answer, loadState, setScene, canAdvanceScene, getSceneAdvanceBlock } from '../src/state.js';
+import { createInitialState, applyDecision, recordLc03Answer, recordLc04Answer, ensureChallengeOptionOrders, ensureChallengePresentationOrder, loadState, setScene, canAdvanceScene, getSceneAdvanceBlock } from '../src/state.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (relative) => fs.readFileSync(path.join(root, relative), 'utf8');
@@ -103,17 +103,109 @@ test('Teacher Mode has the twelve contextual sections and remains a read-only pi
   const teacherFunctions = app.split('function openTeacher(trigger) {')[1].split("document.addEventListener('click'")[0];
   assert.doesNotMatch(teacherFunctions, /save\(|applyDecision\(|recordLc03Answer\(|setScene\(/);
   assert.match(teacherFunctions, /CH02_TEACHER_SECTIONS/);
-  assert.match(app, /if \(scene\.id === 'ch02_s01'\) audioManager\.stopAmbience\(\)/);
+  assert.match(app, /if \(scene\.id === 'ch02_s01' \|\| scene\.id === 'ch02_s02'\) audioManager\.stopAmbience\(\)/);
 });
 
-test('entering the silent pilot stops Chapter I ambience without creating replacement audio', () => {
+test('entering a silent Chapter II scene stops Chapter I ambience without replacement audio', async () => {
   const manager = new AudioManager();
   let paused = 0;
   manager.ambience = { pause: () => { paused += 1; } };
   manager.ambienceId = 'covent_garden_evening_light_rain';
-  manager.stopAmbience();
+  assert.equal(ambienceForScene('ch01_s01'), 'covent_garden_rain_market');
+  assert.equal(ambienceForScene('ch01_s05'), 'covent_garden_evening_light_rain');
+  assert.equal(ambienceForScene('ch02_s01'), null);
+  assert.equal(ambienceForScene('ch02_s02'), null);
+  assert.deepEqual(await manager.ensureAmbience('ch02_s02'), { id: null, restarted: false, blocked: false });
   assert.equal(paused, 1);
   assert.equal(manager.ambience, null);
   assert.equal(manager.ambienceId, null);
   assert.deepEqual(CH02_SCENE_01.voice, []);
+  assert.deepEqual(CH02_SCENE_02.voice, []);
+});
+
+test('scene two uses the approved study plate and four existing transparent characters', () => {
+  assert.equal(CH02_SCENE_02.id, 'ch02_s02');
+  assert.equal(CH02_SCENE_02.background.src, './assets/images/locations/ch02/ch02_higgins-study.webp');
+  assert.equal(CH02_SCENE_02.plate.src, CH02_SCENE_02.background.src);
+  assert.equal(CH02_SCENE_02.eliza.src, './assets/images/characters/eliza/runtime/eliza_flower-girl_guarded_cutout.png');
+  assert.deepEqual(CH02_SCENE_02.supporting.map(({ placement }) => placement), ['pickering', 'higgins', 'mrs-pearce']);
+  assert.deepEqual(CH02_SCENE_02.supporting.map(({ src }) => src), [
+    './assets/images/characters/pickering/runtime/pickering_master_cutout.png',
+    './assets/images/characters/higgins/runtime/higgins_master_cutout.png',
+    './assets/images/characters/mrs-pearce/runtime/mrs-pearce_observant-support_cutout.png'
+  ]);
+  assert.deepEqual(CH02_SCENE_02.props, []);
+  for (const asset of [CH02_SCENE_02.background, CH02_SCENE_02.eliza, ...CH02_SCENE_02.supporting]) {
+    assert.ok(fs.statSync(path.join(root, asset.src)).size > 0, `missing or empty ${asset.src}`);
+  }
+  for (const asset of [CH02_SCENE_02.eliza, ...CH02_SCENE_02.supporting]) {
+    assert.equal(fs.readFileSync(path.join(root, asset.src)).readUInt8(25), 6, `${asset.src} must be RGBA`);
+  }
+});
+
+test('scene two preserves locked story and LC04 text without wiring unapproved audio', () => {
+  const script = read('docs/chapters/ch02/SCRIPT.md').split('## ch02_s02 – Terms on the Table')[1].split('## ch02_s03')[0];
+  const audioPlan = read('docs/chapters/ch02/AUDIO_PLAN.md');
+  for (const beat of CH02_SCENE_02.storyBeats) assert.ok(script.includes(beat.text), `script parity: ${beat.text}`);
+  for (const item of [CH02_SCENE_02.challenge.intro, CH02_SCENE_02.challenge.prompt, CH02_SCENE_02.challenge.success, CH02_SCENE_02.challenge.retry, CH02_SCENE_02.transition]) {
+    assert.ok(script.includes(item), `script parity: ${item}`);
+  }
+  assert.deepEqual(CH02_SCENE_02.challenge.samples.map(({ id }) => id), ['lc04_sample_offer', 'lc04_sample_evaluation', 'lc04_sample_condition']);
+  assert.deepEqual(CH02_SCENE_02.challenge.options.map(({ id }) => id), ['lc04_offer', 'lc04_evaluation', 'lc04_condition']);
+  for (const sample of CH02_SCENE_02.challenge.samples) {
+    assert.ok(script.includes(sample.transcript));
+    assert.ok(audioPlan.includes(sample.transcript));
+    assert.equal(sample.src, undefined);
+  }
+  assert.ok(audioPlan.includes(CH02_SCENE_02.storyBeats.find((beat) => beat.speaker === 'Pickering').text));
+  assert.deepEqual(CH02_SCENE_02.voice, []);
+  assert.doesNotMatch(read('src/ch02-content.js'), /https?:\/\/.*elevenlabs/i);
+});
+
+test('LC04 order, retry, completion, replay and refresh preserve state and signal safety', () => {
+  const sampleIds = CH02_SCENE_02.challenge.samples.map(({ id }) => id);
+  const answerIds = CH02_SCENE_02.challenge.options.map(({ id }) => id);
+  let state = setScene(createInitialState(), CH02_SCENE_02.id);
+  assert.equal(getSceneAdvanceBlock(state, CH02_SCENE_02), 'Complete the language challenge to continue.');
+  state = ensureChallengePresentationOrder(state, 'LC04', sampleIds, () => 0);
+  state = ensureChallengeOptionOrders(state, 'LC04', [{ key: 'shared', optionIds: answerIds }], () => 0.5);
+  const presentation = [...state.lc04_presentation_order];
+  const answers = [...state.challenges.lc04.optionOrders.shared];
+  assert.deepEqual([...presentation].sort(), [...sampleIds].sort());
+  assert.deepEqual([...answers].sort(), [...answerIds].sort());
+  assert.equal(ensureChallengePresentationOrder(state, 'LC04', sampleIds, () => 0.99), state);
+  assert.equal(ensureChallengeOptionOrders(state, 'LC04', [{ key: 'shared', optionIds: answerIds }], () => 0.99), state);
+
+  state = recordLc04Answer(state, 'lc04_sample_offer', 'lc04_condition');
+  assert.equal(state.ch02_lc04_attempts, 1);
+  assert.equal(state.ch02_lc04_completed, false);
+  assert.equal(state.experiment_framing_heard, false);
+  state = recordLc04Answer(state, 'lc04_sample_offer', 'lc04_offer');
+  state = recordLc04Answer(state, 'lc04_sample_evaluation', 'lc04_evaluation');
+  state = recordLc04Answer(state, 'lc04_sample_condition', 'lc04_condition');
+  assert.equal(state.ch02_lc04_attempts, 4);
+  assert.equal(state.ch02_lc04_completed, true);
+  assert.equal(state.experiment_framing_heard, true);
+  assert.equal(state.challenges.lc04.completed, true);
+  assert.deepEqual(state.applied_events, ['ch02_lc04_completed']);
+  assert.deepEqual([state.pronunciation, state.confidence, state.independence], [0, 0, 0]);
+  assert.equal(canAdvanceScene(state, CH02_SCENE_02), true);
+  assert.deepEqual(state.lc04_presentation_order, presentation);
+  assert.deepEqual(state.challenges.lc04.optionOrders.shared, answers);
+  assert.equal(recordLc04Answer(state, 'lc04_sample_offer', 'lc04_offer'), state);
+  assert.equal(recordLc04Answer(state, 'invalid-sample', 'lc04_offer'), state);
+  const refreshed = loadState({ getItem: () => JSON.stringify(state) });
+  assert.deepEqual(refreshed, state);
+  assert.equal(ensureChallengePresentationOrder(refreshed, 'LC04', sampleIds, () => 0.99), refreshed);
+  assert.equal(recordLc04Answer(refreshed, 'lc04_sample_condition', 'lc04_offer'), refreshed);
+});
+
+test('scene two Teacher Mode keeps the chapter structure and LC04 key separate from play', () => {
+  assert.equal(CH02_SCENE_02_TEACHER_SECTIONS.length, 12);
+  assert.match(CH02_SCENE_02_TEACHER_SECTIONS.find(([heading]) => heading === 'Challenge Key')[1], /lc04_sample_offer → lc04_offer/);
+  const app = read('src/app.js');
+  const teacherFunctions = app.split('function openTeacher(trigger) {')[1].split("document.addEventListener('click'")[0];
+  assert.doesNotMatch(teacherFunctions, /save\(|applyDecision\(|recordLc04Answer\(|setScene\(/);
+  assert.match(teacherFunctions, /CH02_SCENE_02_TEACHER_SECTIONS/);
+  assert.match(app, /scene\.id === 'ch02_s02'\) return announce\('Mrs Pearce/);
 });

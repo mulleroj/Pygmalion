@@ -77,6 +77,10 @@ export class AudioManager {
 
   async ensureAmbience(sceneId) {
     const id = ambienceForScene(sceneId);
+    if (!id) {
+      this.stopAmbience();
+      return { id: null, restarted: false, blocked: false };
+    }
     if (this.ambience && this.ambienceId === id) {
       this.ambience.muted = !this.enabled;
       return { id, restarted: false, blocked: Boolean(this.lastError) };

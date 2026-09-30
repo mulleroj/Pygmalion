@@ -14,6 +14,10 @@ export function createInitialState() {
     request_strategy: null,
     ch02_lc03_attempts: 0,
     ch02_lc03_completed: false,
+    experiment_framing_heard: false,
+    ch02_lc04_attempts: 0,
+    ch02_lc04_completed: false,
+    lc04_presentation_order: null,
     confidence: 0,
     pronunciation: 0,
     independence: 0,
@@ -21,7 +25,8 @@ export function createInitialState() {
     decisions: {},
     challenges: {
       lc01: { answers: {}, completed: false, optionOrders: {} },
-      lc02: { answers: {}, completed: false, optionOrders: {} }
+      lc02: { answers: {}, completed: false, optionOrders: {} },
+      lc04: { answers: {}, completed: false, optionOrders: {} }
     },
     soundEnabled: true
   };
@@ -39,7 +44,8 @@ function mergeState(raw) {
       ...initial.challenges,
       ...(raw.challenges || {}),
       lc01: { ...initial.challenges.lc01, ...((raw.challenges || {}).lc01 || {}) },
-      lc02: { ...initial.challenges.lc02, ...((raw.challenges || {}).lc02 || {}) }
+      lc02: { ...initial.challenges.lc02, ...((raw.challenges || {}).lc02 || {}) },
+      lc04: { ...initial.challenges.lc04, ...((raw.challenges || {}).lc04 || {}) }
     }
   };
 }
@@ -133,6 +139,32 @@ export function recordLc03Answer(state, optionId) {
   };
 }
 
+const LC04_ANSWER_BY_SAMPLE = {
+  lc04_sample_offer: 'lc04_offer',
+  lc04_sample_evaluation: 'lc04_evaluation',
+  lc04_sample_condition: 'lc04_condition'
+};
+
+export function recordLc04Answer(state, sampleId, answerId) {
+  const correctAnswer = LC04_ANSWER_BY_SAMPLE[sampleId];
+  const challenge = state.challenges.lc04;
+  if (!correctAnswer || !Object.values(LC04_ANSWER_BY_SAMPLE).includes(answerId) ||
+      state.ch02_lc04_completed || challenge.answers[sampleId]?.correct) return state;
+
+  const answers = { ...challenge.answers, [sampleId]: { answer: answerId, correct: answerId === correctAnswer } };
+  const completed = Object.entries(LC04_ANSWER_BY_SAMPLE).every(([id, expected]) => answers[id]?.answer === expected);
+  return {
+    ...state,
+    experiment_framing_heard: completed || state.experiment_framing_heard,
+    ch02_lc04_attempts: state.ch02_lc04_attempts + 1,
+    ch02_lc04_completed: completed,
+    applied_events: completed && !state.applied_events.includes('ch02_lc04_completed')
+      ? [...state.applied_events, 'ch02_lc04_completed']
+      : state.applied_events,
+    challenges: { ...state.challenges, lc04: { ...challenge, answers, completed } }
+  };
+}
+
 export function recordChallengeAnswer(state, challengeId, sampleId, answer, canonicalAnswerId) {
   const key = challengeId.toLowerCase();
   if (!state.challenges[key]) return state;
@@ -194,6 +226,12 @@ export function ensureChallengeOptionOrders(state, challengeId, optionGroups, ra
   };
 }
 
+export function ensureChallengePresentationOrder(state, challengeId, sampleIds, random = Math.random) {
+  if (challengeId !== 'LC04' || !Array.isArray(sampleIds)) return state;
+  if (isExactOptionPermutation(state.lc04_presentation_order, sampleIds)) return state;
+  return { ...state, lc04_presentation_order: shuffleOptionIds(sampleIds, random) };
+}
+
 export function markChallengeEntered(state, challengeId) {
   if (challengeId !== 'LC02' || state.ear_test_intro_seen) return state;
   return { ...state, ear_test_intro_seen: true };
@@ -207,6 +245,7 @@ export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === 'ch01_s01' && !state.opening_tone) return 'Choose a first response before continuing.';
   if (scene.decision && !state.decisions[scene.decision.id]) return 'Choose a response to continue.';
   if (scene.id === 'ch02_s01') return state.ch02_lc03_completed ? '' : 'Complete the reading challenge to continue.';
+  if (scene.id === 'ch02_s02') return state.ch02_lc04_completed ? '' : 'Complete the language challenge to continue.';
   if (scene.challenge && !isChallengeComplete(state, scene.challenge.id)) return 'Complete the listening challenge to continue.';
   return '';
 }

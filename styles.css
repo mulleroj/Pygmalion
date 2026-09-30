@@ -83,6 +83,20 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch02-exterior .supporting-character { left: 58%; bottom: 24%; height: 48%; }
 .ch02-exterior .art-eliza::before { left: 15%; bottom: 12%; width: 28%; height: 2%; background: rgba(30, 28, 25, .35); filter: blur(5px); opacity: .55; }
 .ch02-exterior .art-support::before { content: ''; position: absolute; left: 49%; bottom: 23%; width: 18%; height: 1.7%; border-radius: 50%; background: rgba(30, 28, 25, .35); filter: blur(4px); opacity: .5; }
+.ch02-study-spread { grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); }
+.ch02-study.storybook-art { min-height: 0; height: auto; aspect-ratio: 1672 / 941; background: #5b4a3f; }
+.ch02-study .art-background { filter: saturate(.91) brightness(.98); }
+.ch02-study .art-background img { object-fit: contain; }
+.ch02-study .art-support, .ch02-study .art-eliza { display: block; padding: 0; opacity: 1; }
+.ch02-study .supporting-character, .ch02-study .art-eliza img { position: absolute; width: auto; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); filter: saturate(.93) brightness(.99) drop-shadow(0 3px 3px rgba(34, 27, 24, .22)); }
+.ch02-study .support-pickering { left: 43%; top: 22%; height: 53%; clip-path: inset(0 0 45% 0); z-index: 1; }
+.ch02-study .support-higgins { left: 65%; top: 5%; height: 85%; clip-path: inset(0 0 45% 0); z-index: 2; }
+.ch02-study .support-mrs-pearce { left: 83%; top: 34%; height: 55%; z-index: 3; }
+.ch02-study .art-eliza img { left: 27%; top: 20%; height: 78%; z-index: 1; }
+.ch02-study .art-eliza::before { left: 16%; bottom: 2%; width: 23%; height: 1.5%; background: rgba(30, 28, 25, .35); filter: blur(4px); opacity: .45; }
+.ch02-study .art-support::before { content: ''; position: absolute; left: 75%; bottom: 10%; width: 17%; height: 1.5%; border-radius: 50%; background: rgba(30, 28, 25, .3); filter: blur(4px); opacity: .4; }
+.ch02-study figcaption { display: none; }
+.ch02-study-activity { grid-column: 1 / -1; justify-self: center; width: min(720px, calc(100% - 3rem)); padding-bottom: 3rem; }
 .story-beats { margin: 0 0 1.4rem; }
 .story-beats .narrative-beat { margin: 0 0 1rem; color: #4b4248; line-height: 1.75; }
 .story-beats .dialogue-line { border-top: 1px solid rgba(73, 52, 51, .09); }
@@ -200,6 +214,14 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch02-exterior .supporting-character { left: 53%; bottom: 24%; height: 50%; }
   .ch02-exterior .art-eliza::before { left: 9%; bottom: 12%; width: 35%; }
   .ch02-exterior .art-support::before { left: 42%; bottom: 23%; width: 23%; }
+  .ch02-study.storybook-art { min-height: 440px; height: 440px; aspect-ratio: auto; }
+  .ch02-study .art-background img { object-fit: cover; object-position: 62% center; }
+  .ch02-study .support-pickering { left: 38%; top: 18%; height: 37%; clip-path: inset(0 0 32% 0); }
+  .ch02-study .support-higgins { left: 66%; top: 13%; height: 62%; clip-path: inset(0 0 40% 0); }
+  .ch02-study .support-mrs-pearce { left: 80%; top: 39%; height: 50%; }
+  .ch02-study .art-eliza img { left: 28%; top: 29%; height: 70%; }
+  .ch02-study .art-eliza::before { left: 11%; bottom: 1%; width: 34%; }
+  .ch02-study .art-support::before { left: 68%; bottom: 10%; width: 23%; }
   .chapter-end > .secondary-button + .secondary-button { margin: .5rem 0 0; }
 }
 

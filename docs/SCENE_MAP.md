@@ -137,7 +137,7 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 - **Challenge:** `LC03` – převést přímý požadavek do zdvořilé formy bez ztráty významu.
 - **Teacher Mode:** requests, polite forms, directness vs rudeness.
 - **Vizuální assety:** Eliza `Flower Girl / determined`, vstup domu, Mrs Pearce u dveří.
-- **Audio assety:** `eliza_ch02_scene01_001.mp3`, `higgins_ch02_scene01_001.mp3`, `sfx_house_door_001.mp3` a přepisy.
+- **Audio assety:** `eliza_ch02_scene01_001.mp3`, `higgins_ch02_scene01_001.mp3`, `house-entry-001.mp3` a přepisy.
 - **Návaznost:** `ch02_s02`.
 
 ### ch02_s02 – Terms on the Table
@@ -147,11 +147,11 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 - **Postavy:** Eliza, Higgins, Pickering, Mrs Pearce.
 - **Děj:** Higgins mluví o lekcích jako o experimentu, zatímco Pickering upozorňuje na člověka a Mrs Pearce na praktické důsledky. Eliza slyší, že její peníze a práce mají společenskou hodnotu.
 - **Hlavní účel:** ukázat konflikt mezi Higginsovou fascinací a Eliziným vlastním cílem.
-- **Rozhodnutí hráče:** žádné hlavní; hráč přiřazuje, kdo je adresátem jednotlivých replik.
+- **Rozhodnutí hráče:** žádné hlavní; v LC04 hráč rozlišuje nabídku, hodnocení a podmínku podle účelu repliky.
 - **Možné hodnotové změny:** žádné; LC04 ukládá pouze completion a attempt metadata, bez Confidence reward.
 - **Uložení:** `long-term: ne`; uloží se `experiment_framing_heard`.
 - **Audio momenty:** `AM14A VOICE` Pickeringova přesná viditelná replika; `AM14 LISTENING` tři stabilní LC04 sample.
-- **Challenge:** `LC04` – rozlišit, zda replika vyjadřuje nabídku, hodnocení, nebo skrytou podmínku.
+- **Challenge:** `LC04` – rozlišit, zda replika vyjadřuje nabídku, hodnocení, nebo podmínku.
 - **Teacher Mode:** formal / informal register a implied meaning v institucionálním rozhovoru.
 - **Vizuální assety:** pracovní stůl, zápisníky, Eliza mezi třemi různými postoji dospělých.
 - **Audio assety:** `pickering_ch02_scene02_001.mp3`, `ch02_lc04_001.mp3`, `ch02_lc04_002.mp3`, `ch02_lc04_003.mp3` a přepisy.
@@ -188,7 +188,7 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 - **Challenge:** žádná; učební obsah je vložený do vyjednávání.
 - **Teacher Mode:** money, social value, formal agreement vocabulary.
 - **Vizuální assety:** mince, rozvrh, fonetické pomůcky, Eliza stojící u stolu.
-- **Audio assety:** `higgins_ch02_scene04_001.mp3`, `sfx_coins_writing_clock_001.mp3` a přepis podmínek.
+- **Audio assety:** `higgins_ch02_scene04_001.mp3`, `lesson-terms-001.mp3` a přepis podmínek.
 - **Návaznost:** `ch02_s05`.
 
 ### ch02_s05 – Why I Am Here
