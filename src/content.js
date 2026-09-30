@@ -209,11 +209,15 @@ export const AUDIO_FILES = [
 export const VISUAL_FILES = Object.values(VISUALS).map((asset) => asset.src.replace(/^\.\/assets\//, ''));
 
 export function ambienceForScene(sceneId) {
-  if (sceneId.startsWith('ch02_')) return null; // Chapter II ambience is not approved for runtime yet.
+  if (sceneId === 'ch02_s01') return 'higgins_house_morning_entry';
+  if (['ch02_s02', 'ch02_s03', 'ch02_s04', 'ch02_s05'].includes(sceneId)) return 'higgins_house_interior';
+  if (sceneId.startsWith('ch02_')) return null;
   return sceneId === 'ch01_s05' ? 'covent_garden_evening_light_rain' : 'covent_garden_rain_market';
 }
 
 export function isContinuousAmbienceTransition(fromSceneId, toSceneId) {
   const rainScenes = new Set(['ch01_s01', 'ch01_s02', 'ch01_s03', 'ch01_s04']);
-  return rainScenes.has(fromSceneId) && rainScenes.has(toSceneId);
+  const interiorScenes = new Set(['ch02_s02', 'ch02_s03', 'ch02_s04', 'ch02_s05']);
+  return (rainScenes.has(fromSceneId) && rainScenes.has(toSceneId))
+    || (interiorScenes.has(fromSceneId) && interiorScenes.has(toSceneId));
 }

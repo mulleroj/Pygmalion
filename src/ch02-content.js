@@ -66,7 +66,12 @@ export const CH02_SCENE_02 = {
     { type: 'dialogue', speaker: 'Pickering', text: 'A lesson should help her choose, not simply measure her.' },
     { type: 'dialogue', speaker: 'Mrs Pearce', text: 'And it should describe a household, not only a laboratory.' }
   ],
-  voice: [], // AM14A remains unwired until the candidate recording is human-approved.
+  voice: [{
+    id: 'AM14A', src: './assets/audio/characters/pickering/pickering_ch02_scene02_001.mp3',
+    transcript: 'A lesson should help her choose, not simply measure her.',
+    label: 'Play Pickering’s response'
+  }], // Human approved in mix; speech is explicit-play only.
+  contextual: { id: 'gramophone_distant', src: './assets/audio/ambience/gramophone_distant.mp3' },
   challenge: {
     id: 'LC04', kind: 'lc04', title: 'Offer, evaluation, or condition',
     intro: 'The people around the table use different kinds of statements. Listen for what each speaker is doing in the conversation.',
@@ -77,9 +82,9 @@ export const CH02_SCENE_02 = {
       { id: 'lc04_condition', label: 'Condition' }
     ],
     samples: [
-      { id: 'lc04_sample_offer', transcript: 'I can give you three lessons each week, and I can show you how to practise.', answer: 'lc04_offer' },
-      { id: 'lc04_sample_evaluation', transcript: 'You listen carefully. That is a useful beginning, but your question needs a clearer ending.', answer: 'lc04_evaluation' },
-      { id: 'lc04_sample_condition', transcript: 'If you stay for lessons, you must keep the agreed hours.', answer: 'lc04_condition' }
+      { id: 'lc04_sample_offer', speaker: 'Higgins', src: './assets/audio/listening/ch02_lc04_001.mp3', transcript: 'I can give you three lessons each week, and I can show you how to practise.', answer: 'lc04_offer' },
+      { id: 'lc04_sample_evaluation', speaker: 'Pickering', src: './assets/audio/listening/ch02_lc04_002.mp3', transcript: 'You listen carefully. That is a useful beginning, but your question needs a clearer ending.', answer: 'lc04_evaluation' },
+      { id: 'lc04_sample_condition', speaker: 'Mrs Pearce', src: './assets/audio/listening/ch02_lc04_003.mp3', transcript: 'If you stay for lessons, you must keep the agreed hours.', answer: 'lc04_condition' }
     ],
     success: 'An offer gives or promises something. An evaluation describes a quality or result. A condition says what must happen for an agreement to continue.',
     retry: 'Listen for the purpose of the sentence. Is the speaker offering something, judging a result, or setting a requirement?'
@@ -104,7 +109,7 @@ export const CH02_TEACHER_SECTIONS = [
 
 const CH02_S02_TEACHER_OVERRIDES = {
   'Learning Goals': 'Identify an offer, an evaluation, and a condition in context; ask for clarification about practical lesson terms. These are speech acts, not rankings of speakers.',
-  'Listening Focus': 'LC04 asks what each sentence does: an offer gives or promises something; an evaluation describes a quality or result; a condition states what must happen. The transcript supports every sample; audio is awaiting human approval.',
+  'Listening Focus': 'LC04 asks what each sentence does: an offer gives or promises something; an evaluation describes a quality or result; a condition states what must happen. The transcript supports every sample; audio is human-approved in the scene mix.',
   'Decisions – Teacher Notes': 'There is no major decision in ch02_s02. D04 was saved in the previous scene; LC04 records attempts and completion without a development-signal change.',
   'Challenge Key': 'LC04: lc04_sample_offer → lc04_offer; lc04_sample_evaluation → lc04_evaluation; lc04_sample_condition → lc04_condition. Completion stores ch02_lc04_completed, experiment_framing_heard, and attempt metadata, with no Confidence reward.',
   'Discussion Questions': 'What is each speaker trying to do with their statement? How does Eliza distinguish a measurable exercise from her own purpose? Which practical terms would you ask about before agreeing to lessons?',

@@ -5,7 +5,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CH02_SCENE_01, CH02_SCENE_02, CH02_TEACHER_SECTIONS, CH02_SCENE_02_TEACHER_SECTIONS } from '../src/ch02-content.js';
 import { SCENES, ambienceForScene } from '../src/content.js';
-import { AudioManager } from '../src/audio.js';
+import { AudioManager, AMBIENCE_FILES } from '../src/audio.js';
+import { createHash } from 'node:crypto';
 import { createInitialState, applyDecision, recordLc03Answer, recordLc04Answer, ensureChallengeOptionOrders, ensureChallengePresentationOrder, loadState, setScene, canAdvanceScene, getSceneAdvanceBlock } from '../src/state.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -103,24 +104,29 @@ test('Teacher Mode has the twelve contextual sections and remains a read-only pi
   const teacherFunctions = app.split('function openTeacher(trigger) {')[1].split("document.addEventListener('click'")[0];
   assert.doesNotMatch(teacherFunctions, /save\(|applyDecision\(|recordLc03Answer\(|setScene\(/);
   assert.match(teacherFunctions, /CH02_TEACHER_SECTIONS/);
-  assert.match(app, /if \(scene\.id === 'ch02_s01' \|\| scene\.id === 'ch02_s02'\) audioManager\.stopAmbience\(\)/);
+  assert.match(app, /audioManager\.ensureAmbience\(currentSceneId, scene\.contextual \|\| null\)/);
 });
 
-test('entering a silent Chapter II scene stops Chapter I ambience without replacement audio', async () => {
-  const manager = new AudioManager();
+test('entering Chapter II retires Chapter I rain and starts only the approved house ambience', async (t) => {
+  const manager = new AudioManager({ fadeMs: 0, duckFadeMs: 0,
+    createAudio: (src) => ({ src, volume: 0, paused: true,
+      play() { this.paused = false; return Promise.resolve(); },
+      pause() { this.paused = true; } }) });
+  t.after(() => manager.dispose());
+  manager.unlock();
   let paused = 0;
   manager.ambience = { pause: () => { paused += 1; } };
   manager.ambienceId = 'covent_garden_evening_light_rain';
   assert.equal(ambienceForScene('ch01_s01'), 'covent_garden_rain_market');
   assert.equal(ambienceForScene('ch01_s05'), 'covent_garden_evening_light_rain');
-  assert.equal(ambienceForScene('ch02_s01'), null);
-  assert.equal(ambienceForScene('ch02_s02'), null);
-  assert.deepEqual(await manager.ensureAmbience('ch02_s02'), { id: null, restarted: false, blocked: false });
+  assert.equal(ambienceForScene('ch02_s01'), 'higgins_house_morning_entry');
+  assert.equal(ambienceForScene('ch02_s02'), 'higgins_house_interior');
+  assert.deepEqual(await manager.ensureAmbience('ch02_s02'), { id: 'higgins_house_interior', restarted: true, blocked: false });
   assert.equal(paused, 1);
-  assert.equal(manager.ambience, null);
-  assert.equal(manager.ambienceId, null);
+  assert.equal(manager.ambience.src, './assets/audio/ambience/higgins_house_interior.mp3');
+  assert.equal(manager.ambienceId, 'higgins_house_interior');
   assert.deepEqual(CH02_SCENE_01.voice, []);
-  assert.deepEqual(CH02_SCENE_02.voice, []);
+  assert.equal(CH02_SCENE_02.voice.length, 1);
 });
 
 test('scene two uses the approved study plate and four existing transparent characters', () => {
@@ -143,7 +149,7 @@ test('scene two uses the approved study plate and four existing transparent char
   }
 });
 
-test('scene two preserves locked story and LC04 text without wiring unapproved audio', () => {
+test('scene two preserves locked story and LC04 text with the exact human-approved local clips', () => {
   const script = read('docs/chapters/ch02/SCRIPT.md').split('## ch02_s02 – Terms on the Table')[1].split('## ch02_s03')[0];
   const audioPlan = read('docs/chapters/ch02/AUDIO_PLAN.md');
   for (const beat of CH02_SCENE_02.storyBeats) assert.ok(script.includes(beat.text), `script parity: ${beat.text}`);
@@ -155,11 +161,65 @@ test('scene two preserves locked story and LC04 text without wiring unapproved a
   for (const sample of CH02_SCENE_02.challenge.samples) {
     assert.ok(script.includes(sample.transcript));
     assert.ok(audioPlan.includes(sample.transcript));
-    assert.equal(sample.src, undefined);
+    assert.ok(fs.statSync(path.join(root, sample.src)).size > 0);
   }
   assert.ok(audioPlan.includes(CH02_SCENE_02.storyBeats.find((beat) => beat.speaker === 'Pickering').text));
-  assert.deepEqual(CH02_SCENE_02.voice, []);
-  assert.doesNotMatch(read('src/ch02-content.js'), /https?:\/\/.*elevenlabs/i);
+  assert.deepEqual(CH02_SCENE_02.voice.map(({ id, src, transcript }) => ({ id, src, transcript })), [{
+    id: 'AM14A', src: './assets/audio/characters/pickering/pickering_ch02_scene02_001.mp3',
+    transcript: CH02_SCENE_02.storyBeats.find((beat) => beat.speaker === 'Pickering').text
+  }]);
+  assert.deepEqual(CH02_SCENE_02.challenge.samples.map(({ id, src, speaker }) => [id, src, speaker]), [
+    ['lc04_sample_offer', './assets/audio/listening/ch02_lc04_001.mp3', 'Higgins'],
+    ['lc04_sample_evaluation', './assets/audio/listening/ch02_lc04_002.mp3', 'Pickering'],
+    ['lc04_sample_condition', './assets/audio/listening/ch02_lc04_003.mp3', 'Mrs Pearce']
+  ]);
+  for (const filename of ['src/ch02-content.js', 'src/audio.js', 'src/content.js', 'src/app.js', 'docs/chapters/ch02/AUDIO_PLAN.md']) {
+    assert.doesNotMatch(read(filename), /X-Goog-Signature|storage\.googleapis\.com|https?:\/\/.*elevenlabs/i);
+  }
+});
+
+test('seven exact ingested Chapter II MP3s have provenance, nonempty MPEG content, and no duplicate bytes', () => {
+  const assets = [
+    ['C1rCLdEUIbZ3xXVLU0H5', 'assets/audio/ambience/higgins_house_morning_entry.mp3', 337872],
+    ['EH1q5BoFNyVXdakm2n9W', 'assets/audio/ambience/higgins_house_interior.mp3', 337872],
+    ['Uwm2nCQV7qMWC0ehARIn', 'assets/audio/ambience/gramophone_distant.mp3', 594033],
+    ['oHftES1aedfWtbVGZDT4', 'assets/audio/characters/pickering/pickering_ch02_scene02_001.mp3', 69124],
+    ['E1mR4yeC9N8haFAY8pkk', 'assets/audio/listening/ch02_lc04_001.mp3', 84589],
+    ['cd7lgnOX0Ip3qLkVcN3F', 'assets/audio/listening/ch02_lc04_002.mp3', 148537],
+    ['vFooVSERnMiVDGJjLxu7', 'assets/audio/listening/ch02_lc04_003.mp3', 85843]
+  ];
+  const plan = read('docs/chapters/ch02/AUDIO_PLAN.md');
+  const hashes = new Set();
+  for (const [id, filename, bytes] of assets) {
+    const mp3 = fs.readFileSync(path.join(root, filename));
+    assert.equal(mp3.length, bytes);
+    assert.ok(mp3.subarray(0, 3).toString() === 'ID3' || (mp3[0] === 0xff && (mp3[1] & 0xe0) === 0xe0), `MP3 signature: ${filename}`);
+    assert.ok(plan.includes(`| ${id} | ${filename} | ${bytes} |`), `provenance: ${id}`);
+    hashes.add(createHash('sha256').update(mp3).digest('hex'));
+  }
+  assert.equal(hashes.size, 7);
+  assert.equal(CH02_SCENE_02.contextual.id, 'gramophone_distant');
+  assert.equal(CH02_SCENE_02.contextual.src, AMBIENCE_FILES.gramophone_distant);
+  assert.equal(CH02_SCENE_01.contextual, undefined);
+  assert.equal(CH02_SCENE_01.sfx, undefined);
+  assert.equal(CH02_SCENE_02.sfx, undefined);
+  assert.equal((plan.match(/\| HUMAN APPROVED IN MIX \|/g) || []).length, 4);
+  assert.doesNotMatch(plan, /PROVISIONALLY HUMAN APPROVED/);
+});
+
+test('LC04 audio belongs to stable sample IDs independently of persisted shuffle and replay', () => {
+  const samples = CH02_SCENE_02.challenge.samples;
+  const initial = setScene(createInitialState(), 'ch02_s02');
+  const state = ensureChallengePresentationOrder(initial, 'LC04', samples.map(({ id }) => id), () => 0);
+  const before = JSON.stringify(state);
+  const byId = Object.fromEntries(samples.map((sample) => [sample.id, sample]));
+  assert.notDeepEqual(state.lc04_presentation_order, samples.map(({ id }) => id));
+  for (const id of state.lc04_presentation_order) assert.equal(byId[id].src, samples.find((sample) => sample.id === id).src);
+  assert.equal(JSON.stringify(state), before);
+  const app = read('src/app.js');
+  assert.match(app, /const sample = samples\[sampleId\]/);
+  assert.match(app, /if \(action === 'play-challenge'\) await audioManager\.playChallenge\(target\.dataset\.src\)/);
+  assert.doesNotMatch(read('src/audio.js'), /from ['"].*state|recordLc04Answer|saveState/);
 });
 
 test('LC04 order, retry, completion, replay and refresh preserve state and signal safety', () => {

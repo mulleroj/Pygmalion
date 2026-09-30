@@ -40,11 +40,17 @@ let lastTeacherTrigger = null;
 let previousScene = null;
 let lastLc03Answer = null;
 const LC01_OPTIONS = ['apology', 'excuse', 'intention to repair'];
+const AUDIO_UNLOCK_ACTIONS = new Set([
+  'open-story', 'enter-ch02', 'next-scene', 'choose-tone', 'choose-decision',
+  'answer-lc01', 'answer-lc02', 'answer-lc03', 'answer-lc04',
+  'play-voice', 'play-challenge', 'play-sfx', 'toggle-sound'
+]);
 const audioManager = new AudioManager({
   onStatus: (status) => {
     if (status.type === 'blocked') {
       announce('Sound could not start automatically. The story continues; use the Sound control or a replay button when ready.');
     }
+    if (status.type === 'unavailable') announce('This sound is unavailable. You can continue with the visible text.');
   }
 });
 
@@ -107,7 +113,7 @@ function renderAudioControl(item, kind = 'voice') {
   const action = kind === 'voice' ? 'play-voice' : 'play-challenge';
   const transcript = kind === 'voice' ? `<details open class="transcript"><summary>Transcript</summary><p>${escapeHtml(item.transcript)}</p></details>` : '';
   return `<div class="audio-cue ${kind}-cue">
-    <button class="audio-button" type="button" data-action="${action}" data-src="${escapeHtml(item.src)}" aria-label="${escapeHtml(item.label || 'Replay audio')}"><span aria-hidden="true">▶</span> ${escapeHtml(item.label || 'Replay audio')}</button>
+    <button class="audio-button" type="button" data-action="${action}" data-src="${escapeHtml(item.src)}" ${kind === 'challenge' && item.id ? `data-sample="${escapeHtml(item.id)}"` : ''} aria-label="${escapeHtml(item.ariaLabel || item.label || 'Replay audio')}"><span aria-hidden="true">▶</span> ${escapeHtml(item.label || 'Replay audio')}</button>
     ${transcript}
   </div>`;
 }
@@ -221,15 +227,15 @@ function renderLc04(scene) {
   const sampleOrder = state.lc04_presentation_order || scene.challenge.samples.map(({ id }) => id);
   const optionOrder = challenge.optionOrders.shared || scene.challenge.options.map(({ id }) => id);
   return `<section class="challenge-block" aria-labelledby="lc04-title">
-    <div class="challenge-heading"><div><p class="eyebrow">Listening challenge · LC04</p><h2 id="lc04-title">${escapeHtml(scene.challenge.title)}</h2></div><span class="challenge-badge">Read transcript · decide</span></div>
+    <div class="challenge-heading"><div><p class="eyebrow">Listening challenge · LC04</p><h2 id="lc04-title">${escapeHtml(scene.challenge.title)}</h2></div><span class="challenge-badge">Listen · replay · decide</span></div>
     <p>${escapeHtml(scene.challenge.intro)}</p>
     <p>${escapeHtml(scene.challenge.prompt)}</p>
-    <p class="read-only-note">Audio awaits human approval. The visible transcripts let you complete this challenge without sound.</p>
+    <p class="read-only-note">Replay is optional. The visible transcripts let you complete this challenge without sound.</p>
     <div class="sample-list">${sampleOrder.map((sampleId, index) => {
       const sample = samples[sampleId];
       const result = challenge.answers[sampleId];
       return `<article class="sample-card ${result?.correct ? 'correct' : ''}" aria-labelledby="lc04-sample-${index}">
-        <div class="sample-top"><h3 id="lc04-sample-${index}">Sample ${index + 1}</h3>${sample.src ? renderAudioControl({ ...sample, label: `Replay sample ${index + 1}` }, 'challenge') : ''}</div>
+        <div class="sample-top"><h3 id="lc04-sample-${index}">Sample ${index + 1}</h3>${sample.src ? renderAudioControl({ ...sample, label: `Replay sample ${index + 1}`, ariaLabel: `Replay sample ${index + 1}: ${sample.speaker}` }, 'challenge') : ''}</div>
         <p class="sample-transcript"><span class="visually-hidden">Transcript: </span>“${escapeHtml(sample.transcript)}”</p>
         <div class="answer-row">${optionOrder.map((id) => {
           const option = scene.challenge.options.find((item) => item.id === id);
@@ -287,7 +293,7 @@ function renderScene(scene) {
         ${chapterTwo ? renderStoryBeats(scene) : `<div class="narrative">${scene.narration.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div><div class="dialogue-block" aria-label="Story dialogue">${renderDialogue(scene)}</div>`}
         ${voiceMarkup ? `<div class="story-voices" aria-label="Optional story voice">${voiceMarkup}</div>` : ''}
         ${scene.id === 'ch02_s01' ? '<p class="read-only-note">Story audio for this scene is not yet available. All dialogue and the reading challenge work without sound.</p>' : ''}
-        ${scene.id === 'ch02_s02' ? '<p class="read-only-note">Optional story voice is awaiting human approval. The story is complete in text.</p>' : ''}
+        ${scene.id === 'ch02_s02' ? '<p class="read-only-note">Optional story voice supports the visible text. The story is complete without sound.</p>' : ''}
         ${sfxMarkup ? `<div class="story-voices" aria-label="Optional sound effect">${sfxMarkup}</div>` : ''}
         ${body}
         ${scene.id !== 'ch02_s02' ? transitionMarkup : ''}
@@ -306,7 +312,7 @@ function render() {
   }
   if (!hashScene && (!state.started || window.history.state?.scene === null)) {
     if (!state.started && window.history.state?.scene !== null) setLocation(null, true);
-    audioManager.stopAmbience();
+    audioManager.leaveScene();
     renderCover();
   }
   else {
@@ -336,8 +342,7 @@ function render() {
     document.querySelector('#story-root')?.focus({ preventScroll: true });
     const currentSceneId = scene.id;
     audioManager.setEnabled(state.soundEnabled);
-    if (scene.id === 'ch02_s01' || scene.id === 'ch02_s02') audioManager.stopAmbience();
-    else audioManager.ensureAmbience(currentSceneId);
+    audioManager.ensureAmbience(currentSceneId, scene.contextual || null);
     previousScene = currentSceneId;
   }
 }
@@ -401,6 +406,8 @@ document.addEventListener('click', async (event) => {
   const target = event.target.closest('[data-action]');
   if (!target) return;
   const action = target.dataset.action;
+  const audioGesture = event.isTrusted && AUDIO_UNLOCK_ACTIONS.has(action);
+  if (audioGesture) audioManager.unlock();
   if (action === 'toggle-sound') {
     state = setSoundPreference(state, !state.soundEnabled);
     save();
@@ -456,6 +463,10 @@ document.addEventListener('click', async (event) => {
     const sample = LISTENING.lc02.find((item) => item.id === target.dataset.sample);
     state = recordChallengeAnswer(state, 'LC02', target.dataset.sample, target.dataset.answer, sample.answer);
     save(); render();
+  }
+  if (audioGesture && document.querySelector('#story-root')) {
+    const scene = currentScene();
+    audioManager.ensureAmbience(scene.id, scene.contextual || null);
   }
   if (action === 'play-voice') await audioManager.playVoice(target.dataset.src);
   if (action === 'play-challenge') await audioManager.playChallenge(target.dataset.src);
