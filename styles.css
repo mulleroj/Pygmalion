@@ -72,6 +72,21 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .scene-prop { max-width: 34%; max-height: 25%; object-fit: contain; opacity: .92; filter: saturate(.86) contrast(.98) sepia(.03) drop-shadow(0 8px 8px rgba(42, 31, 37, .24)); }
 .storybook-art::after { content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none; background: linear-gradient(145deg, rgba(225, 231, 222, .08), rgba(35, 35, 42, .17)); mix-blend-mode: soft-light; }
 .storybook-art figcaption { position: absolute; right: 1rem; bottom: 1rem; z-index: 6; padding: .35rem .6rem; color: rgba(255, 250, 239, .9); background: rgba(39, 35, 40, .48); border-radius: 3px; font-size: .7rem; letter-spacing: .06em; }
+.ch02-exterior .art-background { filter: none; }
+.ch02-exterior .art-background img { object-position: 60% center; }
+.ch02-exterior::after { display: none; }
+.ch02-exterior .art-support, .ch02-exterior .art-eliza { display: block; padding: 0; opacity: 1; }
+.ch02-exterior .art-support { z-index: 2; }
+.ch02-exterior .art-eliza { z-index: 3; }
+.ch02-exterior .supporting-character, .ch02-exterior .art-eliza img { position: absolute; max-width: none; max-height: none; width: auto; object-fit: contain; transform: translateX(-50%); filter: saturate(.94) brightness(1.02) drop-shadow(0 4px 4px rgba(35, 29, 25, .24)); }
+.ch02-exterior .art-eliza img { left: 29%; bottom: 13%; height: 65%; }
+.ch02-exterior .supporting-character { left: 58%; bottom: 24%; height: 48%; }
+.ch02-exterior .art-eliza::before { left: 15%; bottom: 12%; width: 28%; height: 2%; background: rgba(30, 28, 25, .35); filter: blur(5px); opacity: .55; }
+.ch02-exterior .art-support::before { content: ''; position: absolute; left: 49%; bottom: 23%; width: 18%; height: 1.7%; border-radius: 50%; background: rgba(30, 28, 25, .35); filter: blur(4px); opacity: .5; }
+.story-beats { margin: 0 0 1.4rem; }
+.story-beats .narrative-beat { margin: 0 0 1rem; color: #4b4248; line-height: 1.75; }
+.story-beats .dialogue-line { border-top: 1px solid rgba(73, 52, 51, .09); }
+.chapter-end > .secondary-button + .secondary-button { margin: .5rem 0 0 .5rem; }
 .story-copy { padding: clamp(1.5rem, 4vw, 3.4rem); min-width: 0; }
 .story-copy h1 { margin: 0 0 1.4rem; color: var(--rose-dark); font-size: clamp(2.1rem, 4vw, 3.5rem); line-height: .98; letter-spacing: -.035em; }
 .narrative p { margin: 0 0 1rem; color: #4b4248; line-height: 1.75; }
@@ -150,6 +165,14 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .story-copy { padding: clamp(1.25rem, 5vw, 2.4rem); }
 }
 
+@media (max-width: 1100px) {
+  .ch02-story .storybook-spread { grid-template-columns: 1fr; }
+  .ch02-exterior.storybook-art { min-height: 480px; height: min(56vw, 640px); }
+  .ch02-exterior .art-background img { object-position: center; }
+  .ch02-exterior .art-eliza img { left: 32%; height: 64%; }
+  .ch02-exterior .supporting-character { left: 56%; height: 47%; }
+}
+
 @media (max-width: 560px) {
   .site-header { align-items: flex-start; padding: .8rem .75rem; }
   .header-actions { gap: .1rem; }
@@ -171,6 +194,13 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .answer-row { display: grid; grid-template-columns: 1fr; }
   .audio-cue { align-items: flex-start; flex-direction: column; }
   .teacher-dialog { width: calc(100% - 1rem); }
+  .ch02-exterior.storybook-art { min-height: 450px; height: 450px; }
+  .ch02-exterior .art-background img { object-position: 62% center; }
+  .ch02-exterior .art-eliza img { left: 25%; bottom: 13%; height: 65%; }
+  .ch02-exterior .supporting-character { left: 53%; bottom: 24%; height: 50%; }
+  .ch02-exterior .art-eliza::before { left: 9%; bottom: 12%; width: 35%; }
+  .ch02-exterior .art-support::before { left: 42%; bottom: 23%; width: 23%; }
+  .chapter-end > .secondary-button + .secondary-button { margin: .5rem 0 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

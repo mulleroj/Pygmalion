@@ -11,6 +11,9 @@ export function createInitialState() {
     higgins_first_impression: null,
     ear_test_intro_seen: false,
     origin_motivation: null,
+    request_strategy: null,
+    ch02_lc03_attempts: 0,
+    ch02_lc03_completed: false,
     confidence: 0,
     pronunciation: 0,
     independence: 0,
@@ -77,9 +80,15 @@ export function recordOpeningTone(state, tone) {
 }
 
 export function applyDecision(state, decisionId, optionId) {
-  const eventByDecision = { D01: 'ch01_d01_resolution', D02: 'ch01_d02_response', D03: 'ch01_d03_origin_motivation' };
+  const eventByDecision = { D01: 'ch01_d01_resolution', D02: 'ch01_d02_response', D03: 'ch01_d03_origin_motivation', D04: 'ch02_d04_request_strategy' };
   const eventId = eventByDecision[decisionId];
   if (!eventId || state.decisions[decisionId]) return state;
+  const requestStrategies = {
+    d04_direct_request: 'direct',
+    d04_polite_request: 'polite',
+    d04_request_with_boundary: 'boundary'
+  };
+  if (decisionId === 'D04' && !requestStrategies[optionId]) return state;
 
   const next = {
     ...state,
@@ -106,7 +115,22 @@ export function applyDecision(state, decisionId, optionId) {
     if (optionId === 'd02_reject_and_return') next.independence += 1;
   }
   if (decisionId === 'D03') next.origin_motivation = optionId;
+  if (decisionId === 'D04') next.request_strategy = requestStrategies[optionId];
   return next;
+}
+
+export function recordLc03Answer(state, optionId) {
+  const options = new Set(['lc03_clear_polite_request', 'lc03_unclear_request', 'lc03_submissive_request']);
+  if (!state.decisions.D04 || state.ch02_lc03_completed || !options.has(optionId)) return state;
+  const completed = optionId === 'lc03_clear_polite_request';
+  return {
+    ...state,
+    ch02_lc03_attempts: state.ch02_lc03_attempts + 1,
+    ch02_lc03_completed: completed,
+    applied_events: completed && !state.applied_events.includes('ch02_lc03_completed')
+      ? [...state.applied_events, 'ch02_lc03_completed']
+      : state.applied_events
+  };
 }
 
 export function recordChallengeAnswer(state, challengeId, sampleId, answer, canonicalAnswerId) {
@@ -182,6 +206,7 @@ export function isChallengeComplete(state, challengeId) {
 export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === 'ch01_s01' && !state.opening_tone) return 'Choose a first response before continuing.';
   if (scene.decision && !state.decisions[scene.decision.id]) return 'Choose a response to continue.';
+  if (scene.id === 'ch02_s01') return state.ch02_lc03_completed ? '' : 'Complete the reading challenge to continue.';
   if (scene.challenge && !isChallengeComplete(state, scene.challenge.id)) return 'Complete the listening challenge to continue.';
   return '';
 }

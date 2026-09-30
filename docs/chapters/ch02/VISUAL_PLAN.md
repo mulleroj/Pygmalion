@@ -53,7 +53,7 @@ All five source assets represent the same mature Edwardian Mrs Pearce. The maste
 - Primary character: Eliza, determined and slightly nervous, still clearly Flower Girl.
 - Secondary character: Mrs Pearce framed by the doorway; Higgins only a distant partial presence.
 - Mrs Pearce asset: `MRS-FG-PRACTICAL-QUESTIONING` (`practical-questioning`).
-- Props: door knocker, small purse, simple entry table.
+- Props: door knocker, Eliza's flower basket (already part of her canonical cutout), simple entry table.
 - Hierarchy: Eliza → doorway → Mrs Pearce.
 - Composition: Eliza occupies the readable foreground; the doorway represents access without becoming a magical threshold.
 - Provisional placement on the full plate: Eliza on lower-left pavement (about 30–48% of frame width), Mrs Pearce beside the steps/entrance (about 55–68%). Preserve the black door and its upper surround; confirm both figures fit the later tall viewport crop.

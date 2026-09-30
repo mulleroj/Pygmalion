@@ -25,7 +25,7 @@ The chapter does not rank directness, politeness, boundary-setting, or motivatio
 
 By morning, Eliza has made up her mind. Higgins's house is quieter than the market, but the question feels louder: what will she ask for, and what will she refuse?
 
-Eliza stands at the entrance with a small purse in one hand. She has come without an invitation.
+Eliza stands at the entrance with her flower basket. She has come without an invitation.
 
 **ELIZA:** Good morning. I've come to see Mr Higgins. I want lessons.
 

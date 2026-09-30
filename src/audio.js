@@ -37,6 +37,13 @@ export class AudioManager {
     this.onStatus({ type: 'sound', enabled: this.enabled });
   }
 
+  stopAmbience() {
+    if (this.ambience) this.ambience.pause();
+    this.ambience = null;
+    this.ambienceId = null;
+    this.lastError = null;
+  }
+
   duck(category, amount = 0.58) {
     this.activeDucks.set(category, amount);
     this.applyAmbienceDuck();
