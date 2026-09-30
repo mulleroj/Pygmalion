@@ -131,13 +131,13 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 - **Děj:** Eliza přijde sama a chce si zaplatit lekce. Návštěva není Higginsův nábor; iniciativa vychází od ní.
 - **Hlavní účel:** zavést Elizinu vyjednávací agency a rozdíl mezi cílem a registrem žádosti.
 - **Rozhodnutí hráče:** `D04` – formulovat první žádost jako přímou, zdvořilou nebo zdvořilou s jasnou podmínkou.
-- **Možné hodnotové změny:** `Confidence +1` při jasném požadavku; `Pronunciation +1` při vědomém přepnutí registru; `Independence +1` při pojmenování ceny a hranice.
+- **Možné hodnotové změny:** žádné; D04 ukládá pouze `request_strategy`. Directness, politeness a boundary-setting jsou rovnocenné komunikační strategie.
 - **Uložení:** `long-term: ano`; uloží se `request_strategy`.
-- **Audio momenty:** `AM11 VOICE` Elizina žádost; `AM12 SFX` dveře, kroky a změna akustiky z ulice do domu.
+- **Audio momenty:** `AM11 VOICE` Elizina žádost; `AM12 SFX` dveře a kroky; `AM13 VOICE` Higginsova přesná viditelná replika.
 - **Challenge:** `LC03` – převést přímý požadavek do zdvořilé formy bez ztráty významu.
 - **Teacher Mode:** requests, polite forms, directness vs rudeness.
 - **Vizuální assety:** Eliza `Flower Girl / determined`, vstup domu, Mrs Pearce u dveří.
-- **Audio assety:** `eliza_ch02_scene01_001.mp3`, `sfx_house_door_001.mp3` a přepisy.
+- **Audio assety:** `eliza_ch02_scene01_001.mp3`, `higgins_ch02_scene01_001.mp3`, `sfx_house_door_001.mp3` a přepisy.
 - **Návaznost:** `ch02_s02`.
 
 ### ch02_s02 – Terms on the Table
@@ -148,13 +148,13 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 - **Děj:** Higgins mluví o lekcích jako o experimentu, zatímco Pickering upozorňuje na člověka a Mrs Pearce na praktické důsledky. Eliza slyší, že její peníze a práce mají společenskou hodnotu.
 - **Hlavní účel:** ukázat konflikt mezi Higginsovou fascinací a Eliziným vlastním cílem.
 - **Rozhodnutí hráče:** žádné hlavní; hráč přiřazuje, kdo je adresátem jednotlivých replik.
-- **Možné hodnotové změny:** při přesném rozlišení implied meaning `Confidence +1`; bez morality penalty při chybě.
+- **Možné hodnotové změny:** žádné; LC04 ukládá pouze completion a attempt metadata, bez Confidence reward.
 - **Uložení:** `long-term: ne`; uloží se `experiment_framing_heard`.
-- **Audio momenty:** `AM13 VOICE` Higginsův experimentální framing; `AM14 LISTENING` Pickering a Mrs Pearce zpochybní jeho jednostrannost.
+- **Audio momenty:** `AM14A VOICE` Pickeringova přesná viditelná replika; `AM14 LISTENING` tři stabilní LC04 sample.
 - **Challenge:** `LC04` – rozlišit, zda replika vyjadřuje nabídku, hodnocení, nebo skrytou podmínku.
 - **Teacher Mode:** formal / informal register a implied meaning v institucionálním rozhovoru.
 - **Vizuální assety:** pracovní stůl, zápisníky, Eliza mezi třemi různými postoji dospělých.
-- **Audio assety:** `higgins_ch02_scene02_001.mp3`, `pickering_ch02_scene02_001.mp3`, `mrs-pearce_ch02_scene02_001.mp3` a přepisy.
+- **Audio assety:** `pickering_ch02_scene02_001.mp3`, `ch02_lc04_001.mp3`, `ch02_lc04_002.mp3`, `ch02_lc04_003.mp3` a přepisy.
 - **Návaznost:** `ch02_s03`.
 
 ### ch02_s03 – Mrs Pearce's Questions
@@ -165,7 +165,7 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 - **Děj:** Mrs Pearce se ptá na čas, peníze, oblečení, únavu a zacházení. Je lidskou autoritou, která neidealizuje ani nezlehčuje rizika výuky.
 - **Hlavní účel:** dát Elize prostor pojmenovat hranice před uzavřením dohody.
 - **Rozhodnutí hráče:** žádné hlavní; volitelná mikroodpověď určuje, zda Eliza požádá o další vysvětlení.
-- **Možné hodnotové změny:** `Confidence +1` při vyžádání vysvětlení; lokální `boundary_questioned`.
+- **Možné hodnotové změny:** žádné; volitelná mikroodpověď může nastavit pouze lokální `boundary_questioned`.
 - **Uložení:** `long-term: ne`.
 - **Audio momenty:** `AM15 VOICE` Mrs Pearce klade praktické otázky; `AM16 VOICE` Eliza odpovídá vlastním tempem, bez Higginsovy opravy.
 - **Challenge:** žádná nová; předchozí `LC03` se odráží v přirozené žádosti o upřesnění.
