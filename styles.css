@@ -97,6 +97,18 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch02-study .art-support::before { content: ''; position: absolute; left: 75%; bottom: 10%; width: 17%; height: 1.5%; border-radius: 50%; background: rgba(30, 28, 25, .3); filter: blur(4px); opacity: .4; }
 .ch02-study figcaption { display: none; }
 .ch02-study-activity { grid-column: 1 / -1; justify-self: center; width: min(720px, calc(100% - 3rem)); padding-bottom: 3rem; }
+.ch02-hallway-spread { grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); }
+.ch02-hallway.storybook-art { min-height: 0; height: auto; aspect-ratio: 1672 / 941; background: #70543c; }
+.ch02-hallway .art-background { filter: none; }
+.ch02-hallway .art-background img { object-fit: contain; }
+.ch02-hallway .art-support, .ch02-hallway .art-eliza { display: block; padding: 0; opacity: 1; }
+.ch02-hallway .supporting-character, .ch02-hallway .art-eliza img { position: absolute; width: auto; max-width: none; max-height: none; transform: translateX(-50%); filter: saturate(.94) drop-shadow(0 3px 3px rgba(34, 27, 24, .22)); }
+.ch02-hallway .support-higgins { left: 49%; bottom: 29%; height: 41%; z-index: 1; }
+.ch02-hallway .support-mrs-pearce { left: 65%; bottom: 5%; height: 76%; z-index: 2; }
+.ch02-hallway .art-eliza img { left: 37%; bottom: 3%; height: 72%; }
+.ch02-hallway .art-eliza::before { left: 25%; bottom: 2%; width: 23%; height: 1.5%; filter: blur(4px); }
+.ch02-hallway figcaption { display: none; }
+.scene-response { margin-top: 1.5rem; }
 .story-beats { margin: 0 0 1.4rem; }
 .story-beats .narrative-beat { margin: 0 0 1rem; color: #4b4248; line-height: 1.75; }
 .story-beats .dialogue-line { border-top: 1px solid rgba(73, 52, 51, .09); }
@@ -188,6 +200,12 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 }
 
 @media (max-width: 560px) {
+  .ch02-hallway.storybook-art { min-height: 0; height: 300px; aspect-ratio: auto; }
+  .ch02-hallway .art-background img { object-fit: cover; object-position: 75% center; }
+  .ch02-hallway .support-higgins { display: none; }
+  .ch02-hallway .support-mrs-pearce { left: 68%; bottom: 4%; height: 79%; }
+  .ch02-hallway .art-eliza img { left: 30%; bottom: 2%; height: 74%; }
+  .ch02-hallway .art-eliza::before { left: 12%; width: 34%; }
   .site-header { align-items: flex-start; padding: .8rem .75rem; }
   .header-actions { gap: .1rem; }
   .quiet-button, .sound-button { padding: .48rem .45rem; font-size: .72rem; }

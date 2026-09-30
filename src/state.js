@@ -15,6 +15,7 @@ export function createInitialState() {
     ch02_lc03_attempts: 0,
     ch02_lc03_completed: false,
     experiment_framing_heard: false,
+    boundary_questioned: false,
     ch02_lc04_attempts: 0,
     ch02_lc04_completed: false,
     lc04_presentation_order: null,
@@ -136,6 +137,17 @@ export function recordLc03Answer(state, optionId) {
     applied_events: completed && !state.applied_events.includes('ch02_lc03_completed')
       ? [...state.applied_events, 'ch02_lc03_completed']
       : state.applied_events
+  };
+}
+
+export function recordS03Response(state, optionId) {
+  if (state.scene !== 'ch02_s03' || optionId !== 's03_ask_for_clarification') return state;
+  const eventId = 'ch02_s03_boundary_questioned';
+  if (state.boundary_questioned && state.applied_events.includes(eventId)) return state;
+  return {
+    ...state,
+    boundary_questioned: true,
+    applied_events: state.applied_events.includes(eventId) ? state.applied_events : [...state.applied_events, eventId]
   };
 }
 

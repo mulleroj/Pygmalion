@@ -2,6 +2,25 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createInitialState, applyDecision, recordChallengeAnswer, ensureChallengeOptionOrders, isChallengeAnswerCorrect, markChallengeEntered, markChapterComplete, resetChapter, loadState, setScene, canAdvanceScene, getSceneAdvanceBlock } from '../src/state.js';
 import { SCENES } from '../src/content.js';
+import { recordS03Response } from '../src/state.js';
+
+test('s03 old saves default safely and clarification is write-once without changing inherited state', () => {
+  const old = createInitialState();
+  delete old.boundary_questioned;
+  const initial = setScene(loadState({ getItem: () => JSON.stringify(old) }), 'ch02_s03');
+  assert.equal(initial.boundary_questioned, false);
+  assert.equal(recordS03Response(initial, 's03_confirm_understanding'), initial);
+  assert.equal(recordS03Response(initial, 'invalid'), initial);
+  const asked = recordS03Response(initial, 's03_ask_for_clarification');
+  assert.deepEqual(asked, { ...initial, boundary_questioned: true, applied_events: ['ch02_s03_boundary_questioned'] });
+  assert.equal(recordS03Response(asked, 's03_ask_for_clarification'), asked);
+  assert.equal(recordS03Response(asked, 's03_confirm_understanding'), asked);
+  const refreshed = loadState({ getItem: () => JSON.stringify(asked) });
+  assert.deepEqual(refreshed, asked);
+  assert.equal(recordS03Response(refreshed, 's03_ask_for_clarification'), refreshed);
+  const elsewhere = setScene(initial, 'ch02_s02');
+  assert.equal(recordS03Response(elsewhere, 's03_ask_for_clarification'), elsewhere);
+});
 
 test('D01 and D02 signal changes are idempotent on replay', () => {
   let state = createInitialState();

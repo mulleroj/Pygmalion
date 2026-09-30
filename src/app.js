@@ -6,7 +6,7 @@ import {
   ambienceForScene,
   isContinuousAmbienceTransition
 } from './content.js';
-import { CH02_SCENE_01, CH02_SCENE_02, CH02_TEACHER_SECTIONS, CH02_SCENE_02_TEACHER_SECTIONS } from './ch02-content.js';
+import { CH02_SCENE_01, CH02_SCENE_02, CH02_SCENE_03, CH02_TEACHER_SECTIONS, CH02_SCENE_02_TEACHER_SECTIONS, CH02_SCENE_03_TEACHER_SECTIONS } from './ch02-content.js';
 import {
   loadState,
   saveState,
@@ -17,6 +17,7 @@ import {
   applyDecision,
   recordLc03Answer,
   recordLc04Answer,
+  recordS03Response,
   recordChallengeAnswer,
   ensureChallengeOptionOrders,
   ensureChallengePresentationOrder,
@@ -34,11 +35,12 @@ const liveRegion = document.querySelector('#live-region');
 const teacherDialog = document.querySelector('#teacher-dialog');
 const teacherContent = document.querySelector('#teacher-content');
 const teacherContext = document.querySelector('#teacher-context');
-const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH02_SCENE_01.id]: CH02_SCENE_01, [CH02_SCENE_02.id]: CH02_SCENE_02 };
+const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH02_SCENE_01.id]: CH02_SCENE_01, [CH02_SCENE_02.id]: CH02_SCENE_02, [CH02_SCENE_03.id]: CH02_SCENE_03 };
 let state = loadState();
 let lastTeacherTrigger = null;
 let previousScene = null;
 let lastLc03Answer = null;
+let lastS03Response = null;
 const LC01_OPTIONS = ['apology', 'excuse', 'intention to repair'];
 const AUDIO_UNLOCK_ACTIONS = new Set([
   'open-story', 'enter-ch02', 'next-scene', 'choose-tone', 'choose-decision',
@@ -276,6 +278,10 @@ function renderScene(scene) {
   if (scene.id === 'ch01_s02') body += renderLc01(scene);
   if (scene.id === 'ch01_s04') body += renderLc02(scene);
   if (scene.id === 'ch01_s05') body += renderEnd(scene);
+  if (scene.response) {
+    body += `<section class="scene-response" aria-labelledby="response-title"><h2 id="response-title">A practical question</h2><p>${escapeHtml(scene.response.prompt)}</p><div class="answer-stack">${scene.response.choices.map((option) => `<button class="answer-button" type="button" data-action="respond-s03" data-option="${option.id}"><strong>${escapeHtml(option.title)}</strong><br>“${escapeHtml(option.text)}”</button>`).join('')}</div>${lastS03Response ? `<p class="answer-feedback" role="status">${escapeHtml(scene.response.consequences[lastS03Response])}</p>` : ''}</section>`;
+  }
+  if (scene.id === 'ch02_s03') body += '<p class="end-note">The practical questions are ready for the agreement. The next scene is not playable yet; your progress is saved.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button>';
   if (!chapterTwo && scene.id !== 'ch01_s05' && !scene.challenge && decisionSelected && challengeComplete && scene.id !== 'ch01_s01') {
     body += `<button class="secondary-button next-button" type="button" data-action="next-scene">Continue the story <span aria-hidden="true">→</span></button>`;
   }
@@ -298,7 +304,7 @@ function renderScene(scene) {
         ${body}
         ${scene.id !== 'ch02_s02' ? transitionMarkup : ''}
       </article>
-      ${scene.id === 'ch02_s02' ? `<div class="ch02-study-activity">${renderLc04(scene)}${transitionMarkup}${challengeComplete ? '<p class="end-note">Mrs Pearce’s questions are next. That Chapter II scene is not playable yet; your progress is saved.</p>' : ''}</div>` : ''}
+      ${scene.id === 'ch02_s02' ? `<div class="ch02-study-activity">${renderLc04(scene)}${transitionMarkup}${challengeComplete ? '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to Mrs Pearce’s questions <span aria-hidden="true">→</span></button>' : ''}</div>` : ''}
     </div>
   </main>`;
 }
@@ -317,6 +323,7 @@ function render() {
   }
   else {
     const scene = RUNTIME_SCENES[hashScene] || currentScene();
+    if (previousScene !== scene.id) lastS03Response = null;
     if (state.scene !== scene.id) {
       state = setScene(state, scene.id);
       save();
@@ -356,7 +363,12 @@ function moveNext() {
     save(); setLocation(CH02_SCENE_02.id); render(); announce('Chapter II, Terms on the Table.');
     return;
   }
-  if (scene.id === 'ch02_s02') return announce('Mrs Pearce’s Questions is not playable yet. Your progress is saved.');
+  if (scene.id === 'ch02_s02') {
+    state = setScene(state, CH02_SCENE_03.id);
+    save(); setLocation(CH02_SCENE_03.id); render(); announce('Chapter II, Mrs Pearce’s Questions.');
+    return;
+  }
+  if (scene.id.startsWith('ch02_')) return announce('The next scene is not playable yet. Your progress is saved.');
   const next = SCENES[scene.number];
   if (!next) {
     state = markChapterComplete(state);
@@ -388,7 +400,7 @@ function openTeacher(trigger) {
   const scene = document.querySelector('#story-root') ? currentScene() : null;
   const chapterTwo = scene?.id?.startsWith('ch02_');
   teacherContext.textContent = scene ? `Chapter ${chapterTwo ? 'II' : 'I'} · ${scene.title}${scene.challenge ? ` · ${scene.challenge.title}` : ''}` : 'Chapter I · Cover';
-  const sections = scene?.id === 'ch02_s02' ? CH02_SCENE_02_TEACHER_SECTIONS : chapterTwo ? CH02_TEACHER_SECTIONS : TEACHER_SECTIONS;
+  const sections = scene?.id === 'ch02_s03' ? CH02_SCENE_03_TEACHER_SECTIONS : scene?.id === 'ch02_s02' ? CH02_SCENE_02_TEACHER_SECTIONS : chapterTwo ? CH02_TEACHER_SECTIONS : TEACHER_SECTIONS;
   teacherContent.innerHTML = `${sections.map(([heading, content]) => `<section class="teacher-section"><h3>${escapeHtml(heading)}</h3><p>${escapeHtml(content)}</p></section>`).join('')}
     ${scene ? `<button class="secondary-button teacher-preview" type="button" data-action="teacher-preview">Open / replay this scene (read-only preview)</button>` : ''}`;
   if (typeof teacherDialog.showModal === 'function') teacherDialog.showModal();
@@ -423,6 +435,12 @@ document.addEventListener('click', async (event) => {
   if (action === 'open-teacher') openTeacher(target);
   if (action === 'close-teacher') closeTeacher();
   if (action === 'next-scene') moveNext();
+  if (action === 'respond-s03' && currentScene().id === 'ch02_s03' && CH02_SCENE_03.response.choices.some(({ id }) => id === target.dataset.option)) {
+    const nextState = recordS03Response(state, target.dataset.option);
+    if (nextState !== state) { state = nextState; save(); }
+    lastS03Response = target.dataset.option;
+    render(); announce(CH02_SCENE_03.response.consequences[lastS03Response]);
+  }
   if (action === 'choose-tone') {
     state = recordOpeningTone(state, target.dataset.tone);
     save(); render(); announce('Opening tone saved for this scene.');

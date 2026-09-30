@@ -92,6 +92,42 @@ export const CH02_SCENE_02 = {
   transition: 'Mrs Pearce gestures toward the kitchen. “There are practical questions before there is an agreement.”'
 };
 
+export const CH02_SCENE_03 = {
+  id: 'ch02_s03', number: 3, title: "Mrs Pearce's Questions", kicker: 'The Bargain',
+  composition: 'ch02-hallway',
+  background: image('images/locations/ch02/ch02_higgins-house-hallway.webp', 'A warm Edwardian hallway with stairs and an open doorway into the kitchen.'),
+  plate: image('images/locations/ch02/ch02_higgins-house-hallway.webp', 'The hallway beside the kitchen doorway.'),
+  eliza: image('images/characters/eliza/runtime/eliza_flower-girl_listening_cutout.png', 'Eliza listens actively and names her boundaries, still dressed as a Flower Girl.'),
+  supporting: [
+    { ...image('images/characters/higgins/runtime/higgins_master_cutout.png', 'Higgins stands further back with his notebook.'), placement: 'higgins' },
+    { ...image('images/characters/mrs-pearce/runtime/mrs-pearce_practical-questioning_cutout.png', 'Mrs Pearce leads the practical conversation with an open questioning gesture.'), placement: 'mrs-pearce' }
+  ],
+  props: [], voice: [],
+  storyBeats: [
+    { type: 'narration', text: "Away from Higgins's notes, the questions become ordinary and serious: time, money, clothes, rest, and what happens when a lesson becomes too much." },
+    { type: 'dialogue', speaker: 'Mrs Pearce', text: 'Before we begin, we must know the hours, the cost, and what you need.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'Mornings are possible. Late evenings are not.' },
+    { type: 'dialogue', speaker: 'Mrs Pearce', text: 'And if you do not understand an instruction?' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'I will ask. I will not pretend.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'You make a long list.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'It is shorter than being misunderstood.' },
+    { type: 'dialogue', speaker: 'Mrs Pearce', text: 'Good. A boundary is easier to keep when it is spoken.' },
+    { type: 'dialogue', speaker: 'Eliza', text: "I'm paying for lessons. I'm not giving up my say in them." }
+  ],
+  response: {
+    prompt: 'Would you like to ask for clarification? This response is optional.',
+    choices: [
+      choice('s03_ask_for_clarification', 'Ask for clarification', 'Could you explain what happens if I miss a lesson?'),
+      choice('s03_confirm_understanding', 'Confirm understanding', 'I understand the question. We can discuss the details at the table.')
+    ],
+    consequences: {
+      s03_ask_for_clarification: 'Mrs Pearce will explain the practical terms before an agreement is made.',
+      s03_confirm_understanding: 'Mrs Pearce continues toward the discussion of the terms.'
+    }
+  },
+  transition: "The practical questions are written down beside Higgins's notes."
+};
+
 export const CH02_TEACHER_SECTIONS = [
   ['Chapter Overview', 'Eliza arrives at Higgins\'s house by her own choice and asks to pay for lessons. The chapter is about agency, communication strategy, money, and boundaries. It is not about replacing a supposedly inferior accent with a superior one.'],
   ['Learning Goals', 'Formulate a clear request; add a polite form without losing the purpose of a request; distinguish directness, politeness, and boundary-setting as different strategies.'],
@@ -118,3 +154,16 @@ const CH02_S02_TEACHER_OVERRIDES = {
 };
 
 export const CH02_SCENE_02_TEACHER_SECTIONS = CH02_TEACHER_SECTIONS.map(([heading, content]) => [heading, CH02_S02_TEACHER_OVERRIDES[heading] || content]);
+
+const CH02_S03_TEACHER_OVERRIDES = {
+  'Learning Goals': 'Ask for clarification about practical terms; name boundaries and recognise learner agency within an unequal agreement.',
+  'Language Focus': 'Could you explain…? expresses a request for clarification. I will ask. I will not pretend. names a boundary without aggression. Discuss hours, cost, rest and understanding.',
+  'Listening Focus': 'This scene is book-first. No story voice is available yet; all meaning is present in the visible dialogue. There is no listening task.',
+  'Decisions – Teacher Notes': 'Both optional responses are legitimate. Asking for clarification records that Eliza asked a boundary question; confirming understanding adds no persistent outcome. Neither changes development signals.',
+  'Challenge Key': 'There is no answer key and no scored challenge. The optional response is a conversational choice.',
+  'Discussion Questions': 'Why can it be difficult to ask an authority for clarification? How does payment affect the power imbalance? How does Mrs Pearce support Eliza without deciding for her?',
+  'Cultural / Literary Context': 'Paid education can create opportunity and a power imbalance. Mrs Pearce is a practical, calm and supportive authority who helps make the terms understandable.',
+  'Suggested Classroom Use': 'Read the conversation, then practise Could you explain…? with practical terms. Compare both responses without ranking them. Preview and review are read-only.',
+  'Scene Navigation': "Mrs Pearce's Questions · clarification and boundaries. The agreement scene is not playable yet."
+};
+export const CH02_SCENE_03_TEACHER_SECTIONS = CH02_TEACHER_SECTIONS.map(([heading, content]) => [heading, CH02_S03_TEACHER_OVERRIDES[heading] || content]);

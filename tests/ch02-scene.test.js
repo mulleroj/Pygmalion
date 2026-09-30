@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CH02_SCENE_01, CH02_SCENE_02, CH02_TEACHER_SECTIONS, CH02_SCENE_02_TEACHER_SECTIONS } from '../src/ch02-content.js';
+import { CH02_SCENE_03, CH02_SCENE_03_TEACHER_SECTIONS } from '../src/ch02-content.js';
 import { SCENES, ambienceForScene } from '../src/content.js';
 import { AudioManager, AMBIENCE_FILES } from '../src/audio.js';
 import { createHash } from 'node:crypto';
@@ -267,5 +268,104 @@ test('scene two Teacher Mode keeps the chapter structure and LC04 key separate f
   const teacherFunctions = app.split('function openTeacher(trigger) {')[1].split("document.addEventListener('click'")[0];
   assert.doesNotMatch(teacherFunctions, /save\(|applyDecision\(|recordLc04Answer\(|setScene\(/);
   assert.match(teacherFunctions, /CH02_SCENE_02_TEACHER_SECTIONS/);
-  assert.match(app, /scene\.id === 'ch02_s02'\) return announce\('Mrs Pearce/);
+  assert.match(app, /scene\.id === 'ch02_s02'\) \{/);
+});
+
+test('s03 uses only canonical hallway characters and exact locked story and response IDs', () => {
+  const scene = CH02_SCENE_03;
+  const script = read('docs/chapters/ch02/SCRIPT.md').split('## ch02_s03 – Mrs Pearce\'s Questions')[1].split('## ch02_s04')[0];
+  assert.equal(scene.background.src, './assets/images/locations/ch02/ch02_higgins-house-hallway.webp');
+  assert.equal(scene.plate.src, scene.background.src);
+  assert.equal(scene.eliza.src, './assets/images/characters/eliza/runtime/eliza_flower-girl_listening_cutout.png');
+  assert.deepEqual(scene.supporting.map(({ src }) => src), [
+    './assets/images/characters/higgins/runtime/higgins_master_cutout.png',
+    './assets/images/characters/mrs-pearce/runtime/mrs-pearce_practical-questioning_cutout.png'
+  ]);
+  for (const asset of [scene.background, scene.eliza, ...scene.supporting]) assert.ok(fs.statSync(path.join(root, asset.src)).size > 0);
+  assert.equal(scene.storyBeats.length, 9);
+  for (const beat of scene.storyBeats) assert.ok(script.includes(beat.text));
+  assert.deepEqual(scene.response.choices.map(({ id }) => id), ['s03_ask_for_clarification', 's03_confirm_understanding']);
+  for (const option of scene.response.choices) { assert.ok(script.includes(option.id)); assert.ok(script.includes(option.text)); }
+  assert.deepEqual(scene.voice, []);
+  assert.equal(scene.contextual, undefined);
+  assert.equal(scene.sfx, undefined);
+  assert.equal(scene.challenge, undefined);
+  assert.equal(scene.decision, undefined);
+});
+
+test('s03 Teacher content is scene-aware with no scored answer key or mutation handler', () => {
+  assert.equal(CH02_SCENE_03_TEACHER_SECTIONS.length, 12);
+  const content = CH02_SCENE_03_TEACHER_SECTIONS.map(([, text]) => text).join(' ');
+  assert.match(content, /Could you explain/);
+  assert.match(content, /power imbalance/);
+  assert.match(content, /Both optional responses are legitimate/);
+  assert.match(content, /no answer key/);
+  const teacher = read('src/app.js').split('function openTeacher(trigger) {')[1].split("document.addEventListener('click'")[0];
+  assert.doesNotMatch(teacher, /save\(|recordS03Response\(|setScene\(/);
+});
+
+test('s03 transition preserves interior time and ends the s02 gramophone', async (t) => {
+  const manager = new AudioManager({ fadeMs: 0, duckFadeMs: 0, createAudio: (src) => ({
+    src, currentTime: 0, volume: 0, paused: true, addEventListener() {}, removeEventListener() {},
+    play() { this.paused = false; return Promise.resolve(); }, pause() { this.paused = true; }
+  }) });
+  t.after(() => manager.dispose());
+  manager.unlock();
+  await manager.ensureAmbience(CH02_SCENE_02.id, CH02_SCENE_02.contextual);
+  const loop = manager.ambience, gramophone = manager.contextual;
+  loop.currentTime = 7;
+  await manager.ensureAmbience(CH02_SCENE_03.id, CH02_SCENE_03.contextual);
+  assert.equal(manager.ambience, loop);
+  assert.equal(loop.currentTime, 7);
+  assert.equal(loop.paused, false);
+  assert.equal(gramophone.paused, true);
+  assert.equal(manager.contextual, null);
+});
+
+test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/Teacher read-only', async (t) => {
+  const originals = Object.fromEntries(['document', 'window', 'localStorage'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
+  t.after(() => { for (const [key, descriptor] of Object.entries(originals)) { if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; } });
+  let saved = JSON.stringify(setScene(createInitialState(), 'ch02_s02'));
+  const nodes = new Map();
+  const node = (key) => {
+    if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, scrollIntoView() {}, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
+    return nodes.get(key);
+  };
+  const events = {};
+  globalThis.document = { querySelector: node, addEventListener(name, fn) { events[name] = fn; } };
+  const historyEvents = {};
+  globalThis.window = {
+    location: { hash: '#ch02_s02', pathname: '/' },
+    history: { state: { scene: 'ch02_s02' }, pushState(value, unused, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(value, unused, url) { this.pushState(value, unused, url); } },
+    setTimeout(fn) { fn(); }, addEventListener(name, fn) { historyEvents[name] = fn; }
+  };
+  globalThis.localStorage = { getItem() { return saved; }, setItem(key, value) { saved = value; } };
+  const { render, moveNext } = await import('../src/app.js');
+  const click = (action, data = {}) => events.click({ isTrusted: false, target: { closest() { return { dataset: { action, ...data }, focus() {} }; } } });
+  assert.doesNotMatch(node('#app').innerHTML, /Continue to Mrs Pearce/);
+  moveNext(); assert.equal(JSON.parse(saved).scene, 'ch02_s02');
+  for (const [sample, answer] of [['lc04_sample_offer', 'lc04_offer'], ['lc04_sample_evaluation', 'lc04_evaluation'], ['lc04_sample_condition', 'lc04_condition']]) await click('answer-lc04', { sample, answer });
+  assert.match(node('#app').innerHTML, /Continue to Mrs Pearce/);
+  const completed = JSON.parse(saved);
+  await click('next-scene');
+  assert.deepEqual(JSON.parse(saved), { ...completed, scene: 'ch02_s03' });
+  assert.match(node('#app').innerHTML, /This response is optional/);
+  assert.doesNotMatch(node('#app').innerHTML, /data-action="next-scene"|data-action="play-voice"|pickering_master|ch02_s04/);
+  const before = saved;
+  moveNext(); render(); await click('open-teacher'); await click('teacher-preview');
+  assert.equal(saved, before);
+  await click('respond-s03', { option: 's03_confirm_understanding' });
+  assert.equal(saved, before);
+  assert.match(node('#app').innerHTML, /Mrs Pearce continues toward/);
+  await click('respond-s03', { option: 's03_ask_for_clarification' });
+  const asked = saved;
+  assert.equal(JSON.parse(saved).boundary_questioned, true);
+  await click('respond-s03', { option: 's03_ask_for_clarification' });
+  await click('respond-s03', { option: 's03_confirm_understanding' });
+  render(); historyEvents.popstate(); historyEvents.hashchange();
+  await click('open-teacher'); await click('teacher-preview'); await click('review-scene');
+  assert.equal(saved, asked);
+  assert.equal(JSON.parse(saved).applied_events.filter((id) => id === 'ch02_s03_boundary_questioned').length, 1);
+  assert.deepEqual(loadState({ getItem: () => saved }), JSON.parse(asked));
+  assert.equal(JSON.parse(saved).scene, 'ch02_s03');
 });
