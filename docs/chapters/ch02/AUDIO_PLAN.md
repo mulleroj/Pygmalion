@@ -60,7 +60,7 @@ The following seven exact recordings were downloaded from user-supplied signed U
 | LC04-02 — Pickering / George | cd7lgnOX0Ip3qLkVcN3F | assets/audio/listening/ch02_lc04_002.mp3 | 148537 | 8.16 s | HUMAN APPROVED IN MIX |
 | LC04-03 — Mrs Pearce / Sally Ford | vFooVSERnMiVDGJjLxu7 | assets/audio/listening/ch02_lc04_003.mp3 | 85843 | 4.24 s | HUMAN APPROVED IN MIX |
 
-Technical status: `LOCAL / TECHNICALLY VERIFIED`. Human listening QA approved all seven recordings in the actual running scene mix: `CH02_S02 AUDIO MIX: HUMAN APPROVED`. The four voice clips are `HUMAN APPROVED IN MIX`; the three ambience recordings remain `HUMAN APPROVED`. AM16 is integrated and HUMAN APPROVED IN MIX as recorded below. Other planned Chapter II voices and AM12/AM18 remain unavailable and unwired. Canonical voice IDs/model remain as listed above (`eleven_v3`); gramophone v2 uses `eleven_music_v2`.
+Technical status: `LOCAL / TECHNICALLY VERIFIED`. Human listening QA approved all seven recordings in the actual running scene mix: `CH02_S02 AUDIO MIX: HUMAN APPROVED`. The four voice clips are `HUMAN APPROVED IN MIX`; the three ambience recordings remain `HUMAN APPROVED`. AM16 is integrated and HUMAN APPROVED IN MIX as recorded below. AM15 is integrated and HUMAN APPROVED IN MIX as recorded below. Other planned Chapter II voices and AM12/AM18 remain unavailable and unwired. Canonical voice IDs/model remain as listed above (`eleven_v3`); gramophone v2 uses `eleven_music_v2`.
 
 ## AM16 — s03 human-approved integration
 
@@ -71,9 +71,20 @@ Status: `HUMAN APPROVED IN MIX`.
 - Local original: `assets/audio/characters/eliza/eliza_ch02_scene03_001.mp3`; HTTP 200, 70378 bytes, Chromium decoded duration `3.28 s`.
 - Locked transcript: “I'm paying for lessons. I'm not giving up my say in them.” Explicit Play appears only beside this Eliza line; no autoplay or story-state writes.
 - Existing interior mix: base `0.10`, story duck `× 0.28`, restore without restarting the loop. No s03 gramophone or contextual SFX.
-- AM15 remains unavailable/unwired: no verified downloadable generation/session, no placeholder or Play control. The earlier Mrs Pearce audition is not substituted.
+- AM15 is integrated separately below. The earlier Mrs Pearce audition is not substituted.
 
 Human listening QA approved this exact AM16 take in the s03 runtime mix: interior base `0.10`, story duck `× 0.28`, effective ambience `0.028`, and correct restore to `0.10`. The seven s02 approvals above remain unchanged.
+
+## AM15 — Mrs Pearce human-approved runtime mix
+
+Status: `HUMAN APPROVED IN MIX`.
+
+- Exact generation: `e2FSZ2n7LLv4lHiZG1bN`; session: `mPsraS9EByJwT5PxnyQG`; flow: `bMbCRS4zjlTxEn3jVIWU`.
+- Canonical voice: `Sally Ford` / `kBag1HOZlaVBH7ICPE8x`; model: `eleven_v3`.
+- Original local file: `assets/audio/characters/mrs-pearce/mrs-pearce_ch02_scene03_001.mp3`; HTTP 200, 111338 bytes. Chromium decoded duration: `5.84 s`.
+- Locked transcript: “Before we begin, we must know the hours, the cost, and what you need.” Explicit Play only beside this Mrs Pearce line; presentation-only, no autoplay or story-state writes.
+- Existing story mix: interior `0.10`, duck `× 0.28` to `0.028`, restore to `0.10` on the same loop. AM15 and AM16 share foreground ownership. No new SFX, gramophone or ambience.
+- Scene status: `CH02_S03 AUDIO: HUMAN APPROVED`. Human listening QA approved the exact AM15 and AM16 takes in the runtime mix above. Both are `HUMAN APPROVED IN MIX`.
 
 ## Human-approved runtime mix
 

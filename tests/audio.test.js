@@ -101,6 +101,42 @@ function audioHarness(t, options = {}) {
 
 const gramophoneSpec = { id: 'gramophone_distant', src: AMBIENCE_FILES.gramophone_distant };
 
+test('AM15 and AM16 replace each other in both directions without stale restores or loop restarts', async (t) => {
+  const { manager, elements } = audioHarness(t);
+  const pearce = './assets/audio/characters/mrs-pearce/mrs-pearce_ch02_scene03_001.mp3';
+  const eliza = './assets/audio/characters/eliza/eliza_ch02_scene03_001.mp3';
+  await manager.ensureAmbience('ch02_s03');
+  assert.equal(elements.length, 0);
+  manager.unlock();
+  await manager.ensureAmbience('ch02_s03');
+  const base = manager.ambience;
+  base.currentTime = 9;
+  let previous;
+  for (const src of [pearce, eliza, pearce, pearce, eliza]) {
+    const current = await manager.playVoice(src);
+    if (previous) { assert.equal(previous.paused, true); previous.emit('ended'); previous.emit('error'); }
+    assert.equal(current.paused, false);
+    assert.equal(base.volume, 0.10 * 0.28);
+    assert.equal(elements.filter((audio) => audio !== base && !audio.paused).length, 1);
+    previous = current;
+  }
+  previous.emit('ended');
+  assert.equal(base.volume, 0.10);
+  assert.equal(manager.ambience, base);
+  assert.equal(base.currentTime, 9);
+  assert.equal(base.playCalls, 1);
+  for (const src of [pearce, eliza]) {
+    const voice = await manager.playVoice(src);
+    await manager.setEnabled(false);
+    assert.equal(voice.paused, true);
+    await manager.setEnabled(true);
+    await manager.ensureAmbience('ch02_s03');
+    assert.equal(voice.paused, true);
+    assert.equal(voice.playCalls, 1);
+  }
+  assert.equal(manager.contextual, null);
+});
+
 test('AM16 explicit replay owns speech and restores the same s03 interior; Sound on never replays it', async (t) => {
   const { manager, elements } = audioHarness(t);
   const src = './assets/audio/characters/eliza/eliza_ch02_scene03_001.mp3';
