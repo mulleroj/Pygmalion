@@ -61,7 +61,7 @@ The following seven exact recordings were downloaded from user-supplied signed U
 | LC04-02 — Pickering / George | cd7lgnOX0Ip3qLkVcN3F | assets/audio/listening/ch02_lc04_002.mp3 | 148537 | 8.16 s | HUMAN APPROVED IN MIX |
 | LC04-03 — Mrs Pearce / Sally Ford | vFooVSERnMiVDGJjLxu7 | assets/audio/listening/ch02_lc04_003.mp3 | 85843 | 4.24 s | HUMAN APPROVED IN MIX |
 
-Technical status: `LOCAL / TECHNICALLY VERIFIED`. Human listening QA approved all seven recordings in the actual running scene mix: `CH02_S02 AUDIO MIX: HUMAN APPROVED`. The four voice clips are `HUMAN APPROVED IN MIX`; the three ambience recordings remain `HUMAN APPROVED`. AM16 is integrated and HUMAN APPROVED IN MIX as recorded below. AM15 is integrated and HUMAN APPROVED IN MIX as recorded below. Other planned Chapter II voices and AM12/AM18 remain unavailable and unwired. Canonical voice IDs/model remain as listed above (`eleven_v3`); gramophone v2 uses `eleven_music_v2`.
+Technical status: `LOCAL / TECHNICALLY VERIFIED`. Human listening QA approved all seven recordings in the actual running scene mix: `CH02_S02 AUDIO MIX: HUMAN APPROVED`. The four voice clips are `HUMAN APPROVED IN MIX`; the three ambience recordings remain `HUMAN APPROVED`. AM16 is integrated and HUMAN APPROVED IN MIX as recorded below. AM15 is integrated and HUMAN APPROVED IN MIX as recorded below. The final Eliza voice AM19C is integrated and HUMAN APPROVED IN MIX as recorded below; remaining planned assets AM12/AM18 remain unavailable and unwired. Canonical voice IDs/model remain as listed above (`eleven_v3`); gramophone v2 uses `eleven_music_v2`.
 
 ## AM16 — s03 human-approved integration
 
@@ -156,7 +156,7 @@ The ingested interior v3 contains mechanical clock ticks, fireplace crackle, and
 ## AM19C — Scene 05 approved source integration
 
 - Old AM19 generation `sAdSyieR4uTKm46fitQq`: `REJECTED / SUPERSEDED`. Human QA rejected its pronunciation as too clean for pre-lesson Chapter II Eliza.
-- Approved production take AM19C: generation `CTNk676QhlnNGGn7lVEY`, session `USfmmO6qaq3dL2Cs8xDD`, flow `A4MLm3A6Iy1IC6NRmbca`. Source Human QA: `PASS`; actual Scene 05 audio mix Human QA: `PENDING`.
+- Integrated canonical production take AM19C: generation `CTNk676QhlnNGGn7lVEY`, session `USfmmO6qaq3dL2Cs8xDD`, flow `A4MLm3A6Iy1IC6NRmbca`. Source Human QA: `PASS`; actual Scene 05 runtime mix Human Audio QA: `PASS`. Chapter II Scene 05 is complete.
 - Canonical voice: `Eliza - young_cockney` / `124kaYCknTDsnwUFdWl9`; model `eleven_v3`; Chapter II `Stage 1 – Controlled Cockney`, consistent with `docs/audio/ELIZA_VOICE_ARC.md`.
 - Original local MP3: `assets/audio/characters/eliza/eliza_ch02_scene05_001.mp3`; 89604 bytes, generation duration 4.48 s. SHA256: `6830d59edf7a7aa07fa96ca245ac22ee6a84d6501b9949e8c0c9a95e7dff2149`. Downloaded unchanged from the existing approved generation; no regeneration or audio processing.
 - Exact visible dialogue and transcript: `I am here to learn more ways to speak. I will choose what those ways are for.` Performance tags and altered TTS orthography are guidance only and never appear in runtime copy.
