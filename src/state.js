@@ -17,6 +17,10 @@ export function createInitialState() {
     experiment_framing_heard: false,
     boundary_questioned: false,
     lesson_terms_understood: false,
+    confirmed_motivation: null,
+    motivation_shift: false,
+    motivation_nuance: null,
+    ch02_complete: false,
     ch02_lc04_attempts: 0,
     ch02_lc04_completed: false,
     lc04_presentation_order: null,
@@ -88,6 +92,13 @@ export function recordOpeningTone(state, tone) {
 }
 
 export function applyDecision(state, decisionId, optionId) {
+  if (decisionId === 'D05') {
+    const motivation = { d05_opportunity: 'opportunity', d05_respect: 'respect', d05_learning: 'learning', d05_independence: 'independence' }[optionId];
+    const eventId = 'ch02_d05_confirmed_motivation';
+    if (state.scene !== 'ch02_s05' || !motivation || state.confirmed_motivation || state.decisions.D05 || state.applied_events.includes(eventId)) return state;
+    return { ...state, confirmed_motivation: motivation,
+      decisions: { ...state.decisions, D05: optionId }, applied_events: [...state.applied_events, eventId] };
+  }
   const eventByDecision = { D01: 'ch01_d01_resolution', D02: 'ch01_d02_response', D03: 'ch01_d03_origin_motivation', D04: 'ch02_d04_request_strategy' };
   const eventId = eventByDecision[decisionId];
   if (!eventId || state.decisions[decisionId]) return state;
@@ -281,4 +292,11 @@ export function completeS04Terms(state) {
   if (state.lesson_terms_understood && state.applied_events.includes(eventId)) return state;
   return { ...state, lesson_terms_understood: true,
     applied_events: state.applied_events.includes(eventId) ? state.applied_events : [...state.applied_events, eventId] };
+}
+
+export function completeChapterTwo(state) {
+  if (state.scene !== 'ch02_s05' || !state.confirmed_motivation || !state.applied_events.includes('ch02_d05_confirmed_motivation')) return state;
+  if (state.ch02_complete && state.applied_events.includes('ch02_complete')) return state;
+  return { ...state, ch02_complete: true,
+    applied_events: state.applied_events.includes('ch02_complete') ? state.applied_events : [...state.applied_events, 'ch02_complete'] };
 }

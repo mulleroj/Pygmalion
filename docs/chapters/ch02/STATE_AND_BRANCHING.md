@@ -190,3 +190,9 @@ The canonical Mrs Pearce voice and visual foundation are recorded in the project
       → ch03_s01
 
 All Chapter II paths remain valid and converge on Chapter III. No low or high development signal can block continuation or determine a moral outcome.
+
+## Scene 05 book-first checkpoint — 2026-10-01
+
+The locked D05 options record only confirmed_motivation and the stable event ch02_d05_confirmed_motivation, once. Preserve request_strategy, lesson_terms_understood, origin_motivation, motivation_shift, motivation_nuance and boundary_questioned. This checkpoint supersedes the earlier automatic motivation_shift rule: no additional state or development-signal changes accompany D05.
+
+Explicit student choice converges on the locked ending and safely records ch02_complete once. Scene entry, refresh, review, Teacher Mode and teacher preview do not apply either event. S04 continues to S05; S05 remains the terminal Chapter II review scene. Chapter III remains planned. No Scene 05 voice, AM19 integration or new ambience is included.

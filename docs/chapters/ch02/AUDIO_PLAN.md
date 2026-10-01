@@ -153,3 +153,13 @@ The ingested interior v3 contains mechanical clock ticks, fireplace crackle, and
 - Ambient is optional and never blocks progress.
 - TTS text contains dialogue only; delivery notes stay in this document.
 - The content lock itself generates no audio. The local ingest above records the supplied human approvals, including final listening approval of the s02 voices and mix.
+## AM19C — Scene 05 approved source integration
+
+- Old AM19 generation `sAdSyieR4uTKm46fitQq`: `REJECTED / SUPERSEDED`. Human QA rejected its pronunciation as too clean for pre-lesson Chapter II Eliza.
+- Approved production take AM19C: generation `CTNk676QhlnNGGn7lVEY`, session `USfmmO6qaq3dL2Cs8xDD`, flow `A4MLm3A6Iy1IC6NRmbca`. Source Human QA: `PASS`; actual Scene 05 audio mix Human QA: `PENDING`.
+- Canonical voice: `Eliza - young_cockney` / `124kaYCknTDsnwUFdWl9`; model `eleven_v3`; Chapter II `Stage 1 – Controlled Cockney`, consistent with `docs/audio/ELIZA_VOICE_ARC.md`.
+- Original local MP3: `assets/audio/characters/eliza/eliza_ch02_scene05_001.mp3`; 89604 bytes, generation duration 4.48 s. SHA256: `6830d59edf7a7aa07fa96ca245ac22ee6a84d6501b9949e8c0c9a95e7dff2149`. Downloaded unchanged from the existing approved generation; no regeneration or audio processing.
+- Exact visible dialogue and transcript: `I am here to learn more ways to speak. I will choose what those ways are for.` Performance tags and altered TTS orthography are guidance only and never appear in runtime copy.
+- Cockney remains clearly audible before pronunciation training. Development here is emotional control and self-possession, not loss of Cockney identity.
+- Explicit Play is inline only beside the common ending after any D05 motivation. The existing dry story-voice path, gain 1, interior story duck `0.10 × 0.28 = 0.028`, and restore apply. Replay uses the same MP3; Sound On resumes the existing interior bed, never interrupted speech. No new ambience/SFX or S04 clock/gong hooks are added.
+- Playback, replay and Teacher preview write no story state. D05, confirmed_motivation, ch02_d05_confirmed_motivation and ch02_complete retain their book-first contracts. Scene 05 book-first Human QA: `PASS`.

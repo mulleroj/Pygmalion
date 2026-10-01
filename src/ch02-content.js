@@ -230,3 +230,46 @@ const CH02_S04_TEACHER_OVERRIDES = {
   'Scene Navigation': 'The Price of a Lesson · transparent terms and ownership of learning. The next scene is not playable yet.'
 };
 export const CH02_SCENE_04_TEACHER_SECTIONS = CH02_TEACHER_SECTIONS.map(([heading, content]) => [heading, CH02_S04_TEACHER_OVERRIDES[heading] || content]);
+
+export const CH02_SCENE_05 = {
+  id: 'ch02_s05', number: 5, title: 'Why I Am Here', kicker: 'The Bargain', composition: 'ch02-threshold',
+  background: image('images/locations/ch02/ch02_lesson-room-threshold.webp', 'An open doorway from the hallway into an Edwardian lesson room with books, desks and a blackboard.'),
+  plate: image('images/locations/ch02/ch02_lesson-room-threshold.webp', 'The open doorway to the lesson room.'),
+  eliza: image('images/characters/eliza/runtime/eliza_flower-girl_thoughtful_cutout.png', 'Eliza pauses deliberately at the threshold, thoughtful and composed, to name her own purpose.'),
+  supporting: [{ ...image('images/characters/pickering/runtime/pickering_master_cutout.png', 'Pickering listens attentively as a supportive witness while Eliza speaks.'), placement: 'pickering' }],
+  props: [],
+  voice: [{
+    id: 'AM19C', src: './assets/audio/characters/eliza/eliza_ch02_scene05_001.mp3',
+    transcript: 'I am here to learn more ways to speak. I will choose what those ways are for.',
+    label: 'Play Eliza’s purpose statement', inline: true
+  }], // Exact approved source take; common D05 ending only, explicit playback.
+  storyBeats: [
+    { type: 'narration', text: 'The hallway is quiet again. The first lesson can begin, but Eliza stops at the threshold.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'Before I begin, I want to say why I came.' },
+    { type: 'dialogue', speaker: 'Pickering', text: 'Then say it in your own way.' }
+  ],
+  decision: { id: 'D05', prompt: 'What is Eliza choosing to learn for?', choices: [
+    choice('d05_opportunity', 'Opportunity', 'I want work where people listen to what I can do.'),
+    choice('d05_respect', 'Respect', 'I want to be heard before people decide what I am.'),
+    choice('d05_learning', 'Learning', 'I want to understand these forms and choose when they help.'),
+    choice('d05_independence', 'Independence', 'I want skills I can use without handing over my future.')
+  ] },
+  ending: [
+    { type: 'dialogue', speaker: 'Eliza', text: 'I am here to learn more ways to speak. I will choose what those ways are for.' },
+    { type: 'narration', text: 'The door to the lesson room stays open. Eliza enters with a plan, a question, and terms she has helped to name.' }
+  ]
+};
+
+const CH02_S05_TEACHER_OVERRIDES = {
+  'Learning Goals': 'Name a purpose for learning and practise self-advocacy. The learner/player chooses the nuance of Eliza’s motivation; all four options preserve agency.',
+  'Language Focus': 'I want… expresses purpose. I will choose… expresses ownership of future choices. Learning more forms gives Eliza tools she can choose when to use.',
+  'Listening Focus': 'Book-first scene with optional story voice for Eliza’s final purpose statement. The AM19C source take is human approved; listening QA in the scene mix is pending. There is no listening task. All dialogue and the ending remain visible in the story.',
+  'Cultural / Literary Context': 'Eliza defines her own goal before entering the lesson room. Pickering supports her right to speak; he does not choose her purpose.',
+  'Decisions – Teacher Notes': 'D05 records confirmed_motivation once through ch02_d05_confirmed_motivation. All four options are legitimate. The choice records perspective, not achievement; no development signals change. Earlier Chapter II state remains intact.',
+  'Challenge Key': 'No correct answer, score or assessment. D05 is self-definition, not a quiz. All choices converge on the same Chapter II ending.',
+  'Discussion Questions': 'Why does Eliza stop before entering? How can a supportive witness make room for someone’s own voice? What makes learning a choice rather than a surrender of control?',
+  'Sensitive Framing': 'Accent ≠ intelligence. Opportunity, respect, learning and independence are equally legitimate motivations. Self-definition and consent close Chapter II.',
+  'Suggested Classroom Use': 'Read each motivation without ranking it. Discuss purpose and consent, then read the shared ending. Teacher Mode, preview and review are read-only.',
+  'Scene Navigation': 'Why I Am Here · D05 · Chapter II ending. After the choice, review this scene. Chapter III is not available in this checkpoint.'
+};
+export const CH02_SCENE_05_TEACHER_SECTIONS = CH02_TEACHER_SECTIONS.map(([heading, content]) => [heading, CH02_S05_TEACHER_OVERRIDES[heading] || content]);

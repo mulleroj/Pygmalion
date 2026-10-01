@@ -442,6 +442,35 @@ test('AM17 uses the Chapter II story mix, restores interior and replays the same
   assert.equal(newCue.playCalls, 1);
 });
 
+test('AM19C shares the dry story mix, replays safely and never inherits s04 cues', async (t) => {
+  const { CH02_SCENE_04, CH02_SCENE_05 } = await import('../src/ch02-content.js');
+  const { manager } = audioHarness(t);
+  manager.unlock();
+  await manager.ensureAmbience('ch02_s04', CH02_SCENE_04.contextual);
+  const base = manager.ambience;
+  base.currentTime = 9;
+  await manager.ensureAmbience('ch02_s05');
+  assert.equal(manager.ambience, base);
+  assert.equal(manager.contextual, null);
+  const src = CH02_SCENE_05.voice[0].src;
+  const voice = await manager.playVoice(src);
+  assert.equal(voice.src, src);
+  assert.equal(voice.volume, 1);
+  assert.equal(base.volume, 0.10 * 0.28);
+  voice.emit('ended');
+  assert.equal(base.volume, 0.10);
+  const replay = await manager.playVoice(src);
+  assert.equal(replay.src, src);
+  await manager.setEnabled(false);
+  assert.equal(replay.paused, true);
+  assert.equal(await manager.playVoice(src), null);
+  await manager.setEnabled(true);
+  assert.equal(manager.foreground, null);
+  assert.equal(manager.ambience, base);
+  assert.equal(base.currentTime, 9);
+  assert.equal((await manager.playVoice(src)).src, src);
+});
+
 test('missing Chapter II loops and samples fail safely without Chapter I rain fallback', async (t) => {
   const { manager, elements } = audioHarness(t, { createAudio: (src) => {
     const element = new FakeAudio(src); element.failure = new Error('QA 404'); elements.push(element); return element;

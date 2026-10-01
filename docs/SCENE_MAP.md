@@ -199,7 +199,7 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 - **Děj:** Eliza musí před začátkem lekcí jasně říct, proč vstupuje do výuky. Její odpověď může původní motivaci z Chapter I potvrdit, zpřesnit nebo změnit; nesmí ji nahradit Higginsovým cílem.
 - **Hlavní účel:** uzavřít kapitolu explicitním vstupním závazkem.
 - **Rozhodnutí hráče:** `D05` – potvrdit hlavní důvod: `Opportunity`, `Respect`, `Learning` nebo `Independence`, s možností krátkého vlastního upřesnění.
-- **Možné hodnotové změny:** žádný increment za konzistenci ani za změnu motivace. `origin_motivation` zůstává historický údaj; aktuální volba se zapíše jako `confirmed_motivation`, při odlišné volbě také `motivation_shift` a případně `motivation_nuance`.
+- **Možné hodnotové změny:** žádný increment za konzistenci ani za změnu motivace. `origin_motivation` zůstává historický údaj; aktuální volba se zapíše jako `confirmed_motivation`. Book-first checkpoint S05 (2026-10-01) zachovává `motivation_shift` a `motivation_nuance` beze změny a zapisuje pouze stabilní event `ch02_d05_confirmed_motivation`.
 - **Uložení:** `long-term: ano`; uloží se historická motivace, potvrzená motivace a případný posun bez good/bad hodnocení.
 - **Audio momenty:** `AM19 VOICE` Elizino jasné prohlášení cíle; `AM20 AMBIENCE` dům přechází do rytmu prvního vyučování.
 - **Challenge:** žádná samostatná; volba je příběhový jazykový akt.

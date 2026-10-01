@@ -6,7 +6,7 @@ import {
   ambienceForScene,
   isContinuousAmbienceTransition
 } from './content.js';
-import { CH02_SCENE_01, CH02_SCENE_02, CH02_SCENE_03, CH02_TEACHER_SECTIONS, CH02_SCENE_02_TEACHER_SECTIONS, CH02_SCENE_03_TEACHER_SECTIONS, CH02_SCENE_04, CH02_SCENE_04_TEACHER_SECTIONS } from './ch02-content.js';
+import { CH02_SCENE_01, CH02_SCENE_02, CH02_SCENE_03, CH02_TEACHER_SECTIONS, CH02_SCENE_02_TEACHER_SECTIONS, CH02_SCENE_03_TEACHER_SECTIONS, CH02_SCENE_04, CH02_SCENE_04_TEACHER_SECTIONS, CH02_SCENE_05, CH02_SCENE_05_TEACHER_SECTIONS } from './ch02-content.js';
 import {
   loadState,
   saveState,
@@ -19,6 +19,7 @@ import {
   recordLc04Answer,
   recordS03Response,
   completeS04Terms,
+  completeChapterTwo,
   recordChallengeAnswer,
   ensureChallengeOptionOrders,
   ensureChallengePresentationOrder,
@@ -36,13 +37,14 @@ const liveRegion = document.querySelector('#live-region');
 const teacherDialog = document.querySelector('#teacher-dialog');
 const teacherContent = document.querySelector('#teacher-content');
 const teacherContext = document.querySelector('#teacher-context');
-const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH02_SCENE_01.id]: CH02_SCENE_01, [CH02_SCENE_02.id]: CH02_SCENE_02, [CH02_SCENE_03.id]: CH02_SCENE_03, [CH02_SCENE_04.id]: CH02_SCENE_04 };
+const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH02_SCENE_01.id]: CH02_SCENE_01, [CH02_SCENE_02.id]: CH02_SCENE_02, [CH02_SCENE_03.id]: CH02_SCENE_03, [CH02_SCENE_04.id]: CH02_SCENE_04, [CH02_SCENE_05.id]: CH02_SCENE_05 };
 let state = loadState();
 let lastTeacherTrigger = null;
 let previousScene = null;
 let lastLc03Answer = null;
 let lastS03Response = null;
 let s04AudioPreview = false;
+let s05Preview = false;
 const LC01_OPTIONS = ['apology', 'excuse', 'intention to repair'];
 const AUDIO_UNLOCK_ACTIONS = new Set([
   'open-story', 'enter-ch02', 'next-scene', 'choose-tone', 'choose-decision',
@@ -168,7 +170,8 @@ function renderDecision(scene) {
   return `<section class="choice-block" aria-labelledby="${decision.id}-title">
     <p class="eyebrow">A choice in the story</p>
     <h2 id="${decision.id}-title">${escapeHtml(decision.prompt)}</h2>
-    <div class="choice-grid">${decision.choices.map((item) => `<button class="choice-button ${selected === item.id ? 'selected' : ''}" type="button" data-action="choose-decision" data-decision="${decision.id}" data-option="${item.id}" ${selected ? 'disabled' : ''}><strong>${escapeHtml(item.title)}</strong><span>“${escapeHtml(item.text)}”</span></button>`).join('')}</div>
+    <div class="choice-grid">${decision.choices.map((item) => `<button class="choice-button ${selected === item.id ? 'selected' : ''}" type="button" data-action="choose-decision" data-decision="${decision.id}" data-option="${item.id}" ${selected || (decision.id === 'D05' && s05Preview) ? 'disabled' : ''}><strong>${escapeHtml(item.title)}</strong><span>“${escapeHtml(item.text)}”</span></button>`).join('')}</div>
+    ${decision.id === 'D05' ? '<p class="read-only-note">Each motivation is legitimate. This choice names Eliza’s purpose; it is not a test.</p>' : ''}
     ${decision.id === 'D04' ? '<p class="read-only-note">No option is correct, best, or more intelligent. Each is a legitimate communication strategy.</p>' : ''}
     ${selected ? `<div class="choice-feedback"><strong>Your choice stays with the scene.</strong><p>${escapeHtml(scene.consequence?.[selected] || 'Eliza moves forward on her own terms.')}</p></div>` : ''}
   </section>`;
@@ -284,7 +287,8 @@ function renderScene(scene) {
     body += `<section class="scene-response" aria-labelledby="response-title"><h2 id="response-title">A practical question</h2><p>${escapeHtml(scene.response.prompt)}</p><div class="answer-stack">${scene.response.choices.map((option) => `<button class="answer-button" type="button" data-action="respond-s03" data-option="${option.id}"><strong>${escapeHtml(option.title)}</strong><br>“${escapeHtml(option.text)}”</button>`).join('')}</div>${lastS03Response ? `<p class="answer-feedback" role="status">${escapeHtml(scene.response.consequences[lastS03Response])}</p>` : ''}</section>`;
   }
   if (scene.id === 'ch02_s03') body += '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the agreement <span aria-hidden="true">→</span></button>';
-  if (scene.terms) body += `<section class="terms-card" aria-labelledby="terms-title"><h2 id="terms-title">The lesson agreement</h2><ul>${scene.terms.map((term) => `<li>${escapeHtml(term)}</li>`).join('')}</ul></section><p class="transition-line">${escapeHtml(scene.transition)}</p>${state.lesson_terms_understood ? '<p class="end-note">The agreement is recorded. The next scene is not playable yet; your progress is saved.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button>' : '<button class="secondary-button next-button" type="button" data-action="complete-s04">Continue <span aria-hidden="true">→</span></button>'}`;
+  if (scene.id === 'ch02_s05' && state.confirmed_motivation) body += `<section class="chapter-end" aria-labelledby="ch02-end-title"><h2 id="ch02-end-title">Chapter II complete</h2>${renderStoryBeats({ ...scene, storyBeats: scene.ending })}<p class="end-note">Your Chapter II progress is saved locally.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button></section>`;
+  if (scene.terms) body += `<section class="terms-card" aria-labelledby="terms-title"><h2 id="terms-title">The lesson agreement</h2><ul>${scene.terms.map((term) => `<li>${escapeHtml(term)}</li>`).join('')}</ul></section><p class="transition-line">${escapeHtml(scene.transition)}</p>${state.lesson_terms_understood ? '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to Why I Am Here <span aria-hidden="true">→</span></button>' : '<button class="secondary-button next-button" type="button" data-action="complete-s04">Continue <span aria-hidden="true">→</span></button>'}`;
   if (!chapterTwo && scene.id !== 'ch01_s05' && !scene.challenge && decisionSelected && challengeComplete && scene.id !== 'ch01_s01') {
     body += `<button class="secondary-button next-button" type="button" data-action="next-scene">Continue the story <span aria-hidden="true">→</span></button>`;
   }
@@ -327,7 +331,7 @@ function render() {
   }
   else {
     const scene = RUNTIME_SCENES[hashScene] || currentScene();
-    if (previousScene !== scene.id) { lastS03Response = null; s04AudioPreview = false; }
+    if (previousScene !== scene.id) { lastS03Response = null; s04AudioPreview = false; s05Preview = false; }
     if (state.scene !== scene.id) {
       state = setScene(state, scene.id);
       save();
@@ -378,6 +382,14 @@ function moveNext() {
     save(); setLocation(CH02_SCENE_04.id); render(); announce('Chapter II, The Price of a Lesson.');
     return;
   }
+  if (scene.id === 'ch02_s04') {
+    if (teacherDialog.open || s04AudioPreview) return;
+    state = completeS04Terms(state);
+    state = setScene(state, CH02_SCENE_05.id);
+    save(); setLocation(CH02_SCENE_05.id); render(); announce('Chapter II, Why I Am Here.');
+    return;
+  }
+  if (scene.id === 'ch02_s05') return announce('Chapter II is complete. Review this scene; your progress is saved.');
   if (scene.id.startsWith('ch02_')) return announce('The next scene is not playable yet. Your progress is saved.');
   const next = SCENES[scene.number];
   if (!next) {
@@ -411,7 +423,7 @@ function openTeacher(trigger) {
   const scene = document.querySelector('#story-root') ? currentScene() : null;
   const chapterTwo = scene?.id?.startsWith('ch02_');
   teacherContext.textContent = scene ? `Chapter ${chapterTwo ? 'II' : 'I'} · ${scene.title}${scene.challenge ? ` · ${scene.challenge.title}` : ''}` : 'Chapter I · Cover';
-  const sections = scene?.id === 'ch02_s04' ? CH02_SCENE_04_TEACHER_SECTIONS : scene?.id === 'ch02_s03' ? CH02_SCENE_03_TEACHER_SECTIONS : scene?.id === 'ch02_s02' ? CH02_SCENE_02_TEACHER_SECTIONS : chapterTwo ? CH02_TEACHER_SECTIONS : TEACHER_SECTIONS;
+  const sections = scene?.id === 'ch02_s05' ? CH02_SCENE_05_TEACHER_SECTIONS : scene?.id === 'ch02_s04' ? CH02_SCENE_04_TEACHER_SECTIONS : scene?.id === 'ch02_s03' ? CH02_SCENE_03_TEACHER_SECTIONS : scene?.id === 'ch02_s02' ? CH02_SCENE_02_TEACHER_SECTIONS : chapterTwo ? CH02_TEACHER_SECTIONS : TEACHER_SECTIONS;
   teacherContent.innerHTML = `${sections.map(([heading, content]) => `<section class="teacher-section"><h3>${escapeHtml(heading)}</h3><p>${escapeHtml(content)}</p></section>`).join('')}
     ${scene ? `<button class="secondary-button teacher-preview" type="button" data-action="teacher-preview">Open / replay this scene (read-only preview)</button>` : ''}`;
   if (typeof teacherDialog.showModal === 'function') teacherDialog.showModal();
@@ -459,9 +471,8 @@ document.addEventListener('click', async (event) => {
   if (action === 'open-teacher') openTeacher(target);
   if (action === 'close-teacher') closeTeacher();
   if (action === 'next-scene') moveNext();
-  if (action === 'complete-s04' && currentScene().id === 'ch02_s04' && !teacherDialog.open) {
-    state = completeS04Terms(state);
-    save(); render(); announce('The agreement is recorded. The next scene is not playable yet.');
+  if (action === 'complete-s04' && currentScene().id === 'ch02_s04' && !teacherDialog.open && !s04AudioPreview) {
+    moveNext();
   }
   if (action === 'respond-s03' && currentScene().id === 'ch02_s03' && CH02_SCENE_03.response.choices.some(({ id }) => id === target.dataset.option)) {
     const nextState = recordS03Response(state, target.dataset.option);
@@ -474,7 +485,11 @@ document.addEventListener('click', async (event) => {
     save(); render(); announce('Opening tone saved for this scene.');
   }
   if (action === 'choose-decision') {
+    if (target.dataset.decision === 'D05' && (currentScene().id !== 'ch02_s05' || teacherDialog.open || s05Preview)) return;
+    const beforeChoice = state;
     state = applyDecision(state, target.dataset.decision, target.dataset.option);
+    if (state === beforeChoice) return;
+    if (target.dataset.decision === 'D05') state = completeChapterTwo(state);
     if (target.dataset.decision === 'D03') state = markChapterComplete(state);
     save(); render(); announce('Choice saved.');
   }
@@ -521,8 +536,10 @@ document.addEventListener('click', async (event) => {
   if (action === 'play-challenge') await audioManager.playChallenge(target.dataset.src);
   if (action === 'play-sfx') await audioManager.playOneShot('flowers_fall', target.dataset.src);
   if (action === 'teacher-preview') {
+    s05Preview = currentScene().id === 'ch02_s05';
     s04AudioPreview = currentScene().id === 'ch02_s04';
     closeTeacher();
+    if (s05Preview) render();
     document.querySelector('#story-root')?.focus();
     announce('Read-only scene preview. Student progress was not changed.');
   }

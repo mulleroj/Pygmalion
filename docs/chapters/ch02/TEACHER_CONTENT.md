@@ -86,7 +86,7 @@ Stable options:
 - d05_learning
 - d05_independence
 
-The choice stores confirmed_motivation. A difference from origin_motivation creates motivation_shift; it is not a consistency penalty.
+The choice stores confirmed_motivation. For the Scene 05 book-first checkpoint, motivation_shift and motivation_nuance remain unchanged. D05 records perspective, not achievement; there is no correct answer.
 
 Both D04 and D05 are open identity or strategy choices. They have no answer key.
 

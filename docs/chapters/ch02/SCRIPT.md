@@ -235,7 +235,7 @@ No option is more correct or more mature than another.
 
 ### Immediate consequence
 
-The selected option is saved as confirmed_motivation. origin_motivation remains unchanged. If the selected motivation differs from Chapter I, save motivation_shift = true and an optional structured motivation_nuance. A change of motivation is not failure or inconsistency.
+The selected option is saved as confirmed_motivation. origin_motivation remains unchanged. In the Scene 05 book-first checkpoint, preserve motivation_shift and motivation_nuance unchanged; D05 records only confirmed_motivation and its stable event. A change of motivation is not failure or inconsistency.
 
 ### Chapter II ending
 

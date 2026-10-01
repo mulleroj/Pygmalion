@@ -201,7 +201,7 @@ Poznámky mohou propojit Edwardian employment, peníze, gender expectations a p�
 ### 7. Decisions – Teacher Notes
 
 - `D04` zkoumá, jak Eliza žádá o lekce. Všechny tři strategie mohou být účinné; mění `request_strategy` a případné narativní nuance.
-- `D05` zapisuje `confirmed_motivation`; při rozdílu oproti `origin_motivation` také `motivation_shift`, případně `motivation_nuance`. Neexistuje consistency bonus ani penalty.
+- `D05` zapisuje `confirmed_motivation`. V book-first checkpointu S05 (2026-10-01) zachovává `motivation_shift` i `motivation_nuance` beze změny; zapisuje perspektivu, nikoli dosažený výkon. Neexistuje consistency bonus ani penalty.
 
 ### 8. Challenge Key
 
