@@ -1,6 +1,6 @@
 # Chapter III Visual Plan
 
-Status: S01 PRE-PRODUCTION CONTENT LOCK FOR HUMAN REVIEW. Briefs only; no new images, derivatives or runtime composition. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. [SCRIPT.md](SCRIPT.md) owns story; the existing Eliza visual bible owns identity.
+Status: S01 PRE-PRODUCTION CONTENT LOCK; In Training source master Human Visual QA PASS. Two user-supplied source images are available; no presentation derivatives, runtime cutouts or runtime composition are created in this inventory pass. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. [SCRIPT.md](SCRIPT.md) owns story; the existing Eliza visual bible owns identity.
 
 ## Scene-derived stage
 
@@ -10,13 +10,26 @@ For all ch03_* scene metadata: visualStage = "in_training". No persistent eliza_
 
 Identity authority: assets/images/characters/eliza/eliza_flower-girl_master.webp and its source PNG. Preserve exact recognisable face, hair colour/texture, age, proportions and lively expression. Practical, simply fitted indoor lesson clothing with modest Edwardian layers; recognisable unchanged hair, only naturally arranged for work. No glamour transformation, aristocratic pose, Chapter V polished clothing or copied musical/film likeness. Concentration coexists with old spontaneity; no sudden personality change.
 
-Planned assets (NOT GENERATED / HUMAN VISUAL APPROVAL REQUIRED):
+## Approved source inventory and reference hierarchy
 
-- ELZ-TR-MASTER: assets/images/characters/eliza/source/eliza_training_master.png; presentation assets/images/characters/eliza/eliza_training_master.webp.
-- ELZ-TR-FOCUSED, required S01: source/eliza_training_focused.png, presentation eliza_training_focused.webp, transparent runtime/eliza_training_focused_cutout.png in that same character root. Focused learner with a natural hand near the mirror, not a frozen mouth caricature.
+Both supplied files passed PNG integrity verification and full decode on 2026-10-01. Both are RGBA with alpha range 0–255. Filenames are normalised; SHA-256 before and after rename matches for each file. The supplied images remain byte-for-byte unchanged; no crop, resize, re-encode or conversion is performed.
+
+| Role | Actual available source path | Dimensions | Status |
+|---|---|---|---|
+| ELZ-TR-MASTER | `assets/images/characters/eliza/source/eliza_training_master.png` | 1112 × 1415 | CANONICAL Chapter III In Training identity, body and wardrobe reference; Human Visual QA PASS; identity continuity with Flower Girl master approved by human review |
+| Supporting coat reference | `assets/images/characters/eliza/source/eliza_training_coat_reference.png` | 1055 × 1491 | APPROVED / SUPPORTING wardrobe and pose reference for later Chapter III composition |
+
+Canonical filenames are now `eliza_training_master.png` and `eliza_training_coat_reference.png` in the source directory. Both paths exist; naming normalisation changed no image bytes.
+
+The canonical In Training master always takes precedence for facial identity, hair identity, age, body proportions and general In Training appearance. The coat image may support outdoor, hallway or transition composition, a cooler/rainy scene, or a future pose derivation. It must never independently redefine Eliza's identity or replace the canonical master. These uses do not lock any later scene or require a new asset now.
+
+Presentation / pose backlog:
+
+- ELZ-TR-MASTER: approved source assets/images/characters/eliza/source/eliza_training_master.png; presentation assets/images/characters/eliza/eliza_training_master.webp is NOT YET CREATED.
+- ELZ-TR-FOCUSED, required S01: source/eliza_training_focused.png, presentation eliza_training_focused.webp, transparent runtime/eliza_training_focused_cutout.png in that same character root. Focused runtime cutout = NOT YET CREATED; focused source/presentation also remain uncreated. Focused learner with a natural hand near the mirror, not a frozen mouth caricature.
 - ELZ-TR-PRACTICING, optional only if focused cannot carry the activity: matching source/presentation/runtime filenames using practicing. No second face identity.
 
-Alt intent: “Eliza in practical indoor lesson clothes, concentrating on a small mirror while practising a sound.” All derivatives preserve canonical source identity and natural edges. Artwork approval is still pending; this brief does not approve nonexistent images.
+Alt intent for the future focused variant: “Eliza in practical indoor lesson clothes, concentrating on a small mirror while practising a sound.” All future derivatives must preserve the approved canonical source identity and natural edges. Master human approval is complete; future focused/practicing artwork and composition approval remain pending.
 
 ## Location reuse after visual inspection
 
@@ -39,7 +52,7 @@ Without sound, mirror, text and labels make the lesson understandable; no critic
 
 ## Architecture guardrails and remaining gates
 
-Reuse the story renderer, renderDecision, state/event store, AudioManager, challenge infrastructure, existing Teacher Mode dialog, replay/preview safety and responsive image layers. No Chapter III AudioManager/state store/Teacher/decision system/isolated save. Open production gates: In Training master/focused human approval, optional practicing need, integrated mirror/card/diagram treatment, foreground masking and exact viewport QA. These do not reopen the locked story/identity brief.
+Reuse the story renderer, renderDecision, state/event store, AudioManager, challenge infrastructure, existing Teacher Mode dialog, replay/preview safety and responsive image layers. No Chapter III AudioManager/state store/Teacher/decision system/isolated save. Master Human Visual QA and Flower Girl identity continuity are approved. Open production gates: focused creation/approval, optional practicing need, integrated mirror/card/diagram treatment, foreground masking and exact viewport QA. These do not reopen the locked story/identity brief.
 
 ## Later Chapter III – NOT YET LOCKED
 
