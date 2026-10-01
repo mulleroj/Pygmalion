@@ -173,6 +173,48 @@ const CH02_S03_TEACHER_OVERRIDES = {
   'Discussion Questions': 'Why can it be difficult to ask an authority for clarification? How does payment affect the power imbalance? How does Mrs Pearce support Eliza without deciding for her?',
   'Cultural / Literary Context': 'Paid education can create opportunity and a power imbalance. Mrs Pearce is a practical, calm and supportive authority who helps make the terms understandable.',
   'Suggested Classroom Use': 'Read the conversation, then practise Could you explain…? with practical terms. Compare both responses without ranking them. Preview and review are read-only.',
-  'Scene Navigation': "Mrs Pearce's Questions · clarification and boundaries. The agreement scene is not playable yet."
+  'Scene Navigation': "Mrs Pearce's Questions · clarification and boundaries. Continue to The Price of a Lesson; the clarification choice is optional."
 };
 export const CH02_SCENE_03_TEACHER_SECTIONS = CH02_TEACHER_SECTIONS.map(([heading, content]) => [heading, CH02_S03_TEACHER_OVERRIDES[heading] || content]);
+
+export const CH02_SCENE_04 = {
+  id: 'ch02_s04', number: 4, title: 'The Price of a Lesson', kicker: 'The Bargain',
+  composition: 'ch02-agreement',
+  background: image('images/locations/ch02/ch02_higgins-study.webp', 'An Edwardian study with a writing desk, papers, books and a fireplace.'),
+  plate: image('images/locations/ch02/ch02_higgins-study.webp', 'The desk where the lesson agreement is made.'),
+  eliza: image('images/characters/eliza/runtime/eliza_flower-girl_alert_cutout.png', 'Eliza actively asks about the agreement and protects her own voice.'),
+  supporting: [
+    { ...image('images/characters/higgins/runtime/higgins_master_cutout.png', 'Higgins writes the practical lesson terms beside the desk.'), placement: 'higgins' },
+    { ...image('images/characters/pickering/runtime/pickering_master_cutout.png', 'Pickering supports the fair agreement from behind the desk.'), placement: 'pickering' },
+    { ...image('images/characters/mrs-pearce/runtime/mrs-pearce_fairness-monitoring_cutout.png', 'Mrs Pearce calmly monitors fairness and mutual understanding.'), placement: 'mrs-pearce' }
+  ],
+  props: [], voice: [],
+  storyBeats: [
+    { type: 'narration', text: 'At the table, the agreement becomes concrete. Coins, a pen, and a weekly schedule sit beside the phonetic notes.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Three mornings each week. Practice between lessons. A fixed fee.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'And what do I receive for it?' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Instruction, exercises, and a way to make your speech clearer.' },
+    { type: 'dialogue', speaker: 'Eliza', text: "Then write this too: clearer doesn't mean it stops being mine." },
+    { type: 'dialogue', speaker: 'Pickering', text: 'That is a fair term.' },
+    { type: 'dialogue', speaker: 'Mrs Pearce', text: 'A fair agreement needs both sides to understand it.' },
+    { type: 'narration', text: 'The written terms remain visible in the story. This is not a hidden comprehension test.' }
+  ],
+  terms: [
+    'Three lessons each week.', 'Practice between lessons.', 'A fixed fee.',
+    "The purpose of the lessons must remain Eliza's to define.", 'Questions and clarification are allowed.'
+  ],
+  transition: 'Eliza places the money on the table. The agreement is not perfect, but it is spoken aloud.'
+};
+
+const CH02_S04_TEACHER_OVERRIDES = {
+  'Learning Goals': 'Understand a transparent agreement, terms and conditions, and learner agency. Both sides must understand the terms.',
+  'Language Focus': "Discuss lessons, practice, fee, purpose and clarification. Clearer speech does not mean loss of identity: Eliza retains ownership of her learning and voice.",
+  'Listening Focus': 'This scene is book-first. There is no story voice or listening task in this checkpoint. All meaning remains visible with sound off.',
+  'Cultural / Literary Context': 'Money can create opportunity and a power imbalance. A transparent agreement protects the learner’s right to ask questions and define the purpose of learning.',
+  'Decisions – Teacher Notes': 'The terms card is informational. Only explicit student continuation records understanding; entry, replay and preview do not. No development signals change.',
+  'Challenge Key': 'There is no answer key, quiz or scored challenge. The terms card is not a test.',
+  'Discussion Questions': 'What does each side promise? Why does Eliza protect her own voice? How can both sides check that they understand without testing or ranking the learner?',
+  'Suggested Classroom Use': 'Read the agreement, then role-play learner, teacher and supportive witness. Discuss the right to ask questions. Teacher preview remains read-only.',
+  'Scene Navigation': 'The Price of a Lesson · transparent terms and ownership of learning. The next scene is not playable yet.'
+};
+export const CH02_SCENE_04_TEACHER_SECTIONS = CH02_TEACHER_SECTIONS.map(([heading, content]) => [heading, CH02_S04_TEACHER_OVERRIDES[heading] || content]);

@@ -145,3 +145,16 @@ test('chapter completion and conscious reset preserve only the sound preference'
   assert.equal(reset.scene, 'ch01_s01');
   assert.equal(reset.soundEnabled, false);
 });
+
+test('s04 completion is explicit and write-once with old-save defaults and preserved signals', async () => {
+  const { completeS04Terms, loadState, createInitialState } = await import('../src/state.js');
+  const old = loadState({ getItem: () => JSON.stringify({ scene: 'ch02_s04', confidence: 3, pronunciation: 2, independence: 4 }) });
+  assert.equal(old.lesson_terms_understood, false);
+  assert.equal(loadState({ getItem: () => JSON.stringify({ lesson_terms_understood: true }) }).lesson_terms_understood, true);
+  const done = completeS04Terms(old);
+  assert.deepEqual(done, { ...old, lesson_terms_understood: true, applied_events: [...old.applied_events, 'ch02_s04_terms_understood'] });
+  assert.equal(completeS04Terms(done), done);
+  assert.equal(completeS04Terms(createInitialState()).lesson_terms_understood, false);
+  const reloaded = loadState({ getItem: () => JSON.stringify(done) });
+  assert.deepEqual(completeS04Terms(reloaded), done);
+});

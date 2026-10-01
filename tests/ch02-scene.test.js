@@ -362,7 +362,13 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   await click('next-scene');
   assert.deepEqual(JSON.parse(saved), { ...completed, scene: 'ch02_s03' });
   assert.match(node('#app').innerHTML, /This response is optional/);
-  assert.doesNotMatch(node('#app').innerHTML, /data-action="next-scene"|pickering_master|ch02_s04/);
+  await click('next-scene');
+  assert.equal(JSON.parse(saved).scene, 'ch02_s04');
+  assert.equal(JSON.parse(saved).boundary_questioned, false);
+  assert.equal(JSON.parse(saved).lesson_terms_understood, false);
+  window.location.hash = '#ch02_s03';
+  historyEvents.hashchange();
+  assert.doesNotMatch(node('#app').innerHTML, /pickering_master|ch02_s04/);
   assert.equal((node('#app').innerHTML.match(/data-action="play-voice"/g) || []).length, 2);
   const pearceLine = node('#app').innerHTML.split('data-line="1"')[1].split('data-line="2"')[0];
   assert.match(pearceLine, /Before we begin, we must know/);
@@ -374,7 +380,7 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   await click('play-voice', { src: CH02_SCENE_03.voice[0].src });
   await click('play-voice', { src: CH02_SCENE_03.voice[1].src });
   assert.equal(saved, before);
-  moveNext(); render(); await click('open-teacher'); await click('teacher-preview');
+  render(); await click('open-teacher'); await click('teacher-preview');
   assert.equal(saved, before);
   await click('respond-s03', { option: 's03_confirm_understanding' });
   assert.equal(saved, before);
@@ -390,4 +396,51 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   assert.equal(JSON.parse(saved).applied_events.filter((id) => id === 'ch02_s03_boundary_questioned').length, 1);
   assert.deepEqual(loadState({ getItem: () => saved }), JSON.parse(asked));
   assert.equal(JSON.parse(saved).scene, 'ch02_s03');
+  await click('next-scene');
+  assert.equal(JSON.parse(saved).scene, 'ch02_s04');
+  assert.equal(JSON.parse(saved).lesson_terms_understood, false);
+  const beforeTerms = saved;
+  render(); historyEvents.popstate(); historyEvents.hashchange();
+  await click('open-teacher'); await click('teacher-preview');
+  assert.equal(saved, beforeTerms);
+  assert.match(node('#app').innerHTML, /class="terms-card"/);
+  assert.doesNotMatch(node('#app').innerHTML, /play-voice|play-sfx|ch02_s05/);
+  await click('complete-s04');
+  const termsComplete = saved;
+  assert.equal(JSON.parse(saved).lesson_terms_understood, true);
+  await click('complete-s04'); moveNext(); render();
+  assert.equal(saved, termsComplete);
+  assert.equal(JSON.parse(saved).scene, 'ch02_s04');
+});
+
+test('s04 locked story and five informational terms have no audio or quiz', async () => {
+  const { CH02_SCENE_04, CH02_SCENE_04_TEACHER_SECTIONS } = await import('../src/ch02-content.js');
+  const script = read('docs/chapters/ch02/SCRIPT.md');
+  assert.equal(CH02_SCENE_04.storyBeats.length, 8);
+  assert.equal(CH02_SCENE_04.storyBeats.filter((beat) => beat.type === 'dialogue').length, 6);
+  for (const beat of CH02_SCENE_04.storyBeats) assert.ok(script.includes(beat.text));
+  assert.ok(script.includes(CH02_SCENE_04.transition));
+  assert.equal(CH02_SCENE_04.terms.length, 5);
+  for (const term of CH02_SCENE_04.terms) assert.ok(script.includes(term));
+  assert.deepEqual(CH02_SCENE_04.voice, []);
+  assert.equal(CH02_SCENE_04.sfx, undefined);
+  assert.equal(CH02_SCENE_04.contextual, undefined);
+  assert.equal(CH02_SCENE_04.challenge, undefined);
+  assert.equal(CH02_SCENE_04_TEACHER_SECTIONS.length, 12);
+  assert.match(CH02_SCENE_04_TEACHER_SECTIONS.flat().join(' '), /terms card is not a test/);
+});
+
+test('s03 to s04 keeps the interior instance and position while stopping speech', async (t) => {
+  const manager = new AudioManager({ fadeMs: 0, duckFadeMs: 0, createAudio: (src) => ({
+    src, currentTime: 0, volume: 0, paused: true, addEventListener() {}, removeEventListener() {},
+    play() { this.paused = false; return Promise.resolve(); }, pause() { this.paused = true; }
+  }) });
+  t.after(() => manager.dispose()); manager.unlock();
+  await manager.ensureAmbience('ch02_s03');
+  const loop = manager.ambience; loop.currentTime = 8;
+  const voice = await manager.playVoice(CH02_SCENE_03.voice[0].src);
+  await manager.ensureAmbience('ch02_s04');
+  assert.equal(manager.ambience, loop); assert.equal(loop.currentTime, 8);
+  assert.equal(loop.paused, false); assert.equal(voice.paused, true);
+  assert.equal(manager.contextual, null);
 });

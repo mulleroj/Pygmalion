@@ -246,3 +246,29 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* Scene four: agreement at the desk, independent of the s02 composition. */
+.ch02-agreement-spread { grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); }
+.ch02-agreement.storybook-art { min-height: 0; height: auto; aspect-ratio: 1672 / 941; }
+.ch02-agreement .art-background { filter: none; }
+.ch02-agreement .art-background img { object-fit: contain; }
+.ch02-agreement .art-support, .ch02-agreement .art-eliza { display: block; padding: 0; opacity: 1; }
+.ch02-agreement .supporting-character, .ch02-agreement .art-eliza img { position: absolute; width: auto; max-width: none; max-height: none; transform: translateX(-50%); filter: drop-shadow(0 3px 3px rgba(34,27,24,.22)); }
+.ch02-agreement .art-eliza img { left: 25%; bottom: 2%; height: 73%; }
+.ch02-agreement .support-higgins { left: 66%; top: 12%; height: 64%; clip-path: inset(0 0 43% 0); }
+.ch02-agreement .support-pickering { left: 48%; top: 15%; height: 39%; clip-path: inset(0 0 7% 0); }
+.ch02-agreement .support-mrs-pearce { left: 86%; bottom: 6%; height: 49%; }
+.ch02-agreement figcaption { display: none; }
+.ch02-agreement-spread .terms-card { margin: 1.5rem 0; padding: 1rem 1.25rem; border: 1px solid #cbbda6; background: #f3ecdf; }
+.ch02-agreement-spread .terms-card h2 { font-size: 1.3rem; margin-top: 0; }
+.ch02-agreement-spread .terms-card li { margin: .5rem 0; }
+@media (max-width: 1100px) {
+  .ch02-agreement-spread { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .ch02-agreement.storybook-art { height: 300px; aspect-ratio: auto; }
+  .ch02-agreement .art-background img { object-fit: cover; object-position: 58% center; }
+  .ch02-agreement .art-eliza img { left: 25%; bottom: 1%; height: 72%; }
+  .ch02-agreement .support-higgins { left: 76%; top: 12%; height: 70%; clip-path: inset(0 0 46% 0); }
+  .ch02-agreement .support-pickering, .ch02-agreement .support-mrs-pearce { display: none; }
+}

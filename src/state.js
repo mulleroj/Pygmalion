@@ -16,6 +16,7 @@ export function createInitialState() {
     ch02_lc03_completed: false,
     experiment_framing_heard: false,
     boundary_questioned: false,
+    lesson_terms_understood: false,
     ch02_lc04_attempts: 0,
     ch02_lc04_completed: false,
     lc04_presentation_order: null,
@@ -272,4 +273,12 @@ export function markChapterComplete(state) {
 
 export function setSoundPreference(state, enabled) {
   return { ...state, soundEnabled: Boolean(enabled) };
+}
+
+export function completeS04Terms(state) {
+  if (state.scene !== 'ch02_s04') return state;
+  const eventId = 'ch02_s04_terms_understood';
+  if (state.lesson_terms_understood && state.applied_events.includes(eventId)) return state;
+  return { ...state, lesson_terms_understood: true,
+    applied_events: state.applied_events.includes(eventId) ? state.applied_events : [...state.applied_events, eventId] };
 }
