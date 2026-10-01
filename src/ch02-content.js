@@ -182,13 +182,25 @@ export const CH02_SCENE_04 = {
   composition: 'ch02-agreement',
   background: image('images/locations/ch02/ch02_higgins-study.webp', 'An Edwardian study with a writing desk, papers, books and a fireplace.'),
   plate: image('images/locations/ch02/ch02_higgins-study.webp', 'The desk where the lesson agreement is made.'),
-  eliza: image('images/characters/eliza/runtime/eliza_flower-girl_alert_cutout.png', 'Eliza actively asks about the agreement and protects her own voice.'),
+  eliza: image('images/characters/eliza/runtime/eliza_flower-girl_thoughtful_cutout.png', 'Eliza stands firmly beside the desk, focused on Higgins and the lesson agreement.'),
   supporting: [
     { ...image('images/characters/higgins/runtime/higgins_master_cutout.png', 'Higgins writes the practical lesson terms beside the desk.'), placement: 'higgins' },
     { ...image('images/characters/pickering/runtime/pickering_master_cutout.png', 'Pickering supports the fair agreement from behind the desk.'), placement: 'pickering' },
     { ...image('images/characters/mrs-pearce/runtime/mrs-pearce_fairness-monitoring_cutout.png', 'Mrs Pearce calmly monitors fairness and mutual understanding.'), placement: 'mrs-pearce' }
   ],
-  props: [], voice: [],
+  props: [],
+  voice: [{
+    id: 'AM17', src: './assets/audio/characters/higgins/higgins_ch02_scene04_001.mp3',
+    transcript: 'Three mornings each week. Practice between lessons. A fixed fee.',
+    label: 'Play Higgins’s lesson terms', inline: true,
+    afterVoice: { id: 'ch02_quarter_hour_gong', sceneId: 'ch02_s04', src: './assets/audio/sfx/ch02_quarter_hour_gong.mp3',
+      nextVoice: { src: './assets/audio/characters/eliza/eliza_ch02_scene04_001.mp3' } }
+  }, {
+    id: 's04_eliza', src: './assets/audio/characters/eliza/eliza_ch02_scene04_001.mp3',
+    transcript: 'And what do I receive for it?', label: 'Play Eliza’s question', inline: true,
+    afterCueId: 'ch02_quarter_hour_gong'
+  }], // Human QA PASS for sources and combined rhythm. Explicit Higgins Play starts the sequence.
+  contextual: { id: 'gramophone_distant', src: './assets/audio/ambience/gramophone_distant.mp3' },
   storyBeats: [
     { type: 'narration', text: 'At the table, the agreement becomes concrete. Coins, a pen, and a weekly schedule sit beside the phonetic notes.' },
     { type: 'dialogue', speaker: 'Higgins', text: 'Three mornings each week. Practice between lessons. A fixed fee.' },

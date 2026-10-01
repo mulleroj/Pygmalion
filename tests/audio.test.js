@@ -396,6 +396,52 @@ test('Chapter II story/sample mix ducks both layers and restores without restart
   assert.equal(contextual.paused, true);
 });
 
+test('AM17 uses the Chapter II story mix, restores interior and replays the same asset after sound on', async (t) => {
+  t.mock.timers.enable({ apis: ['Date', 'setInterval'] });
+  const { CH02_SCENE_04 } = await import('../src/ch02-content.js');
+  const { manager } = audioHarness(t);
+  manager.unlock();
+  await manager.ensureAmbience('ch02_s03');
+  const base = manager.ambience;
+  base.currentTime = 8;
+  await manager.ensureAmbience('ch02_s04', CH02_SCENE_04.contextual);
+  const gramophone = manager.contextual;
+  assert.equal(manager.ambience, base);
+  assert.equal(gramophone.src, AMBIENCE_FILES.gramophone_distant);
+  assert.equal(gramophone.loop, false);
+  assert.equal(gramophone.volume, 0.012);
+  const src = CH02_SCENE_04.voice[0].src;
+  const voice = await manager.playVoice(src);
+  assert.equal(voice.src, src);
+  assert.equal(base.volume, 0.10 * 0.28);
+  assert.equal(gramophone.volume, 0.012 * 0.10);
+  voice.emit('ended');
+  assert.equal(base.volume, 0.10);
+  assert.equal(gramophone.volume, 0.012);
+  const replay = await manager.playVoice(src);
+  assert.equal(replay.src, src);
+  await manager.setEnabled(false);
+  assert.equal(replay.paused, true);
+  assert.equal(await manager.playVoice(src), null);
+  await manager.setEnabled(true);
+  assert.equal(manager.foreground, null);
+  assert.equal(manager.ambience, base);
+  assert.equal(base.currentTime, 8);
+  assert.equal(base.volume, 0.10);
+  assert.equal((await manager.playVoice(src)).src, src);
+  assert.equal(gramophone.playCalls, 1);
+  assert.equal(gramophone.paused, true);
+  await manager.ensureAmbience('ch02_s03');
+  await manager.ensureAmbience('ch02_s04', CH02_SCENE_04.contextual);
+  assert.notEqual(manager.contextual, gramophone);
+  assert.equal(manager.ambience, base);
+  const newCue = manager.contextual;
+  t.mock.timers.tick(21000);
+  assert.equal(newCue.paused, true);
+  await manager.ensureAmbience('ch02_s04', CH02_SCENE_04.contextual);
+  assert.equal(newCue.playCalls, 1);
+});
+
 test('missing Chapter II loops and samples fail safely without Chapter I rain fallback', async (t) => {
   const { manager, elements } = audioHarness(t, { createAudio: (src) => {
     const element = new FakeAudio(src); element.failure = new Error('QA 404'); elements.push(element); return element;
@@ -636,5 +682,4 @@ test('Teacher controls and read-only review are not audio-unlock gestures', () =
   const unlockActions = app.split('const AUDIO_UNLOCK_ACTIONS = new Set([')[1].split(']);')[0];
   assert.doesNotMatch(unlockActions, /open-teacher|close-teacher|teacher-preview|review-scene/);
   assert.match(app, /event\.isTrusted && AUDIO_UNLOCK_ACTIONS\.has\(action\)/);
-  assert.doesNotMatch(fs.readFileSync(path.join(root, 'src/audio.js'), 'utf8'), /setTimeout\(/);
 });

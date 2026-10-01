@@ -335,6 +335,10 @@ test('s03 transition preserves interior time and ends the s02 gramophone', async
 });
 
 test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/Teacher read-only', async (t) => {
+  const voiceRequests = [];
+  let unlocks = 0;
+  t.mock.method(AudioManager.prototype, 'unlock', function () { unlocks++; this.unlocked = true; });
+  t.mock.method(AudioManager.prototype, 'playVoice', async (src, afterVoice) => { voiceRequests.push({ src, afterVoice }); return null; });
   const originals = Object.fromEntries(['document', 'window', 'localStorage'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) { if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; } });
   let saved = JSON.stringify(setScene(createInitialState(), 'ch02_s02'));
@@ -400,11 +404,34 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   assert.equal(JSON.parse(saved).scene, 'ch02_s04');
   assert.equal(JSON.parse(saved).lesson_terms_understood, false);
   const beforeTerms = saved;
+  const ordinaryGesture = { isTrusted: true, type: 'pointerdown', target: { closest() { return null; } } };
+  const beforeUnlock = unlocks;
+  events.pointerdown({ ...ordinaryGesture, isTrusted: false });
+  assert.equal(unlocks, beforeUnlock);
+  events.pointerdown(ordinaryGesture);
+  assert.equal(unlocks, beforeUnlock + 1);
+  assert.equal(saved, beforeTerms); // Audio unlock never writes story progress.
+  const am17Src = './assets/audio/characters/higgins/higgins_ch02_scene04_001.mp3';
+  await click('play-voice', { src: am17Src });
+  assert.equal(voiceRequests.at(-1).afterVoice.id, 'ch02_quarter_hour_gong');
+  assert.equal(saved, beforeTerms);
   render(); historyEvents.popstate(); historyEvents.hashchange();
   await click('open-teacher'); await click('teacher-preview');
   assert.equal(saved, beforeTerms);
+  const previewUnlocks = unlocks;
+  events.pointerdown(ordinaryGesture); events.keydown({ ...ordinaryGesture, type: 'keydown', key: 'Enter' });
+  assert.equal(unlocks, previewUnlocks);
   assert.match(node('#app').innerHTML, /class="terms-card"/);
-  assert.doesNotMatch(node('#app').innerHTML, /play-voice|play-sfx|ch02_s05/);
+  assert.doesNotMatch(node('#app').innerHTML, /play-sfx|ch02_s05/);
+  assert.equal((node('#app').innerHTML.match(/data-action="play-voice"/g) || []).length, 2);
+  await click('play-voice', { src: am17Src });
+  await click('play-voice', { src: am17Src });
+  assert.equal(voiceRequests.at(-1).afterVoice, null);
+  await click('play-voice', { src: './assets/audio/characters/eliza/eliza_ch02_scene04_001.mp3' });
+  assert.equal(voiceRequests.at(-1).src, './assets/audio/characters/eliza/eliza_ch02_scene04_001.mp3');
+  assert.doesNotMatch(node('#app').innerHTML, /RECEIVE/);
+  assert.match(node('#app').innerHTML, /And what do I receive for it\?/);
+  assert.equal(saved, beforeTerms);
   await click('complete-s04');
   const termsComplete = saved;
   assert.equal(JSON.parse(saved).lesson_terms_understood, true);
@@ -413,7 +440,7 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   assert.equal(JSON.parse(saved).scene, 'ch02_s04');
 });
 
-test('s04 locked story and five informational terms have no audio or quiz', async () => {
+test('s04 locked story and terms use approved Higgins and Eliza story voice and no quiz', async () => {
   const { CH02_SCENE_04, CH02_SCENE_04_TEACHER_SECTIONS } = await import('../src/ch02-content.js');
   const script = read('docs/chapters/ch02/SCRIPT.md');
   assert.equal(CH02_SCENE_04.storyBeats.length, 8);
@@ -422,9 +449,28 @@ test('s04 locked story and five informational terms have no audio or quiz', asyn
   assert.ok(script.includes(CH02_SCENE_04.transition));
   assert.equal(CH02_SCENE_04.terms.length, 5);
   for (const term of CH02_SCENE_04.terms) assert.ok(script.includes(term));
-  assert.deepEqual(CH02_SCENE_04.voice, []);
+  assert.equal(CH02_SCENE_04.voice.length, 2);
+  const voice = CH02_SCENE_04.voice[0];
+  assert.equal(voice.id, 'AM17');
+  assert.equal(voice.inline, true);
+  assert.equal(voice.src, './assets/audio/characters/higgins/higgins_ch02_scene04_001.mp3');
+  assert.equal(voice.transcript, 'Three mornings each week. Practice between lessons. A fixed fee.');
+  assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root, voice.src))).digest('hex'), 'ca012e0845d3a0c5b5764f83324a1001483e2cde046ffab1061c3cc6a79aa074');
+  assert.deepEqual(voice.afterVoice, { id: 'ch02_quarter_hour_gong', sceneId: 'ch02_s04', src: './assets/audio/sfx/ch02_quarter_hour_gong.mp3', nextVoice: { src: './assets/audio/characters/eliza/eliza_ch02_scene04_001.mp3' } });
+  const eliza = CH02_SCENE_04.voice[1];
+  assert.equal(eliza.src, voice.afterVoice.nextVoice.src);
+  assert.equal(eliza.transcript, 'And what do I receive for it?');
+  assert.equal(eliza.inline, true);
+  assert.equal(eliza.afterCueId, 'ch02_quarter_hour_gong');
+  assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root, eliza.src))).digest('hex'), '73266b31cbd7dc9c59f48bf9cfd6dfc4c05bc139dc416a2499933d1e4e7d29ee');
+  assert.doesNotMatch(read('src/ch02-content.js'), /RECEIVE/);
+  assert.equal(createHash('sha256').update(fs.readFileSync(path.join(root, voice.afterVoice.src))).digest('hex'), 'fcdf68480fdebb4c36fadd2eb87d5fca1457bdcb76f862dddeec61460f7843f2');
+  assert.equal(CH02_SCENE_04.storyBeats.filter((beat) => beat.text === voice.transcript).length, 1);
+  assert.equal(CH02_SCENE_04.storyBeats.find((beat) => beat.text === voice.transcript).speaker, 'Higgins');
+  assert.ok(fs.statSync(path.join(root, voice.src)).size > 0);
   assert.equal(CH02_SCENE_04.sfx, undefined);
-  assert.equal(CH02_SCENE_04.contextual, undefined);
+  assert.deepEqual(CH02_SCENE_04.contextual, { id: 'gramophone_distant', src: './assets/audio/ambience/gramophone_distant.mp3' });
+  assert.equal(CH02_SCENE_04.eliza.src, CH02_SCENE_01.eliza.src);
   assert.equal(CH02_SCENE_04.challenge, undefined);
   assert.equal(CH02_SCENE_04_TEACHER_SECTIONS.length, 12);
   assert.match(CH02_SCENE_04_TEACHER_SECTIONS.flat().join(' '), /terms card is not a test/);

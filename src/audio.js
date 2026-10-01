@@ -8,9 +8,16 @@ const AMBIENCE_FILES = {
   gramophone_distant: './assets/audio/ambience/gramophone_distant.mp3'
 };
 
+const S04_CLOCK_MIX = { gain: 0.08, ambienceDuck: 1 };
 export const SFX_MIX = {
-  flowers_fall: { gain: 1, ambienceDuck: 0.42 }
+  flowers_fall: { gain: 1, ambienceDuck: 0.42 },
+  ch02_quarter_hour_gong: S04_CLOCK_MIX,
+  ch02_ambient_clock: S04_CLOCK_MIX
 };
+export const S04_AMBIENT_CLOCK_INTERVALS = [15000, 27000, 33000];
+const S04_CLOCK_SRC = './assets/audio/sfx/ch02_quarter_hour_gong.mp3';
+export const S04_GONG_PAUSE_MS = 400;
+export const S04_GONG_BREATH_MS = 250;
 
 export const STORY_VOICE_AMBIENCE_DUCK = 0.78;
 // Chapter II mix human-approved in the runtime scene.
@@ -59,6 +66,11 @@ export class AudioManager {
     this.contextualDucks = new Map();
     this.playedOneShots = new Set();
     this.oneShots = new Map();
+    this.storyCueTimer = null;
+    this.storyCue = null;
+    this.ambientClockTimer = null;
+    this.ambientClockIndex = 0;
+    this.sceneAudioReadOnly = false;
     this.loopStarts = new Map();
     this.fades = new Map();
     this.retiringLoops = new Set();
@@ -79,6 +91,7 @@ export class AudioManager {
         ? this.ensureAmbience(this.sceneId, this.contextualSpec) : Promise.resolve();
     }
     const cue = this.gramophoneCue;
+    this.stopAmbientClock();
     // Native media may already be audible before its play() promise settles.
     if (cue && (cue.started || !cue.element.paused)) this.finishGramophoneCue(cue);
     this.stopForeground();
@@ -153,6 +166,8 @@ export class AudioManager {
   }
 
   leaveScene() {
+    this.stopAmbientClock();
+    this.playedOneShots.delete('ch02_quarter_hour_gong');
     this.sceneId = null;
     this.contextualSpec = null;
     this.stopForeground();
@@ -342,6 +357,8 @@ export class AudioManager {
 
   async ensureAmbience(sceneId, contextual = null) {
     if (sceneId !== this.sceneId) {
+      this.stopAmbientClock();
+      this.playedOneShots.delete('ch02_quarter_hour_gong');
       this.finishGramophoneCue();
       this.gramophoneCue = null;
       this.stopForeground();
@@ -360,10 +377,69 @@ export class AudioManager {
         ? this.ensureGramophoneCue(contextual)
         : this.ensureLoop('contextual', contextual?.id, contextual?.src)
     ]);
+    this.startAmbientClock();
     return results[0];
   }
 
+  stopAmbientClock() {
+    globalThis.clearTimeout(this.ambientClockTimer);
+    this.ambientClockTimer = null;
+    this.ambientClockIndex = 0;
+  }
+
+  setSceneAudioReadOnly(readOnly) {
+    if (this.sceneAudioReadOnly === Boolean(readOnly)) return;
+    this.sceneAudioReadOnly = Boolean(readOnly);
+    if (this.sceneAudioReadOnly) {
+      this.stopAmbientClock();
+      this.cancelStoryCue();
+      this.stopOneShots();
+    } else this.startAmbientClock();
+  }
+
+  startAmbientClock() {
+    if (this.ambientClockTimer !== null || this.sceneId !== 'ch02_s04' || this.sceneAudioReadOnly || !this.enabled || !this.unlocked || !this.ambience || this.ambience.paused) return;
+    const index = this.ambientClockIndex++;
+    const delay = index === 0 ? S04_AMBIENT_CLOCK_INTERVALS[0] : S04_AMBIENT_CLOCK_INTERVALS[1 + (index - 1) % 2];
+    this.ambientClockTimer = globalThis.setTimeout(() => {
+      this.ambientClockTimer = null;
+      if (this.sceneId !== 'ch02_s04' || this.sceneAudioReadOnly || !this.enabled || !this.ambience || this.ambience.paused) return;
+      // Skip collisions; never queue a backlog or spend the independent story cue.
+      if (!this.foreground && !this.storyCue && this.oneShots.size === 0) this.playOneShot('ch02_ambient_clock', S04_CLOCK_SRC, null, { repeatable: true });
+      this.startAmbientClock();
+    }, delay);
+  }
+
+  cancelStoryCue() {
+    globalThis.clearTimeout(this.storyCueTimer);
+    this.storyCueTimer = null;
+    this.storyCue = null;
+    if (this.foreground) this.foreground.afterVoice = null;
+  }
+
+  scheduleStoryCue(cue) {
+    if (!cue || cue.sceneId !== this.sceneId || !this.enabled || !this.unlocked || this.playedOneShots.has(cue.id)) return;
+    this.storyCue = cue;
+    this.storyCueTimer = globalThis.setTimeout(() => {
+      this.storyCueTimer = null;
+      if (this.storyCue === cue && cue.sceneId === this.sceneId && this.enabled && !this.foreground) {
+        this.playOneShot(cue.id, cue.src, () => this.scheduleCueReply(cue));
+      }
+    }, S04_GONG_PAUSE_MS);
+  }
+
+  scheduleCueReply(cue) {
+    if (this.storyCue !== cue || !cue.nextVoice || cue.sceneId !== this.sceneId || !this.enabled) return;
+    this.storyCueTimer = globalThis.setTimeout(() => {
+      this.storyCueTimer = null;
+      if (this.storyCue !== cue || cue.sceneId !== this.sceneId || !this.enabled || this.foreground) return;
+      this.storyCue = null;
+      this.playVoice(cue.nextVoice.src);
+    }, S04_GONG_BREATH_MS);
+  }
+
   stopForeground({ restore = true } = {}) {
+    this.cancelStoryCue();
     const owner = this.foreground;
     if (owner) {
       owner.detach();
@@ -384,11 +460,12 @@ export class AudioManager {
     }
   }
 
-  async playOneShot(id, src) {
-    if (!this.enabled || !this.unlocked || this.foreground || !isOneShotAvailable(this.playedOneShots, id)) return false;
+  async playOneShot(id, src, afterEnded = null, { repeatable = false } = {}) {
+    if (!this.enabled || !this.unlocked || this.foreground || (!repeatable && !isOneShotAvailable(this.playedOneShots, id))) return false;
     const sound = this.makeAudio(src, 'sfx');
     if (!sound) return false;
-    this.playedOneShots.add(id);
+    if (!repeatable) this.playedOneShots.add(id);
+    sound.loop = false;
     sound.volume = SFX_MIX[id]?.gain ?? 1;
     const mix = SFX_MIX[id];
     const duckCategory = 'sfx:' + id;
@@ -397,10 +474,17 @@ export class AudioManager {
       this.oneShots.delete(sound);
       sound.removeEventListener('ended', ended);
       sound.removeEventListener('error', error);
-      if (failed) this.playedOneShots.delete(id);
+      if (failed) {
+        this.playedOneShots.delete(id);
+        if (this.storyCue?.id === id) this.cancelStoryCue();
+      }
       this.unduck(duckCategory);
     };
-    const ended = () => release();
+    const ended = () => {
+      if (!this.oneShots.has(sound)) return;
+      release();
+      afterEnded?.();
+    };
     const error = () => release(true);
     this.oneShots.set(sound, release);
     if (mix?.ambienceDuck < 1) this.duck(duckCategory, mix.ambienceDuck, 0.10);
@@ -412,37 +496,42 @@ export class AudioManager {
     return played;
   }
 
-  async playForeground(src, kind) {
+  async playForeground(src, kind, afterVoice = null) {
     if (!this.enabled || !this.unlocked) return null;
     const element = this.makeAudio(src, kind);
     if (!element) return null;
     this.stopForeground({ restore: false });
     this.stopOneShots();
-    const owner = { element, kind };
-    const release = () => {
+    const owner = { element, kind, afterVoice };
+    const release = (completed = false) => {
       if (this.foreground !== owner) return; // Late events cannot release a newer clip's duck.
       owner.detach();
       this.foreground = null;
       this.unduck('foreground');
+      if (completed) this.scheduleStoryCue(owner.afterVoice);
     };
+    const ended = () => release(true);
+    const error = () => release();
     owner.detach = () => {
-      element.removeEventListener('ended', release);
-      element.removeEventListener('error', release);
+      element.removeEventListener('ended', ended);
+      element.removeEventListener('error', error);
     };
     this.foreground = owner;
     const challenge = kind === 'challenge';
     this.duck('foreground', challenge ? this.mix.challengeDuck : this.mix.storyDuck,
       challenge ? this.mix.challengeContextualDuck : this.mix.storyContextualDuck);
-    element.addEventListener('ended', release);
-    element.addEventListener('error', release);
+    element.addEventListener('ended', ended);
+    element.addEventListener('error', error);
     const played = await this.safePlay(element, kind);
     if (this.foreground !== owner || !this.enabled) element.pause();
     else if (!played) release();
     return element;
   }
 
-  playVoice(src) {
-    return this.playForeground(src, 'voice');
+  playVoice(src, afterVoice = null, afterCueId = null) {
+    // An explicit reply during the running sequence waits for the clock's full decay.
+    if (afterCueId && (this.foreground?.afterVoice?.id === afterCueId || this.storyCue?.id === afterCueId)) return Promise.resolve(null);
+    return this.playForeground(src, 'voice', afterVoice);
   }
 
   playChallenge(src) {
@@ -450,6 +539,7 @@ export class AudioManager {
   }
 
   dispose() {
+    this.stopAmbientClock();
     this.stopForeground({ restore: false });
     this.stopOneShots();
     this.stopAmbience({ immediate: true });

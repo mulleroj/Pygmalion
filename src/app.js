@@ -42,6 +42,7 @@ let lastTeacherTrigger = null;
 let previousScene = null;
 let lastLc03Answer = null;
 let lastS03Response = null;
+let s04AudioPreview = false;
 const LC01_OPTIONS = ['apology', 'excuse', 'intention to repair'];
 const AUDIO_UNLOCK_ACTIONS = new Set([
   'open-story', 'enter-ch02', 'next-scene', 'choose-tone', 'choose-decision',
@@ -319,13 +320,14 @@ function render() {
     save();
   }
   if (!hashScene && (!state.started || window.history.state?.scene === null)) {
+    s04AudioPreview = false;
     if (!state.started && window.history.state?.scene !== null) setLocation(null, true);
     audioManager.leaveScene();
     renderCover();
   }
   else {
     const scene = RUNTIME_SCENES[hashScene] || currentScene();
-    if (previousScene !== scene.id) lastS03Response = null;
+    if (previousScene !== scene.id) { lastS03Response = null; s04AudioPreview = false; }
     if (state.scene !== scene.id) {
       state = setScene(state, scene.id);
       save();
@@ -350,6 +352,7 @@ function render() {
     updateHeader();
     document.querySelector('#story-root')?.focus({ preventScroll: true });
     const currentSceneId = scene.id;
+    audioManager.setSceneAudioReadOnly(scene.id === 'ch02_s04' && (s04AudioPreview || teacherDialog.open));
     audioManager.setEnabled(state.soundEnabled);
     audioManager.ensureAmbience(currentSceneId, scene.contextual || null);
     previousScene = currentSceneId;
@@ -403,6 +406,7 @@ function openStory() {
 }
 
 function openTeacher(trigger) {
+  if (currentScene().id === 'ch02_s04') audioManager.setSceneAudioReadOnly(true);
   lastTeacherTrigger = trigger;
   const scene = document.querySelector('#story-root') ? currentScene() : null;
   const chapterTwo = scene?.id?.startsWith('ch02_');
@@ -419,9 +423,22 @@ function closeTeacher() {
   if (teacherDialog.open) teacherDialog.close();
   else teacherDialog.removeAttribute('open');
   lastTeacherTrigger?.focus();
+  audioManager.setSceneAudioReadOnly(currentScene().id === 'ch02_s04' && s04AudioPreview);
 }
 
+function unlockS04Ambience(event) {
+  if (!event.isTrusted || currentScene().id !== 'ch02_s04' || !document.querySelector('#story-root') || teacherDialog.open || s04AudioPreview) return;
+  const action = event.target.closest?.('[data-action]')?.dataset.action;
+  if (['open-teacher', 'close-teacher', 'teacher-preview', 'toggle-sound', 'go-cover'].includes(action)) return;
+  if (event.type === 'keydown' && ['Shift', 'Control', 'Alt', 'Meta', 'Escape'].includes(event.key)) return;
+  audioManager.unlock();
+  audioManager.ensureAmbience('ch02_s04', CH02_SCENE_04.contextual);
+}
+document.addEventListener('pointerdown', unlockS04Ambience);
+document.addEventListener('keydown', unlockS04Ambience);
+
 document.addEventListener('click', async (event) => {
+  unlockS04Ambience(event);
   const target = event.target.closest('[data-action]');
   if (!target) return;
   const action = target.dataset.action;
@@ -497,10 +514,14 @@ document.addEventListener('click', async (event) => {
     const scene = currentScene();
     audioManager.ensureAmbience(scene.id, scene.contextual || null);
   }
-  if (action === 'play-voice') await audioManager.playVoice(target.dataset.src);
+  if (action === 'play-voice' && !teacherDialog.open) {
+    const voice = currentScene().voice.find(({ src }) => src === target.dataset.src);
+    await audioManager.playVoice(target.dataset.src, s04AudioPreview ? null : voice?.afterVoice, voice?.afterCueId);
+  }
   if (action === 'play-challenge') await audioManager.playChallenge(target.dataset.src);
   if (action === 'play-sfx') await audioManager.playOneShot('flowers_fall', target.dataset.src);
   if (action === 'teacher-preview') {
+    s04AudioPreview = currentScene().id === 'ch02_s04';
     closeTeacher();
     document.querySelector('#story-root')?.focus();
     announce('Read-only scene preview. Student progress was not changed.');

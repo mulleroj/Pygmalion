@@ -255,9 +255,11 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch02-agreement .art-support, .ch02-agreement .art-eliza { display: block; padding: 0; opacity: 1; }
 .ch02-agreement .supporting-character, .ch02-agreement .art-eliza img { position: absolute; width: auto; max-width: none; max-height: none; transform: translateX(-50%); filter: drop-shadow(0 3px 3px rgba(34,27,24,.22)); }
 .ch02-agreement .art-eliza img { left: 25%; bottom: 2%; height: 73%; }
-.ch02-agreement .support-higgins { left: 66%; top: 12%; height: 64%; clip-path: inset(0 0 43% 0); }
+.ch02-agreement .support-higgins { left: 66%; bottom: 12%; height: 72%; z-index: 0; }
+/* Reuse the desk in the approved plate as a foreground occluder, rather than cutting Higgins off in mid-air. */
+.ch02-agreement .art-support::after { content: ''; position: absolute; inset: 0; background: url('./assets/images/locations/ch02/ch02_higgins-study.webp') center / 100% 100% no-repeat; clip-path: polygon(30% 51%, 57% 49%, 70% 47%, 75% 53%, 74% 87%, 56% 94%, 31% 80%); z-index: 1; pointer-events: none; }
 .ch02-agreement .support-pickering { left: 48%; top: 15%; height: 39%; clip-path: inset(0 0 7% 0); }
-.ch02-agreement .support-mrs-pearce { left: 86%; bottom: 6%; height: 49%; }
+.ch02-agreement .support-mrs-pearce { left: 86%; bottom: 6%; height: 49%; z-index: 2; }
 .ch02-agreement figcaption { display: none; }
 .ch02-agreement-spread .terms-card { margin: 1.5rem 0; padding: 1rem 1.25rem; border: 1px solid #cbbda6; background: #f3ecdf; }
 .ch02-agreement-spread .terms-card h2 { font-size: 1.3rem; margin-top: 0; }
@@ -269,6 +271,6 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch02-agreement.storybook-art { height: 300px; aspect-ratio: auto; }
   .ch02-agreement .art-background img { object-fit: cover; object-position: 58% center; }
   .ch02-agreement .art-eliza img { left: 25%; bottom: 1%; height: 72%; }
-  .ch02-agreement .support-higgins { left: 76%; top: 12%; height: 70%; clip-path: inset(0 0 46% 0); }
+  .ch02-agreement .support-higgins, .ch02-agreement .art-support::after { display: none; }
   .ch02-agreement .support-pickering, .ch02-agreement .support-mrs-pearce { display: none; }
 }
