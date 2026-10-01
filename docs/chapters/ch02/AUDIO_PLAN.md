@@ -15,6 +15,7 @@ BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE
 
 ## Canonical casting
 
+- Eliza in Chapter II uses Voice Arc Stage 1 – Controlled Cockney; the canonical voice remains `Eliza - young_cockney`. Full rules and references are in [docs/audio/ELIZA_VOICE_ARC.md](../../audio/ELIZA_VOICE_ARC.md).
 - Eliza: Eliza - young_cockney, 124kaYCknTDsnwUFdWl9, eleven_v3.
 - Higgins: Kelvin - Calm Young British Male, JlptfLxaUpd8pZcw9dKd, eleven_v3.
 - Pickering: George - Warm, Captivating Storyteller, JBFqnCBsd6RMkjVDRZzb, eleven_v3.

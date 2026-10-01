@@ -113,6 +113,8 @@ The previously considered `Ali` voice is not canonical and must not be listed as
 
 ## Hlasová kontinuita
 
+Pro všechny nové repliky Elizy je [docs/audio/ELIZA_VOICE_ARC.md](../../../../docs/audio/ELIZA_VOICE_ARC.md) canonical source jejího hlasového vývoje; zpřesňuje obecná BEFORE / DURING / AFTER pravidla níže. Před generováním určete kapitolu a odpovídající voice-stage. Canonical voice zůstává `Eliza - young_cockney`, Voice ID `124kaYCknTDsnwUFdWl9`. Lidský poslech zůstává konečnou autoritou.
+
 ### BEFORE
 
 - výraznější Cockney;

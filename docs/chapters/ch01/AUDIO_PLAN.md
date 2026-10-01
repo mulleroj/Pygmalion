@@ -28,6 +28,7 @@ These IDs are canonical design identifiers and map to the local runtime files do
 
 ## Production rules
 
+- Chapter I uses Eliza Voice Arc Stage 0d – Raw / Hysterical Cockney; the canonical reference and exact rules are in [docs/audio/ELIZA_VOICE_ARC.md](../../audio/ELIZA_VOICE_ARC.md).
 - Eliza uses `Eliza - young_cockney`, voice ID `124kaYCknTDsnwUFdWl9`, model `eleven_v3`.
 - Eliza BEFORE delivery: young, lively, defensive, quick, with strong Cockney delivery.
 - Higgins canonical voice is `Kelvin - Calm Young British Male`, voice ID `JlptfLxaUpd8pZcw9dKd`, model `eleven_v3`.
