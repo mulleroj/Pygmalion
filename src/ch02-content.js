@@ -263,7 +263,7 @@ export const CH02_SCENE_05 = {
 const CH02_S05_TEACHER_OVERRIDES = {
   'Learning Goals': 'Name a purpose for learning and practise self-advocacy. The learner/player chooses the nuance of Eliza’s motivation; all four options preserve agency.',
   'Language Focus': 'I want… expresses purpose. I will choose… expresses ownership of future choices. Learning more forms gives Eliza tools she can choose when to use.',
-  'Listening Focus': 'Book-first scene with optional story voice for Eliza’s final purpose statement. The AM19C source take is human approved; listening QA in the scene mix is pending. There is no listening task. All dialogue and the ending remain visible in the story.',
+  'Listening Focus': 'Book-first scene with optional story voice for Eliza’s final purpose statement. The AM19C source take is human approved; the scene mix has passed Human Audio QA. There is no listening task. All dialogue and the ending remain visible in the story.',
   'Cultural / Literary Context': 'Eliza defines her own goal before entering the lesson room. Pickering supports her right to speak; he does not choose her purpose.',
   'Decisions – Teacher Notes': 'D05 records confirmed_motivation once through ch02_d05_confirmed_motivation. All four options are legitimate. The choice records perspective, not achievement; no development signals change. Earlier Chapter II state remains intact.',
   'Challenge Key': 'No correct answer, score or assessment. D05 is self-definition, not a quiz. All choices converge on the same Chapter II ending.',
