@@ -47,7 +47,7 @@ Reuse the existing story renderer, renderDecision, shared state/event store, Aud
 
 ## Later Chapter III – NOT YET LOCKED
 
-[Scene-map](../../SCENE_MAP.md) placeholders only: S02 AM23–24 minimal pairs/voice; S03 AM25–26 word stress/Mrs Pearce; S04 AM27–28 intonation/Eliza; S05 AM29–30 correction/rain; S06 AM31–32 customer order/Eliza. No later production text, sample casting, mix or lifecycle is locked.
+S03 AM25–26 is specified below. Remaining [scene-map](../../SCENE_MAP.md) intent: S04 AM27–28 intonation/Eliza; S05 AM29–30 correction/rain; S06 AM31–32 customer order/Eliza. Their production text, casting, mix and lifecycle are not locked.
 
 ## AM21 approved story voice integration checkpoint
 
@@ -117,3 +117,31 @@ Four-source input analysis (FFmpeg `volumedetect`, `astats`, and EBU R128): stud
 Both `ch03_s01` and `ch03_s02` map to `ch03_lesson_room`; the AudioManager keeps the same loop instance across the scene boundary. Runtime story ambience gain is 0.10, story duck is 0.028, and LC06 ambience is 0.008. S01 recheck and S02 final ambience/voice mix are Human Audio Mix QA PASS; all six S02 recordings are Human Audio QA PASS. No Chapter I rain, Chapter II ambience, or gramophone fallback is part of this mapping.
 
 LC06 ambience 0.008 (existing challenge duck ×0.08) is the human-approved runtime value. Replay, Sound Off, and scene cleanup use the existing AudioManager lifecycle; no new AudioManager/mix engine.
+
+## ch03_s03 — AM25 / AM26 — PRE-PRODUCTION CANON LOCKED
+
+Planning only; do not generate or integrate audio in this checkpoint. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. Reuse `ch03_lesson_room` → `assets/audio/ambience/ch03_higgins_house_lesson_ambient.mp3` through the established Chapter III ambience architecture.
+
+### AM25 — objective LC07 samples
+
+Plan three separate local objective recordings, each containing only the target word:
+
+| Sample ID | Proposed runtime path | Exact spoken text / transcript | Speaker |
+|---|---|---|---|
+| lc07_sample_01 | assets/audio/challenges/ch03/lc07_customer.mp3 | customer | Higgins / Kelvin, canonical voice |
+| lc07_sample_02 | assets/audio/challenges/ch03/lc07_expensive.mp3 | expensive | Higgins / Kelvin, canonical voice |
+| lc07_sample_03 | assets/audio/challenges/ch03/lc07_delivery.mp3 | delivery | Higgins / Kelvin, canonical voice |
+
+Natural British pronunciation, normal word stress, no exaggeration, extra words or coaching. Keep loudness and recording character broadly comparable. No slowed recording or playback-rate/pitch manipulation. Each sample needs accessible transcript/support under the LC07 unaided/support gate; do not expose transcript before initial unaided attempt. Human listening QA remains future work.
+
+### AM26 — required planned story voice moments
+
+All five moments below are part of the S03 audio plan and are to be recorded when audio production begins. This checkpoint plans them only: no audio is generated now. Their text remains visible in the book and playback is learner-controlled. These are the only S03 story voice moments in this plan:
+
+- Higgins opening: “A word has a shape. One syllable usually carries more weight than the others.”
+- Eliza opening: “So I needn't fight with every bit of it at once?”
+- Eliza pre-LC07: “Right. I want to hear where it leans.”
+- Eliza post-LC07: “I can hear it now. One part comes forward and the rest follow it.”
+- Higgins post-LC07: “Exactly. Find the stress first, and the word becomes easier to shape.”
+
+Eliza remains `Chapter III – Conscious Training`, canonical voice ID `124kaYCknTDsnwUFdWl9`, following the established voice arc. Higgins remains canonical Kelvin. Pickering has no S03 audio. Pedagogically important objective audio keeps accessible transcript/support; no story line is audio-only. No new ambience, AudioManager, mixer or lifecycle.

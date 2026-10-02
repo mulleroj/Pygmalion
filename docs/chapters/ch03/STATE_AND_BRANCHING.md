@@ -54,7 +54,7 @@ Teacher preview uses an isolated context and MUST NOT save decisions, attempts, 
 
 ## Later Chapter III – NOT YET LOCKED
 
-S02–S06 remain [scene-map](../../SCENE_MAP.md) placeholders: LC06 minimal pairs; LC07 word stress; D07/LC08 intonation; LC09 feedback; LC10 transfer. Their practice/state/event details are not locked here. practice_preference may support later narrative and Chapter VI synthesis; no new downstream branching is invented.
+S03 / LC07 is specified below. S04–S06 remain [scene-map](../../SCENE_MAP.md) intent only: D07/LC08 sentence stress and intonation; LC09 feedback; LC10 transfer. practice_preference may support later narrative and Chapter VI synthesis; no new downstream branching is invented.
 
 
 
@@ -90,6 +90,26 @@ Keep metadata inside shared challenges.lc06, not new top-level fields: answers, 
 
 First all-correct completion atomically sets challenges.lc06.completed and appends ch03_lc06_completed once. If supportUsed=false, apply pronunciation +1 in that SAME event; if true, complete with no increment. No separate unguarded reward, no negative penalty, no later supported-to-unaided reward upgrade or farmable replay. An unaided learner may retry with generic feedback without opening support and still earn the single reward. Completion becomes read-only; post-completion transcript cannot remove an already earned reward.
 
-ch03_s02_complete records explicit student Continue only after either completion route; no signal increment, idempotent, destination ch03_s03. Event presence is scene-completion authority; no duplicate top-level completion field required. If S03 absent, stay on completed S02 with review. No Chapter III completion event.
+## ch03_s03 / LC07 — PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED. No D-numbered decision and no persistent `word_stress_seen` or equivalent. `visualStage = in_training` remains scene metadata. Reuse shared challenge state, event ledger, replay, preview and rendering architecture.
+
+Challenge key `challenges.lc07`; exactly three samples and one syllable answer per sample:
+
+| Sample ID | Word | Neutral syllable divisions | Answer ID | Correct syllable |
+|---|---|---|---|---:|
+| lc07_sample_01 | customer | cus / to / mer | lc07_stress_customer_1 | 1 |
+| lc07_sample_02 | expensive | ex / pen / sive | lc07_stress_expensive_2 | 2 |
+| lc07_sample_03 | delivery | de / liv / er / y | lc07_stress_delivery_2 | 2 |
+
+Canonical stress is **CUS-to-mer**, **ex-PEN-sive**, **de-LIV-er-y**. Capitalization is instructional answer-key notation only and must not appear as an initial student cue. Syllables are initially visually identical; no answer-revealing typography or labels.
+
+First explicit submission is UNAIDED LISTENING. Replay at normal speed is unrestricted and read-only. After an incorrect attempt, offer optional Supported Practice; opening target-revealing support irreversibly marks `supportUsed` in shared `challenges.lc07` (default false) and cancels reward eligibility, including after reload. Mere availability and replay do not cancel eligibility. Support can show divisions and replay with “Listen for the syllable that sounds strongest.” Once opened, it may mark/explain stress. Support never penalizes or blocks completion. Preserve correct responses during retry where compatible with shared challenge handling; unresolved answers can be retried.
+
+On completion, set `challenges.lc07.completed` and append `ch03_lc07_completed` once. Only completion with `supportUsed = false` applies `Pronunciation +1`, exactly once, in that same idempotent event. Supported completion has no increment and no penalty; there is no later reward upgrade. No other signal changes. Replay never mutates answers, eligibility, progress or completion. Teacher preview is read-only and uses isolated/ephemeral challenge state.
+
+`ch03_s03_complete` is appended only after LC07 completion and explicit student Continue. It is idempotent, adds no signal and is the sole scene transition event. No duplicate top-level completion field is introduced; common challenge state and event ledger remain authoritative. Destination is `ch03_s04`; no S04 decision or state is changed here.
+
+ch03_s02_complete records explicit student Continue only after either completion route; no signal increment, idempotent, destination ch03_s03. Event presence is scene-completion authority; no duplicate top-level completion field required. If S03 runtime is unavailable, stay on completed S02 with review. No Chapter III completion event.
 
 Validate scene/student context/item/allowed IDs; invalid or stale/out-of-scene input does nothing. Replay, Sound toggle, audio ending, render, refresh and Teacher preview cannot submit answers, increment attempts, save support eligibility, reward or complete. Persist stable option orders through retry/refresh. Teacher preview uses ephemeral orders/answers/support and never writes student state/events/signals. Reuse shared save/default merge, state/event helpers, LC rendering and AudioManager; extend shared guards rather than clone engines.

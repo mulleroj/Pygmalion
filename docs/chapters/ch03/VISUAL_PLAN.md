@@ -58,7 +58,7 @@ Reuse the story renderer, renderDecision, state/event store, AudioManager, chall
 
 ## Later Chapter III – NOT YET LOCKED
 
-Only [scene-map](../../SCENE_MAP.md) intent: S02 player/order cards/listening; S03 simulated flower stall/practicing; S04 hallway/controlled; S05 lesson room/frustrated; S06 shop or stall/encouraged. Later location choice, poses, paths and compositions remain unlocked.
+S03 uses the Higgins study/lesson room specified below. Remaining [scene-map](../../SCENE_MAP.md) intent: S04 hallway/controlled; S05 lesson room/frustrated; S06 shop or stall/encouraged. Later location choice, poses, paths and compositions remain unlocked.
 
 ## S01 book-first runtime composition checkpoint
 
@@ -82,3 +82,13 @@ Existing study plate approved for initial S02 composition; final lighting/time-o
 New character visual asset: NOT REQUIRED. Eliza remains learner focus, Higgins supporting instructor; Pickering presence is readable in story text. Canonical training master remains identity/body/wardrobe authority; no coat/polished styling. No new phonograph image: scene-map playback device can use shared accessible audio controls. BOTH word/meaning alternatives appear equally; sample titles never disclose which target was spoken. No colour-coded correct card or decorative clue.
 
 Reuse pointer-events:none art, floor/contact/desk-mask conventions, static reduced-motion rendering and responsive book flow. Keyboard/focus can reach replay/support/choices/Submit/Continue independently of art. No horizontal overflow. Do not generate a new plate merely for afternoon; review time-of-day impression during actual S02 Human Visual QA.
+
+## ch03_s03 — VISUALS — PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED. `visualStage = in_training`, derived from scene metadata. BOOK FIRST and reuse the approved Chapter III environment and character system:
+
+- Approved Higgins study/lesson-room plate: `assets/images/locations/ch02/ch02_higgins-study.webp`.
+- Approved Eliza training focus: `assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png`.
+- Reuse Higgins cutout `assets/images/characters/higgins/runtime/higgins_master_cutout.png` where composition needs him.
+
+No new character asset is required absent a genuine visual blocker. Eliza remains the learner focus; preserve approved face and training stage. Integrate a small word/syllable practice element into the existing book/challenge page area, not an LMS worksheet. All syllables begin with identical styling; no visual answer clue before response. After target-revealing support opens, visual stress marking/explanation is allowed. Reuse responsive book composition, desk occlusion and art-layer conventions. Keyboard/touch access to replay, choices, support, submit/retry and Continue stays independent of decorative art. Keep desktop/mobile responsive, avoid horizontal overflow and respect reduced motion. Do not touch Chapter I/II visual regressions in this task.

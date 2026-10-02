@@ -67,7 +67,7 @@ Future implementation MUST reuse the existing story renderer, renderDecision, st
 
 ## Later Chapter III – NOT YET LOCKED
 
-Only [SCENE_MAP.md](../../SCENE_MAP.md) / [TEACHER_MODE_SPEC.md](../../TEACHER_MODE_SPEC.md) intent: S02 minimal pairs; S03 word stress; S04 sentence stress/intonation; S05 supportive feedback; S06 transfer/self-correction. Later scene-specific copy and item keys are not locked by this document.
+S03 word stress is specified below. Remaining [SCENE_MAP.md](../../SCENE_MAP.md) / [TEACHER_MODE_SPEC.md](../../TEACHER_MODE_SPEC.md) intent: S04 sentence stress/intonation; S05 supportive feedback; S06 transfer/self-correction. Their scene-specific copy and item keys remain unlocked.
 
 
 
@@ -121,4 +121,56 @@ First attempt UNAIDED LISTENING; transcript unavailable beforehand. After the in
 
 ### 12. Scene Navigation
 
-ch03_s01 → ch03_s02 story → LC06 (unaided or supported completion) → reflection → explicit Continue, ch03_s02_complete once without increment → ch03_s03 Finding the Main Stress. If S03 absent, retain completion/review and show unavailable-scene boundary, not Chapter III completion. Shared save/event/challenge/Teacher/AudioManager architecture only; no persistent minimal_pair_seen or parallel S02 engine.
+ch03_s01 → ch03_s02 story → LC06 (unaided or supported completion) → reflection → explicit Continue, ch03_s02_complete once without increment → ch03_s03 Finding the Main Stress. If S03 runtime is unavailable, retain completion/review and show unavailable-scene boundary, not Chapter III completion. Shared save/event/challenge/Teacher/AudioManager architecture only; no persistent minimal_pair_seen or parallel S02 engine.
+
+## ch03_s03 — TEACHER CONTENT — PRE-PRODUCTION CANON LOCKED
+
+Documentation only; use the established 12-section Teacher Mode structure. Teacher preview is read-only: it never writes answers, support usage, progress, signals, completion or events.
+
+### 1. Chapter Overview
+
+The Lessons continues in Higgins's study. S03 moves from hearing individual sounds (S01–S02) to hearing the main stress inside one word. Eliza discovers the word's shape herself.
+
+### 2. Learning Goals
+
+Identify which syllable carries the main stress in familiar multisyllabic words. Listen to the whole word rather than count letters. This builds awareness and repertoire; it is not accent erasure.
+
+### 3. Language Focus
+
+Word stress is the prominence of one syllable within a word. Teach only word stress here. Sentence stress, intonation, attitude and whole-sentence rhythm belong to S04. Key: **CUS-to-mer** (customer, syllable 1), **ex-PEN-sive** (expensive, syllable 2), **de-LIV-er-y** (delivery, syllable 2). Capitalization is answer-key notation, never an initial student cue.
+
+### 4. Listening Focus
+
+LC07 plays each complete target word in a separate sample. Learners select its main-stressed syllable. Listen to the word as a whole and notice which syllable stands out; do not infer stress from spelling or sentence context. Replay is normal speed. No slowed audio.
+
+### 5. Key Vocabulary
+
+word, syllable, stress, strongest, customer, expensive, delivery. Here, “stress” means prominence inside a word, not worry or pressure.
+
+### 6. Cultural / Literary Context
+
+This is an original educational adaptation. Accent ≠ intelligence. A speaker's familiar accent or social identity is not defective; conscious stress awareness adds choices and can support intelligibility.
+
+### 7. Decisions – Teacher Notes
+
+No D-numbered main narrative decision in S03. D07 remains in S04. No Confidence/Independence reward and no signal increment on scene completion.
+
+### 8. Challenge Key
+
+`challenges.lc07`: `lc07_sample_01` customer → `lc07_stress_customer_1` (1); `lc07_sample_02` expensive → `lc07_stress_expensive_2` (2); `lc07_sample_03` delivery → `lc07_stress_delivery_2` (2). `ch03_lc07_completed` grants Pronunciation +1 once only for completion without opening target-revealing support. Supported completion gives no increment and no penalty. See STATE_AND_BRANCHING.md for the full contract.
+
+### 9. Discussion Questions
+
+“Which syllable stood out to you?” “Did hearing the whole word help more than looking at its spelling?” “How is stress inside a word different from emphasis across a sentence?”
+
+### 10. Sensitive Framing
+
+Do not describe a social accent as wrong, unintelligent or something Eliza must lose. Correctness here means identifying the conventional main stress of the target word, not judging the speaker or learner. Support is a valid learning route, not failure.
+
+### 11. Suggested Classroom Use
+
+Let learners make an unaided first attempt with all syllables styled identically. Normal replay is available. After an incorrect attempt, offer optional Supported Practice; opening target-revealing support permanently removes reward eligibility for this challenge but allows completion with no penalty. Do not display answer notation before response. Preserve correct answers on retry when shared handling permits. Ensure keyboard/touch operation, visible focus and text status independent of colour; transcript/support is available after the unaided attempt. Teacher preview/replay is read-only.
+
+### 12. Scene Navigation
+
+ch03_s03 story → LC07 unaided or supported completion → Eliza's discovery → explicit Continue (`ch03_s03_complete`, no signal increment) → ch03_s04 `A Sentence Has Shape`. Bridge: individual sounds → word stress → sentence stress/intonation. S04's D07 and LC08 are not changed by S03.

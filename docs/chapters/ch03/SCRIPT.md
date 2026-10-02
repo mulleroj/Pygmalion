@@ -1,6 +1,6 @@
 # Chapter III Script — The Lessons
 
-Status: S01 PRE-PRODUCTION CONTENT LOCK FOR HUMAN REVIEW. No Chapter III runtime or assets exist as a result of this document. This S01 specification implements the user's documentation brief; later scenes retain only the approved scene-map intent.
+Status: S01 and S02 canon locked; S03 PRE-PRODUCTION CANON LOCKED. Documentation only; no Chapter III runtime or assets are implemented by this document.
 
 Authorities: [scene map](../../SCENE_MAP.md), [voice arc](../../audio/ELIZA_VOICE_ARC.md), project story/visual/audio/language bibles. Companion contracts: [state](STATE_AND_BRANCHING.md), [audio](AUDIO_PLAN.md), [visuals](VISUAL_PLAN.md), [Teacher](TEACHER_CONTENT.md). Original adaptation; no musical dialogue, songs or staging.
 
@@ -85,7 +85,7 @@ Future S01 MUST reuse the existing story renderer, renderDecision, state/event s
 
 ## Later Chapter III – NOT YET LOCKED
 
-Canonical placeholders only; see [SCENE_MAP.md](../../SCENE_MAP.md): ch03_s02 The Listening Room (LC06, minimal pairs); ch03_s03 Finding the Main Stress (LC07, word stress); ch03_s04 A Sentence Has Shape (D07, LC08, sentence stress/intonation); ch03_s05 The Bad Day (LC09, supportive feedback); ch03_s06 A Small Victory (LC10, real-interaction transfer) → ch04_s01. No final later-scene dialogue, samples, event IDs or asset lock is added.
+S03 was subsequently locked below. Remaining scene-map intent: ch03_s04 A Sentence Has Shape (D07, LC08, sentence stress/intonation); ch03_s05 The Bad Day (LC09, supportive feedback); ch03_s06 A Small Victory (LC10, real-interaction transfer) → ch04_s01. Their dialogue, samples, event IDs and asset details remain unlocked.
 
 
 
@@ -124,7 +124,7 @@ Pickering: “And when you are not sure, ask the customer.”
 
 Transition: “The next day, the lesson turns to the strongest syllable in a word. A customer must be able to recognise the word Eliza means.”
 
-Explicit button label: “Continue”. Only explicit student Continue after the locked LC06 completion contract records ch03_s02_complete and advances to ch03_s03. If S03 is absent, stay on completed S02 with review and a clear unavailable-scene boundary. No Chapter III completion claim.
+Explicit button label: “Continue”. Only explicit student Continue after the locked LC06 completion contract records ch03_s02_complete and advances to ch03_s03. If S03 runtime is unavailable, stay on completed S02 with review and a clear unavailable-scene boundary. No Chapter III completion claim.
 
 
 ### LC06 locked contextual scripts
@@ -137,3 +137,39 @@ Explicit button label: “Continue”. Only explicit student Continue after the 
 These are natural customer requests, not promises that the seller gives away flowers. Same carrier, different initial sound /θ/ versus /f/; /r/ and /iː/ remain shared. No extra coaching, target explanation or extra spoken words. Before listening use only “Recording 1” / “Recording 2”; story and cards must not identify which target belongs to which recording. Both alternatives can be taught equally, never sample-to-answer mapping. The previous candidate sets are superseded, not canon.
 
 First attempt is UNAIDED LISTENING without transcript. After that attempt supported practice becomes available; opening target-revealing support makes completion supported, without blocking story progress or deducting signals. Exact key/state contract is in STATE_AND_BRANCHING.md.
+
+## ch03_s03 — Finding the Main Stress — PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED / NOT GENERATED. S03 follows S02 in Higgins's study. Eliza moves from individual sounds to the shape inside one multisyllabic word. The goal is word stress only; sentence stress, intonation and whole-sentence rhythm remain for S04. No main narrative decision. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE.
+
+Eliza expects to control every sound equally. Higgins invites her to listen for the part that stands out. She discovers for herself that one syllable comes forward while the others recede. The discovery belongs to Eliza; Higgins remains collaborative and does not claim a triumph.
+
+**Opening**
+
+Higgins: “A word has a shape. One syllable usually carries more weight than the others.”
+
+Eliza: “So I needn't fight with every bit of it at once?”
+
+Higgins: “No. Listen for the part that stands out.”
+
+Eliza: “Then say it again. I'll listen for the strongest bit.”
+
+**Before LC07**
+
+Higgins: “Do not count the letters. Listen to the sound of the whole word.”
+
+Eliza: “Right. I want to hear where it leans.”
+
+**After LC07**
+
+Eliza: “I can hear it now. One part comes forward and the rest follow it.”
+
+Higgins: “Exactly. Find the stress first, and the word becomes easier to shape.”
+
+No extra Higgins praise or triumph line. This is conscious learning, not correction of Eliza's identity or accent.
+
+LC07 instruction: “Listen to each word. Choose the syllable that carries the main stress. You can replay each recording.” Each sample contains only its target word. Use neutral divisions (`cus | to | mer`, `ex | pen | sive`, `de | liv | er | y`) with identical initial styling. Do not show capitalized stress notation or any visual answer cue before response. No slowed audio. Exact IDs and reward contract are in [STATE_AND_BRANCHING.md](STATE_AND_BRANCHING.md).
+
+The first submitted attempt is unaided. Normal-speed replay is allowed. After an incorrect attempt, offer optional Supported Practice with written syllable divisions, replay and the neutral cue “Listen for the syllable that sounds strongest.” Once target-revealing support is opened, unaided reward eligibility is permanently lost. Support carries no penalty; supported completion remains available. Preserve correct responses during retry where shared challenge handling supports it.
+
+After LC07 completes by either route, show Eliza's discovery and Higgins's response. Only explicit student **Continue** records `ch03_s03_complete` once, with no signal increment, and advances to `ch03_s04 – A Sentence Has Shape`. No render, replay, audio ending, refresh or Teacher preview can complete it. The progression is individual sounds → stress within a word → stress and intonation across a sentence. D07 remains in S04.
