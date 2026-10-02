@@ -1,4 +1,4 @@
-// Locked Chapter III S01 content; later scenes and audio remain unavailable.
+// Locked Chapter III S01 content with approved optional AM21 takes; later scenes and LC05 audio remain unavailable.
 export const CH03_SCENE_01 = {
   "id": "ch03_s01",
   "number": 1,
@@ -29,7 +29,26 @@ export const CH03_SCENE_01 = {
     }
   ],
   "props": [],
-  "voice": [],
+  "voice": [
+  {
+    "id": "AM21-HIGGINS-MODEL",
+    "src": "./assets/audio/characters/higgins/higgins_ch03_scene01_001.mp3",
+    "transcript": "For /θ/, bring the tip of your tongue lightly to your front teeth. Let the air flow. For /f/, your upper teeth meet your lower lip. Try ‘thin’ slowly.",
+    "label": "Play Higgins’s explanation",
+    "inline": true,
+    "generationId": "tkmSbcYFwIZyebvZrlSL",
+    "voiceId": "JlptfLxaUpd8pZcw9dKd"
+  },
+  {
+    "id": "AM21-ELIZA-ATTEMPT",
+    "src": "./assets/audio/characters/eliza/eliza_ch03_scene01_001.mp3",
+    "transcript": "Thin... I'm watching my tongue. It feels strange, but I can try it.",
+    "label": "Play Eliza’s attempt",
+    "inline": true,
+    "generationId": "v2j1QzbgqYj86XuXDK6j",
+    "voiceId": "124kaYCknTDsnwUFdWl9"
+  }
+],
   "storyBeats": [
     {
       "type": "narration",

@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import crypto from 'node:crypto';
 import { CH03_SCENE_01 as scene, CH03_TEACHER_SECTIONS, chapterThreeCallback } from '../src/ch03-content.js';
 import { createInitialState, setScene, applyDecision, recordLc05Answer, completeScene, getSceneAdvanceBlock, loadState, STORAGE_KEY } from '../src/state.js';
+import { AudioManager } from '../src/audio.js';
 import { ambienceForScene } from '../src/content.js';
 const fresh = () => setScene(createInitialState(), scene.id);
 const solve = state => scene.challenge.samples.reduce((s, sample) => recordLc05Answer(s, sample.id, sample.answer), state);
@@ -20,7 +21,7 @@ test('S01 locked story, callbacks, scene metadata, Teacher sections and exact as
   const source = fs.readFileSync('assets/images/characters/eliza/source/eliza_training_focused_cutout.png');
   assert.deepEqual(fs.readFileSync(scene.eliza.src), source);
   assert.equal(crypto.createHash('sha256').update(source).digest('hex'), '3bb0ecc0744f76c765d46289a8eab36c18c4bbd3be0f3f07e4d3f086013dcb76');
-  assert.deepEqual(scene.voice, []); assert.equal(ambienceForScene(scene.id), null); assert.equal(ambienceForScene('ch03_s02'), null);
+  assert.equal(scene.voice.length, 2); for (const voice of scene.voice) { assert.ok(voice.inline); assert.ok(scene.storyBeats.some(b => b.text === voice.transcript)); assert.ok(fs.statSync(voice.src).size > 0); } for (const sample of scene.challenge.samples) assert.equal(sample.src, undefined); assert.equal(ambienceForScene(scene.id), 'ch03_lesson_room'); assert.equal(ambienceForScene('ch03_s02'), null);
 });
 
 test('shared-save defaults merge old progress without persistent visual stage', () => {
@@ -65,6 +66,9 @@ test('LC05 stable key, valid attempts, retry, frozen correct items, single succe
 test('shared runtime: render/refresh, Teacher preview and review do not save; clicks own state and never fallback', async t => {
   const originals=Object.fromEntries(['document','window','localStorage'].map(k=>[k,Object.getOwnPropertyDescriptor(globalThis,k)]));
   t.after(()=>{for(const [k,d] of Object.entries(originals)) if(d)Object.defineProperty(globalThis,k,d);else delete globalThis[k];});
+  const plays=[], originalPlay=AudioManager.prototype.playVoice, originalStop=AudioManager.prototype.stopForeground; let stops=0;
+  AudioManager.prototype.playVoice=async function(src){plays.push(src);}; AudioManager.prototype.stopForeground=function(...args){stops++;return originalStop.apply(this,args);};
+  t.after(()=>{AudioManager.prototype.playVoice=originalPlay;AudioManager.prototype.stopForeground=originalStop;});
   let saved=JSON.stringify(fresh()),writes=0; const nodes=new Map(),events={};
   const node=k=>{if(!nodes.has(k))nodes.set(k,{innerHTML:'',textContent:'',open:false,focus(){},scrollIntoView(){},setAttribute(){},removeAttribute(){},addEventListener(){},querySelector(){return node('close');},showModal(){this.open=true;},close(){this.open=false;}});return nodes.get(k);};
   globalThis.document={querySelector:node,addEventListener(n,fn){events[n]=fn;}};
@@ -72,11 +76,12 @@ test('shared runtime: render/refresh, Teacher preview and review do not save; cl
   globalThis.localStorage={getItem(){return saved;},setItem(k,v){assert.equal(k,STORAGE_KEY);saved=v;writes++;}};
   const {render,moveNext}=await import('../src/app.js?ch03-test');
   const click=(action,data={})=>events.click({isTrusted:false,target:{closest(){return{dataset:{action,...data},focus(){}};}}});
-  render(); assert.equal(writes,0); assert.match(node('#app').innerHTML,/Chapter III · The Lessons/); assert.doesNotMatch(node('#app').innerHTML,/data-action="play-/);
+  render(); assert.equal(writes,0); assert.match(node('#app').innerHTML,/Chapter III · The Lessons/); assert.equal((node('#app').innerHTML.match(/data-action="play-voice"/g)||[]).length,2); assert.doesNotMatch(node('#app').innerHTML,/data-action="play-challenge"/);
+  for(const voice of scene.voice) await click('play-voice',{src:voice.src}); assert.deepEqual(plays,scene.voice.map(v=>v.src)); assert.equal(writes,0);
   await click('open-teacher'); assert.equal((node('#teacher-content').innerHTML.match(/class="teacher-section"/g)||[]).length,12); assert.match(node('#teacher-context').textContent,/previewMode=false/);
   await click('choose-decision',{decision:'D06',option:'d06_slow_repeat'}); assert.equal(writes,0);
   await click('teacher-preview'); await click('toggle-sound'); await click('choose-tone',{tone:'bright'}); await click('answer-lc01',{sample:'forged',answer:'forged'}); await click('choose-decision',{decision:'D06',option:'d06_slow_repeat'}); await click('answer-lc05',{sample:'lc05_sample_theta',answer:'lc05_tongue_teeth'});moveNext();render();assert.equal(writes,0);
-  await click('return-student'); await click('choose-decision',{decision:'D06',option:'d06_slow_repeat'}); const choice=saved;
+  const stopBefore=stops; await click('play-voice',{src:scene.voice[1].src}); assert.equal(writes,0); await click('return-student'); assert.ok(stops>stopBefore); await click('choose-decision',{decision:'D06',option:'d06_slow_repeat'}); const choice=saved;
   render();assert.equal(saved,choice);assert.match(node('#app').innerHTML,/Open transcript/);
   for(const sample of scene.challenge.samples)await click('answer-lc05',{sample:sample.id,answer:sample.answer});
   assert.equal(JSON.parse(saved).ch03_s01_complete,false);

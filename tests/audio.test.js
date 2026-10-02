@@ -712,3 +712,43 @@ test('Teacher controls and read-only review are not audio-unlock gestures', () =
   assert.doesNotMatch(unlockActions, /open-teacher|close-teacher|teacher-preview|review-scene/);
   assert.match(app, /event\.isTrusted && AUDIO_UNLOCK_ACTIONS\.has\(action\)/);
 });
+
+test('S01 explicitly reuses approved interior bytes and mix without gramophone or Chapter I rain', async t => {
+  assert.equal(ambienceForScene('ch03_s01'), 'ch03_lesson_room');
+  assert.equal(AMBIENCE_FILES.ch03_lesson_room, AMBIENCE_FILES.higgins_house_interior);
+  const { manager, elements } = audioHarness(t);
+  await manager.ensureAmbience('ch03_s01');
+  assert.equal(elements.length, 0, 'saved preference alone cannot unlock audio');
+  manager.unlock(); await manager.ensureAmbience('ch03_s01');
+  const loop = manager.ambience;
+  assert.equal(loop.src, AMBIENCE_FILES.higgins_house_interior);
+  assert.equal(loop.volume, 0.10); assert.equal(manager.mix, CH02_AUDIO_MIX);
+  assert.equal(manager.contextual, null); assert.equal(manager.gramophoneCue, null);
+  assert.equal(manager.ambientClockTimer, null);
+  await manager.ensureAmbience('ch03_s01'); assert.equal(manager.ambience, loop);
+  assert.equal(loop.playCalls, 1); assert.ok(elements.every(e => !/rain|gramophone/.test(e.src)));
+});
+
+test('S01 story voice duck/replay ownership restores the same interior and Sound On resumes only ambience', async t => {
+  const { manager } = audioHarness(t); manager.unlock(); await manager.ensureAmbience('ch03_s01');
+  const loop=manager.ambience;
+  const higgins=await manager.playVoice('./assets/audio/characters/higgins/higgins_ch03_scene01_001.mp3');
+  assert.equal(higgins.volume,1); assert.equal(loop.volume,0.10 * 0.28);
+  const eliza=await manager.playVoice('./assets/audio/characters/eliza/eliza_ch03_scene01_001.mp3');
+  assert.equal(higgins.paused,true); higgins.emit('ended'); assert.equal(loop.volume,0.10 * 0.28);
+  eliza.emit('ended'); assert.equal(loop.volume,0.10); assert.equal(manager.ambience,loop);
+  const replay=await manager.playVoice('./assets/audio/characters/eliza/eliza_ch03_scene01_001.mp3');
+  await manager.setEnabled(false); assert.equal(replay.paused,true); assert.equal(loop.paused,true); assert.equal(loop.volume,0);
+  await manager.setEnabled(true); assert.equal(loop.paused,false); assert.equal(replay.playCalls,1);
+  assert.equal(manager.foreground,null); assert.equal(loop.volume,0.10);
+});
+
+test('leaving S01 stops foreground and retires the explicit lesson loop without activating later-scene fallback', async t => {
+  const { manager, elements }=audioHarness(t); manager.unlock(); await manager.ensureAmbience('ch03_s01');
+  const loop=manager.ambience; const speech=await manager.playVoice('./assets/audio/characters/higgins/higgins_ch03_scene01_001.mp3');
+  await manager.ensureAmbience('ch03_s02'); assert.equal(loop.paused,true); assert.equal(speech.paused,true);
+  assert.equal(manager.ambience,null); assert.equal(manager.foreground,null);
+  assert.ok(elements.every(e=>!e.src.includes('rain')));
+  await manager.ensureAmbience('ch03_s01'); manager.leaveScene();
+  assert.equal(manager.foreground,null); assert.equal(manager.ambience,null);
+});

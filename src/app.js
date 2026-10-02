@@ -467,6 +467,7 @@ function renderTeacherText(content) {
 }
 
 function openTeacher(trigger) {
+  if (currentScene().id === 'ch03_s01') audioManager.stopForeground();
   if (currentScene().id === 'ch02_s04') audioManager.setSceneAudioReadOnly(true);
   lastTeacherTrigger = trigger;
   const scene = document.querySelector('#story-root') ? currentScene() : null;
@@ -560,7 +561,7 @@ document.addEventListener('click', async (event) => {
       announce(state.ch02_lc03_completed ? 'LC03 complete.' : 'Try another form that keeps the request clear.');
     }
   }
-  if (action === 'return-student' && scenePreview) { scenePreview = false; render(); announce('Student scene restored.'); }
+  if (action === 'return-student' && scenePreview) { audioManager.stopForeground(); scenePreview = false; render(); announce('Student scene restored.'); }
   if (action === 'answer-lc05' && currentScene().id === 'ch03_s01' && !studentReadOnly()) {
     const next = recordLc05Answer(state, target.dataset.sample, target.dataset.answer);
     if (next !== state) { state = next; save(); render(); announce(state.ch03_lc05_completed ? 'LC05 complete.' : 'Response recorded. You can retry unresolved items.'); }
