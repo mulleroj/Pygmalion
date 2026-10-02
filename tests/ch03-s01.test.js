@@ -21,7 +21,13 @@ test('S01 locked story, callbacks, scene metadata, Teacher sections and exact as
   const source = fs.readFileSync('assets/images/characters/eliza/source/eliza_training_focused_cutout.png');
   assert.deepEqual(fs.readFileSync(scene.eliza.src), source);
   assert.equal(crypto.createHash('sha256').update(source).digest('hex'), '3bb0ecc0744f76c765d46289a8eab36c18c4bbd3be0f3f07e4d3f086013dcb76');
-  assert.equal(scene.voice.length, 2); for (const voice of scene.voice) { assert.ok(voice.inline); assert.ok(scene.storyBeats.some(b => b.text === voice.transcript)); assert.ok(fs.statSync(voice.src).size > 0); } for (const sample of scene.challenge.samples) assert.equal(sample.src, undefined); assert.equal(ambienceForScene(scene.id), 'ch03_lesson_room'); assert.equal(ambienceForScene('ch03_s02'), null);
+  assert.equal(scene.voice.length, 2); assert.deepEqual(scene.voice.map(({ src }) => src), [
+    './assets/audio/characters/higgins/higgins_ch03_scene01_001.mp3',
+    './assets/audio/characters/eliza/eliza_ch03_scene01_001.mp3'
+  ]); for (const voice of scene.voice) { assert.ok(voice.inline); assert.ok(scene.storyBeats.some(b => b.text === voice.transcript)); assert.ok(fs.statSync(voice.src).size > 0); } for (const sample of scene.challenge.samples) assert.equal(sample.src, undefined); assert.equal(ambienceForScene(scene.id), 'ch03_lesson_room'); assert.equal(ambienceForScene('ch03_s02'), 'ch03_lesson_room');
+  const audioPlan = fs.readFileSync(new URL('../docs/chapters/ch03/AUDIO_PLAN.md', import.meta.url), 'utf8');
+  assert.match(audioPlan, /ch03_s01 Human Audio Mix QA = PASS/);
+  assert.match(audioPlan, /ch03_s02 Human Audio Mix QA = PASS/);
 });
 
 test('shared-save defaults merge old progress without persistent visual stage', () => {

@@ -8,6 +8,27 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
+function mp3Mpeg1Layer3Duration(bytes) {
+  const bitrateKbps = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320];
+  let offset = 0, frames = 0;
+  while (offset + 4 <= bytes.length) {
+    assert.equal(bytes[offset], 0xff, `bad MPEG frame sync at byte ${offset}`);
+    assert.equal(bytes[offset + 1] & 0xe0, 0xe0, `bad MPEG frame sync at byte ${offset}`);
+    const header = bytes.readUInt32BE(offset);
+    const version = (header >>> 19) & 0x3, layer = (header >>> 17) & 0x3;
+    const bitrateIndex = (header >>> 12) & 0xf, sampleRateIndex = (header >>> 10) & 0x3;
+    const padding = (header >>> 9) & 0x1;
+    assert.equal(version, 3, 'expected MPEG-1');
+    assert.equal(layer, 1, 'expected Layer III');
+    assert.equal(sampleRateIndex, 0, 'expected 44.1 kHz');
+    assert.ok(bitrateIndex > 0 && bitrateIndex < 15, 'expected valid bitrate');
+    offset += Math.floor(144 * bitrateKbps[bitrateIndex] * 1000 / 44100) + padding;
+    frames++;
+  }
+  assert.equal(offset, bytes.length, 'MP3 ends on a complete frame');
+  return frames * 1152 / 44100;
+}
+
 test('ambience mapping keeps one rain track continuous through scenes one to four', () => {
   assert.equal(ambienceForScene('ch01_s01'), 'covent_garden_rain_market');
   assert.equal(ambienceForScene('ch01_s02'), 'covent_garden_rain_market');
@@ -713,20 +734,50 @@ test('Teacher controls and read-only review are not audio-unlock gestures', () =
   assert.match(app, /event\.isTrusted && AUDIO_UNLOCK_ACTIONS\.has\(action\)/);
 });
 
-test('S01 explicitly reuses approved interior bytes and mix without gramophone or Chapter I rain', async t => {
+test('S01 and S02 use only the canonical Chapter III lesson room loop', async t => {
   assert.equal(ambienceForScene('ch03_s01'), 'ch03_lesson_room');
-  assert.equal(AMBIENCE_FILES.ch03_lesson_room, AMBIENCE_FILES.higgins_house_interior);
+  assert.equal(AMBIENCE_FILES.ch03_lesson_room, './assets/audio/ambience/ch03_higgins_house_lesson_ambient.mp3');
+  assert.notEqual(AMBIENCE_FILES.ch03_lesson_room, AMBIENCE_FILES.higgins_house_interior);
+  assert.notEqual(AMBIENCE_FILES.ch03_lesson_room, AMBIENCE_FILES.covent_garden_rain_market);
+  assert.notEqual(AMBIENCE_FILES.ch03_lesson_room, AMBIENCE_FILES.higgins_house_morning_entry);
+  const ambienceBytes = fs.readFileSync(path.join(root, AMBIENCE_FILES.ch03_lesson_room.replace(/^\.\/assets\//, 'assets/')));
+  assert.ok(ambienceBytes.length > 0);
+  assert.equal(ambienceBytes[0], 0xff);
+  assert.equal(ambienceBytes[1] & 0xe0, 0xe0, 'canonical ambience is MPEG audio');
+  assert.ok(Math.abs(mp3Mpeg1Layer3Duration(ambienceBytes) - 90) < 0.02, 'canonical MP3 is approximately 90 seconds');
+  const audioPlan = fs.readFileSync(path.join(root, 'docs/chapters/ch03/AUDIO_PLAN.md'), 'utf8');
+  for (const id of ['oK9a1Fn1rIx3FJaKGrZe', 'PAMtEPBJW8W6rXjDlIOt', 'DAu9YHLbdGHvniFmc5U3', 'PoGjrRKkp2HPztzVO5C9']) assert.ok(audioPlan.includes(id), id);
+  assert.match(audioPlan, /01:04/);
   const { manager, elements } = audioHarness(t);
   await manager.ensureAmbience('ch03_s01');
   assert.equal(elements.length, 0, 'saved preference alone cannot unlock audio');
   manager.unlock(); await manager.ensureAmbience('ch03_s01');
   const loop = manager.ambience;
-  assert.equal(loop.src, AMBIENCE_FILES.higgins_house_interior);
+  assert.equal(loop.src, AMBIENCE_FILES.ch03_lesson_room);
   assert.equal(loop.volume, 0.10); assert.equal(manager.mix, CH02_AUDIO_MIX);
   assert.equal(manager.contextual, null); assert.equal(manager.gramophoneCue, null);
   assert.equal(manager.ambientClockTimer, null);
   await manager.ensureAmbience('ch03_s01'); assert.equal(manager.ambience, loop);
   assert.equal(loop.playCalls, 1); assert.ok(elements.every(e => !/rain|gramophone/.test(e.src)));
+});
+
+test('S02 continues the same lesson room loop and applies the approved LC06 duck', async t => {
+  assert.equal(ambienceForScene('ch03_s02'), 'ch03_lesson_room');
+  assert.equal(isContinuousAmbienceTransition('ch03_s01', 'ch03_s02'), true);
+  const { manager, elements } = audioHarness(t);
+  manager.unlock(); await manager.ensureAmbience('ch03_s01');
+  const loop = manager.ambience;
+  await manager.ensureAmbience('ch03_s02');
+  assert.equal(manager.ambience, loop);
+  assert.equal(loop.playCalls, 1);
+  assert.equal(manager.mix, CH02_AUDIO_MIX);
+  const sample = await manager.playChallenge('./assets/audio/challenges/ch03/lc06_three_flowers.mp3');
+  assert.equal(loop.volume, 0.008, 'approved LC06 ambience gain');
+  assert.equal(sample.volume, 1);
+  sample.emit('ended');
+  assert.equal(loop.volume, 0.10);
+  assert.equal(manager.ambience, loop);
+  assert.ok(elements.every(e => !/rain|gramophone|gong/.test(e.src)));
 });
 
 test('S01 story voice duck/replay ownership restores the same interior and Sound On resumes only ambience', async t => {
@@ -743,12 +794,12 @@ test('S01 story voice duck/replay ownership restores the same interior and Sound
   assert.equal(manager.foreground,null); assert.equal(loop.volume,0.10);
 });
 
-test('leaving S01 stops foreground and retires the explicit lesson loop without activating later-scene fallback', async t => {
+test('leaving Chapter III stops foreground and retires the explicit lesson loop without activating fallback', async t => {
   const { manager, elements }=audioHarness(t); manager.unlock(); await manager.ensureAmbience('ch03_s01');
   const loop=manager.ambience; const speech=await manager.playVoice('./assets/audio/characters/higgins/higgins_ch03_scene01_001.mp3');
-  await manager.ensureAmbience('ch03_s02'); assert.equal(loop.paused,true); assert.equal(speech.paused,true);
-  assert.equal(manager.ambience,null); assert.equal(manager.foreground,null);
+  await manager.ensureAmbience('ch03_s02'); assert.equal(loop.paused,false); assert.equal(speech.paused,true);
+  assert.equal(manager.ambience,loop); assert.equal(manager.foreground,null);
   assert.ok(elements.every(e=>!e.src.includes('rain')));
-  await manager.ensureAmbience('ch03_s01'); manager.leaveScene();
+  manager.leaveScene();
   assert.equal(manager.foreground,null); assert.equal(manager.ambience,null);
 });

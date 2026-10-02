@@ -307,7 +307,7 @@ function renderLc06(scene) {
     const draft = lc06Draft[sample.id] || {};
     const transcript = lc06SupportedOpen || complete;
     const canSubmit = (result.word?.correct || draft.word) && (result.meaning?.correct || draft.meaning) && !(result.word?.correct && result.meaning?.correct);
-    return `<article class="lc06-sample-card" aria-labelledby="${sample.id}-title"><div class="lc06-sample-heading"><h3 id="${sample.id}-title">Recording ${index + 1}</h3><span class="read-only-note">Audio sample unavailable in this checkpoint</span></div><button class="audio-button lc06-audio-placeholder" type="button" disabled aria-describedby="${sample.id}-audio-status">▶ Replay recording ${index + 1}</button><p id="${sample.id}-audio-status" class="read-only-note">No audio will play in this book-first review.</p>${renderOptions(sample, 'word', scene.challenge.wordOptions, result.word)}${renderOptions(sample, 'meaning', scene.challenge.meaningOptions, result.meaning)}${!complete ? `<button class="secondary-button" type="button" data-action="submit-lc06" data-sample="${sample.id}" ${studentReadOnly() || !canSubmit ? 'disabled' : ''}>Submit this recording</button>` : ''}${result.word || result.meaning ? `<p class="lc06-item-status" role="status">${result.word?.correct && result.meaning?.correct ? 'Both answers are correct. This recording is complete.' : 'Keep the correct answer and retry the unresolved answer.'}</p>` : ''}${transcript ? `<p class="lc06-transcript"><strong>Spoken text:</strong> “${escapeHtml(sample.transcript)}”</p>` : ''}</article>`;
+    return `<article class="lc06-sample-card" aria-labelledby="${sample.id}-title"><div class="lc06-sample-heading"><h3 id="${sample.id}-title">Recording ${index + 1}</h3></div>${renderAudioControl({ ...sample, label: `Replay recording ${index + 1}`, ariaLabel: `Replay recording ${index + 1}` }, 'challenge')}${renderOptions(sample, 'word', scene.challenge.wordOptions, result.word)}${renderOptions(sample, 'meaning', scene.challenge.meaningOptions, result.meaning)}${!complete ? `<button class="secondary-button" type="button" data-action="submit-lc06" data-sample="${sample.id}" ${studentReadOnly() || !canSubmit ? 'disabled' : ''}>Submit this recording</button>` : ''}${result.word || result.meaning ? `<p class="lc06-item-status" role="status">${result.word?.correct && result.meaning?.correct ? 'Both answers are correct. This recording is complete.' : 'Keep the correct answer and retry the unresolved answer.'}</p>` : ''}${transcript ? `<p class="lc06-transcript"><strong>Spoken text:</strong> “${escapeHtml(sample.transcript)}”</p>` : ''}</article>`;
   }).join('');
   const support = firstAttempt && !lc06SupportedOpen && !complete
     ? `<button class="text-button" type="button" data-action="open-lc06-support">Open supported practice</button>`
@@ -321,7 +321,7 @@ function renderLc06(scene) {
   const completion = complete
     ? `<p class="challenge-complete" role="status">LC06 complete. ${challenge.supportUsed ? 'Supported practice completed this challenge.' : 'Unaided completion earned one pronunciation signal.'} Review does not change saved progress.</p>${renderStoryBeats({ ...scene, storyBeats: scene.reflection })}<p class="transition-line">${escapeHtml(scene.transition)}</p>${state.applied_events.includes('ch03_s02_complete') ? '<p class="end-note">S02 is complete. Finding the Main Stress is not available in this runtime yet; this scene remains available for review.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button>' : `<button class="secondary-button next-button" type="button" data-action="next-scene">Continue</button>`}`
     : '';
-  return `<section class="challenge-block lc06-block" aria-labelledby="lc06-title"><p class="eyebrow">Unaided listening · LC06</p><h2 id="lc06-title">${escapeHtml(scene.challenge.title)}</h2><p>${escapeHtml(scene.challenge.intro)}</p><p class="lc06-attempt-note">${firstAttempt ? 'Your first attempt is recorded. Supported practice is available if useful.' : 'First attempt: UNAIDED LISTENING. Text support becomes available after this attempt.'}</p><p class="read-only-note">Audio samples are not included in this review checkpoint. You can record an unresolved first attempt if you cannot hear a sample; no guess is required.</p><div class="lc06-samples">${items}</div>${unable}${support}${supportNote}${completion}</section>`;
+  return `<section class="challenge-block lc06-block" aria-labelledby="lc06-title"><p class="eyebrow">Unaided listening · LC06</p><h2 id="lc06-title">${escapeHtml(scene.challenge.title)}</h2><p>${escapeHtml(scene.challenge.intro)}</p><p class="lc06-attempt-note">${firstAttempt ? 'Your first attempt is recorded. Supported practice is available if useful.' : 'First attempt: UNAIDED LISTENING. Text support becomes available after this attempt.'}</p><p class="read-only-note">Listen before opening text support. If a recording cannot be played, you can record an unresolved first attempt; no guess is required.</p><div class="lc06-samples">${items}</div>${unable}${support}${supportNote}${completion}</section>`;
 }
 
 function renderEnd(scene) {
@@ -446,7 +446,7 @@ function render() {
     const currentSceneId = scene.id;
     audioManager.setSceneAudioReadOnly(scene.id === 'ch02_s04' && (s04AudioPreview || teacherDialog.open));
     audioManager.setEnabled(state.soundEnabled);
-    if (scene.id !== 'ch03_s02') audioManager.ensureAmbience(currentSceneId, scene.contextual || null);
+    audioManager.ensureAmbience(currentSceneId, scene.contextual || null);
     previousScene = currentSceneId;
   }
 }
@@ -687,7 +687,7 @@ document.addEventListener('click', async (event) => {
   }
   if (audioGesture && document.querySelector('#story-root')) {
     const scene = currentScene();
-    if (scene.id !== 'ch03_s02') audioManager.ensureAmbience(scene.id, scene.contextual || null);
+    audioManager.ensureAmbience(scene.id, scene.contextual || null);
   }
   if (action === 'play-voice' && !teacherDialog.open) {
     const voice = currentScene().voice.find(({ src }) => src === target.dataset.src);

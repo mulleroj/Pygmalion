@@ -249,15 +249,20 @@ export const CH03_SCENE_01 = {
   "nextScene": "ch03_s02"
 };
 
-// Chapter III S02 content follows the human-locked script. LC06 sample keys are
-// kept in the shared challenge data model and are never rendered before submit.
+// Chapter III S02 content follows the human-locked script and approved audio.
 export const CH03_SCENE_02 = {
   id: 'ch03_s02', number: 2, chapter: 'III', chapterTitle: 'The Lessons', sceneCount: 6,
   title: 'The Listening Room', kicker: 'A lesson in hearing meaning', visualStage: 'in_training', composition: 'ch03-listening-room',
   background: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
   plate: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
   eliza: { src: './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png', alt: 'Eliza in practical indoor lesson clothes listens with a focused expression.' },
-  supporting: [{ src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Higgins supports the lesson from behind the desk.', placement: 'higgins' }], props: [], voice: [],
+  supporting: [{ src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Higgins supports the lesson from behind the desk.', placement: 'higgins' }], props: [],
+  voice: [
+    { id: 'ch03_s02_higgins_opener', src: './assets/audio/characters/higgins/higgins_ch03_scene02_001.mp3', transcript: 'This time, listen before you try to say the word.', label: 'Replay Higgins', inline: true, generationId: '8x3VLpQ9nssFmsuQEkXw', voiceId: 'JlptfLxaUpd8pZcw9dKd' },
+    { id: 'ch03_s02_eliza_pre', src: './assets/audio/characters/eliza/eliza_ch03_scene02_001.mp3', transcript: 'I know what my mouth is doing. My ears need a turn now.', label: 'Replay Eliza', inline: true, generationId: '9mmmNoy0Fac8ttetRAU2', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'ch03_s02_eliza_post', src: './assets/audio/characters/eliza/eliza_ch03_scene02_002.mp3', transcript: 'A small sound, but a different order. I can listen again before I answer.', label: 'Replay Eliza', inline: true, generationId: 'xyGZEj9fgKJt3weuMtOn', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'ch03_s02_higgins_post', src: './assets/audio/characters/higgins/higgins_ch03_scene02_002.mp3', transcript: 'Good. Hear the difference first. Then practise saying it.', label: 'Replay Higgins', inline: true, generationId: 'ocaEKLQL5ZAkvoFgQgGy', voiceId: 'JlptfLxaUpd8pZcw9dKd' }
+  ],
   storyBeats: [
     { type: 'narration', text: 'That afternoon, the mirror rests beside the desk. Higgins prepares two short recordings. Eliza looks at the order cards. Pickering waits beside the table.' },
     { type: 'dialogue', speaker: 'Higgins', text: 'This time, listen before you try to say the word.' },
@@ -271,8 +276,8 @@ export const CH03_SCENE_02 = {
     id: 'LC06', kind: 'minimal-pair', title: 'Three or free?',
     intro: 'Listen to each recording. Choose the word you hear, then choose what it means for the order. Replay as often as you need.',
     samples: [
-      { id: 'lc06_sample_01', script: "I'd like three flowers.", transcript: "I'd like three flowers.", word: 'lc06_word_three', meaning: 'lc06_meaning_three_flowers' },
-      { id: 'lc06_sample_02', script: "I'd like free flowers.", transcript: "I'd like free flowers.", word: 'lc06_word_free', meaning: 'lc06_meaning_no_payment' }
+      { id: 'lc06_sample_01', script: "I'd like three flowers.", transcript: "I'd like three flowers.", src: './assets/audio/challenges/ch03/lc06_three_flowers.mp3', generationId: 'iauJFoB7TrehOtQmc4WT', voiceId: 'JlptfLxaUpd8pZcw9dKd', word: 'lc06_word_three', meaning: 'lc06_meaning_three_flowers' },
+      { id: 'lc06_sample_02', script: "I'd like free flowers.", transcript: "I'd like free flowers.", src: './assets/audio/challenges/ch03/lc06_free_flowers.mp3', generationId: 'ZaQgHrqqFMqvxz8pqIlQ', voiceId: 'JlptfLxaUpd8pZcw9dKd', word: 'lc06_word_free', meaning: 'lc06_meaning_no_payment' }
     ],
     wordOptions: [{ id: 'lc06_word_three', label: 'three' }, { id: 'lc06_word_free', label: 'free' }],
     meaningOptions: [{ id: 'lc06_meaning_three_flowers', label: 'The customer wants three flowers.' }, { id: 'lc06_meaning_no_payment', label: 'The customer wants flowers without paying.' }]

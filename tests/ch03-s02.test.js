@@ -21,13 +21,23 @@ test('S02 exists after S01 and uses only its locked story, stage, title and visu
   assert.equal(scene.eliza.src, CH03_SCENE_01.eliza.src);
   assert.equal(scene.supporting[0].src, CH03_SCENE_01.supporting[0].src);
   assert.equal(scene.background.src, CH03_SCENE_01.background.src);
-  assert.deepEqual(scene.voice, []);
-  assert.ok(scene.challenge.samples.every(({ src }) => src === undefined));
+  assert.equal(scene.voice.length, 4);
+  assert.ok(scene.voice.every(({ src, generationId, voiceId, inline }) => src && generationId && voiceId && inline));
+  assert.deepEqual(scene.voice.map(({ src }) => src), [
+    './assets/audio/characters/higgins/higgins_ch03_scene02_001.mp3',
+    './assets/audio/characters/eliza/eliza_ch03_scene02_001.mp3',
+    './assets/audio/characters/eliza/eliza_ch03_scene02_002.mp3',
+    './assets/audio/characters/higgins/higgins_ch03_scene02_002.mp3'
+  ]);
+  assert.deepEqual(scene.challenge.samples.map(({ src }) => src), [
+    './assets/audio/challenges/ch03/lc06_three_flowers.mp3',
+    './assets/audio/challenges/ch03/lc06_free_flowers.mp3'
+  ]);
   const doc = fs.readFileSync(new URL('../docs/chapters/ch03/SCRIPT.md', import.meta.url), 'utf8');
   for (const beat of [...scene.storyBeats, ...scene.reflection]) assert.ok(doc.includes(beat.text), beat.text);
   assert.ok(doc.includes(scene.challenge.intro));
   assert.ok(doc.includes(scene.transition));
-  assert.equal(ambienceForScene('ch03_s02'), null);
+  assert.equal(ambienceForScene('ch03_s02'), 'ch03_lesson_room');
 });
 
 test('LC06 sample IDs, scripts, answer IDs, labels and keys match the locked contract', () => {
@@ -44,6 +54,27 @@ test('LC06 sample IDs, scripts, answer IDs, labels and keys match the locked con
   assert.match(CH03_S02_TEACHER_SECTIONS[2][1], /\/θ\/.*\/f\/.*three.*free/);
   assert.match(CH03_S02_TEACHER_SECTIONS[7][1], /pronunciation \+1.*no increment/);
   assert.match(CH03_S02_TEACHER_SECTIONS[10][1], /UNAIDED LISTENING.*supported practice.*read-only/i);
+});
+
+test('six S02 clips map one-to-one to approved generations and contain valid local MP3 bytes', () => {
+  const all = [...scene.voice, ...scene.challenge.samples];
+  assert.equal(all.length, 6);
+  assert.equal(new Set(all.map(({ src }) => src)).size, 6);
+  assert.equal(new Set(all.map(({ generationId }) => generationId)).size, 6);
+  for (const item of all) {
+    const file = item.src.replace(/^\.\//, '');
+    const bytes = fs.readFileSync(new URL(`../${file}`, import.meta.url));
+    assert.ok(bytes.length > 1000, file);
+    assert.equal(bytes.toString('ascii', 0, 3), 'ID3', file);
+    assert.equal(item.voiceId, item.id.startsWith('lc06_sample') || item.id.includes('higgins')
+      ? 'JlptfLxaUpd8pZcw9dKd' : '124kaYCknTDsnwUFdWl9');
+  }
+  assert.deepEqual(scene.voice.map(({ transcript }) => transcript), [
+    'This time, listen before you try to say the word.',
+    'I know what my mouth is doing. My ears need a turn now.',
+    'A small sound, but a different order. I can listen again before I answer.',
+    'Good. Hear the difference first. Then practise saying it.'
+  ]);
 });
 
 test('S02 is gated by S01 completion and explicit LC06 is required before continuing', () => {
@@ -117,7 +148,7 @@ test('S02 Continue is explicit, idempotent and records no signal or chapter comp
   assert.equal(loadState({ getItem: () => JSON.stringify(state) }).challenges.lc06.supportUsed, false);
 });
 
-test('S02 book-first UI hides transcripts until support, uses silent placeholders and keeps preview read-only', async (t) => {
+test('S02 UI plays approved files, hides transcripts until support and keeps preview read-only', async (t) => {
   const originals = Object.fromEntries(['document', 'window', 'localStorage'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; });
   const nodes = new Map(), events = {};
@@ -137,16 +168,23 @@ test('S02 book-first UI hides transcripts until support, uses silent placeholder
   assert.match(html, /What word did you hear\?/);
   assert.match(html, /What does the customer mean\?/);
   assert.match(html, /First attempt: UNAIDED LISTENING/);
-  assert.match(html, /disabled aria-describedby/);
+  assert.match(html, /data-action="play-voice" data-src="\.\/assets\/audio\/characters\/higgins\/higgins_ch03_scene02_001\.mp3"/);
+  assert.match(html, /data-action="play-voice" data-src="\.\/assets\/audio\/characters\/eliza\/eliza_ch03_scene02_001\.mp3"/);
+  assert.match(html, /data-action="play-challenge" data-src="\.\/assets\/audio\/challenges\/ch03\/lc06_three_flowers\.mp3" data-sample="lc06_sample_01"/);
+  assert.match(html, /data-action="play-challenge" data-src="\.\/assets\/audio\/challenges\/ch03\/lc06_free_flowers\.mp3" data-sample="lc06_sample_02"/);
   assert.match(html, /I cannot hear this recording/);
   assert.doesNotMatch(html, /Spoken text:/);
-  assert.doesNotMatch(html, /data-action="play-challenge"/);
+  assert.doesNotMatch(html, /lc06-transcript|Spoken text:/);
   assert.match(html, /type="radio"/);
   const rendered = saved, renderWrites = writes;
   render();
   assert.equal(saved, rendered);
   assert.equal(writes, renderWrites);
   const initial = saved, count = writes;
+  await click('play-challenge', { src: scene.challenge.samples[0].src, sample: scene.challenge.samples[0].id });
+  await click('play-voice', { src: scene.voice[0].src });
+  assert.equal(saved, initial, 'explicit replay cannot mutate progress');
+  assert.equal(writes, count);
   await click('open-teacher');
   assert.equal((node('#teacher-content').innerHTML.match(/class="teacher-section"/g) || []).length, 12);
   assert.match(node('#teacher-context').textContent, /The Listening Room.*LC06.*previewMode=false/);
