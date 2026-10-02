@@ -66,3 +66,43 @@ Existing interior mix values are reused without adjustment: ambience 0.10; story
 Technical ingestion: Higgins 226695 bytes, MPEG-1 Layer III mono 44100 Hz, frame duration 13.113 s (approximately 13.04 s audible); SHA-256 76f8ca8c8396f15f33631a769edb242e34033ebe5f0068137805a19756c7013e. Eliza A 95874 bytes, same format, frame duration 4.937 s (approximately 4.88 s audible); SHA-256 78e3ea6ff328c63d80c6d4c8f2736cd027cfdf3bbaa464f4f8b7ee8595c17232. MPEG frame scan reaches EOF with no truncated frames; Browser decode PASS: duration 13.04 s / 4.88 s, readyState 4, no media error. Signed download URLs are not stored in project documentation.
 
 Human Audio Mix QA: open ch03_s01; confirm silence before gesture, play Higgins then Eliza, replay/interrupt each, judge speech clarity and embedded ticking at the reused room level, toggle Sound Off/On (no automatic speech replay), open/exit read-only Teacher preview and confirm no progress change. Verify duck/restore and no rain, gramophone, gong or AM22. Isolated takes = PASS; final S01 mix = Human Audio Mix QA PASS (including embedded ticking).
+
+
+
+## ch03_s02 — AM23 / story voice — PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT GENERATED / NOT INTEGRATED. S01 assets and approved mix remain unchanged. Contrast three /θriː/ versus free /friː/.
+
+### AM23 — objective LC06 samples
+
+| Sample ID | Planned path | Exact spoken script / transcript |
+|---|---|---|
+| lc06_sample_01 | assets/audio/listening/ch03_lc06_001.mp3 | I'd like three flowers. |
+| lc06_sample_02 | assets/audio/listening/ch03_lc06_002.mp3 | I'd like free flowers. |
+
+Canonical Higgins/Kelvin JlptfLxaUpd8pZcw9dKd, eleven_v3. Same speaker/carrier, natural neutral delivery, comparable level/rate/intonation; distinguish /θ/ vs /f/, not incidental production clues. No coaching, answer announcement, pronunciation explanation or extra spoken words. Normal-speed samples and unlimited replay only; no slowed take, playback-rate/pitch manipulation. Human must verify actual phonemes, exact spoken parity and sample intelligibility before runtime ingestion.
+
+### Optional story voice continuity (separate files, AM24 story group)
+
+| Role | Planned path | Exact spoken text / visible transcript |
+|---|---|---|
+| Higgins opener | assets/audio/characters/higgins/higgins_ch03_scene02_001.mp3 | This time, listen before you try to say the word. |
+| Higgins post-challenge | assets/audio/characters/higgins/higgins_ch03_scene02_002.mp3 | Good. Hear the difference first. Then practise saying it. |
+| Eliza pre-challenge | assets/audio/characters/eliza/eliza_ch03_scene02_001.mp3 | I know what my mouth is doing. My ears need a turn now. |
+| Eliza post-challenge | assets/audio/characters/eliza/eliza_ch03_scene02_002.mp3 | A small sound, but a different order. I can listen again before I answer. |
+
+AM23 remains objective listening only; AM24 is refined here as the optional story-voice group including the approved continuity lines, with roles/paths distinguishing speakers. No new AM number invented. Higgins canonical Kelvin JlptfLxaUpd8pZcw9dKd, eleven_v3: analytical/supportive, not humiliating. Eliza canonical young_cockney 124kaYCknTDsnwUFdWl9, eleven_v3, Conscious Training (HO08Dcr5Fe43jEbtr7W9): same identity, recognisable Cockney, consciously careful articulation/tempo, not polished IV/V.
+
+Pickering canonical George - Warm, Captivating Storyteller JBFqnCBsd6RMkjVDRZzb supports the existing optional story pattern. He remains text-only for this minimum production set; optional later planning may use exactly the locked Pickering dialogue after explicit production scope approval. No generation here. All story playback explicit, visible transcript, never reused as an objective sample or completion trigger.
+
+### Transcript and lifecycle contract
+
+Standard titles “Recording 1” / “Recording 2”; no target-revealing title/alt/IPA/caption/key before first attempt. Both answer alternatives remain visible. First attempt UNAIDED LISTENING. After it, Supported practice can expose exact transcript; support does not block LC06/story completion but earns no pronunciation increment. Target-specific explanation before overall completion also marks support use; mere availability does not. After completion transcripts remain accessible without retroactively changing reward. STATE_AND_BRANCHING.md defines first-attempt and inaccessible-audio handling.
+
+Unlimited normal-speed replay, generic retry feedback, explicit unresolved submissions only. Sound Off stops audio, preserves readable story, and offers the supported route after the initial unresolved attempt. Missing samples have clear unavailable status; no substitute story take or forced guessing. Teacher preview read-only, no unlock/auto-speech/save; explicit preview playback cleans up on exit. Sound On resumes loop only. Foreground ownership handles replay/interrupt/stale promises and scene leave.
+
+### Reused ambience / mix gates
+
+ch03_lesson_room → assets/audio/ambience/higgins_house_interior.mp3; reuse same S01 character, embedded ticking, same-ID loop continuity. Story ambience 0.10, story duck 0.028, dry speech 1 unchanged. No gramophone, rain fallback, AM22 or new SFX. S02 final story/sample mix = PENDING HUMAN AUDIO MIX QA; S01 PASS does not approve new samples.
+
+LC06 ambience 0.008 (existing challenge duck ×0.08) is STARTING PROPOSAL ONLY, NOT APPROVED VALUE. Final LC06 sample mix = PENDING HUMAN AUDIO MIX QA. Restore and crossfade through existing lifecycle; no new AudioManager/mix engine.

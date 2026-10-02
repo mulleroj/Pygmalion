@@ -55,3 +55,41 @@ Teacher preview uses an isolated context and MUST NOT save decisions, attempts, 
 ## Later Chapter III – NOT YET LOCKED
 
 S02–S06 remain [scene-map](../../SCENE_MAP.md) placeholders: LC06 minimal pairs; LC07 word stress; D07/LC08 intonation; LC09 feedback; LC10 transfer. Their practice/state/event details are not locked here. practice_preference may support later narrative and Chapter VI synthesis; no new downstream branching is invented.
+
+
+
+## ch03_s02 / LC06 — PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED. Human decisions refine the broad scene map for S02. Inherit shared save and all prior signals/decisions; visualStage = in_training is scene metadata. No Dxx decision, new motivation or confidence/independence increment.
+
+### Stable IDs, exact labels and key
+
+Challenge LC06; items lc06_sample_01 / lc06_sample_02. Each explicit item submission contains a word answer and meaning answer. No automatic selection or answer-by-position.
+
+| Answer ID | Exact visible label |
+|---|---|
+| lc06_word_three | three |
+| lc06_word_free | free |
+| lc06_meaning_three_flowers | The customer wants three flowers. |
+| lc06_meaning_no_payment | The customer wants flowers without paying. |
+
+| Sample ID | Exact script | Word key | Meaning key |
+|---|---|---|---|
+| lc06_sample_01 | I'd like three flowers. | lc06_word_three | lc06_meaning_three_flowers |
+| lc06_sample_02 | I'd like free flowers. | lc06_word_free | lc06_meaning_no_payment |
+
+All four checks are required for completion. Correct subanswers stay accepted during retry; only wrong/unresolved subanswers may change. Feedback after submission: word correct “Yes. That is the word in the recording.”; retry “Listen again. Compare the sound at the beginning of the word.” Meaning correct “Yes. That meaning matches the word you heard.”; retry “Think about the number of flowers and whether the customer wants to pay.” After an item's submission its explanation may disclose: sample_01 “Three tells us the number of flowers. It begins with /θ/.”; sample_02 “Free means without payment. It begins with /f/.” Such target-revealing feedback/transcript counts as support if used before overall completion; reward eligibility must not survive answer revelation.
+
+### Unaided / supported contract and minimum shared metadata
+
+First valid student attempt must be UNAIDED LISTENING: no transcript or target-specific explanation before it. An attempt is an explicit submitted response, not playback/render/refresh. After first attempt offer Supported practice; do not automatically open its transcript. Unlimited normal-speed replay remains unaided. Switching to support is explicit and irreversible for this challenge attempt history, including after refresh. Merely making support available does not disqualify a learner who has not opened it. Generic feedback does not reveal the answer; target-specific explanation is opt-in support until completion.
+
+For a student unable to hear (including Sound Off or unavailable media), an explicit “I cannot hear this recording” response may record the initial unresolved attempt without forced guessing or fake correctness, then expose supported practice. It never rewards or completes by itself. This is the accessible application of the locked first-attempt gate, not an assessment of hearing ability.
+
+Keep metadata inside shared challenges.lc06, not new top-level fields: answers, completed, optionOrders, attempt count/first-attempt marker and monotonic supportUsed (default false). The support marker is necessary to preserve unaided reward eligibility across refresh; it is not a new identity/long-term narrative field. The exact shared record encoding may reuse existing answer/attempt metadata, but its semantics are locked. No persistent minimal_pair_seen; derive any local session presentation need from challenge runtime state.
+
+First all-correct completion atomically sets challenges.lc06.completed and appends ch03_lc06_completed once. If supportUsed=false, apply pronunciation +1 in that SAME event; if true, complete with no increment. No separate unguarded reward, no negative penalty, no later supported-to-unaided reward upgrade or farmable replay. An unaided learner may retry with generic feedback without opening support and still earn the single reward. Completion becomes read-only; post-completion transcript cannot remove an already earned reward.
+
+ch03_s02_complete records explicit student Continue only after either completion route; no signal increment, idempotent, destination ch03_s03. Event presence is scene-completion authority; no duplicate top-level completion field required. If S03 absent, stay on completed S02 with review. No Chapter III completion event.
+
+Validate scene/student context/item/allowed IDs; invalid or stale/out-of-scene input does nothing. Replay, Sound toggle, audio ending, render, refresh and Teacher preview cannot submit answers, increment attempts, save support eligibility, reward or complete. Persist stable option orders through retry/refresh. Teacher preview uses ephemeral orders/answers/support and never writes student state/events/signals. Reuse shared save/default merge, state/event helpers, LC rendering and AudioManager; extend shared guards rather than clone engines.

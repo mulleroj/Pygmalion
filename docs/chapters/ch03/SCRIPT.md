@@ -86,3 +86,54 @@ Future S01 MUST reuse the existing story renderer, renderDecision, state/event s
 ## Later Chapter III – NOT YET LOCKED
 
 Canonical placeholders only; see [SCENE_MAP.md](../../SCENE_MAP.md): ch03_s02 The Listening Room (LC06, minimal pairs); ch03_s03 Finding the Main Stress (LC07, word stress); ch03_s04 A Sentence Has Shape (D07, LC08, sentence stress/intonation); ch03_s05 The Bad Day (LC09, supportive feedback); ch03_s06 A Small Victory (LC10, real-interaction transfer) → ch04_s01. No final later-scene dialogue, samples, event IDs or asset lock is added.
+
+
+
+## ch03_s02 — The Listening Room — PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED / NOT GENERATED. Human-reviewed flow and dialogue, three/free decision and access/reward rules are locked. S01 remains unchanged. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. No main decision in S02.
+
+### Exact story flow and player-facing copy
+
+
+Opening narration: “That afternoon, the mirror rests beside the desk. Higgins prepares two short recordings. Eliza looks at the order cards. Pickering waits beside the table.”
+
+Higgins: “This time, listen before you try to say the word.”
+
+Eliza: “I know what my mouth is doing. My ears need a turn now.”
+
+Higgins: “Two words can sound almost the same. One small sound can change an order.”
+
+Pickering: “Take your time. You can hear each recording again.”
+
+Eliza: “Then let me hear it twice. I want to know what the customer means.”
+
+Narration: “The cards show two possible meanings. Eliza must listen to find which one the customer wants.”
+
+LC06 instruction: “Listen to each recording. Choose the word you hear, then choose what it means for the order. Replay as often as you need.”
+
+Before first attempt: “Try listening first. After your first attempt, text support will be available.” After first attempt: “Supported practice: open the spoken text if you need it. You can still complete the scene.”
+
+Post-challenge narration: “Eliza sets the two cards apart. She pauses before answering.”
+
+Eliza: “A small sound, but a different order. I can listen again before I answer.”
+
+Higgins: “Good. Hear the difference first. Then practise saying it.”
+
+Pickering: “And when you are not sure, ask the customer.”
+
+Transition: “The next day, the lesson turns to the strongest syllable in a word. A customer must be able to recognise the word Eliza means.”
+
+Explicit button label: “Continue”. Only explicit student Continue after the locked LC06 completion contract records ch03_s02_complete and advances to ch03_s03. If S03 is absent, stay on completed S02 with review and a clear unavailable-scene boundary. No Chapter III completion claim.
+
+
+### LC06 locked contextual scripts
+
+| Stable sample ID | Exact spoken script / transcript | Word | Meaning |
+|---|---|---|---|
+| lc06_sample_01 | I'd like three flowers. | three /θriː/ | The customer wants three flowers. |
+| lc06_sample_02 | I'd like free flowers. | free /friː/ | The customer wants flowers without paying. |
+
+These are natural customer requests, not promises that the seller gives away flowers. Same carrier, different initial sound /θ/ versus /f/; /r/ and /iː/ remain shared. No extra coaching, target explanation or extra spoken words. Before listening use only “Recording 1” / “Recording 2”; story and cards must not identify which target belongs to which recording. Both alternatives can be taught equally, never sample-to-answer mapping. The previous candidate sets are superseded, not canon.
+
+First attempt is UNAIDED LISTENING without transcript. After that attempt supported practice becomes available; opening target-revealing support makes completion supported, without blocking story progress or deducting signals. Exact key/state contract is in STATE_AND_BRANCHING.md.

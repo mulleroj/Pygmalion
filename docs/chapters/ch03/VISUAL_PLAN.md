@@ -65,3 +65,20 @@ Only [scene-map](../../SCENE_MAP.md) intent: S02 player/order cards/listening; S
 S01 reuses the approved Chapter II study plate and canonical Higgins runtime cutout with the focused Eliza runtime PNG. Eliza is the main full-body learner on the window-side floor; Higgins supports from behind the desk with a presentation-only foreground mask. The mouth-position reference is accessible text beside the activity; no new image or audio is created. D06 and transcript-supported LC05 use the existing renderer, state, challenge and Teacher dialog. Chapter III ambience is explicitly silent in this checkpoint pending later audio integration. Human Visual QA PASS; approved for Chapter III S01 runtime use.
 
 Technical responsive QA: 1440 × 1000, 1024 × 900 and 390 × 844 inspected in the local browser. Full-body Eliza, supporting desk-occluded Higgins, readable activity, clickable D06/LC05 and no horizontal overflow confirmed. Art layers retain pointer-events: none. Screenshots remain untracked in qa/ch03/. The technical QA is now followed by Human Visual QA PASS for S01 composition and the focused asset.
+
+
+
+## ch03_s02 — VISUALS — PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED. visualStage = in_training. Reuse approved assets without editing pixels:
+
+- assets/images/locations/ch02/ch02_higgins-study.webp.
+- assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png.
+- assets/images/characters/higgins/runtime/higgins_master_cutout.png.
+- Accessible text/order-card UI and existing responsive book composition/desk occlusion.
+
+Existing study plate approved for initial S02 composition; final lighting/time-of-day impression remains subject to Human Visual QA.
+
+New character visual asset: NOT REQUIRED. Eliza remains learner focus, Higgins supporting instructor; Pickering presence is readable in story text. Canonical training master remains identity/body/wardrobe authority; no coat/polished styling. No new phonograph image: scene-map playback device can use shared accessible audio controls. BOTH word/meaning alternatives appear equally; sample titles never disclose which target was spoken. No colour-coded correct card or decorative clue.
+
+Reuse pointer-events:none art, floor/contact/desk-mask conventions, static reduced-motion rendering and responsive book flow. Keyboard/focus can reach replay/support/choices/Submit/Continue independently of art. No horizontal overflow. Do not generate a new plate merely for afternoon; review time-of-day impression during actual S02 Human Visual QA.

@@ -68,3 +68,57 @@ Future implementation MUST reuse the existing story renderer, renderDecision, st
 ## Later Chapter III – NOT YET LOCKED
 
 Only [SCENE_MAP.md](../../SCENE_MAP.md) / [TEACHER_MODE_SPEC.md](../../TEACHER_MODE_SPEC.md) intent: S02 minimal pairs; S03 word stress; S04 sentence stress/intonation; S05 supportive feedback; S06 transfer/self-correction. Later scene-specific copy and item keys are not locked by this document.
+
+
+
+## ch03_s02 — TEACHER CONTENT — PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED. Twelve-section S02 contract; S01 unchanged.
+
+### 1. Chapter Overview
+
+The Listening Room follows S01 that afternoon. S01 production/articulation awareness /θ/ versus /f/ becomes S02 perception/listening discrimination in a flower order; Eliza remains active and recognisably herself.
+
+### 2. Learning Goals
+
+Hear three versus free, identify the word and confirm order meaning. Listening precedes further conscious production in this lesson sequence; no universal ban on practising speech first is implied.
+
+### 3. Language Focus
+
+three /θriː/ versus free /friː/: initial /θ/ and /f/ differ, shared /r/ and /iː/ remain. Exact scripts: “I'd like three flowers.” / “I'd like free flowers.” Three specifies quantity; free requests no payment. Teach both meanings equally without mapping recordings to answers.
+
+### 4. Listening Focus
+
+LC06 is an objective listening check with two same-speaker Higgins samples. Choose heard word and corresponding meaning. Visible story/optional story voices never reveal sample assignment or replace listening. Eliza stays Conscious Training, not polished speech.
+
+### 5. Key Vocabulary
+
+three, free, flowers, customer, order, pay, recording, replay, meaning. Free here means without payment, not independent or available time.
+
+### 6. Cultural / Literary Context
+
+Original Pygmalion educational adaptation, no musical dialogue/song/staging. Accent ≠ intelligence; expanding perception/repertoire does not fix an inferior identity.
+
+### 7. Decisions – Teacher Notes
+
+No new main decision. Unlimited replay is support, not a scored branch. No slowed playback or rate/pitch manipulation. Preserve S01 practice_preference and all inherited state.
+
+### 8. Challenge Key
+
+lc06_sample_01: lc06_word_three + lc06_meaning_three_flowers; lc06_sample_02: lc06_word_free + lc06_meaning_no_payment. Exact labels/key/feedback in STATE_AND_BRANCHING.md. All four checks complete LC06. ch03_lc06_completed applies once: pronunciation +1 only if completed without target-revealing support; supported completion has no increment and no penalty. Correct subanswers freeze; unresolved subanswers retry. No additional reward on replay/refresh, no later reward upgrade.
+
+### 9. Discussion Questions
+
+“What changes between three and free?” “How would you check whether flowers cost money?” “When does replay help?” “How can a seller ask for clarification respectfully?”
+
+### 10. Sensitive Framing
+
+No accent-shaming, comic imitation or mandatory public production/microphone. Supported practice is an accessible learning route, not failure or a negative score. Clearly distinguish objective unaided listening evidence from supported text practice.
+
+### 11. Suggested Classroom Use
+
+First attempt UNAIDED LISTENING; transcript unavailable beforehand. After the initial explicit attempt offer Supported practice, not automatic transcript disclosure. A learner unable to hear can explicitly record an unresolved “I cannot hear this recording” attempt without guessing, then access support. Text support permits challenge completion and story continuation; no pronunciation reward. Generic feedback/replay can remain unaided; opening transcript or target-specific explanation before completion irreversibly marks support use across refresh. After completion text support cannot remove an earned reward. Keyboard/focus reaches Play/replay, support, word/meaning choices, Submit/retry and Continue. Text labels/status/feedback never rely on colour; restore focus, respect reduced motion. Sound Off keeps story readable and supported route available after the first-attempt gate. Preview context includes Chapter III/ch03_s02/LC06/previewMode; use ephemeral answers/orders/support. No student saves, attempts, signals or events; no auto-unlock/auto-speech; clean foreground on exit and restore context/focus.
+
+### 12. Scene Navigation
+
+ch03_s01 → ch03_s02 story → LC06 (unaided or supported completion) → reflection → explicit Continue, ch03_s02_complete once without increment → ch03_s03 Finding the Main Stress. If S03 absent, retain completion/review and show unavailable-scene boundary, not Chapter III completion. Shared save/event/challenge/Teacher/AudioManager architecture only; no persistent minimal_pair_seen or parallel S02 engine.
