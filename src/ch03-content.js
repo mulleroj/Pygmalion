@@ -248,6 +248,44 @@ export const CH03_SCENE_01 = {
   "transition": "Later that afternoon, the lesson moves from the mirror to listening. Two similar sounds can change what a customer means.",
   "nextScene": "ch03_s02"
 };
+
+// Chapter III S02 content follows the human-locked script. LC06 sample keys are
+// kept in the shared challenge data model and are never rendered before submit.
+export const CH03_SCENE_02 = {
+  id: 'ch03_s02', number: 2, chapter: 'III', chapterTitle: 'The Lessons', sceneCount: 6,
+  title: 'The Listening Room', kicker: 'A lesson in hearing meaning', visualStage: 'in_training', composition: 'ch03-listening-room',
+  background: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
+  plate: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
+  eliza: { src: './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png', alt: 'Eliza in practical indoor lesson clothes listens with a focused expression.' },
+  supporting: [{ src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Higgins supports the lesson from behind the desk.', placement: 'higgins' }], props: [], voice: [],
+  storyBeats: [
+    { type: 'narration', text: 'That afternoon, the mirror rests beside the desk. Higgins prepares two short recordings. Eliza looks at the order cards. Pickering waits beside the table.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'This time, listen before you try to say the word.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'I know what my mouth is doing. My ears need a turn now.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Two words can sound almost the same. One small sound can change an order.' },
+    { type: 'dialogue', speaker: 'Pickering', text: 'Take your time. You can hear each recording again.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'Then let me hear it twice. I want to know what the customer means.' },
+    { type: 'narration', text: 'The cards show two possible meanings. Eliza must listen to find which one the customer wants.' }
+  ],
+  challenge: {
+    id: 'LC06', kind: 'minimal-pair', title: 'Three or free?',
+    intro: 'Listen to each recording. Choose the word you hear, then choose what it means for the order. Replay as often as you need.',
+    samples: [
+      { id: 'lc06_sample_01', script: "I'd like three flowers.", transcript: "I'd like three flowers.", word: 'lc06_word_three', meaning: 'lc06_meaning_three_flowers' },
+      { id: 'lc06_sample_02', script: "I'd like free flowers.", transcript: "I'd like free flowers.", word: 'lc06_word_free', meaning: 'lc06_meaning_no_payment' }
+    ],
+    wordOptions: [{ id: 'lc06_word_three', label: 'three' }, { id: 'lc06_word_free', label: 'free' }],
+    meaningOptions: [{ id: 'lc06_meaning_three_flowers', label: 'The customer wants three flowers.' }, { id: 'lc06_meaning_no_payment', label: 'The customer wants flowers without paying.' }]
+  },
+  reflection: [
+    { type: 'narration', text: 'Eliza sets the two cards apart. She pauses before answering.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'A small sound, but a different order. I can listen again before I answer.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Good. Hear the difference first. Then practise saying it.' },
+    { type: 'dialogue', speaker: 'Pickering', text: 'And when you are not sure, ask the customer.' }
+  ],
+  transition: 'The next day, the lesson turns to the strongest syllable in a word. A customer must be able to recognise the word Eliza means.',
+  nextScene: 'ch03_s03'
+};
 export const CH03_TEACHER_SECTIONS = [
   [
     "Chapter Overview",
@@ -297,6 +335,21 @@ export const CH03_TEACHER_SECTIONS = [
     "Scene Navigation",
     "ch03_s01 — The Mouth Is a Muscle → D06 → LC05 → reflection → explicit student Continue (ch03_s01_complete, no signal) → canonical ch03_s02. With S02 unavailable, retain completion/review and explain the checkpoint boundary rather than route to a missing scene. No Chapter III completion is claimed.\n\nFuture implementation MUST reuse the existing story renderer, renderDecision, state/event store, AudioManager, challenge infrastructure, Teacher Mode dialog, replay/preview safety and responsive image-layer system. Extend shared hard-coded I–II context/guard handling; no Chapter III AudioManager, state store, second Teacher Mode, parallel decision system or isolated chapter save."
   ]
+];
+
+export const CH03_S02_TEACHER_SECTIONS = [
+  ['Chapter Overview', 'The Listening Room follows S01 that afternoon. S01 production/articulation awareness /θ/ versus /f/ becomes S02 perception/listening discrimination in a flower order; Eliza remains active and recognisably herself.'],
+  ['Learning Goals', 'Hear three versus free, identify the word and confirm order meaning. Listening precedes further conscious production in this lesson sequence; no universal ban on practising speech first is implied.'],
+  ['Language Focus', "three /θriː/ versus free /friː/: initial /θ/ and /f/ differ, shared /r/ and /iː/ remain. Exact scripts: “I'd like three flowers.” / “I'd like free flowers.” Three specifies quantity; free requests no payment. Teach both meanings equally without mapping recordings to answers."],
+  ['Listening Focus', 'LC06 is an objective listening check with two same-speaker Higgins samples. Choose heard word and corresponding meaning. Visible story/optional story voices never reveal sample assignment or replace listening. Eliza stays Conscious Training, not polished speech.'],
+  ['Key Vocabulary', 'three, free, flowers, customer, order, pay, recording, replay, meaning. Free here means without payment, not independent or available time.'],
+  ['Cultural / Literary Context', 'Original Pygmalion educational adaptation, no musical dialogue/song/staging. Accent ≠ intelligence; expanding perception/repertoire does not fix an inferior identity.'],
+  ['Decisions – Teacher Notes', 'No new main decision. Unlimited replay is support, not a scored branch. No slowed playback or rate/pitch manipulation. Preserve S01 practice_preference and all inherited state.'],
+  ['Challenge Key', 'lc06_sample_01: lc06_word_three + lc06_meaning_three_flowers; lc06_sample_02: lc06_word_free + lc06_meaning_no_payment. All four checks complete LC06. ch03_lc06_completed applies once: pronunciation +1 only if completed without target-revealing support; supported completion has no increment and no penalty. Correct subanswers freeze; unresolved subanswers retry.'],
+  ['Discussion Questions', 'What changes between three and free? How would you check whether flowers cost money? When does replay help? How can a seller ask for clarification respectfully?'],
+  ['Sensitive Framing', 'No accent-shaming, comic imitation or mandatory public production/microphone. Supported practice is an accessible learning route, not failure or a negative score. Clearly distinguish objective unaided listening evidence from supported text practice.'],
+  ['Suggested Classroom Use', 'First attempt UNAIDED LISTENING; transcript unavailable beforehand. After the initial explicit attempt offer Supported practice, not automatic transcript disclosure. A learner unable to hear can explicitly record an unresolved “I cannot hear this recording” attempt without guessing, then access support. Text support permits completion and story continuation; no pronunciation reward. Opening transcript or target-specific explanation before completion irreversibly marks support use. Keyboard/focus reaches replay, support, choices, Submit/retry and Continue. Text never relies on colour. Preview is ephemeral and read-only.'],
+  ['Scene Navigation', 'ch03_s01 → ch03_s02 story → LC06 unaided or supported completion → reflection → explicit Continue, ch03_s02_complete once without increment → ch03_s03 Finding the Main Stress. If S03 is absent, retain completion/review and show the unavailable-scene boundary.']
 ];
 const callbacks = {
   "direct": "She asked for lessons plainly. This morning, she is ready to ask plain questions too.",

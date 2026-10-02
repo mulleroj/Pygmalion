@@ -72,7 +72,7 @@ test('shared runtime: render/refresh, Teacher preview and review do not save; cl
   let saved=JSON.stringify(fresh()),writes=0; const nodes=new Map(),events={};
   const node=k=>{if(!nodes.has(k))nodes.set(k,{innerHTML:'',textContent:'',open:false,focus(){},scrollIntoView(){},setAttribute(){},removeAttribute(){},addEventListener(){},querySelector(){return node('close');},showModal(){this.open=true;},close(){this.open=false;}});return nodes.get(k);};
   globalThis.document={querySelector:node,addEventListener(n,fn){events[n]=fn;}};
-  globalThis.window={location:{hash:'#ch03_s01',pathname:'/'},history:{state:{scene:scene.id}},setTimeout(fn){fn();},addEventListener(){}};
+  globalThis.window={location:{hash:'#ch03_s01',pathname:'/'},history:{state:{scene:scene.id},pushState(_state,_title,url){this.state=_state;window.location.hash=url.startsWith('#')?url:'';},replaceState(_state,_title,url){this.state=_state;window.location.hash=url.startsWith('#')?url:'';}},setTimeout(fn){fn();},addEventListener(){}};
   globalThis.localStorage={getItem(){return saved;},setItem(k,v){assert.equal(k,STORAGE_KEY);saved=v;writes++;}};
   const {render,moveNext}=await import('../src/app.js?ch03-test');
   const click=(action,data={})=>events.click({isTrusted:false,target:{closest(){return{dataset:{action,...data},focus(){}};}}});
@@ -86,7 +86,6 @@ test('shared runtime: render/refresh, Teacher preview and review do not save; cl
   for(const sample of scene.challenge.samples)await click('answer-lc05',{sample:sample.id,answer:sample.answer});
   assert.equal(JSON.parse(saved).ch03_s01_complete,false);
   const before=saved,count=writes;await click('open-teacher');await click('teacher-preview');moveNext();render();assert.equal(saved,before);assert.equal(writes,count);
-  await click('return-student');await click('next-scene');assert.equal(JSON.parse(saved).ch03_s01_complete,true);assert.equal(JSON.parse(saved).scene,scene.id);
-  const done=saved,doneWrites=writes;await click('next-scene');await click('review-scene');render();assert.equal(saved,done);assert.equal(writes,doneWrites);
-  assert.match(node('#app').innerHTML,/next scene is not yet available/);
+  await click('return-student');await click('next-scene');assert.equal(JSON.parse(saved).ch03_s01_complete,true);assert.equal(JSON.parse(saved).scene,'ch03_s02');
+  assert.match(node('#app').innerHTML,/The Listening Room/);
 });
