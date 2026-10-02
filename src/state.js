@@ -1,3 +1,4 @@
+import { CH03_SCENE_01 } from './ch03-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -24,6 +25,10 @@ export function createInitialState() {
     ch02_lc04_attempts: 0,
     ch02_lc04_completed: false,
     lc04_presentation_order: null,
+    practice_preference: null,
+    ch03_lc05_attempts: 0,
+    ch03_lc05_completed: false,
+    ch03_s01_complete: false,
     confidence: 0,
     pronunciation: 0,
     independence: 0,
@@ -32,7 +37,8 @@ export function createInitialState() {
     challenges: {
       lc01: { answers: {}, completed: false, optionOrders: {} },
       lc02: { answers: {}, completed: false, optionOrders: {} },
-      lc04: { answers: {}, completed: false, optionOrders: {} }
+      lc04: { answers: {}, completed: false, optionOrders: {} },
+      lc05: { answers: {}, completed: false, optionOrders: {} }
     },
     soundEnabled: true
   };
@@ -51,7 +57,8 @@ function mergeState(raw) {
       ...(raw.challenges || {}),
       lc01: { ...initial.challenges.lc01, ...((raw.challenges || {}).lc01 || {}) },
       lc02: { ...initial.challenges.lc02, ...((raw.challenges || {}).lc02 || {}) },
-      lc04: { ...initial.challenges.lc04, ...((raw.challenges || {}).lc04 || {}) }
+      lc04: { ...initial.challenges.lc04, ...((raw.challenges || {}).lc04 || {}) },
+      lc05: { ...initial.challenges.lc05, ...((raw.challenges || {}).lc05 || {}) }
     }
   };
 }
@@ -92,6 +99,13 @@ export function recordOpeningTone(state, tone) {
 }
 
 export function applyDecision(state, decisionId, optionId) {
+  if (decisionId === 'D06') {
+    const contract = { d06_slow_repeat: ['slow_repeat', 'pronunciation'], d06_visual_model: ['visual_model', 'confidence'], d06_own_words: ['own_words', 'independence'] }[optionId];
+    const eventId = 'ch03_d06_practice_preference';
+    if (state.scene !== 'ch03_s01' || !contract || state.practice_preference || state.decisions.D06 || state.applied_events.includes(eventId)) return state;
+    return { ...state, practice_preference: contract[0], [contract[1]]: state[contract[1]] + 1,
+      decisions: { ...state.decisions, D06: optionId }, applied_events: [...state.applied_events, eventId] };
+  }
   if (decisionId === 'D05') {
     const motivation = { d05_opportunity: 'opportunity', d05_respect: 'respect', d05_learning: 'learning', d05_independence: 'independence' }[optionId];
     const eventId = 'ch02_d05_confirmed_motivation';
@@ -299,4 +313,25 @@ export function completeChapterTwo(state) {
   if (state.ch02_complete && state.applied_events.includes('ch02_complete')) return state;
   return { ...state, ch02_complete: true,
     applied_events: state.applied_events.includes('ch02_complete') ? state.applied_events : [...state.applied_events, 'ch02_complete'] };
+}
+
+// The same challenge record and stable event store own attempts and completion.
+export function recordLc05Answer(state, sampleId, answerId) {
+  const sample = CH03_SCENE_01.challenge.samples.find(({ id }) => id === sampleId);
+  const challenge = state.challenges.lc05;
+  const eventId = 'ch03_lc05_completed';
+  if (state.scene !== 'ch03_s01' || !state.decisions.D06 || !sample || !sample.options.some(({ id }) => id === answerId) ||
+      state.ch03_lc05_completed || challenge.completed || state.applied_events.includes(eventId) || challenge.answers[sampleId]?.correct) return state;
+  const answers = { ...challenge.answers, [sampleId]: { answer: answerId, correct: answerId === sample.answer } };
+  const completed = CH03_SCENE_01.challenge.samples.every(({ id, answer }) => answers[id]?.answer === answer);
+  return { ...state, ch03_lc05_attempts: state.ch03_lc05_attempts + 1, ch03_lc05_completed: completed,
+    pronunciation: state.pronunciation + (completed ? 1 : 0),
+    applied_events: completed ? [...state.applied_events, eventId] : state.applied_events,
+    challenges: { ...state.challenges, lc05: { ...challenge, answers, completed } } };
+}
+
+export function completeScene(state, scene) {
+  if (state.scene !== 'ch03_s01' || scene.id !== state.scene || getSceneAdvanceBlock(state, scene) ||
+      !state.ch03_lc05_completed || state.ch03_s01_complete || state.applied_events.includes('ch03_s01_complete')) return state;
+  return { ...state, ch03_s01_complete: true, applied_events: [...state.applied_events, 'ch03_s01_complete'] };
 }

@@ -209,6 +209,7 @@ export const AUDIO_FILES = [
 export const VISUAL_FILES = Object.values(VISUALS).map((asset) => asset.src.replace(/^\.\/assets\//, ''));
 
 export function ambienceForScene(sceneId) {
+  if (sceneId.startsWith('ch03_')) return null; // Book-first: lesson ambience is not integrated.
   if (sceneId === 'ch02_s01') return 'higgins_house_morning_entry';
   if (['ch02_s02', 'ch02_s03', 'ch02_s04', 'ch02_s05'].includes(sceneId)) return 'higgins_house_interior';
   if (sceneId.startsWith('ch02_')) return null;

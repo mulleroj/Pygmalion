@@ -1,6 +1,6 @@
 # Chapter III Visual Plan
 
-Status: S01 PRE-PRODUCTION CONTENT LOCK; In Training source master Human Visual QA PASS. Two user-supplied source images are available; no presentation derivatives, runtime cutouts or runtime composition are created in this inventory pass. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. [SCRIPT.md](SCRIPT.md) owns story; the existing Eliza visual bible owns identity.
+Status: S01 PRE-PRODUCTION CONTENT LOCK; In Training source master Human Visual QA PASS. Master and coat sources are available; focused source and byte-identical runtime cutout are created and technically approved. Focused Human Visual QA PASS; approved for Chapter III S01 runtime use. S01 book-first runtime composition has passed Human Visual QA. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. [SCRIPT.md](SCRIPT.md) owns story; the existing Eliza visual bible owns identity.
 
 ## Scene-derived stage
 
@@ -26,10 +26,12 @@ The canonical In Training master always takes precedence for facial identity, ha
 Presentation / pose backlog:
 
 - ELZ-TR-MASTER: approved source assets/images/characters/eliza/source/eliza_training_master.png; presentation assets/images/characters/eliza/eliza_training_master.webp is NOT YET CREATED.
-- ELZ-TR-FOCUSED, required S01: source/eliza_training_focused.png, presentation eliza_training_focused.webp, transparent runtime/eliza_training_focused_cutout.png in that same character root. Focused runtime cutout = NOT YET CREATED; focused source/presentation also remain uncreated. Focused learner with a natural hand near the mirror, not a frozen mouth caricature.
+- ELZ-TR-FOCUSED, required S01: source `assets/images/characters/eliza/source/eliza_training_focused_cutout.png`; runtime `assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png`. Focused cutout = CREATED / TECHNICALLY APPROVED / APPROVED FOR CHAPTER III S01 RUNTIME USE. Human Visual QA PASS; approved for Chapter III S01 runtime use. No WebP is created or required by this ingestion step.
 - ELZ-TR-PRACTICING, optional only if focused cannot carry the activity: matching source/presentation/runtime filenames using practicing. No second face identity.
 
-Alt intent for the future focused variant: “Eliza in practical indoor lesson clothes, concentrating on a small mirror while practising a sound.” All future derivatives must preserve the approved canonical source identity and natural edges. Master human approval is complete; future focused/practicing artwork and composition approval remain pending.
+Focused asset alt intent: “Eliza in practical indoor lesson clothes looks attentively to one side, with one hand lightly near her chin.” The supplied variant is accepted as derived from canonical `eliza_training_master.png` for visual continuity: same identity, hair, apparent age, body proportions and In Training outfit; only expression, gaze and learner-focus pose differ. No props, hat, coat or polished styling. Master human approval is complete; focused final scene composition Human Visual QA PASS; approved for Chapter III S01 runtime use.
+
+Focused technical QA on 2026-10-01: PNG RGBA, 1024 × 1536, alpha range 0–254; integrity verification and full decode PASS. Light and dark composites in `qa/ch03/` show natural fine hair edges without the previous continuous brown studio halo; shoulders and clothing edges are usable. Full body, hands and both boots are present, without obvious gross anatomy defects. Original import was renamed without re-encoding and copied byte-for-byte to runtime. Source/runtime SHA-256: `3bb0ecc0744f76c765d46289a8eab36c18c4bbd3be0f3f07e4d3f086013dcb76`. This records technical visual inspection, not final human composition approval. The exact untracked rejected .png.png source candidate was removed during S01 implementation; it is not assigned to runtime.
 
 ## Location reuse after visual inspection
 
@@ -52,8 +54,14 @@ Without sound, mirror, text and labels make the lesson understandable; no critic
 
 ## Architecture guardrails and remaining gates
 
-Reuse the story renderer, renderDecision, state/event store, AudioManager, challenge infrastructure, existing Teacher Mode dialog, replay/preview safety and responsive image layers. No Chapter III AudioManager/state store/Teacher/decision system/isolated save. Master Human Visual QA and Flower Girl identity continuity are approved. Open production gates: focused creation/approval, optional practicing need, integrated mirror/card/diagram treatment, foreground masking and exact viewport QA. These do not reopen the locked story/identity brief.
+Reuse the story renderer, renderDecision, state/event store, AudioManager, challenge infrastructure, existing Teacher Mode dialog, replay/preview safety and responsive image layers. No Chapter III AudioManager/state store/Teacher/decision system/isolated save. Master Human Visual QA and Flower Girl identity continuity are approved; focused source/runtime cutout creation and technical QA are complete. S01 composition, mouth-position reference, foreground masking and responsive layout have passed Human Visual QA. Optional practicing need remains a future consideration. These do not reopen the locked story/identity brief.
 
 ## Later Chapter III – NOT YET LOCKED
 
 Only [scene-map](../../SCENE_MAP.md) intent: S02 player/order cards/listening; S03 simulated flower stall/practicing; S04 hallway/controlled; S05 lesson room/frustrated; S06 shop or stall/encouraged. Later location choice, poses, paths and compositions remain unlocked.
+
+## S01 book-first runtime composition checkpoint
+
+S01 reuses the approved Chapter II study plate and canonical Higgins runtime cutout with the focused Eliza runtime PNG. Eliza is the main full-body learner on the window-side floor; Higgins supports from behind the desk with a presentation-only foreground mask. The mouth-position reference is accessible text beside the activity; no new image or audio is created. D06 and transcript-supported LC05 use the existing renderer, state, challenge and Teacher dialog. Chapter III ambience is explicitly silent in this checkpoint pending later audio integration. Human Visual QA PASS; approved for Chapter III S01 runtime use.
+
+Technical responsive QA: 1440 × 1000, 1024 × 900 and 390 × 844 inspected in the local browser. Full-body Eliza, supporting desk-occluded Higgins, readable activity, clickable D06/LC05 and no horizontal overflow confirmed. Art layers retain pointer-events: none. Screenshots remain untracked in qa/ch03/. The technical QA is now followed by Human Visual QA PASS for S01 composition and the focused asset.
