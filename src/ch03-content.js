@@ -410,7 +410,13 @@ export const CH03_SCENE_05 = {
   plate: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
   eliza: { src: './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png', alt: 'Eliza in practical indoor lesson clothes takes a moment during a lesson.' },
   supporting: [{ src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Higgins supports the lesson from behind the desk.', placement: 'higgins' }],
-  props: [], voice: [],
+  props: [], voice: [
+    { id: 'AM29-E1', src: './assets/audio/characters/eliza/eliza_ch03_scene05_001.mp3', generationId: 'w8z8OBbiGmpgCrqtiSMm', voiceId: '124kaYCknTDsnwUFdWl9', transcript: "I did it well earlier. Why can't I do it now?", inline: true },
+    { id: 'AM29-H1', src: './assets/audio/characters/higgins/higgins_ch03_scene05_001.mp3', generationId: 'AN4yTjMywuhpEck1ulIZ', voiceId: 'JlptfLxaUpd8pZcw9dKd', transcript: 'You are tired. More force will not help.', inline: true },
+    { id: 'AM29-E2', src: './assets/audio/characters/eliza/eliza_ch03_scene05_002.mp3', generationId: 'JDapm3gzeN7c7jkLNfkq', voiceId: '124kaYCknTDsnwUFdWl9', transcript: 'I can finish this page… before we stop.', inline: true },
+    { id: 'AM29-H2', src: './assets/audio/characters/higgins/higgins_ch03_scene05_002.mp3', generationId: '14kWaekUzJI8jRBgv1sa', voiceId: 'JlptfLxaUpd8pZcw9dKd', transcript: 'Good. Slower is not worse. It gives you room to hear yourself.', inline: true },
+    { id: 'AM29-E3', src: './assets/audio/characters/eliza/eliza_ch03_scene05_003.mp3', generationId: 'PiwJBtStdfX63oE6yPuW', voiceId: '124kaYCknTDsnwUFdWl9', transcript: 'I can get it back.', inline: true }
+  ],
   storyBeats: [
     { type: 'narration', text: 'A few days later, the lesson has gone on too long. Eliza is tired.' },
     { type: 'dialogue', speaker: 'Higgins', text: 'Try the sentence once more: ‘I can finish this page before we stop.’' },
@@ -434,9 +440,9 @@ export const CH03_SCENE_05 = {
     supportedPracticePrompt: 'Listen for the place where the sentence can breathe.',
     supportExplanation: 'Pause here. Say the first part, then continue with the second.',
     samples: [
-      { id: 'lc09_sample_01', sentence: 'When the lesson ends I will rest.', options: ['lc09_01_after_when', 'lc09_01_after_the', 'lc09_01_after_lesson', 'lc09_pause_01', 'lc09_01_after_i', 'lc09_01_after_will'], afterLabels: ['When', 'the', 'lesson', 'ends', 'I', 'will'], answer: 'lc09_pause_01', answerAfter: 'ends', key: 'When the lesson ends | I will rest.' },
-      { id: 'lc09_sample_02', sentence: 'If I slow my pace I can hear each word.', options: ['lc09_02_after_if', 'lc09_02_after_first_i', 'lc09_02_after_slow', 'lc09_02_after_my', 'lc09_pause_02', 'lc09_02_after_second_i', 'lc09_02_after_can', 'lc09_02_after_hear', 'lc09_02_after_each'], afterLabels: ['If', 'first I', 'slow', 'my', 'pace', 'second I', 'can', 'hear', 'each'], answer: 'lc09_pause_02', answerAfter: 'pace', key: 'If I slow my pace | I can hear each word.' },
-      { id: 'lc09_sample_03', sentence: 'I know the words but I need a moment.', options: ['lc09_03_after_first_i', 'lc09_03_after_know', 'lc09_03_after_the', 'lc09_pause_03', 'lc09_03_after_but', 'lc09_03_after_second_i', 'lc09_03_after_need', 'lc09_03_after_a'], afterLabels: ['first I', 'know', 'the', 'words', 'but', 'second I', 'need', 'a'], answer: 'lc09_pause_03', answerAfter: 'words', key: 'I know the words | but I need a moment.' }
+      { id: 'lc09_sample_01', sentence: 'When the lesson ends I will rest.', src: './assets/audio/challenges/ch03/lc09_lesson_ends.mp3', generationId: 'Ue2V0w0Q5yGEu2Dy17Dn', voiceId: 'JlptfLxaUpd8pZcw9dKd', transcript: 'When the lesson ends I will rest.', label: 'Replay sentence 1', options: ['lc09_01_after_when', 'lc09_01_after_the', 'lc09_01_after_lesson', 'lc09_pause_01', 'lc09_01_after_i', 'lc09_01_after_will'], afterLabels: ['When', 'the', 'lesson', 'ends', 'I', 'will'], answer: 'lc09_pause_01', answerAfter: 'ends', key: 'When the lesson ends | I will rest.' },
+      { id: 'lc09_sample_02', sentence: 'If I slow my pace I can hear each word.', src: './assets/audio/challenges/ch03/lc09_slow_my_pace.mp3', generationId: '4intscAdWnqpAyJDfieA', voiceId: 'JlptfLxaUpd8pZcw9dKd', transcript: 'If I slow my pace I can hear each word.', label: 'Replay sentence 2', options: ['lc09_02_after_if', 'lc09_02_after_first_i', 'lc09_02_after_slow', 'lc09_02_after_my', 'lc09_pause_02', 'lc09_02_after_second_i', 'lc09_02_after_can', 'lc09_02_after_hear', 'lc09_02_after_each'], afterLabels: ['If', 'first I', 'slow', 'my', 'pace', 'second I', 'can', 'hear', 'each'], answer: 'lc09_pause_02', answerAfter: 'pace', key: 'If I slow my pace | I can hear each word.' },
+      { id: 'lc09_sample_03', sentence: 'I know the words but I need a moment.', src: './assets/audio/challenges/ch03/lc09_need_a_moment.mp3', generationId: 'zQcI8ajUgqVAh7DnWD7k', voiceId: 'JlptfLxaUpd8pZcw9dKd', transcript: 'I know the words but I need a moment.', label: 'Replay sentence 3', options: ['lc09_03_after_first_i', 'lc09_03_after_know', 'lc09_03_after_the', 'lc09_pause_03', 'lc09_03_after_but', 'lc09_03_after_second_i', 'lc09_03_after_need', 'lc09_03_after_a'], afterLabels: ['first I', 'know', 'the', 'words', 'but', 'second I', 'need', 'a'], answer: 'lc09_pause_03', answerAfter: 'words', key: 'I know the words | but I need a moment.' }
     ]
   },
   transition: 'Eliza can recover a sentence when she gives it room.', nextScene: 'ch03_s06'
@@ -446,7 +452,7 @@ export const CH03_S05_TEACHER_SECTIONS = [
   ['Chapter Overview', 'S05, The Bad Day, follows S04 in Higgins’s study. The lesson runs long and Eliza is tired. She rushes a familiar sentence, pauses, slows down, divides it into manageable parts, and recovers.'],
   ['Learning Goals', 'Notice that performance can vary; regulate pace; divide a sentence into manageable chunks; repair and try again. A temporary performance drop does not erase learning.'],
   ['Language Focus', 'No new phonology. Practise pacing, a pause at a meaningful clause boundary, and self-repair. Slowing down can give the speaker room to hear the sentence.'],
-  ['Listening Focus', 'LC09 is a text-based pause and chunking activity in this runtime. There are no S05 story or objective recordings and no browser text-to-speech.'],
+  ['Listening Focus', 'Five approved S05 story moments and three whole-sentence LC09 samples are locally integrated with visible text and replay. Playback is optional and state-neutral; there is no browser text-to-speech.'],
   ['Key Vocabulary', 'pace, pause, sentence, part, rest, moment, again, slow down, hear.'],
   ['Cultural / Literary Context', 'This is an original educational adaptation. Fatigue is a condition to manage, not evidence that learning failed. Cockney or any social register is not evidence of low intelligence.'],
   ['Decisions – Teacher Notes', 'No main D-numbered decision in S05. There is no D08 and no hidden decision-like branch.'],

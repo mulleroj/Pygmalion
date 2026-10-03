@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import { CH03_SCENE_04, CH03_SCENE_05, CH03_S05_TEACHER_SECTIONS } from '../src/ch03-content.js';
 import { ambienceForScene, isContinuousAmbienceTransition } from '../src/content.js';
 import {
@@ -23,7 +24,15 @@ test('S05 registers exact canonical story, book-first LC09, reuse visuals, and t
   assert.deepEqual(CH03_SCENE_05.plate, CH03_SCENE_04.plate);
   assert.equal(CH03_SCENE_05.eliza.src, CH03_SCENE_04.eliza.src);
   assert.deepEqual(CH03_SCENE_05.supporting, CH03_SCENE_04.supporting);
-  assert.deepEqual(CH03_SCENE_05.voice, []);
+  assert.equal(CH03_SCENE_05.voice.length, 5);
+  assert.ok(CH03_SCENE_05.voice.every(({ src, generationId, voiceId, inline }) => src && generationId && voiceId && inline));
+  assert.deepEqual(CH03_SCENE_05.voice.map(({ transcript }) => transcript), [
+    "I did it well earlier. Why can't I do it now?",
+    'You are tired. More force will not help.',
+    'I can finish this page… before we stop.',
+    'Good. Slower is not worse. It gives you room to hear yourself.',
+    'I can get it back.'
+  ]);
   assert.equal(CH03_SCENE_05.decision, undefined);
   assert.equal(CH03_SCENE_05.challenge.id, 'LC09');
   assert.equal(CH03_SCENE_05.challenge.intro, 'Choose the best place to pause so the sentence is easier to say.');
@@ -56,15 +65,59 @@ test('S05 registers exact canonical story, book-first LC09, reuse visuals, and t
   assert.equal(isContinuousAmbienceTransition('ch03_s04', 'ch03_s05'), true);
 });
 
-test('LC09 has the exact three items, options, stable correct IDs, and no audio references', () => {
+test('LC09 has the exact three items, options, stable correct IDs, and approved audio references', () => {
   const samples = CH03_SCENE_05.challenge.samples;
   assert.deepEqual(samples.map(({ id, sentence, answer, answerAfter, key, options }) => ({ id, sentence, answer, answerAfter, key, options })), [
     { id: 'lc09_sample_01', sentence: 'When the lesson ends I will rest.', answer: 'lc09_pause_01', answerAfter: 'ends', key: 'When the lesson ends | I will rest.', options: ['lc09_01_after_when', 'lc09_01_after_the', 'lc09_01_after_lesson', 'lc09_pause_01', 'lc09_01_after_i', 'lc09_01_after_will'] },
     { id: 'lc09_sample_02', sentence: 'If I slow my pace I can hear each word.', answer: 'lc09_pause_02', answerAfter: 'pace', key: 'If I slow my pace | I can hear each word.', options: ['lc09_02_after_if', 'lc09_02_after_first_i', 'lc09_02_after_slow', 'lc09_02_after_my', 'lc09_pause_02', 'lc09_02_after_second_i', 'lc09_02_after_can', 'lc09_02_after_hear', 'lc09_02_after_each'] },
     { id: 'lc09_sample_03', sentence: 'I know the words but I need a moment.', answer: 'lc09_pause_03', answerAfter: 'words', key: 'I know the words | but I need a moment.', options: ['lc09_03_after_first_i', 'lc09_03_after_know', 'lc09_03_after_the', 'lc09_pause_03', 'lc09_03_after_but', 'lc09_03_after_second_i', 'lc09_03_after_need', 'lc09_03_after_a'] }
   ]);
-  assert.ok(samples.every((sample) => !sample.src && !sample.transcript && !sample.voiceId));
-  assert.equal(CH03_SCENE_05.voice.length, 0);
+  assert.deepEqual(samples.map(({ src, generationId, voiceId, transcript }) => ({ src, generationId, voiceId, transcript })), [
+    { src: './assets/audio/challenges/ch03/lc09_lesson_ends.mp3', generationId: 'Ue2V0w0Q5yGEu2Dy17Dn', voiceId: 'JlptfLxaUpd8pZcw9dKd', transcript: 'When the lesson ends I will rest.' },
+    { src: './assets/audio/challenges/ch03/lc09_slow_my_pace.mp3', generationId: '4intscAdWnqpAyJDfieA', voiceId: 'JlptfLxaUpd8pZcw9dKd', transcript: 'If I slow my pace I can hear each word.' },
+    { src: './assets/audio/challenges/ch03/lc09_need_a_moment.mp3', generationId: 'zQcI8ajUgqVAh7DnWD7k', voiceId: 'JlptfLxaUpd8pZcw9dKd', transcript: 'I know the words but I need a moment.' }
+  ]);
+  for (const item of [...CH03_SCENE_05.voice, ...samples]) {
+    const file = item.src.replace(/^\.\//, '');
+    const bytes = fs.readFileSync(new URL(`../${file}`, import.meta.url));
+    assert.ok(bytes.length > 1000, file);
+    assert.equal(bytes.toString('ascii', 0, 3), 'ID3', file);
+  }
+});
+
+test('all eight S05 files are the approved byte-preserved MPEG assets at their mapped durations', () => {
+  const expected = [
+    ['assets/audio/characters/eliza/eliza_ch03_scene05_001.mp3', 64399, 2.93, '442DFF31966396ED1BCC7F0C00C5478A780419F14E01E5495C57DDB950362AC2'],
+    ['assets/audio/characters/higgins/higgins_ch03_scene05_001.mp3', 57712, 2.51, '296662A9DE00D72B607B61D4D1E0CA3EFBD9C7E15C68A262659A034168DFADEA'],
+    ['assets/audio/characters/eliza/eliza_ch03_scene05_002.mp3', 68161, 3.16, '547E4A6AB3AE9DE16CDF0A1D515C38E1C13570CF556CA089A8D68E8A3332A90D'],
+    ['assets/audio/characters/higgins/higgins_ch03_scene05_002.mp3', 88641, 4.44, '986E152B634162948450FFAD4277AAA024FA3193A3A455AB106171EC4AD576A4'],
+    ['assets/audio/characters/eliza/eliza_ch03_scene05_003.mp3', 35978, 1.15, '4C161E21D0CE14251CCE4CB37BD7374B09280AC2CDFA2077813154F20A85F4C5'],
+    ['assets/audio/challenges/ch03/lc09_lesson_ends.mp3', 53950, 2.27, 'FAF67ECC1D94D4DBA43DA883E9390FC3196BA695E95DF599E817D93AA2E0DCB8'],
+    ['assets/audio/challenges/ch03/lc09_slow_my_pace.mp3', 66907, 3.08, '04469466F976C27BEA11AF193E6EEA0EA33A68AB84ECB83F16CEF7D15476B620'],
+    ['assets/audio/challenges/ch03/lc09_need_a_moment.mp3', 56458, 2.43, '31763CFCA4B00DAC0C7393D081BC1E9B56BB99C35E095ED256E002FFDD73040B']
+  ];
+  const bitrateKbps = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320];
+  for (const [relativePath, expectedBytes, expectedDuration, sha256] of expected) {
+    const bytes = fs.readFileSync(new URL(`../${relativePath}`, import.meta.url));
+    assert.equal(bytes.length, expectedBytes, relativePath);
+    assert.equal(crypto.createHash('sha256').update(bytes).digest('hex').toUpperCase(), sha256, relativePath);
+    assert.equal(bytes.toString('ascii', 0, 3), 'ID3', relativePath);
+    let offset = 10 + (((bytes[6] & 0x7f) << 21) | ((bytes[7] & 0x7f) << 14) | ((bytes[8] & 0x7f) << 7) | (bytes[9] & 0x7f)) + ((bytes[5] & 0x10) ? 10 : 0);
+    let frames = 0;
+    while (offset + 4 <= bytes.length) {
+      assert.equal(bytes[offset], 0xff, `${relativePath}: sync @${offset}`);
+      const header = bytes.readUInt32BE(offset);
+      assert.equal((header >>> 19) & 0x3, 3, relativePath);
+      assert.equal((header >>> 17) & 0x3, 1, relativePath);
+      const bitrateIndex = (header >>> 12) & 0xf, sampleRateIndex = (header >>> 10) & 0x3, padding = (header >>> 9) & 1;
+      assert.equal(sampleRateIndex, 0, relativePath);
+      assert.ok(bitrateIndex > 0 && bitrateIndex < 15, relativePath);
+      offset += Math.floor(144 * bitrateKbps[bitrateIndex] * 1000 / 44100) + padding;
+      frames++;
+    }
+    assert.equal(offset, bytes.length, `${relativePath}: no truncated frame or trailing payload`);
+    assert.ok(Math.abs(frames * 1152 / 44100 - expectedDuration) < 0.05, relativePath);
+  }
 });
 
 test('LC09 retries wrong answers, preserves correct answers, rewards unaided completion once, and completes only on Continue', () => {
@@ -107,7 +160,7 @@ test('opening support reveals only its item and removes the reward without block
   assert.equal(state.applied_events.filter((event) => event === 'ch03_lc09_completed').length, 1);
 });
 
-test('S05 render is neutral before response, has no foreground audio, and Teacher preview is read-only', async (t) => {
+test('S05 renders approved story and LC09 replay without answer leakage; playback and Teacher preview are read-only', async (t) => {
   const originals = Object.fromEntries(['document', 'window', 'localStorage', 'Audio'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; });
   const nodes = new Map(), events = {};
@@ -137,8 +190,11 @@ test('S05 render is neutral before response, has no foreground audio, and Teache
   for (const sentence of ['When the lesson ends I will rest.', 'If I slow my pace I can hear each word.', 'I know the words but I need a moment.']) assert.ok(lc09.includes(sentence));
   assert.equal((lc09.match(/class="lc09-split-point"/g) || []).length, 23);
   assert.doesNotMatch(lc09, /\||\.\.\.|,/);
-  assert.equal((html.match(/data-action="play-voice"/g) || []).length, 0);
-  assert.equal((html.match(/data-action="play-challenge"/g) || []).length, 0);
+  assert.equal((html.match(/data-action="play-voice"/g) || []).length, 4);
+  assert.equal((html.match(/data-action="play-challenge"/g) || []).length, 3);
+  assert.match(html, /Replay sentence 1/);
+  assert.match(html, /Replay sentence 2/);
+  assert.match(html, /Replay sentence 3/);
   const css = fs.readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
   assert.match(css, /\.lc09-split-point:hover:not\(:disabled\) \{ border-color: rgba\(124, 63, 77, \.2\); background: rgba\(255, 252, 247, \.38\); color: inherit; \}/);
   assert.match(css, /\.lc09-split-point:focus-visible/);
@@ -147,6 +203,10 @@ test('S05 render is neutral before response, has no foreground audio, and Teache
   assert.equal((node('#teacher-content').innerHTML.match(/class="teacher-section"/g) || []).length, 12);
   assert.match(node('#teacher-content').innerHTML, /No main D-numbered decision in S05/);
   const beforePreview = saved, beforeWrites = writes;
+  await click('play-challenge', { src: CH03_SCENE_05.challenge.samples[0].src, sample: 'lc09_sample_01' });
+  await click('play-voice', { src: CH03_SCENE_05.voice[0].src });
+  assert.equal(saved, beforePreview, 'audio replay cannot mutate progress');
+  assert.equal(writes, beforeWrites);
   await click('teacher-preview');
   await click('answer-lc09', { sample: 'lc09_sample_01', answer: 'lc09_pause_01' });
   await click('open-lc09-support', { sample: 'lc09_sample_01' });

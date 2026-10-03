@@ -186,20 +186,26 @@ All twelve clips use the established foreground AudioManager: explicit learner r
 
 Playback/replay never writes D07, LC08 answers, attempts, support, rewards or scene completion. D07 remains a non-punitive strategy choice. LC08's unaided completion still grants Pronunciation +1 once via `ch03_lc08_completed`; target-revealing support permanently removes that eligibility and supported completion has no reward or penalty. `ch03_s04_complete` still requires D07, completed LC08 and explicit Continue. Teacher preview may explicitly replay clips but remains read-only. S01/S02 Human Audio Mix QA PASS and S03 Human Audio Mix QA PASS are preserved; S04 Human Audio Mix QA = **PASS**.
 
-## ch03_s05 — S05 PRE-PRODUCTION CANON LOCKED; AUDIO PLANNED, NOT GENERATED
+## ch03_s05 — S05 BOOK-FIRST AUDIO INTEGRATED; MIX QA PENDING
 
-Reuse the continuous canonical `ch03_lesson_room` 90-second lesson-room ambience. Let it continue beneath the longer lesson; no rain layer, new ambience, new mixer or reset is needed. Keep the existing AudioManager, Chapter III story duck, LC challenge duck and replay/cleanup lifecycle. Sound and voice remain optional enhancements to the readable book. No ElevenLabs generation has been performed or authorized by this canon task.
+Reuse the continuous canonical `ch03_lesson_room` 90-second lesson-room ambience. Let it continue beneath the longer lesson; no rain layer, new ambience, new mixer or reset is needed. Keep the existing AudioManager, Chapter III story duck, LC challenge duck and replay/cleanup lifecycle. Sound and voice remain optional enhancements to the readable book. The eight approved files were generated earlier; this runtime integration generated no audio.
 
-Story voice plan: record only these five lines, which carry the tired/frustrated performance, Higgins's controlled reset, and Eliza's recovery. Other lines remain visible text. Preserve Eliza's canonical voice `124kaYCknTDsnwUFdWl9`, stage `Chapter III – Conscious Training`; fatigue and recovery change pacing, breath and control, never voice identity. Higgins uses canonical Kelvin `JlptfLxaUpd8pZcw9dKd`, calm, precise and non-cruel.
+Exactly five approved story voice moments are integrated inline with their matching readable dialogue. Other lines remain visible text. Preserve Eliza's canonical voice `124kaYCknTDsnwUFdWl9`, stage `Chapter III – Conscious Training`; fatigue and recovery change pacing, breath and control, never voice identity. Higgins uses canonical Kelvin `JlptfLxaUpd8pZcw9dKd`, calm, precise and non-cruel. User-confirmed individual Human Audio QA is PASS for all eight files; S05 Human Audio Mix QA remains pending.
 
-| Moment | Speaker / canonical voice | Exact intended recording |
-|---|---|---|
-| AM29-E1, SCRIPT line 5 | Eliza / `124kaYCknTDsnwUFdWl9` | I did it well earlier. Why can't I do it now? |
-| AM29-H1, SCRIPT line 6 | Higgins / Kelvin `JlptfLxaUpd8pZcw9dKd` | You are tired. More force will not help. |
-| AM29-E2, SCRIPT line 9 | Eliza / `124kaYCknTDsnwUFdWl9` | I can finish this page… before we stop. |
-| AM29-H2, SCRIPT line 8 | Higgins / Kelvin `JlptfLxaUpd8pZcw9dKd` | Good. Slower is not worse. It gives you room to hear yourself. |
-| AM29-E3, SCRIPT line 11 | Eliza / `124kaYCknTDsnwUFdWl9` | I can get it back. |
+| Moment | Speaker / voice ID | Runtime file | Generation ID | Exact visible and spoken transcript | Bytes | MPEG duration |
+|---|---|---|---|---|---:|---:|
+| AM29-E1 | Eliza / `124kaYCknTDsnwUFdWl9` | `assets/audio/characters/eliza/eliza_ch03_scene05_001.mp3` | `w8z8OBbiGmpgCrqtiSMm` | I did it well earlier. Why can't I do it now? | 64,399 | 2.93 s |
+| AM29-H1 | Higgins / `JlptfLxaUpd8pZcw9dKd` | `assets/audio/characters/higgins/higgins_ch03_scene05_001.mp3` | `AN4yTjMywuhpEck1ulIZ` | You are tired. More force will not help. | 57,712 | 2.51 s |
+| AM29-E2 | Eliza / `124kaYCknTDsnwUFdWl9` | `assets/audio/characters/eliza/eliza_ch03_scene05_002.mp3` | `JDapm3gzeN7c7jkLNfkq` | I can finish this page… before we stop. | 68,161 | 3.16 s |
+| AM29-H2 | Higgins / `JlptfLxaUpd8pZcw9dKd` | `assets/audio/characters/higgins/higgins_ch03_scene05_002.mp3` | `14kWaekUzJI8jRBgv1sa` | Good. Slower is not worse. It gives you room to hear yourself. | 88,641 | 4.44 s |
+| AM29-E3 | Eliza / `124kaYCknTDsnwUFdWl9` | `assets/audio/characters/eliza/eliza_ch03_scene05_003.mp3` | `PiwJBtStdfX63oE6yPuW` | I can get it back. | 35,978 | 1.15 s |
 
-LC09 objective audio: exactly one natural, whole-sentence recording for each keyed sample, default speaker Higgins/Kelvin, with exact transcripts matching the three strings in STATE_AND_BRANCHING.md. Do not record a second “repaired” version: the learner chooses a boundary and then reads/hears the sentence divided in existing text/challenge presentation. Replay the same sample; no timeline, slow mode, browser TTS or answer-bearing take. Each pedagogically important recording has a visible transcript. Planned local names: `lc09_lesson_ends.mp3`, `lc09_slow_my_pace.mp3`, `lc09_know_the_words.mp3` under `assets/audio/challenges/ch03/`; story voice follows established `*_ch03_scene05_NNN.mp3` convention. Filenames are planning only, not created assets. AM29 covers selected story voice moments; AM30 records continued canonical ambience only, not a new file. All planned audio remains NOT GENERATED / NOT INTEGRATED pending later authorization and QA.
+LC09 objective audio uses exactly one whole-sentence recording for each keyed sample, default speaker Higgins/Kelvin. Replay is available beside the visible sentence; its neutral label does not disclose the answer or alter challenge state. No timeline, slow mode, browser TTS or answer-bearing take.
 
-Story recordings planned: 5. Objective recordings planned: 3. The canonical Chapter III lesson-room ambience remains planned for unchanged reuse.
+| Sample | Runtime file | Generation ID | Exact visible and spoken transcript | Bytes | MPEG duration |
+|---|---|---|---|---:|---:|
+| `lc09_sample_01` | `assets/audio/challenges/ch03/lc09_lesson_ends.mp3` | `Ue2V0w0Q5yGEu2Dy17Dn` | When the lesson ends I will rest. | 53,950 | 2.27 s |
+| `lc09_sample_02` | `assets/audio/challenges/ch03/lc09_slow_my_pace.mp3` | `4intscAdWnqpAyJDfieA` | If I slow my pace I can hear each word. | 66,907 | 3.08 s |
+| `lc09_sample_03` | `assets/audio/challenges/ch03/lc09_need_a_moment.mp3` | `zQcI8ajUgqVAh7DnWD7k` | I know the words but I need a moment. | 56,458 | 2.43 s |
+
+All eight approved S05 assets use the established AudioManager: explicit learner replay; a newer foreground take stops the previous one; Sound Off, scene changes and Teacher opening clean it up. Story moments use the existing Chapter III story duck; LC09 uses the existing conservative challenge duck (`CH02_AUDIO_MIX`: ambience 0.10 × challengeDuck 0.08 = 0.008 while a sample plays, restored to 0.10 afterward). The continuous canonical `ch03_lesson_room` ambience is reused unchanged. S01–S04 mappings and mix values are unchanged. Audio replay does not mutate LC09 answers, attempts, support, rewards or scene completion. Individual Human Audio QA is PASS; Human Audio Mix QA is pending. No audio was generated as part of integration.
