@@ -114,9 +114,9 @@ ch03_s02_complete records explicit student Continue only after either completion
 
 Validate scene/student context/item/allowed IDs; invalid or stale/out-of-scene input does nothing. Replay, Sound toggle, audio ending, render, refresh and Teacher preview cannot submit answers, increment attempts, save support eligibility, reward or complete. Persist stable option orders through retry/refresh. Teacher preview uses ephemeral orders/answers/support and never writes student state/events/signals. Reuse shared save/default merge, state/event helpers, LC rendering and AudioManager; extend shared guards rather than clone engines.
 
-## ch03_s04 / D07 / LC08 — S04 PRE-PRODUCTION CANON LOCKED
+## ch03_s04 / D07 / LC08 — S04 PRE-PRODUCTION CANON LOCKED; RUNTIME INTEGRATED
 
-Documentation only; NOT IMPLEMENTED / NOT GENERATED. `visualStage = in_training` is scene metadata. S04 teaches sentence stress / intonation, following S03 word stress. No persistent `sentence_stress_seen` or equivalent field, no new top-level save field, no signal change from D07, and no D07 change to LC08 keys or reward eligibility.
+S04 runtime and its approved audio assets are integrated; individual Human Audio QA = PASS and full S04 Human Audio Mix QA = PASS (asset/audio details in AUDIO_PLAN.md). `visualStage = in_training` is scene metadata. S04 teaches sentence stress / intonation, following S03 word stress. No persistent `sentence_stress_seen` or equivalent field, no new top-level save field, no signal change from D07, and no D07 change to LC08 keys or reward eligibility.
 
 ### D07 — low-risk learning-strategy choice
 

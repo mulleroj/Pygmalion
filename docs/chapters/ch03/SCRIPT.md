@@ -174,9 +174,9 @@ The first submitted attempt is unaided. Normal-speed replay is allowed. After an
 
 After LC07 completes by either route, show Eliza's discovery and Higgins's response. Only explicit student **Continue** records `ch03_s03_complete` once, with no signal increment, and advances to `ch03_s04 – A Sentence Has Shape`. No render, replay, audio ending, refresh or Teacher preview can complete it. The progression is individual sounds → stress within a word → stress and intonation across a sentence. D07 is specified in S04 below.
 
-## ch03_s04 — A Sentence Has Shape — S04 PRE-PRODUCTION CANON LOCKED
+## ch03_s04 — A Sentence Has Shape — S04 PRE-PRODUCTION CANON LOCKED; RUNTIME AUDIO INTEGRATED
 
-Documentation only; NOT IMPLEMENTED / NOT GENERATED. S04 follows S03 in Higgins's study. S03 remains word stress only; S04 teaches sentence stress and how changing the prominent word can change a sentence's meaning or implication. It does not revisit or alter the S03 word-stress key. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. Keep the original adaptation, B1-readable dialogue, and Eliza's agency; accent is never framed as intelligence.
+The approved S04 story canon remains locked and unchanged. Its BOOK-FIRST runtime and the twelve individually human-approved audio takes are integrated; full S04 Human Audio Mix QA = PASS (see AUDIO_PLAN.md). S04 follows S03 in Higgins's study. S03 remains word stress only; S04 teaches sentence stress and how changing the prominent word can change a sentence's meaning or implication. It does not revisit or alter the S03 word-stress key. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. Keep the original adaptation, B1-readable dialogue, and Eliza's agency; accent is never framed as intelligence.
 
 **Opening**
 

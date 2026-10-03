@@ -148,38 +148,40 @@ All five canonical story lines have exact approved runtime recordings. Text/tran
 
 Eliza uses canonical voice ID `124kaYCknTDsnwUFdWl9`, following the established Chapter III voice arc. Higgins uses canonical Kelvin `JlptfLxaUpd8pZcw9dKd`. Pickering has no S03 audio. No new ambience, AudioManager, mixer or lifecycle was added. Individual asset Human Audio QA = PASS; S03 Human Audio Mix QA = **PASS** after the complete scene mix was listened to and approved.
 
-## ch03_s04 — AM27 / AM28 — S04 PRE-PRODUCTION CANON LOCKED — NOT GENERATED
+## ch03_s04 — AM27 / AM28 — RUNTIME AUDIO INTEGRATED — HUMAN AUDIO QA PASS / HUMAN AUDIO MIX QA PASS
 
-Documentation only; no S04 audio is generated or integrated in this canon lock. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. Reuse the existing canonical `ch03_lesson_room` ambience and AudioManager lifecycle. Do not modify the ambience asset or S01–S03 audio/mix.
+S04 story voice and objective recordings use the approved exact existing ElevenLabs generations listed below; none were regenerated, substituted, normalized or re-encoded. Individual Human Audio QA = PASS for all twelve takes (human-confirmed). Human Audio Mix QA = PASS after the complete S04 ambience/story/challenge mix was listened to and approved. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. Reuse the unchanged canonical `ch03_lesson_room` ambience and shared AudioManager lifecycle; S01–S03 files and mix values are unchanged.
 
-### AM27 — objective LC08 sentence samples
+### AM27 — objective LC08 sentence samples — individual Human Audio QA PASS
 
-Plan exactly three objective recordings in Higgins's canonical Kelvin voice. Each contains only its sentence, spoken naturally at normal speed with the indicated word carrying clear but unexaggerated sentence prominence. No added coaching, dramatic contrast, slowed playback or pitch-shifting. Learner-controlled replay is unlimited and read-only. The visible transcript and supported route remain available if sound is off/unavailable.
+Exactly three normal-speed objective recordings in canonical Higgins/Kelvin voice. Replay is unlimited and read-only. The exact visible sentence remains available beside each neutral `Replay sentence N` control; control labels do not disclose the target. If a file is unavailable, the shared audio status announces this and visible text/Supported Practice remain usable. No browser TTS, alternate take, slow mode, pitch change or transcript fallback audio.
 
-| Sample ID | Planned filename | Exact transcript | Intended focus | Status |
-|---|---|---|---|---|
-| lc08_sample_01 | `assets/audio/challenges/ch03/lc08_red_flowers.mp3` | I wanted the red flowers. | red | PLANNED — NOT GENERATED |
-| lc08_sample_02 | `assets/audio/challenges/ch03/lc08_three_tickets.mp3` | She bought three tickets. | three | PLANNED — NOT GENERATED |
-| lc08_sample_03 | `assets/audio/challenges/ch03/lc08_monday.mp3` | We meet on Monday. | Monday | PLANNED — NOT GENERATED |
+| Sample ID | Runtime filename | Generation ID | Session ID | Exact transcript | Focus | Bytes | MPEG duration | Human Audio QA |
+|---|---|---|---|---|---|---:|---:|---|
+| `lc08_sample_01` | `assets/audio/challenges/ch03/lc08_red_flowers.mp3` | `C75v8nwMAi4LDv77a5E5` | `GkehTeUVnboWV04JyzQC` | I wanted the red flowers. | red | 45,173 | 1.750 s | PASS |
+| `lc08_sample_02` | `assets/audio/challenges/ch03/lc08_three_tickets.mp3` | `g4qwP6RN6myY2TROQ7AI` | `tQypZOjV4VNvKioCeWlM` | She bought three tickets. | three | 50,188 | 2.064 s | PASS |
+| `lc08_sample_03` | `assets/audio/challenges/ch03/lc08_monday.mp3` | `gZQbWcFFvjSXBQ57rUJ4` | `mu0bYV6AkT7fX4QlRRH8` | We meet on Monday. | Monday | 38,485 | 1.332 s | PASS |
 
-These are the only LC08 objective recordings. Their initial visible wording must not identify which word is prominent. Use canonical Higgins/Kelvin. No other speaker, Pickering take, browser TTS fallback, or generated placeholder is planned.
+### AM28 — selected S04 story voice moments — individual Human Audio QA PASS
 
-### AM28 — selected S04 story voice moments
+Exactly nine approved story voice moments are integrated inline with the matching readable dialogue. Only the demonstration's visible focused form capitalizes `BLUE`; its spoken take says “blue” with the approved contrastive focus. The neutral and focused takes remain distinct and play in that order. No Pickering audio is used.
 
-Plan exactly these nine selected story voice moments; visible story text remains authoritative. These choices do not imply that every visible dialogue line needs audio. Keep Pickering without S04 audio. Recordings are planned only; generate none during this task.
+| Moment / order | Speaker | Runtime filename | Generation ID | Session ID | Exact visible transcript (spoken transcript) | Bytes | MPEG duration | Human Audio QA |
+|---|---|---|---|---|---|---:|---:|---|
+| S04 opening | Higgins / Kelvin | `assets/audio/characters/higgins/higgins_ch03_scene04_001.mp3` | `PBbwBKYlbZRuMegfVqEP` | `gxJlUO0R5LC3EdkhHP34` | You found the shape inside a word. Now listen for the shape of a whole sentence. | 102,851 | 5.355 s | PASS |
+| Opening response | Eliza | `assets/audio/characters/eliza/eliza_ch03_scene04_001.mp3` | `ZdlcCnZPrpNr1lz8nSUO` | `ptzxunLuFoV4mMBRKu77` | You mean some words matter more than the others? | 56,458 | 2.456 s | PASS |
+| Explanation | Higgins / Kelvin | `assets/audio/characters/higgins/higgins_ch03_scene04_002.mp3` | `0FJ09RPTm1W0R1kPTJhP` | `ih7iKF5jn9rUQPrGCqWR` | Some carry more of the message. Let those words come forward. | 93,656 | 4.780 s | PASS |
+| Demonstration 1 — neutral | Higgins / Kelvin | `assets/audio/characters/higgins/higgins_ch03_scene04_003.mp3` | `KE0lRpfOof5MdSx74qNM` | `Ym52m34PnOXqe36MQMyQ` | Listen: She ordered the blue hat. | 63,145 | 2.873 s | PASS |
+| Demonstration 2 — focus BLUE | Higgins / Kelvin | `assets/audio/characters/higgins/higgins_ch03_scene04_004.mp3` | `dpYaIOc4SEVClkQlHkhw` | `NMB1OLbUaMJHRx67DM2T` | Now listen again: She ordered the BLUE hat. (Now listen again: She ordered the blue hat.) | 87,387 | 4.389 s | PASS |
+| Recognition | Eliza | `assets/audio/characters/eliza/eliza_ch03_scene04_002.mp3` | `mck5x5LYcN6cMpLY4djT` | `uIJFmb79IUNoCgNsjyrY` | The second one sounds as if the colour matters. | 55,204 | 2.377 s | PASS |
+| Pre-LC08 | Eliza | `assets/audio/characters/eliza/eliza_ch03_scene04_003.mp3` | `wdrnBeViGCh7IfmUxlXh` | `iKRSpCrxgTa1Mmk8qAc2` | So the sentence changes shape when the important word changes. | 74,430 | 3.579 s | PASS |
+| Post-LC08 | Eliza | `assets/audio/characters/eliza/eliza_ch03_scene04_004.mp3` | `4XJXdtY6BQ8LBJQGfWk5` | `SWQBloHZYNp7rtI73vCx` | I can hear the sentence moving now. It isn't flat. | 73,176 | 3.500 s | PASS |
+| Post-LC08 | Higgins / Kelvin | `assets/audio/characters/higgins/higgins_ch03_scene04_005.mp3` | `xXOLtnVKTYudAqtgzMtD` | `MYhIy7YXHFeQP44hVzAn` | Good. Do not force every word. Let the sentence carry you. | 82,371 | 4.075 s | PASS |
 
-| Moment | Speaker | Exact transcript | Status |
-|---|---|---|---|
-| S04 opening | Higgins | You found the shape inside a word. Now listen for the shape of a whole sentence. | PLANNED — NOT GENERATED |
-| Opening response | Eliza | You mean some words matter more than the others? | PLANNED — NOT GENERATED |
-| Explanation | Higgins | Some carry more of the message. Let those words come forward. | PLANNED — NOT GENERATED |
-| Demonstration, first version | Higgins | Listen: She ordered the blue hat. | PLANNED — NOT GENERATED |
-| Demonstration, focused version | Higgins | Now listen again: She ordered the BLUE hat. | PLANNED — NOT GENERATED |
-| Recognition | Eliza | The second one sounds as if the colour matters. | PLANNED — NOT GENERATED |
-| Pre-LC08 | Eliza | So the sentence changes shape when the important word changes. | PLANNED — NOT GENERATED |
-| Post-LC08 | Eliza | I can hear the sentence moving now. It isn't flat. | PLANNED — NOT GENERATED |
-| Post-LC08 | Higgins | Good. Do not force every word. Let the sentence carry you. | PLANNED — NOT GENERATED |
+Generation API duration values are respectively 5.28, 2.40, 4.72, 2.80, 4.32, 2.32, 3.52, 3.44, 4.00, 1.68, 2.00 and 1.28 seconds. The local byte-preserved MPEG frame scans report the slightly longer container durations in the tables above; all twelve assets are non-empty, MPEG-1 Layer III / 44.1 kHz and terminate on a complete frame.
 
-The demonstration uses `She ordered the blue hat`, which is distinct from all LC08 samples and must not leak an objective answer. Do not add voices for other visible lines automatically. S04 story audio, if produced later, uses canonical Higgins/Kelvin and Eliza voice continuity; no Pickering S04 audio.
+### Shared playback and ambience contract
 
-Reuse foreground cleanup, duck/restore, Sound Off, scene-exit cleanup and the existing `ch03_lesson_room` loop through the established AudioManager. Playback/replay never changes D07, LC08 answers/support/reward or scene completion. No new mixer, fallback synthesis, or ambience variant. S01/S02 status and the S03 individual-take / mix QA statuses remain unchanged.
+All twelve clips use the established foreground AudioManager: explicit learner replay; a newer replay stops the prior foreground take; Sound Off stops foreground; scene changes and Teacher opening clean it up; story voice uses the existing Chapter III story duck; LC08 uses the existing conservative challenge duck (`CH02_AUDIO_MIX`: ambience 0.10 × challengeDuck 0.08 = 0.008 while a sample plays, restored to 0.10 afterward). The unchanged canonical `ch03_lesson_room` loop is `assets/audio/ambience/ch03_higgins_house_lesson_ambient.mp3` (89.992 s, 2,159,803 bytes, SHA-256 `DDF96D046967C4E025AA25E6083220CCD4015C47C2710D4D4755C61BCB9DB311`). No new mixer, ambience file or fallback synthesis was added.
+
+Playback/replay never writes D07, LC08 answers, attempts, support, rewards or scene completion. D07 remains a non-punitive strategy choice. LC08's unaided completion still grants Pronunciation +1 once via `ch03_lc08_completed`; target-revealing support permanently removes that eligibility and supported completion has no reward or penalty. `ch03_s04_complete` still requires D07, completed LC08 and explicit Continue. Teacher preview may explicitly replay clips but remains read-only. S01/S02 Human Audio Mix QA PASS and S03 Human Audio Mix QA PASS are preserved; S04 Human Audio Mix QA = **PASS**.

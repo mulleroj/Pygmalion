@@ -366,7 +366,7 @@ function renderLc08(scene) {
     const words = sample.sentence.match(/[A-Za-z]+|[^A-Za-z]+/g) || [];
     let wordIndex = 0;
     return `<article class="lc08-sample" aria-labelledby="${sample.id}-title">
-      <h3 id="${sample.id}-title">Sentence ${index + 1}</h3>
+      <div class="lc08-sample-heading"><h3 id="${sample.id}-title">Sentence ${index + 1}</h3>${renderAudioControl({ ...sample, label: `Replay sentence ${index + 1}`, ariaLabel: `Replay sentence ${index + 1}` }, 'challenge')}</div>
       <p class="lc08-sentence" aria-label="Choose a word to bring forward in: ${escapeHtml(sample.sentence)}">${words.map((part) => {
         if (!/^[A-Za-z]+$/.test(part)) return escapeHtml(part);
         const focusIndex = wordIndex++;
@@ -384,7 +384,7 @@ function renderLc08(scene) {
     ? `<div class="lc08-support-note" role="status"><p>Supported Practice is open. You can finish without a penalty; this completion will not earn the pronunciation reward.</p><p>${escapeHtml(scene.challenge.samples.map(({ sentence, focusWord }) => `${sentence} — ${focusWord}`).join(' · '))}</p><p>Listen for the word that carries the strongest part of the message.</p></div>` : '';
   const completion = completed
     ? `<p class="challenge-complete" role="status">LC08 complete. ${challenge.supportUsed ? 'Supported completion has no reward or penalty.' : 'Unaided completion earned one pronunciation signal.'}</p>${renderStoryBeats({ ...scene, storyBeats: scene.reflection })}<p class="transition-line">${escapeHtml(scene.transition)}</p>${state.applied_events.includes('ch03_s04_complete') ? '<p class="end-note">S04 is complete. The next scene is not available in this runtime yet; this scene remains available for review.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button>' : '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue <span aria-hidden="true">→</span></button>'}` : '';
-  return `<section class="challenge-block lc08-block" aria-labelledby="lc08-title"><p class="eyebrow">Sentence stress · LC08</p><h2 id="lc08-title">${escapeHtml(scene.challenge.title)}</h2><p>${escapeHtml(scene.challenge.intro)}</p><p class="lc08-audio-note">Audio is planned but not available. This text-only rehearsal records which word you would bring forward; it does not simulate listening.</p><p class="lc08-attempt-note">${challenge.firstAttempt ? 'Your first attempt is recorded. Keep working with any words that are not correct.' : 'Choose the word you think carries the strongest part of each sentence.'}</p><div class="lc08-samples">${cards}</div>${support}${supportNote}${completion}</section>`;
+  return `<section class="challenge-block lc08-block" aria-labelledby="lc08-title"><p class="eyebrow">Sentence stress · LC08</p><h2 id="lc08-title">${escapeHtml(scene.challenge.title)}</h2><p>${escapeHtml(scene.challenge.intro)}</p><p class="lc08-audio-note">The sentence stays visible while you listen. Replay is unlimited and does not change your answers or progress. If a recording is unavailable, continue with the visible text and Supported Practice.</p><p class="lc08-attempt-note">${challenge.firstAttempt ? 'Your first attempt is recorded. Keep working with any words that are not correct.' : 'Choose the word you think carries the strongest part of each sentence.'}</p><div class="lc08-samples">${cards}</div>${support}${supportNote}${completion}</section>`;
 }
 
 function renderEnd(scene) {

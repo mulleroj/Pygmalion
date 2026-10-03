@@ -5,7 +5,7 @@ import { AudioManager, isOneShotAvailable, shouldRestartAmbience, SFX_MIX, STORY
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { CH03_SCENE_03 } from '../src/ch03-content.js';
+import { CH03_SCENE_03, CH03_SCENE_04 } from '../src/ch03-content.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -767,6 +767,37 @@ test('S01-S04 use only the canonical Chapter III lesson room loop', async t => {
   assert.equal(manager.ambientClockTimer, null);
   await manager.ensureAmbience('ch03_s01'); assert.equal(manager.ambience, loop);
   assert.equal(loop.playCalls, 1); assert.ok(elements.every(e => !/rain|gramophone/.test(e.src)));
+});
+
+test('S04 story and LC08 takes share foreground ownership, conservative challenge duck, Sound Off and cleanup', async t => {
+  const { manager } = audioHarness(t);
+  await manager.ensureAmbience('ch03_s04');
+  assert.equal(manager.mix, CH02_AUDIO_MIX);
+  manager.unlock();
+  await manager.ensureAmbience('ch03_s04');
+  assert.equal(manager.ambience.src, AMBIENCE_FILES.ch03_lesson_room);
+  assert.equal(manager.ambience.volume, 0.10);
+
+  const firstStory = await manager.playVoice(CH03_SCENE_04.voice[3].src);
+  assert.equal(firstStory.src, './assets/audio/characters/higgins/higgins_ch03_scene04_003.mp3');
+  assert.ok(Math.abs(manager.ambience.volume - 0.028) < 1e-9);
+  const secondStory = await manager.playVoice(CH03_SCENE_04.voice[4].src);
+  assert.equal(firstStory.paused, true, 'replay stops the previous demonstration take');
+  assert.equal(secondStory.src, './assets/audio/characters/higgins/higgins_ch03_scene04_004.mp3');
+
+  const objective = await manager.playChallenge(CH03_SCENE_04.challenge.samples[0].src);
+  assert.equal(secondStory.paused, true, 'objective playback interrupts story foreground');
+  assert.equal(objective.src, './assets/audio/challenges/ch03/lc08_red_flowers.mp3');
+  assert.ok(Math.abs(manager.ambience.volume - 0.008) < 1e-9, 'LC08 ambience is conservatively ducked under sentence focus');
+  await manager.playChallenge(CH03_SCENE_04.challenge.samples[1].src);
+  assert.equal(objective.paused, true, 'repeated objective replay owns one foreground slot');
+
+  await manager.setEnabled(false);
+  assert.equal(manager.foreground, null);
+  assert.equal(manager.ambience.paused, true);
+  await manager.ensureAmbience('ch03_s03');
+  assert.equal(manager.foreground, null, 'leaving S04 leaves no foreground voice/sample');
+  manager.leaveScene();
 });
 
 test('all eight approved S03 MP3 assets match their integrated paths, byte sizes and MPEG frame durations', () => {

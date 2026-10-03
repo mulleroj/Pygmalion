@@ -338,7 +338,17 @@ export const CH03_SCENE_04 = {
   plate: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
   eliza: { src: './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png', alt: 'Eliza in practical indoor lesson clothes listens with a focused expression.' },
   supporting: [{ src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Higgins supports the lesson from behind the desk.', placement: 'higgins' }],
-  props: [], voice: [],
+  props: [], voice: [
+    { id: 'AM28-S04-HIGGINS-OPEN', src: './assets/audio/characters/higgins/higgins_ch03_scene04_001.mp3', transcript: 'You found the shape inside a word. Now listen for the shape of a whole sentence.', label: 'Replay Higgins', inline: true, generationId: 'PBbwBKYlbZRuMegfVqEP', sessionId: 'gxJlUO0R5LC3EdkhHP34', voiceId: 'JlptfLxaUpd8pZcw9dKd' },
+    { id: 'AM28-S04-ELIZA-OPEN', src: './assets/audio/characters/eliza/eliza_ch03_scene04_001.mp3', transcript: 'You mean some words matter more than the others?', label: 'Replay Eliza', inline: true, generationId: 'ZdlcCnZPrpNr1lz8nSUO', sessionId: 'ptzxunLuFoV4mMBRKu77', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM28-S04-HIGGINS-EXPLANATION', src: './assets/audio/characters/higgins/higgins_ch03_scene04_002.mp3', transcript: 'Some carry more of the message. Let those words come forward.', label: 'Replay Higgins', inline: true, generationId: '0FJ09RPTm1W0R1kPTJhP', sessionId: 'ih7iKF5jn9rUQPrGCqWR', voiceId: 'JlptfLxaUpd8pZcw9dKd' },
+    { id: 'AM28-S04-DEMO-NEUTRAL', src: './assets/audio/characters/higgins/higgins_ch03_scene04_003.mp3', transcript: 'Listen: She ordered the blue hat.', label: 'Replay Higgins · neutral version', inline: true, generationId: 'KE0lRpfOof5MdSx74qNM', sessionId: 'Ym52m34PnOXqe36MQMyQ', voiceId: 'JlptfLxaUpd8pZcw9dKd' },
+    { id: 'AM28-S04-DEMO-BLUE', src: './assets/audio/characters/higgins/higgins_ch03_scene04_004.mp3', transcript: 'Now listen again: She ordered the BLUE hat.', spokenTranscript: 'Now listen again: She ordered the blue hat.', label: 'Replay Higgins · focused version', inline: true, generationId: 'dpYaIOc4SEVClkQlHkhw', sessionId: 'NMB1OLbUaMJHRx67DM2T', voiceId: 'JlptfLxaUpd8pZcw9dKd' },
+    { id: 'AM28-S04-ELIZA-RECOGNITION', src: './assets/audio/characters/eliza/eliza_ch03_scene04_002.mp3', transcript: 'The second one sounds as if the colour matters.', label: 'Replay Eliza', inline: true, generationId: 'mck5x5LYcN6cMpLY4djT', sessionId: 'uIJFmb79IUNoCgNsjyrY', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM28-S04-ELIZA-PRE-LC08', src: './assets/audio/characters/eliza/eliza_ch03_scene04_003.mp3', transcript: 'So the sentence changes shape when the important word changes.', label: 'Replay Eliza', inline: true, generationId: 'wdrnBeViGCh7IfmUxlXh', sessionId: 'iKRSpCrxgTa1Mmk8qAc2', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM28-S04-ELIZA-POST-LC08', src: './assets/audio/characters/eliza/eliza_ch03_scene04_004.mp3', transcript: "I can hear the sentence moving now. It isn't flat.", label: 'Replay Eliza', inline: true, generationId: '4XJXdtY6BQ8LBJQGfWk5', sessionId: 'SWQBloHZYNp7rtI73vCx', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM28-S04-HIGGINS-POST-LC08', src: './assets/audio/characters/higgins/higgins_ch03_scene04_005.mp3', transcript: 'Good. Do not force every word. Let the sentence carry you.', label: 'Replay Higgins', inline: true, generationId: 'xXOLtnVKTYudAqtgzMtD', sessionId: 'MYhIy7YXHFeQP44hVzAn', voiceId: 'JlptfLxaUpd8pZcw9dKd' }
+  ],
   storyBeats: [
     { type: 'dialogue', speaker: 'Higgins', text: 'You found the shape inside a word. Now listen for the shape of a whole sentence.' },
     { type: 'dialogue', speaker: 'Eliza', text: 'You mean some words matter more than the others?' },
@@ -378,11 +388,11 @@ export const CH03_SCENE_04 = {
   ],
   challenge: {
     id: 'LC08', kind: 'sentence-stress', title: 'Sentence Has Shape',
-    intro: 'Choose the word you would bring forward in each sentence. The planned recordings are not available in this preview yet; no sound is being simulated.',
+    intro: 'Listen to each sentence. Choose the word that carries the strongest part of its meaning. Replay each recording as often as you need.',
     samples: [
-      { id: 'lc08_sample_01', sentence: 'I wanted the red flowers.', options: ['lc08_focus_i', 'lc08_focus_wanted', 'lc08_focus_the', 'lc08_focus_red', 'lc08_focus_flowers'], answer: 'lc08_focus_red', focusWord: 'red' },
-      { id: 'lc08_sample_02', sentence: 'She bought three tickets.', options: ['lc08_focus_she', 'lc08_focus_bought', 'lc08_focus_three', 'lc08_focus_tickets'], answer: 'lc08_focus_three', focusWord: 'three' },
-      { id: 'lc08_sample_03', sentence: 'We meet on Monday.', options: ['lc08_focus_we', 'lc08_focus_meet', 'lc08_focus_on', 'lc08_focus_monday'], answer: 'lc08_focus_monday', focusWord: 'Monday' }
+      { id: 'lc08_sample_01', sentence: 'I wanted the red flowers.', transcript: 'I wanted the red flowers.', src: './assets/audio/challenges/ch03/lc08_red_flowers.mp3', generationId: 'C75v8nwMAi4LDv77a5E5', sessionId: 'GkehTeUVnboWV04JyzQC', voiceId: 'JlptfLxaUpd8pZcw9dKd', options: ['lc08_focus_i', 'lc08_focus_wanted', 'lc08_focus_the', 'lc08_focus_red', 'lc08_focus_flowers'], answer: 'lc08_focus_red', focusWord: 'red' },
+      { id: 'lc08_sample_02', sentence: 'She bought three tickets.', transcript: 'She bought three tickets.', src: './assets/audio/challenges/ch03/lc08_three_tickets.mp3', generationId: 'g4qwP6RN6myY2TROQ7AI', sessionId: 'tQypZOjV4VNvKioCeWlM', voiceId: 'JlptfLxaUpd8pZcw9dKd', options: ['lc08_focus_she', 'lc08_focus_bought', 'lc08_focus_three', 'lc08_focus_tickets'], answer: 'lc08_focus_three', focusWord: 'three' },
+      { id: 'lc08_sample_03', sentence: 'We meet on Monday.', transcript: 'We meet on Monday.', src: './assets/audio/challenges/ch03/lc08_monday.mp3', generationId: 'gZQbWcFFvjSXBQ57rUJ4', sessionId: 'mu0bYV6AkT7fX4QlRRH8', voiceId: 'JlptfLxaUpd8pZcw9dKd', options: ['lc08_focus_we', 'lc08_focus_meet', 'lc08_focus_on', 'lc08_focus_monday'], answer: 'lc08_focus_monday', focusWord: 'Monday' }
     ]
   },
   reflection: [
@@ -397,14 +407,14 @@ export const CH03_S04_TEACHER_SECTIONS = [
   ['Chapter Overview', "S04, A Sentence Has Shape, continues Eliza's Conscious Training in Higgins's study. After S03's word stress, she notices how sentence focus gives another choice for carrying a message."],
   ['Learning Goals', 'Identify a focus word in a short sentence, notice relative prominence across a sentence, and hear that natural speech moves rather than staying mechanically flat.'],
   ['Language Focus', 'S03 word stress is prominence inside one word. S04 sentence stress is relative prominence across a sentence. Basic intonation gives speech movement. “Some carry more of the message” is a useful learner simplification, not an absolute rule.'],
-  ['Listening Focus', 'The nine selected story voice moments and three LC08 objective recordings are planned but not generated. This BOOK-FIRST preview does not synthesize or imitate speech; the sentence strips let learners try an intended focus in text.'],
+  ['Listening Focus', 'The nine selected story voice moments and three LC08 objective recordings are locally integrated and have individual Human Audio QA PASS. The complete S04 ambience/story/challenge mix has Human Audio Mix QA PASS. Visible text remains primary; no browser speech synthesis is used.'],
   ['Key Vocabulary', 'sentence, message, focus, prominent, stress, intonation, meaning, replay.'],
   ['Cultural / Literary Context', 'This is original educational adaptation. Accent ≠ intelligence. Language practice expands control and choice; it does not erase Eliza’s identity.'],
   ['Decisions – Teacher Notes', 'D07 is a non-punitive learning-strategy choice: ask for a slow repeat (d07_repeat_slowly), hear it naturally again (d07_hear_naturally), or try it first (d07_try_first). Each rejoins LC08; none is wrong or changes Pronunciation.'],
-  ['Challenge Key', 'LC08: lc08_sample_01 → lc08_focus_red (red); lc08_sample_02 → lc08_focus_three (three); lc08_sample_03 → lc08_focus_monday (Monday). Planned focus words are answers for the future recordings. Before a response, all word controls are neutral. Unaided completion adds Pronunciation +1 once through ch03_lc08_completed. Opening support cancels that reward; supported completion carries no reward or penalty.'],
+  ['Challenge Key', 'LC08: lc08_sample_01 → lc08_focus_red (red); lc08_sample_02 → lc08_focus_three (three); lc08_sample_03 → lc08_focus_monday (Monday). The integrated recordings carry these intended focus words. Before a response, all word controls are neutral. Unaided completion adds Pronunciation +1 once through ch03_lc08_completed. Opening support cancels that reward; supported completion carries no reward or penalty.'],
   ['Discussion Questions', 'Which word would you bring forward? How does the meaning change when focus changes? How is sentence stress different from stress inside a word?'],
   ['Sensitive Framing', 'Do not treat a dialect or accent as evidence of intelligence. Avoid “correcting” Eliza’s identity. Support is a valid choice and never a failure.'],
-  ['Suggested Classroom Use', 'Read the story first. Until recordings exist, treat LC08 as a text-only rehearsal and do not ask learners to pretend they heard audio. When recordings are later approved, replay should remain optional and transcripts available. No student voice recording or automated speech judgement.'],
+  ['Suggested Classroom Use', 'Read the story first. Learners may listen to each normal-speed LC08 recording, replay it freely, or use Supported Practice after an incorrect response. The visible sentence remains available throughout. No student voice recording or automated speech judgement.'],
   ['Scene Navigation', 'Story demonstration → D07 strategy choice → LC08 unaided or supported completion → reflection → explicit Continue (ch03_s04_complete, no signal) toward ch03_s05. Teacher preview is read-only.']
 ];
 

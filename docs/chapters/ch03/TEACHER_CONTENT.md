@@ -177,7 +177,7 @@ ch03_s03 story → LC07 unaided or supported completion → Eliza's discovery �
 
 ## ch03_s04 — TEACHER CONTENT — S04 PRE-PRODUCTION CANON LOCKED
 
-Canon and teaching guidance; use the established 12-section Teacher Mode structure. Teacher preview is read-only: it does not write D07, answers, attempts, support usage, progress, signals, rewards, completion or events. Documentation only; no runtime implementation or generated audio.
+Canon and teaching guidance; use the established 12-section Teacher Mode structure. Teacher preview is read-only: it does not write D07, answers, attempts, support usage, progress, signals, rewards, completion or events. S04 runtime and all twelve approved individual audio takes are integrated; full Human Audio Mix QA = PASS (see AUDIO_PLAN.md).
 
 ### 1. Chapter Overview
 
@@ -193,7 +193,7 @@ S03 = word stress: prominence within a word. S04 = sentence stress / intonation:
 
 ### 4. Listening Focus
 
-LC08 contains three Higgins/Kelvin sentence recordings: “I wanted the red flowers.” (focus red), “She bought three tickets.” (focus three), and “We meet on Monday.” (focus Monday). Listen for the word carrying the strongest part of the message, not a mechanically loud syllable. Normal-speed replay is unlimited and read-only. Visible text and Supported Practice keep the activity accessible without sound. Story demonstration uses “She ordered the blue hat,” which is not an LC08 target and cannot reveal its answer key.
+LC08 contains three individually approved Higgins/Kelvin sentence recordings: “I wanted the red flowers.” (focus red), “She bought three tickets.” (focus three), and “We meet on Monday.” (focus Monday). Listen for the word carrying the strongest part of the message, not a mechanically loud syllable. Normal-speed replay is unlimited and read-only. Visible text and Supported Practice keep the activity accessible without sound. Story demonstration uses “She ordered the blue hat,” which is not an LC08 target and cannot reveal its answer key. Human Audio Mix QA for S04 = PASS.
 
 ### 5. Key Vocabulary
 
@@ -209,7 +209,7 @@ D07 is a low-risk learning-strategy choice: ask Higgins to repeat slowly (`d07_r
 
 ### 8. Challenge Key
 
-`challenges.lc08`: `lc08_sample_01` → `lc08_focus_red` (red); `lc08_sample_02` → `lc08_focus_three` (three); `lc08_sample_03` → `lc08_focus_monday` (Monday). These three objective recordings are planned only. Initial controls/text remain visually neutral. `ch03_lc08_completed` applies Pronunciation +1 once only when completed without opening target-revealing support. Supported completion gives no reward and no penalty. Support use cancels reward eligibility; replay does not. Full contract is in STATE_AND_BRANCHING.md.
+`challenges.lc08`: `lc08_sample_01` → `lc08_focus_red` (red); `lc08_sample_02` → `lc08_focus_three` (three); `lc08_sample_03` → `lc08_focus_monday` (Monday). These three objective recordings are integrated; individual Human Audio QA = PASS. Initial controls/text remain visually neutral. `ch03_lc08_completed` applies Pronunciation +1 once only when completed without opening target-revealing support. Supported completion gives no reward and no penalty. Support use cancels reward eligibility; replay does not. Full contract is in STATE_AND_BRANCHING.md.
 
 ### 9. Discussion Questions
 
@@ -221,7 +221,7 @@ Do not describe an accent or social register as unintelligent, inferior or a def
 
 ### 11. Suggested Classroom Use
 
-Allow a normal-speed unaided first attempt and unlimited replay. After an incorrect attempt, offer the neutral cue “Listen for the word that carries the strongest part of the message.” Opening support may disclose that focus and permanently cancels the one-time unaided reward eligibility, but never penalizes or blocks completion. Retain correct sample responses through retry. Use transcript/text for learners who cannot hear. Keep answer reveals out of pre-response formatting and story examples. No required learner voice recording or automated speech judgment.
+Allow a normal-speed unaided first attempt and unlimited replay. After an incorrect attempt, offer the neutral cue “Listen for the word that carries the strongest part of the message.” Opening support may disclose that focus and permanently cancels the one-time unaided reward eligibility, but never penalizes or blocks completion. Retain correct sample responses through retry. Use visible text for learners who cannot hear or whose recording is unavailable. Keep answer reveals out of pre-response formatting and story examples. No required learner voice recording or automated speech judgment.
 
 ### 12. Scene Navigation
 
