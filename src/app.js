@@ -1,4 +1,4 @@
-import { CH03_SCENE_01, CH03_SCENE_02, CH03_TEACHER_SECTIONS, CH03_S02_TEACHER_SECTIONS, chapterThreeCallback } from './ch03-content.js';
+import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_TEACHER_SECTIONS, CH03_S02_TEACHER_SECTIONS, CH03_S03_TEACHER_SECTIONS, chapterThreeCallback } from './ch03-content.js';
 import {
   SCENES,
   SCENE_BY_ID,
@@ -22,6 +22,8 @@ import {
   recordLc06Attempt,
   recordLc06UnableToHear,
   markLc06SupportUsed,
+  recordLc07Answer,
+  markLc07SupportUsed,
   completeScene,
   recordS03Response,
   completeS04Terms,
@@ -43,7 +45,7 @@ const liveRegion = document.querySelector('#live-region');
 const teacherDialog = document.querySelector('#teacher-dialog');
 const teacherContent = document.querySelector('#teacher-content');
 const teacherContext = document.querySelector('#teacher-context');
-const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH03_SCENE_01.id]: CH03_SCENE_01, [CH03_SCENE_02.id]: CH03_SCENE_02, [CH02_SCENE_01.id]: CH02_SCENE_01, [CH02_SCENE_02.id]: CH02_SCENE_02, [CH02_SCENE_03.id]: CH02_SCENE_03, [CH02_SCENE_04.id]: CH02_SCENE_04, [CH02_SCENE_05.id]: CH02_SCENE_05 };
+const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH03_SCENE_01.id]: CH03_SCENE_01, [CH03_SCENE_02.id]: CH03_SCENE_02, [CH03_SCENE_03.id]: CH03_SCENE_03, [CH02_SCENE_01.id]: CH02_SCENE_01, [CH02_SCENE_02.id]: CH02_SCENE_02, [CH02_SCENE_03.id]: CH02_SCENE_03, [CH02_SCENE_04.id]: CH02_SCENE_04, [CH02_SCENE_05.id]: CH02_SCENE_05 };
 let state = loadState();
 let lastTeacherTrigger = null;
 let previousScene = null;
@@ -319,9 +321,37 @@ function renderLc06(scene) {
     ? `<p class="lc06-support-note" role="status">Text support is open. Practice can continue; the unaided pronunciation reward is no longer available for this challenge.</p>`
     : '';
   const completion = complete
-    ? `<p class="challenge-complete" role="status">LC06 complete. ${challenge.supportUsed ? 'Supported practice completed this challenge.' : 'Unaided completion earned one pronunciation signal.'} Review does not change saved progress.</p>${renderStoryBeats({ ...scene, storyBeats: scene.reflection })}<p class="transition-line">${escapeHtml(scene.transition)}</p>${state.applied_events.includes('ch03_s02_complete') ? '<p class="end-note">S02 is complete. Finding the Main Stress is not available in this runtime yet; this scene remains available for review.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button>' : `<button class="secondary-button next-button" type="button" data-action="next-scene">Continue</button>`}`
+    ? `<p class="challenge-complete" role="status">LC06 complete. ${challenge.supportUsed ? 'Supported practice completed this challenge.' : 'Unaided completion earned one pronunciation signal.'} Review does not change saved progress.</p>${renderStoryBeats({ ...scene, storyBeats: scene.reflection })}<p class="transition-line">${escapeHtml(scene.transition)}</p>${state.applied_events.includes('ch03_s02_complete') ? '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to Finding the Main Stress</button>' : `<button class="secondary-button next-button" type="button" data-action="next-scene">Continue</button>`}`
     : '';
   return `<section class="challenge-block lc06-block" aria-labelledby="lc06-title"><p class="eyebrow">Unaided listening · LC06</p><h2 id="lc06-title">${escapeHtml(scene.challenge.title)}</h2><p>${escapeHtml(scene.challenge.intro)}</p><p class="lc06-attempt-note">${firstAttempt ? 'Your first attempt is recorded. Supported practice is available if useful.' : 'First attempt: UNAIDED LISTENING. Text support becomes available after this attempt.'}</p><p class="read-only-note">Listen before opening text support. If a recording cannot be played, you can record an unresolved first attempt; no guess is required.</p><div class="lc06-samples">${items}</div>${unable}${support}${supportNote}${completion}</section>`;
+}
+
+function renderLc07(scene) {
+  const challenge = state.challenges.lc07;
+  const completed = challenge.completed;
+  const supportAvailable = !completed && challenge.firstAttempt && Object.values(challenge.answers).some(({ correct }) => !correct);
+  const cards = scene.challenge.samples.map((sample, index) => {
+    const saved = challenge.answers[sample.id];
+    return `<article class="lc07-sample" aria-labelledby="${sample.id}-title">
+      <h3 id="${sample.id}-title">Word ${index + 1}: <span class="lc07-word">${escapeHtml(sample.word)}</span></h3>
+      <div class="lc07-syllables" role="group" aria-label="Choose the main-stressed syllable in ${escapeHtml(sample.word)}">
+        ${sample.syllables.map((syllable, syllableIndex) => {
+          const answer = sample.options[syllableIndex];
+          const selected = saved?.answer === answer;
+          const supportAnswer = challenge.supportUsed && answer === sample.answer;
+          return `<button class="lc07-syllable${selected ? ' selected' : ''}${supportAnswer ? ' revealed' : ''}" type="button" data-action="answer-lc07" data-sample="${sample.id}" data-answer="${answer}" aria-label="Syllable ${syllableIndex + 1}: ${escapeHtml(syllable)}" aria-pressed="${selected}" ${studentReadOnly() || completed || saved?.correct ? 'disabled' : ''}>${escapeHtml(syllable)}</button>`;
+        }).join('<span class="lc07-divider" aria-hidden="true">|</span>')}
+      </div>
+      ${saved ? `<p class="lc07-feedback ${saved.correct ? 'success' : 'retry'}" role="status">${saved.correct ? 'That is right. This syllable carries the main stress.' : 'Try again. Listen for the syllable that sounds strongest.'}</p>` : ''}
+    </article>`;
+  }).join('');
+  const support = supportAvailable && !challenge.supportUsed
+    ? '<button class="text-button" type="button" data-action="open-lc07-support">Open Supported Practice</button>' : '';
+  const supportNote = challenge.supportUsed
+    ? `<div class="lc07-support-note" role="status"><p>Supported Practice is open. You can complete the challenge without a penalty; it no longer earns a pronunciation reward.</p><p>${escapeHtml(scene.challenge.samples.map((sample) => `${sample.word}: ${sample.syllables.map((syllable, index) => index === sample.syllables.findIndex((_, i) => sample.options[i] === sample.answer) ? syllable.toUpperCase() : syllable).join('-')}`).join(' · '))}</p><p>${escapeHtml('Listen for the syllable that sounds strongest.')}</p></div>` : '';
+  const completion = completed
+    ? `<p class="challenge-complete" role="status">LC07 complete. ${challenge.supportUsed ? 'Supported practice completed this challenge.' : 'Unaided completion earned one pronunciation signal.'} Review and replay do not change your saved progress.</p>${renderStoryBeats({ ...scene, storyBeats: scene.reflection })}<p class="transition-line">${escapeHtml(scene.transition)}</p>${state.applied_events.includes('ch03_s03_complete') ? '<p class="end-note">S03 is complete. The sentence lesson is not available in this runtime yet; this scene remains available for review.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button>' : '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue</button>'}` : '';
+  return `<section class="challenge-block lc07-block" aria-labelledby="lc07-title"><p class="eyebrow">Word stress · LC07</p><h2 id="lc07-title">${escapeHtml(scene.challenge.title)}</h2><p>${escapeHtml(scene.challenge.intro)}</p><p class="lc07-audio-note" role="status">LC07 audio is not available in this runtime. This book-first preview uses the visible words; no audio or speech synthesis will play.</p><p class="lc07-attempt-note">${challenge.firstAttempt ? 'Your first attempt is recorded. Keep working with any syllables that are not correct.' : 'Choose the syllable you think carries the main stress in each word.'}</p><div class="lc07-samples">${cards}</div>${support}${supportNote}${completion}</section>`;
 }
 
 function renderEnd(scene) {
@@ -356,6 +386,10 @@ function renderScene(scene) {
   if (scene.id === 'ch03_s02') {
     if (scenePreview) body = '<p class="read-only-note" role="status">Teacher preview · read-only</p><button class="secondary-button" type="button" data-action="return-student">Return to student scene</button>';
     body += renderLc06(scene);
+  }
+  if (scene.id === 'ch03_s03') {
+    if (scenePreview) body = '<p class="read-only-note" role="status">Teacher preview · read-only</p><button class="secondary-button" type="button" data-action="return-student">Return to student scene</button>';
+    body += renderLc07(scene);
   }
   if (scene.id === 'ch01_s02') body += renderLc01(scene);
   if (scene.id === 'ch01_s04') body += renderLc02(scene);
@@ -399,8 +433,13 @@ function render() {
     setLocation(CH03_SCENE_01.id, true);
     hashScene = CH03_SCENE_01.id;
   }
-  if (hashScene.startsWith('ch03_') && !RUNTIME_SCENES[hashScene]) {
+  if (hashScene === CH03_SCENE_03.id && !state.applied_events.includes('ch03_s02_complete')) {
     const safeScene = state.ch03_s01_complete ? CH03_SCENE_02.id : CH03_SCENE_01.id;
+    setLocation(safeScene, true);
+    hashScene = safeScene;
+  }
+  if (hashScene.startsWith('ch03_') && !RUNTIME_SCENES[hashScene]) {
+    const safeScene = state.applied_events.includes('ch03_s02_complete') ? CH03_SCENE_03.id : state.ch03_s01_complete ? CH03_SCENE_02.id : CH03_SCENE_01.id;
     setLocation(safeScene, true);
     hashScene = safeScene;
   }
@@ -466,7 +505,13 @@ function moveNext() {
     const next = completeScene(state, scene);
     if (next !== state) { state = next; save(); }
     lc06Draft = {};
-    render(); announce('S02 complete and saved. The next scene is not available yet; this scene remains available for review.');
+    audioManager.leaveScene();
+    state = setScene(state, CH03_SCENE_03.id); save(); setLocation(CH03_SCENE_03.id); render(); announce('S02 complete and saved. Chapter III, Finding the Main Stress.'); return;
+  }
+  if (scene.id === 'ch03_s03') {
+    const next = completeScene(state, scene);
+    if (next !== state) { state = next; save(); }
+    render(); announce('S03 complete and saved. The sentence lesson is not available yet; this scene remains available for review.');
     document.querySelector('[data-action="review-scene"]')?.focus(); return;
   }
   if (scene.id.startsWith('ch03_')) return announce('The next scene is not available in this runtime checkpoint.');
@@ -540,7 +585,7 @@ function openTeacher(trigger) {
   const scene = document.querySelector('#story-root') ? currentScene() : null;
   const chapterTwo = scene?.id?.startsWith('ch02_');
   teacherContext.textContent = scene ? `Chapter ${chapterLabel(scene)} · ${scene.title}${scene.challenge ? ` · ${scene.id === 'ch03_s02' ? `${scene.challenge.id} · ` : ''}${scene.challenge.title}` : ''}${scene.id.startsWith('ch03_') ? ` · previewMode=${scenePreview}` : ''}` : 'Chapter I · Cover';
-  const sections = scene?.id === 'ch03_s02' ? CH03_S02_TEACHER_SECTIONS : scene?.id === 'ch03_s01' ? CH03_TEACHER_SECTIONS : scene?.id === 'ch02_s05' ? CH02_SCENE_05_TEACHER_SECTIONS : scene?.id === 'ch02_s04' ? CH02_SCENE_04_TEACHER_SECTIONS : scene?.id === 'ch02_s03' ? CH02_SCENE_03_TEACHER_SECTIONS : scene?.id === 'ch02_s02' ? CH02_SCENE_02_TEACHER_SECTIONS : chapterTwo ? CH02_TEACHER_SECTIONS : TEACHER_SECTIONS;
+  const sections = scene?.id === 'ch03_s03' ? CH03_S03_TEACHER_SECTIONS : scene?.id === 'ch03_s02' ? CH03_S02_TEACHER_SECTIONS : scene?.id === 'ch03_s01' ? CH03_TEACHER_SECTIONS : scene?.id === 'ch02_s05' ? CH02_SCENE_05_TEACHER_SECTIONS : scene?.id === 'ch02_s04' ? CH02_SCENE_04_TEACHER_SECTIONS : scene?.id === 'ch02_s03' ? CH02_SCENE_03_TEACHER_SECTIONS : scene?.id === 'ch02_s02' ? CH02_SCENE_02_TEACHER_SECTIONS : chapterTwo ? CH02_TEACHER_SECTIONS : TEACHER_SECTIONS;
   teacherContent.innerHTML = `${sections.map(([heading, content]) => `<section class="teacher-section"><h3>${escapeHtml(heading)}</h3>${renderTeacherText(content)}</section>`).join('')}
     ${scene ? `<button class="secondary-button teacher-preview" type="button" data-action="teacher-preview">Open / replay this scene (read-only preview)</button>` : ''}`;
   if (typeof teacherDialog.showModal === 'function') teacherDialog.showModal();
@@ -572,7 +617,7 @@ document.addEventListener('click', async (event) => {
   if (!target) return;
   const action = target.dataset.action;
   if (currentScene().id.startsWith('ch03_') && studentReadOnly() &&
-      ['toggle-sound', 'open-story', 'next-scene', 'choose-tone', 'choose-decision', 'answer-lc01', 'answer-lc02', 'answer-lc03', 'answer-lc04', 'answer-lc05', 'select-lc06', 'submit-lc06', 'open-lc06-support', 'lc06-cannot-hear', 'respond-s03', 'complete-s04', 'enter-ch02', 'enter-ch03', 'restart-chapter'].includes(action)) {
+      ['toggle-sound', 'open-story', 'next-scene', 'choose-tone', 'choose-decision', 'answer-lc01', 'answer-lc02', 'answer-lc03', 'answer-lc04', 'answer-lc05', 'select-lc06', 'submit-lc06', 'open-lc06-support', 'lc06-cannot-hear', 'answer-lc07', 'open-lc07-support', 'respond-s03', 'complete-s04', 'enter-ch02', 'enter-ch03', 'restart-chapter'].includes(action)) {
     announce('Teacher preview is read-only. Return to the student scene to change progress or preferences.'); return;
   }
   const audioGesture = event.isTrusted && AUDIO_UNLOCK_ACTIONS.has(action);
@@ -661,6 +706,19 @@ document.addEventListener('click', async (event) => {
     const next = markLc06SupportUsed(state);
     if (next !== state) { state = next; save(); }
     lc06SupportedOpen = true; render(); announce('Text support is open. You can continue the challenge without a penalty.'); focusLc06Next();
+  }
+  if (action === 'answer-lc07' && currentScene().id === 'ch03_s03' && !studentReadOnly()) {
+    const next = recordLc07Answer(state, target.dataset.sample, target.dataset.answer);
+    if (next !== state) {
+      state = next; save(); render();
+      announce(state.challenges.lc07.completed ? 'LC07 complete.' : state.challenges.lc07.answers[target.dataset.sample]?.correct ? 'Correct. Continue with the remaining words.' : 'Try again or open Supported Practice.');
+      document.querySelector(`[data-action="answer-lc07"][data-sample="${target.dataset.sample}"]:not(:disabled)`)?.focus();
+    }
+  }
+  if (action === 'open-lc07-support' && currentScene().id === 'ch03_s03' && !studentReadOnly()) {
+    const next = markLc07SupportUsed(state);
+    if (next !== state) { state = next; save(); }
+    render(); announce('Supported Practice is open. You can finish without a penalty.');
   }
   if (action === 'answer-lc04') {
     const nextState = recordLc04Answer(state, target.dataset.sample, target.dataset.answer);

@@ -211,11 +211,9 @@ test('S02 UI plays approved files, hides transcripts until support and keeps pre
   assert.equal(JSON.parse(saved).pronunciation, 0);
   await click('next-scene');
   assert.ok(JSON.parse(saved).applied_events.includes('ch03_s02_complete'));
-  assert.equal(JSON.parse(saved).scene, 'ch03_s02');
-  assert.match(node('#app').innerHTML, /not available in this runtime yet/);
-  window.location.hash = '#ch03_s03';
-  render();
-  assert.equal(window.location.hash, '#ch03_s02');
-  assert.match(node('#app').innerHTML, /The Listening Room/);
+  assert.equal(JSON.parse(saved).scene, 'ch03_s03');
+  assert.equal(window.location.hash, '#ch03_s03');
+  assert.match(node('#app').innerHTML, /Finding the Main Stress/);
+  assert.match(node('#app').innerHTML, /LC07 audio is not available in this runtime/);
   assert.doesNotMatch(node('#app').innerHTML, /The Flower Girl|The Bargain/);
 });

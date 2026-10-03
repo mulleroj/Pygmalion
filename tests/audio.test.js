@@ -734,8 +734,10 @@ test('Teacher controls and read-only review are not audio-unlock gestures', () =
   assert.match(app, /event\.isTrusted && AUDIO_UNLOCK_ACTIONS\.has\(action\)/);
 });
 
-test('S01 and S02 use only the canonical Chapter III lesson room loop', async t => {
+test('S01, S02 and S03 use only the canonical Chapter III lesson room loop', async t => {
   assert.equal(ambienceForScene('ch03_s01'), 'ch03_lesson_room');
+  assert.equal(ambienceForScene('ch03_s02'), 'ch03_lesson_room');
+  assert.equal(ambienceForScene('ch03_s03'), 'ch03_lesson_room');
   assert.equal(AMBIENCE_FILES.ch03_lesson_room, './assets/audio/ambience/ch03_higgins_house_lesson_ambient.mp3');
   assert.notEqual(AMBIENCE_FILES.ch03_lesson_room, AMBIENCE_FILES.higgins_house_interior);
   assert.notEqual(AMBIENCE_FILES.ch03_lesson_room, AMBIENCE_FILES.covent_garden_rain_market);
@@ -764,6 +766,7 @@ test('S01 and S02 use only the canonical Chapter III lesson room loop', async t 
 test('S02 continues the same lesson room loop and applies the approved LC06 duck', async t => {
   assert.equal(ambienceForScene('ch03_s02'), 'ch03_lesson_room');
   assert.equal(isContinuousAmbienceTransition('ch03_s01', 'ch03_s02'), true);
+  assert.equal(isContinuousAmbienceTransition('ch03_s02', 'ch03_s03'), true);
   const { manager, elements } = audioHarness(t);
   manager.unlock(); await manager.ensureAmbience('ch03_s01');
   const loop = manager.ambience;
@@ -777,6 +780,11 @@ test('S02 continues the same lesson room loop and applies the approved LC06 duck
   sample.emit('ended');
   assert.equal(loop.volume, 0.10);
   assert.equal(manager.ambience, loop);
+  await manager.ensureAmbience('ch03_s03');
+  assert.equal(manager.ambience, loop, 'S03 continues the same canonical lesson room bed');
+  assert.equal(loop.playCalls, 1);
+  assert.equal(manager.mix, CH02_AUDIO_MIX);
+  assert.equal(ambienceForScene('ch03_s03'), 'ch03_lesson_room');
   assert.ok(elements.every(e => !/rain|gramophone|gong/.test(e.src)));
 });
 

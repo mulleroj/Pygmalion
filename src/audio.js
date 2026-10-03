@@ -368,7 +368,7 @@ export class AudioManager {
     this.sceneId = sceneId;
     this.contextualSpec = contextual;
     // S01 begins from approved interior levels; Chapter III human mix QA is pending.
-    this.mix = sceneId?.startsWith('ch02_') || sceneId === 'ch03_s01' || sceneId === 'ch03_s02' ? CH02_AUDIO_MIX : CH01_AUDIO_MIX;
+    this.mix = sceneId?.startsWith('ch02_') || sceneId === 'ch03_s01' || sceneId === 'ch03_s02' || sceneId === 'ch03_s03' ? CH02_AUDIO_MIX : CH01_AUDIO_MIX;
     this.ambienceVolume = this.mix.ambience;
     this.contextualVolume = this.mix.contextual;
     const id = sceneId ? ambienceForScene(sceneId) : null;

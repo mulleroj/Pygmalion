@@ -1,4 +1,4 @@
-// Locked Chapter III S01 content with approved optional AM21 takes; later scenes and LC05 audio remain unavailable.
+// Locked Chapter III scene content; new objective audio is intentionally not bundled here.
 export const CH03_SCENE_01 = {
   "id": "ch03_s01",
   "number": 1,
@@ -291,6 +291,55 @@ export const CH03_SCENE_02 = {
   transition: 'The next day, the lesson turns to the strongest syllable in a word. A customer must be able to recognise the word Eliza means.',
   nextScene: 'ch03_s03'
 };
+
+export const CH03_SCENE_03 = {
+  id: 'ch03_s03', number: 3, chapter: 'III', chapterTitle: 'The Lessons', sceneCount: 6,
+  title: 'Finding the Main Stress', kicker: 'A lesson in the shape of a word', visualStage: 'in_training', composition: 'ch03-stress-lesson',
+  background: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
+  plate: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
+  eliza: { src: './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png', alt: 'Eliza in practical indoor lesson clothes listens with a focused expression.' },
+  supporting: [{ src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Higgins supports the lesson from behind the desk.', placement: 'higgins' }],
+  props: [], voice: [],
+  storyBeats: [
+    { type: 'dialogue', speaker: 'Higgins', text: 'A word has a shape. One syllable usually carries more weight than the others.' },
+    { type: 'dialogue', speaker: 'Eliza', text: "So I needn't fight with every bit of it at once?" },
+    { type: 'dialogue', speaker: 'Higgins', text: 'No. Listen for the part that stands out.' },
+    { type: 'dialogue', speaker: 'Eliza', text: "Then say it again. I'll listen for the strongest bit." },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Do not count the letters. Listen to the sound of the whole word.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'Right. I want to hear where it leans.' }
+  ],
+  challenge: {
+    id: 'LC07', kind: 'word-stress', title: 'Finding the Main Stress',
+    intro: 'Choose the syllable that carries the main stress in each word. All syllables begin in the same style. Replay is unavailable in this runtime preview; the challenge remains usable from the visible words.',
+    samples: [
+      { id: 'lc07_sample_01', word: 'customer', syllables: ['cus', 'to', 'mer'], options: ['lc07_stress_customer_1', 'lc07_stress_customer_2', 'lc07_stress_customer_3'], answer: 'lc07_stress_customer_1' },
+      { id: 'lc07_sample_02', word: 'expensive', syllables: ['ex', 'pen', 'sive'], options: ['lc07_stress_expensive_1', 'lc07_stress_expensive_2', 'lc07_stress_expensive_3'], answer: 'lc07_stress_expensive_2' },
+      { id: 'lc07_sample_03', word: 'delivery', syllables: ['de', 'liv', 'er', 'y'], options: ['lc07_stress_delivery_1', 'lc07_stress_delivery_2', 'lc07_stress_delivery_3', 'lc07_stress_delivery_4'], answer: 'lc07_stress_delivery_2' }
+    ]
+  },
+  reflection: [
+    { type: 'dialogue', speaker: 'Eliza', text: 'I can hear it now. One part comes forward and the rest follow it.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Exactly. Find the stress first, and the word becomes easier to shape.' }
+  ],
+  transition: "The next lesson turns from a word's shape to the shape of a sentence.",
+  nextScene: 'ch03_s04'
+};
+
+export const CH03_S03_TEACHER_SECTIONS = [
+  ['Chapter Overview', "The Lessons continues in Higgins's study. S03 moves from hearing individual sounds to hearing the main stress inside one word. Eliza discovers the word's shape herself."],
+  ['Learning Goals', 'Identify the syllable carrying main stress in customer, expensive and delivery. Listen for prominence inside the whole word. This is awareness and repertoire expansion, not accent erasure.'],
+  ['Language Focus', 'Word stress is the prominence of one syllable within a word. S03 teaches word stress only. Sentence stress and intonation belong to S04. Correct forms: CUS-to-mer, ex-PEN-sive, de-LIV-er-y.'],
+  ['Listening Focus', 'LC07 asks which syllable carries the main stress. This runtime has no LC07 recording or speech synthesis; the book-first preview presents neutral written syllables. The learner selects a syllable without an initial answer cue.'],
+  ['Key Vocabulary', 'word, syllable, stress, strongest, customer, expensive, delivery. Here stress means prominence inside a word, not worry or pressure.'],
+  ['Cultural / Literary Context', "This is an original educational adaptation. Accent ≠ intelligence. A speaker's familiar accent or social identity is not defective; stress awareness adds choices and can support intelligibility."],
+  ['Decisions – Teacher Notes', 'S03 has no D-numbered main narrative decision. D07 remains in S04. No main decision is introduced here.'],
+  ['Challenge Key', 'lc07_sample_01 customer → lc07_stress_customer_1 (syllable 1): CUS-to-mer. lc07_sample_02 expensive → lc07_stress_expensive_2 (syllable 2): ex-PEN-sive. lc07_sample_03 delivery → lc07_stress_delivery_2 (syllable 2): de-LIV-er-y. Unaided completion grants Pronunciation +1 once; opening target-revealing support first cancels eligibility. Supported completion has no reward and no penalty.'],
+  ['Discussion Questions', 'Which syllable stands out in each word? Did listening to or saying the whole word help? How is stress inside a word different from emphasis across a sentence?'],
+  ['Sensitive Framing', "Do not describe a social accent as wrong or unintelligent. Correctness here identifies conventional word stress, not the worth or identity of a speaker. Supported practice is a valid route, not failure."],
+  ['Suggested Classroom Use', 'All syllables begin identically. This no-audio runtime preview remains usable as a visible word-stress activity and never invokes browser speech. After an incorrect attempt, offer Supported Practice with the neutral instruction “Listen for the syllable that sounds strongest.” Explicit target-revealing support marks the challenge supported. Correct answers remain fixed on retries. Teacher preview does not mutate student state.'],
+  ['Scene Navigation', 'S03 story → LC07 → Eliza’s discovery → explicit Continue (ch03_s03_complete, no signal) → S04 A Sentence Has Shape. S03 teaches word stress; S04 introduces sentence stress and intonation. D07 remains in S04.']
+];
+
 export const CH03_TEACHER_SECTIONS = [
   [
     "Chapter Overview",

@@ -1,4 +1,4 @@
-import { CH03_SCENE_01, CH03_SCENE_02 } from './ch03-content.js';
+import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03 } from './ch03-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -39,7 +39,8 @@ export function createInitialState() {
       lc02: { answers: {}, completed: false, optionOrders: {} },
       lc04: { answers: {}, completed: false, optionOrders: {} },
       lc05: { answers: {}, completed: false, optionOrders: {} },
-      lc06: { answers: {}, completed: false, optionOrders: {}, attempts: 0, firstAttempt: false, supportUsed: false }
+      lc06: { answers: {}, completed: false, optionOrders: {}, attempts: 0, firstAttempt: false, supportUsed: false },
+      lc07: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false }
     },
     soundEnabled: true
   };
@@ -60,7 +61,8 @@ function mergeState(raw) {
       lc02: { ...initial.challenges.lc02, ...((raw.challenges || {}).lc02 || {}) },
       lc04: { ...initial.challenges.lc04, ...((raw.challenges || {}).lc04 || {}) },
       lc05: { ...initial.challenges.lc05, ...((raw.challenges || {}).lc05 || {}) },
-      lc06: { ...initial.challenges.lc06, ...((raw.challenges || {}).lc06 || {}) }
+      lc06: { ...initial.challenges.lc06, ...((raw.challenges || {}).lc06 || {}) },
+      lc07: { ...initial.challenges.lc07, ...((raw.challenges || {}).lc07 || {}) }
     }
   };
 }
@@ -283,6 +285,7 @@ export function isChallengeComplete(state, challengeId) {
 
 export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === 'ch03_s02' && !state.ch03_s01_complete) return 'Complete Chapter III Scene 01 before opening The Listening Room.';
+  if (scene.id === 'ch03_s03' && !state.applied_events.includes('ch03_s02_complete')) return 'Complete Chapter III Scene 02 before opening Finding the Main Stress.';
   if (scene.id === 'ch01_s01' && !state.opening_tone) return 'Choose a first response before continuing.';
   if (scene.decision && !state.decisions[scene.decision.id]) return 'Choose a response to continue.';
   if (scene.id === 'ch02_s01') return state.ch02_lc03_completed ? '' : 'Complete the reading challenge to continue.';
@@ -344,6 +347,11 @@ export function completeScene(state, scene) {
     if (!state.challenges.lc06.completed || state.applied_events.includes(eventId)) return state;
     return { ...state, applied_events: [...state.applied_events, eventId] };
   }
+  if (scene.id === 'ch03_s03') {
+    const eventId = 'ch03_s03_complete';
+    if (!state.challenges.lc07.completed || state.applied_events.includes(eventId)) return state;
+    return { ...state, applied_events: [...state.applied_events, eventId] };
+  }
   return state;
 }
 
@@ -380,4 +388,33 @@ export function markLc06SupportUsed(state) {
   const challenge = state.challenges.lc06;
   if (state.scene !== 'ch03_s02' || !challenge.firstAttempt || challenge.completed || challenge.supportUsed) return state;
   return { ...state, challenges: { ...state.challenges, lc06: { ...challenge, supportUsed: true } } };
+}
+
+export function recordLc07Answer(state, sampleId, answerId) {
+  const sample = CH03_SCENE_03.challenge.samples.find(({ id }) => id === sampleId);
+  const challenge = state.challenges.lc07;
+  if (state.scene !== 'ch03_s03' || !state.applied_events.includes('ch03_s02_complete') || !sample ||
+      !sample.options.includes(answerId) || challenge.completed || state.applied_events.includes('ch03_lc07_completed') ||
+      challenge.answers[sampleId]?.correct) return state;
+
+  const correct = answerId === sample.answer;
+  const answers = { ...challenge.answers, [sampleId]: { answer: answerId, correct } };
+  const completed = CH03_SCENE_03.challenge.samples.every(({ id }) => answers[id]?.correct);
+  const completionEvent = 'ch03_lc07_completed';
+  const firstCompletion = completed && !challenge.completed && !state.applied_events.includes(completionEvent);
+  return {
+    ...state,
+    pronunciation: state.pronunciation + (firstCompletion && !challenge.supportUsed ? 1 : 0),
+    applied_events: firstCompletion ? [...state.applied_events, completionEvent] : state.applied_events,
+    challenges: {
+      ...state.challenges,
+      lc07: { ...challenge, answers, completed, attempts: (challenge.attempts || 0) + 1, firstAttempt: true }
+    }
+  };
+}
+
+export function markLc07SupportUsed(state) {
+  const challenge = state.challenges.lc07;
+  if (state.scene !== 'ch03_s03' || !challenge.firstAttempt || challenge.completed || challenge.supportUsed) return state;
+  return { ...state, challenges: { ...state.challenges, lc07: { ...challenge, supportUsed: true } } };
 }
