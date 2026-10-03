@@ -67,7 +67,7 @@ Future implementation MUST reuse the existing story renderer, renderDecision, st
 
 ## Later Chapter III – NOT YET LOCKED
 
-S03 word stress is specified below. Remaining [SCENE_MAP.md](../../SCENE_MAP.md) / [TEACHER_MODE_SPEC.md](../../TEACHER_MODE_SPEC.md) intent: S04 sentence stress/intonation; S05 supportive feedback; S06 transfer/self-correction. Their scene-specific copy and item keys remain unlocked.
+S03 word stress and S04 sentence stress / intonation are specified below. S05 supportive feedback and S06 transfer/self-correction remain unlocked.
 
 
 
@@ -174,3 +174,55 @@ Let learners make an unaided first attempt with all syllables styled identically
 ### 12. Scene Navigation
 
 ch03_s03 story → LC07 unaided or supported completion → Eliza's discovery → explicit Continue (`ch03_s03_complete`, no signal increment) → ch03_s04 `A Sentence Has Shape`. Bridge: individual sounds → word stress → sentence stress/intonation. S04's D07 and LC08 are not changed by S03.
+
+## ch03_s04 — TEACHER CONTENT — S04 PRE-PRODUCTION CANON LOCKED
+
+Canon and teaching guidance; use the established 12-section Teacher Mode structure. Teacher preview is read-only: it does not write D07, answers, attempts, support usage, progress, signals, rewards, completion or events. Documentation only; no runtime implementation or generated audio.
+
+### 1. Chapter Overview
+
+S04, “A Sentence Has Shape,” continues the lesson in Higgins's study. Eliza is at the Conscious Training stage. After S03's word stress, she listens for the word that carries the strongest part of a sentence's message. A change in prominence can shift what a listener understands as important. S04 prepares her to draw on this technique when tired and frustrated in S05.
+
+### 2. Learning Goals
+
+Identify the prominent focus word in a short spoken sentence; notice how sentence stress can foreground meaning; distinguish sentence stress/intonation (S04) from stress within a word (S03). Learners may listen, replay or use text support. This is awareness and communicative choice, not accent erasure.
+
+### 3. Language Focus
+
+S03 = word stress: prominence within a word. S04 = sentence stress / intonation: prominence across a sentence and how it shapes the message. Do not turn S04 into an evaluation of accent, personality or intelligence. Natural prominence is clear but not exaggerated.
+
+### 4. Listening Focus
+
+LC08 contains three Higgins/Kelvin sentence recordings: “I wanted the red flowers.” (focus red), “She bought three tickets.” (focus three), and “We meet on Monday.” (focus Monday). Listen for the word carrying the strongest part of the message, not a mechanically loud syllable. Normal-speed replay is unlimited and read-only. Visible text and Supported Practice keep the activity accessible without sound. Story demonstration uses “She ordered the blue hat,” which is not an LC08 target and cannot reveal its answer key.
+
+### 5. Key Vocabulary
+
+sentence, message, focus, prominent, stress, intonation, meaning, replay. Explain that sentence stress concerns which word stands out in a message; S03 stress concerns which syllable stands out inside a word.
+
+### 6. Cultural / Literary Context
+
+Original educational adaptation; no copied musical dialogue, lyrics or staging. Preserve “Accent ≠ intelligence.” Eliza gains another listening and speaking choice; her existing voice and identity are not corrected or replaced.
+
+### 7. Decisions – Teacher Notes
+
+D07 is a low-risk learning-strategy choice: ask Higgins to repeat slowly (`d07_repeat_slowly`), hear it naturally again (`d07_hear_naturally`), or try it herself first (`d07_try_first`). Each is valid and rejoins the same LC08 challenge. The choice is recorded in the common decision ledger only; it adds no signal/skill, creates no persistent pedagogical flag and does not change an answer or route. Its placement after the demonstration first establishes the concept, then lets Eliza choose how to practise.
+
+### 8. Challenge Key
+
+`challenges.lc08`: `lc08_sample_01` → `lc08_focus_red` (red); `lc08_sample_02` → `lc08_focus_three` (three); `lc08_sample_03` → `lc08_focus_monday` (Monday). These three objective recordings are planned only. Initial controls/text remain visually neutral. `ch03_lc08_completed` applies Pronunciation +1 once only when completed without opening target-revealing support. Supported completion gives no reward and no penalty. Support use cancels reward eligibility; replay does not. Full contract is in STATE_AND_BRANCHING.md.
+
+### 9. Discussion Questions
+
+“Which word carried the strongest part of the message?” “What changed when the focus changed?” “How is that different from stress inside a word?” “When might you ask someone to repeat something naturally or slowly?”
+
+### 10. Sensitive Framing
+
+Do not describe an accent or social register as unintelligent, inferior or a defect. Sentence stress gives speakers choices for making meaning clear; learners can use the text and supported route without public performance or microphone recording. Support is not failure.
+
+### 11. Suggested Classroom Use
+
+Allow a normal-speed unaided first attempt and unlimited replay. After an incorrect attempt, offer the neutral cue “Listen for the word that carries the strongest part of the message.” Opening support may disclose that focus and permanently cancels the one-time unaided reward eligibility, but never penalizes or blocks completion. Retain correct sample responses through retry. Use transcript/text for learners who cannot hear. Keep answer reveals out of pre-response formatting and story examples. No required learner voice recording or automated speech judgment.
+
+### 12. Scene Navigation
+
+S04 story demonstration → D07 strategy choice → LC08 unaided or supported completion → reflection that prepares Eliza for a difficult day → explicit student Continue (`ch03_s04_complete`, no skill increment) → `ch03_s05 – The Bad Day`. D07 selection, replay, render, audio ending, refresh and Teacher preview do not complete the scene. S03 remains word stress only; S04 is sentence stress / intonation. S05–S06 content remains unlocked.

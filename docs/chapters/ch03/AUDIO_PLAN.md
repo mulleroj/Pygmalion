@@ -47,7 +47,7 @@ Reuse the existing story renderer, renderDecision, shared state/event store, Aud
 
 ## Later Chapter III – NOT YET LOCKED
 
-S03 AM25–26 is specified below. Remaining [scene-map](../../SCENE_MAP.md) intent: S04 AM27–28 intonation/Eliza; S05 AM29–30 correction/rain; S06 AM31–32 customer order/Eliza. Their production text, casting, mix and lifecycle are not locked.
+S03 AM25–26 and S04 AM27–28 are specified below. S05 AM29–30 correction/rain and S06 AM31–32 customer order/Eliza remain unlocked; their production text, casting, mix and lifecycle are not locked.
 
 ## AM21 approved story voice integration checkpoint
 
@@ -147,3 +147,39 @@ All five canonical story lines have exact approved runtime recordings. Text/tran
 | Higgins post-LC07 | `assets/audio/characters/higgins/higgins_ch03_scene03_002.mp3` | Exactly. Find the stress first, and the word becomes easier to shape. | `pv4mhkS6TNRu6fQ6CBYY` | 4.48 s | 89,894 | PASS |
 
 Eliza uses canonical voice ID `124kaYCknTDsnwUFdWl9`, following the established Chapter III voice arc. Higgins uses canonical Kelvin `JlptfLxaUpd8pZcw9dKd`. Pickering has no S03 audio. No new ambience, AudioManager, mixer or lifecycle was added. Individual asset Human Audio QA = PASS; S03 Human Audio Mix QA = **PASS** after the complete scene mix was listened to and approved.
+
+## ch03_s04 — AM27 / AM28 — S04 PRE-PRODUCTION CANON LOCKED — NOT GENERATED
+
+Documentation only; no S04 audio is generated or integrated in this canon lock. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. Reuse the existing canonical `ch03_lesson_room` ambience and AudioManager lifecycle. Do not modify the ambience asset or S01–S03 audio/mix.
+
+### AM27 — objective LC08 sentence samples
+
+Plan exactly three objective recordings in Higgins's canonical Kelvin voice. Each contains only its sentence, spoken naturally at normal speed with the indicated word carrying clear but unexaggerated sentence prominence. No added coaching, dramatic contrast, slowed playback or pitch-shifting. Learner-controlled replay is unlimited and read-only. The visible transcript and supported route remain available if sound is off/unavailable.
+
+| Sample ID | Planned filename | Exact transcript | Intended focus | Status |
+|---|---|---|---|---|
+| lc08_sample_01 | `assets/audio/challenges/ch03/lc08_red_flowers.mp3` | I wanted the red flowers. | red | PLANNED — NOT GENERATED |
+| lc08_sample_02 | `assets/audio/challenges/ch03/lc08_three_tickets.mp3` | She bought three tickets. | three | PLANNED — NOT GENERATED |
+| lc08_sample_03 | `assets/audio/challenges/ch03/lc08_monday.mp3` | We meet on Monday. | Monday | PLANNED — NOT GENERATED |
+
+These are the only LC08 objective recordings. Their initial visible wording must not identify which word is prominent. Use canonical Higgins/Kelvin. No other speaker, Pickering take, browser TTS fallback, or generated placeholder is planned.
+
+### AM28 — selected S04 story voice moments
+
+Plan exactly these nine selected story voice moments; visible story text remains authoritative. These choices do not imply that every visible dialogue line needs audio. Keep Pickering without S04 audio. Recordings are planned only; generate none during this task.
+
+| Moment | Speaker | Exact transcript | Status |
+|---|---|---|---|
+| S04 opening | Higgins | You found the shape inside a word. Now listen for the shape of a whole sentence. | PLANNED — NOT GENERATED |
+| Opening response | Eliza | You mean some words matter more than the others? | PLANNED — NOT GENERATED |
+| Explanation | Higgins | Some carry more of the message. Let those words come forward. | PLANNED — NOT GENERATED |
+| Demonstration, first version | Higgins | Listen: She ordered the blue hat. | PLANNED — NOT GENERATED |
+| Demonstration, focused version | Higgins | Now listen again: She ordered the BLUE hat. | PLANNED — NOT GENERATED |
+| Recognition | Eliza | The second one sounds as if the colour matters. | PLANNED — NOT GENERATED |
+| Pre-LC08 | Eliza | So the sentence changes shape when the important word changes. | PLANNED — NOT GENERATED |
+| Post-LC08 | Eliza | I can hear the sentence moving now. It isn't flat. | PLANNED — NOT GENERATED |
+| Post-LC08 | Higgins | Good. Do not force every word. Let the sentence carry you. | PLANNED — NOT GENERATED |
+
+The demonstration uses `She ordered the blue hat`, which is distinct from all LC08 samples and must not leak an objective answer. Do not add voices for other visible lines automatically. S04 story audio, if produced later, uses canonical Higgins/Kelvin and Eliza voice continuity; no Pickering S04 audio.
+
+Reuse foreground cleanup, duck/restore, Sound Off, scene-exit cleanup and the existing `ch03_lesson_room` loop through the established AudioManager. Playback/replay never changes D07, LC08 answers/support/reward or scene completion. No new mixer, fallback synthesis, or ambience variant. S01/S02 status and the S03 individual-take / mix QA statuses remain unchanged.

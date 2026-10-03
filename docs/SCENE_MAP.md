@@ -267,20 +267,19 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 
 ### ch03_s04 – A Sentence Has Shape
 
-- **Lokace:** učebna, později chodba domu.
-- **Čas / atmosféra:** večer; únava, ale rostoucí kontrola a potřeba použít nový nástroj.
-- **Postavy:** Eliza, Higgins, Pickering.
-- **Děj:** Eliza pracuje se sentence stress a intonací. Higgins chce přesný tvar; Eliza zjišťuje, že stejná věta může znít jako otázka, nabídka, výzva nebo obrana.
-- **Hlavní účel:** propojit intonaci s agenturou a významem, ne s dekorativním „správným přízvukem“.
-- **Rozhodnutí hráče:** `D07` – zvolit, zda Eliza v klíčové replice použije pečlivý trénovaný tvar, spontánní tvar, nebo vědomou směs obou.
-- **Možné hodnotové změny:** `Pronunciation +1` při kontrole intonace, `Confidence +1` při spontánní volbě, `Independence +1` při vědomé směsi.
-- **Uložení:** `long-term: ano`; uloží se `intonation_strategy`.
-- **Audio momenty:** `AM27 PRONUNCIATION` tři intonační varianty; `AM28 VOICE` Eliza stejný význam přeformuluje v odlišných registrech.
-- **Challenge:** `LC08` – sentence stress a intonation; určit zamýšlený postoj a zvolit vhodný tvar.
-- **Teacher Mode:** intonation, sentence stress, implied attitude.
-- **Vizuální assety:** Eliza `In Training / controlled`, značky důrazu v textu, chodba jako prostor pro replay.
-- **Audio assety:** `eliza_ch03_scene04_001.mp3`, `higgins_ch03_scene04_001.mp3`, `pronunciation_intonation_001.mp3` a přepisy.
-- **Návaznost:** `ch03_s05`.
+- **Lokace:** Higginsova pracovna / učebna.
+- **Čas / atmosféra:** po S03; soustředěný nácvik větného přízvuku a intonace.
+- **Postavy:** Eliza a Higgins.
+- **Děj:** Eliza přechází od přízvuku uvnitř slova k tomu, jak významové slovo vystupuje ve větě. Demonstrace `She ordered the blue hat.` → `She ordered the BLUE hat.` ukazuje změnu důrazu, aniž prozrazuje odpovědi LC08.
+- **Hlavní účel:** naučit vnímat větný přízvuk / základní intonaci jako vodítko k tomu, která část sdělení je důležitá. „Some carry more of the message“ je užitečné zjednodušení pro žáka, nikoli absolutní pravidlo o každém slově.
+- **Rozhodnutí hráče:** `D07` – „The sentence still feels awkward. What would Eliza like to try next?“ Možnosti `d07_repeat_slowly`, `d07_hear_naturally`, `d07_try_first`; každá se vrací ke stejnému LC08. Žádná nemění odpovědi, Pronunciation, postup ani odměnu.
+- **Možné hodnotové změny:** D07 žádné. Unaided dokončení LC08 přidá `Pronunciation +1` právě jednou přes `ch03_lc08_completed`; podporované dokončení bez odměny i penalizace.
+- **Uložení:** D07 se jednou zaznamená do sdíleného `decisions` ledgeru. Žádný nový persistentní učební příznak.
+- **Audio momenty:** AM27 tvoří tři plánované věty LC08; AM28 tvoří devět vybraných příběhových okamžiků. Vše zůstává `PLANNED — NOT GENERATED`; znovu použít kanonickou `ch03_lesson_room` ambience.
+- **Challenge:** `challenges.lc08` – `lc08_sample_01` „I wanted the red flowers.“ → `lc08_focus_red` (`red`); `lc08_sample_02` „She bought three tickets.“ → `lc08_focus_three` (`three`); `lc08_sample_03` „We meet on Monday.“ → `lc08_focus_monday` (`Monday`). Před odpovědí žádný vizuální hint.
+- **Teacher Mode:** sentence stress / základní intonace; strategie D07; klíč LC08 a přístupná podporovaná cesta.
+- **Vizuální assety:** znovu použít schválenou pracovnu a stávající knižní kompozici; cílová slova i ovládací prvky jsou před odpovědí neutrální.
+- **Návaznost:** po vyřešení D07, dokončení LC08 a výslovném Continue zaznamenat `ch03_s04_complete` a přejít do `ch03_s05`.
 
 ### ch03_s05 – The Bad Day
 

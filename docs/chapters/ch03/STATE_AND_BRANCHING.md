@@ -54,7 +54,7 @@ Teacher preview uses an isolated context and MUST NOT save decisions, attempts, 
 
 ## Later Chapter III – NOT YET LOCKED
 
-S03 / LC07 is specified below. S04–S06 remain [scene-map](../../SCENE_MAP.md) intent only: D07/LC08 sentence stress and intonation; LC09 feedback; LC10 transfer. practice_preference may support later narrative and Chapter VI synthesis; no new downstream branching is invented.
+S03 / LC07 and S04 / D07 / LC08 are specified below. S05–S06 remain [scene-map](../../SCENE_MAP.md) intent only: LC09 feedback; LC10 transfer. practice_preference may support later narrative and Chapter VI synthesis; no new downstream branching is invented.
 
 
 
@@ -113,3 +113,37 @@ On completion, set `challenges.lc07.completed` and append `ch03_lc07_completed` 
 ch03_s02_complete records explicit student Continue only after either completion route; no signal increment, idempotent, destination ch03_s03. Event presence is scene-completion authority; no duplicate top-level completion field required. If S03 runtime is unavailable, stay on completed S02 with review. No Chapter III completion event.
 
 Validate scene/student context/item/allowed IDs; invalid or stale/out-of-scene input does nothing. Replay, Sound toggle, audio ending, render, refresh and Teacher preview cannot submit answers, increment attempts, save support eligibility, reward or complete. Persist stable option orders through retry/refresh. Teacher preview uses ephemeral orders/answers/support and never writes student state/events/signals. Reuse shared save/default merge, state/event helpers, LC rendering and AudioManager; extend shared guards rather than clone engines.
+
+## ch03_s04 / D07 / LC08 — S04 PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED / NOT GENERATED. `visualStage = in_training` is scene metadata. S04 teaches sentence stress / intonation, following S03 word stress. No persistent `sentence_stress_seen` or equivalent field, no new top-level save field, no signal change from D07, and no D07 change to LC08 keys or reward eligibility.
+
+### D07 — low-risk learning-strategy choice
+
+Accept one explicit student selection in S04 and record it once in the shared `decisions.D07` ledger with the selected stable option ID. No development signal, skill reward, penalty, completion gate, alternate route, persistent learning flag or modification of pronunciation/answer keys. Replay, render, refresh and Teacher preview are read-only. The optional brief follow-up is story flavor/support only.
+
+| Stable option ID | Strategy |
+|---|---|
+| d07_repeat_slowly | Ask Higgins to repeat it slowly |
+| d07_hear_naturally | Hear it naturally again |
+| d07_try_first | Try it herself first |
+
+Place D07 after the Higgins demonstration and before LC08. The demonstration introduces the principle before Eliza chooses how to approach practice; each choice then rejoins the same challenge and canon.
+
+### LC08 — sentence-stress listening challenge
+
+Challenge ID `LC08`; challenge record `challenges.lc08`. Three natural sentence recordings, each with one focus-word selection. Samples are played in normal speed and may be replayed without limit. Replay, Sound Off, audio failure, rendering and preview do not mutate state.
+
+| Sample ID | Exact spoken sentence | Answer ID | Correct focus word |
+|---|---|---|---|
+| lc08_sample_01 | I wanted the red flowers. | lc08_focus_red | red |
+| lc08_sample_02 | She bought three tickets. | lc08_focus_three | three |
+| lc08_sample_03 | We meet on Monday. | lc08_focus_monday | Monday |
+
+The recording gives the focus word natural sentence prominence without exaggerated stress, extra coaching or added words. Neutral visible sentences and controls are identical in style before the first response; do not capitalize, bold, colour, underline, badge, preselect or otherwise visually disclose the focus word. Higgins's story demonstration uses a different sentence and cannot disclose any LC08 key. Canonical correct answers are `lc08_sample_01` → `lc08_focus_red`, `lc08_sample_02` → `lc08_focus_three`, and `lc08_sample_03` → `lc08_focus_monday`.
+
+Before first response, provide no target-revealing support. After an incorrect attempt, offer optional Supported Practice with the neutral cue: “Listen for the word that carries the strongest part of the message.” If opened, support may replay the sample and then reveal its focus word. Support use is monotonic and permanently cancels unaided reward eligibility for LC08; mere availability and normal replay do not. Correct sample answers remain accepted during retry; retry only unresolved/wrong items. Support has no penalty and does not block completion.
+
+First all-correct completion sets `challenges.lc08.completed` and appends `ch03_lc08_completed` once. If target-revealing support has not been opened, that same idempotent event applies `Pronunciation +1` exactly once. Supported completion applies no reward and no penalty; no later reward upgrade. No other signals change. Completion becomes read-only. Keep answer, attempts, order and monotonic support metadata inside shared `challenges.lc08`; no parallel state system or persistent narrative flag.
+
+`ch03_s04_complete` is recorded exactly once only after D07 is resolved, LC08 is complete and the student explicitly activates **Continue**. It gives no skill increment. The only destination is `ch03_s05`. Render, replay, audio completion, refresh and Teacher preview cannot complete or navigate the scene. Teacher preview uses isolated/ephemeral state and cannot mutate the learner's decisions, attempts, answers, support, reward, progress, signals or events.

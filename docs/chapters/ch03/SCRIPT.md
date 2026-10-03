@@ -85,7 +85,7 @@ Future S01 MUST reuse the existing story renderer, renderDecision, state/event s
 
 ## Later Chapter III – NOT YET LOCKED
 
-S03 was subsequently locked below. Remaining scene-map intent: ch03_s04 A Sentence Has Shape (D07, LC08, sentence stress/intonation); ch03_s05 The Bad Day (LC09, supportive feedback); ch03_s06 A Small Victory (LC10, real-interaction transfer) → ch04_s01. Their dialogue, samples, event IDs and asset details remain unlocked.
+S03 was subsequently locked below. S04 A Sentence Has Shape (D07, LC08, sentence stress/intonation) is specified below. S05 The Bad Day (LC09, supportive feedback) and S06 A Small Victory (LC10, real-interaction transfer) → ch04_s01 remain unlocked.
 
 
 
@@ -172,4 +172,66 @@ LC07 instruction: “Listen to each word. Choose the syllable that carries the m
 
 The first submitted attempt is unaided. Normal-speed replay is allowed. After an incorrect attempt, offer optional Supported Practice with written syllable divisions, replay and the neutral cue “Listen for the syllable that sounds strongest.” Once target-revealing support is opened, unaided reward eligibility is permanently lost. Support carries no penalty; supported completion remains available. Preserve correct responses during retry where shared challenge handling supports it.
 
-After LC07 completes by either route, show Eliza's discovery and Higgins's response. Only explicit student **Continue** records `ch03_s03_complete` once, with no signal increment, and advances to `ch03_s04 – A Sentence Has Shape`. No render, replay, audio ending, refresh or Teacher preview can complete it. The progression is individual sounds → stress within a word → stress and intonation across a sentence. D07 remains in S04.
+After LC07 completes by either route, show Eliza's discovery and Higgins's response. Only explicit student **Continue** records `ch03_s03_complete` once, with no signal increment, and advances to `ch03_s04 – A Sentence Has Shape`. No render, replay, audio ending, refresh or Teacher preview can complete it. The progression is individual sounds → stress within a word → stress and intonation across a sentence. D07 is specified in S04 below.
+
+## ch03_s04 — A Sentence Has Shape — S04 PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED / NOT GENERATED. S04 follows S03 in Higgins's study. S03 remains word stress only; S04 teaches sentence stress and how changing the prominent word can change a sentence's meaning or implication. It does not revisit or alter the S03 word-stress key. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. Keep the original adaptation, B1-readable dialogue, and Eliza's agency; accent is never framed as intelligence.
+
+**Opening**
+
+Higgins: “You found the shape inside a word. Now listen for the shape of a whole sentence.”
+
+Eliza: “You mean some words matter more than the others?”
+
+Higgins: “Some carry more of the message. Let those words come forward.”
+
+Eliza: “And the little ones can stop fighting for attention.”
+
+**Demonstration**
+
+Narration: “Eliza tries the sentence carefully, giving each word much the same weight.”
+
+Higgins: “Listen: She ordered the blue hat.”
+
+Higgins: “Now listen again: She ordered the BLUE hat.”
+
+Eliza: “The second one sounds as if the colour matters.”
+
+Higgins: “Exactly. Stress can tell the listener what matters most.”
+
+The demonstration sentence is deliberately different from every LC08 target, so the story example cannot give away an objective answer before the learner responds.
+
+**D07 — A way into the rhythm**
+
+Prompt: “The sentence still feels awkward. What would Eliza like to try next?” The student makes one low-risk learning-strategy choice; no answer is better, no phonetic key changes, and the choice does not affect LC08 scoring or signals.
+
+| Option ID | Student-facing option | Brief follow-up |
+|---|---|---|
+| d07_repeat_slowly | Ask Higgins to repeat it slowly | Eliza: “Would you say that slowly once more?” Higgins: “Listen to how the strong word carries the point.” |
+| d07_hear_naturally | Hear it naturally again | Eliza: “Let me hear it naturally once more.” Higgins: “Of course. Notice where the message comes forward.” |
+| d07_try_first | Try it herself first | Eliza: “Let me try it myself first.” Higgins: “Go ahead. Let the important word come forward.” |
+
+The choice is recorded once in the shared `decisions` ledger as D07 with its stable option ID. It changes no persistent learning flag, signal, skill, LC08 answer, reward eligibility or route. The short follow-up is flavor/support copy only. D07 appears after Higgins's demonstration and before LC08: the example first establishes the learning idea, then Eliza chooses how to approach practice.
+
+**Before LC08**
+
+Eliza: “So the sentence changes shape when the important word changes.”
+
+Higgins: “Yes. Listen for the word that carries the meaning.”
+
+LC08 instruction: “Listen to each sentence. Choose the word that carries the strongest part of its meaning. You can replay each recording.” Before a response, all target words and answer controls look neutral and equally prominent. Do not capitalize, bold, colour, underline, badge or otherwise mark the focus word. The demonstration above must not reuse an LC08 sentence.
+
+**After LC08**
+
+Eliza: “I can hear the sentence moving now. It isn't flat.”
+
+Higgins: “Good. Do not force every word. Let the sentence carry you.”
+
+Only the first unaided completion earns the LC08 reward described in STATE_AND_BRANCHING.md. Supported completion remains valid progress without reward or penalty.
+
+**Reflection and transition**
+
+Narration: “A few days later, when she is tired, Eliza will need to find the shape again.” S04 gives her a useful listening strategy; S05 tests it during a frustrating lesson without treating a difficult day as failure.
+
+After LC08 completion, explicit student **Continue** records `ch03_s04_complete` once, adds no skill, and advances to `ch03_s05 – The Bad Day`. Render, replay, audio ending, refresh, D07 selection and Teacher preview cannot complete the scene.
