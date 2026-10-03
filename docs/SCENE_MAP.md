@@ -283,20 +283,21 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 
 ### ch03_s05 – The Bad Day
 
-- **Lokace:** učebna po nepovedeném cvičení.
-- **Čas / atmosféra:** deštivé odpoledne o několik dní později; únava a odpor k dalšímu opakování.
-- **Postavy:** Eliza, Higgins, Mrs Pearce.
-- **Děj:** Eliza se několikrát splete, Higgins opravuje příliš rychle a vzniká konflikt mezi technickou přesností a její důvěrou. Mrs Pearce pomůže rozlišit opravu zvuku od hodnocení člověka.
-- **Hlavní účel:** ukázat frustraci jako legitimní část učení a dát hráči možnost vyjednat tempo.
-- **Rozhodnutí hráče:** žádné hlavní; hráč volí replay, pauzu nebo žádost o jiný příklad.
-- **Možné hodnotové změny:** `Confidence +1` při žádosti o pauzu; lokální `lesson_pace_reset`.
-- **Uložení:** `long-term: ne`.
-- **Audio momenty:** `AM29 VOICE` nesoulad Higginsovy opravy a Eliziny reakce; `AM30 AMBIENCE` déšť a ticho po neúspěšném pokusu.
-- **Challenge:** `LC09` – listening for correction vs insult; hráč určí, která reakce podporuje učení.
-- **Teacher Mode:** feedback language, repair, asking for a slower explanation.
-- **Vizuální assety:** Eliza `In Training / frustrated`, zavřené učební pomůcky, Mrs Pearce u dveří.
-- **Audio assety:** `eliza_ch03_scene05_001.mp3`, `higgins_ch03_scene05_001.mp3`, `ambience_rain_lesson_001.mp3` a přepisy.
-- **Návaznost:** `ch03_s06`.
+- **Status:** S05 PRE-PRODUCTION CANON LOCKED.
+- **Lokace:** Higginsova pracovna / učebna, znovu použít existující prostředí.
+- **Čas / atmosféra:** několik dní po S04; lekce trvá příliš dlouho, Eliza je unavená a frustrovaná.
+- **Postavy:** Eliza a Higgins.
+- **Děj:** Eliza u známé věty spěchá a ztrácí rovnoměrné tempo. Protože ji dříve zvládla, rozzlobí ji kolísání výkonu. Higgins pojmenuje technický problém, ale scénu nepromění v ponížení. Eliza zastaví pokus, zpomalí, rozdělí větu na smysluplné části, zkusí ji znovu a obnoví řeč. Úspěch je zotavení, ne bezchybný výkon: „I can get it back.“
+- **Hlavní účel:** udržet řeč pod únavou, regulovat tempo, chunkovat a opravit pokus. Únava je stav k řízení, ne důkaz selhání učení. S05 nepřidává fonologický systém.
+- **Rozhodnutí hráče:** žádné hlavní D-numbered rozhodnutí. Pauza a reset jsou pevný story beat; žádná D-volba se nevytváří.
+- **Možné hodnotové změny:** unaided dokončení LC09 přidá `Pronunciation +1` právě jednou přes `ch03_lc09_completed`; podpora bez odměny i penalizace. Pauza nedává Confidence increment.
+- **Uložení:** dlouhodobě žádné; challenge state zůstává v `challenges.lc09`, completion v event ledgeru. Žádná nová fatigue/pace/repair pole.
+- **Audio momenty:** AM29 vybrané story voice okamžiky únavy, řízeného resetu a zotavení; AM30 pokračující existující `ch03_lesson_room` ambience, bez nového souboru.
+- **Challenge:** `challenges.lc09` – learner instruction „Choose the best place to pause so the sentence is easier to say.“ Před odpovědí jsou všechny split body neutrální; svislý oddělovač a vysvětlení se zobrazí pouze po výslovném otevření target-revealing Supported Practice. Přesné položky, texty podpory a reward pravidla jsou v `docs/chapters/ch03/STATE_AND_BRANCHING.md`.
+- **Teacher Mode:** únava a kolísání výkonu, tempo vs. přesnost, chunking, self-repair a citlivé rámování.
+- **Vizuální assety:** použít schválenou pracovnu, Eliza `In Training` training cutout a stávající Higginsův cutout; tišší kompozice a více negativního prostoru, bez nového artworku či tmavého filtru.
+- **Audio assety:** tři plánované LC09 věty hlasem Higgins/Kelvin a vybrané Eliza/Higgins story voice repliky; pouze plán, NOT GENERATED. Pokračovat s existující canonical 90s ambience.
+- **Návaznost:** až po LC09 a výslovném Continue zaznamenat `ch03_s05_complete` a přejít do `ch03_s06 – A Small Victory`.
 
 ### ch03_s06 – A Small Victory
 

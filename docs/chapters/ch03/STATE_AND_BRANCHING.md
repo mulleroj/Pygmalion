@@ -147,3 +147,38 @@ Before first response, provide no target-revealing support. After an incorrect a
 First all-correct completion sets `challenges.lc08.completed` and appends `ch03_lc08_completed` once. If target-revealing support has not been opened, that same idempotent event applies `Pronunciation +1` exactly once. Supported completion applies no reward and no penalty; no later reward upgrade. No other signals change. Completion becomes read-only. Keep answer, attempts, order and monotonic support metadata inside shared `challenges.lc08`; no parallel state system or persistent narrative flag.
 
 `ch03_s04_complete` is recorded exactly once only after D07 is resolved, LC08 is complete and the student explicitly activates **Continue**. It gives no skill increment. The only destination is `ch03_s05`. Render, replay, audio completion, refresh and Teacher preview cannot complete or navigate the scene. Teacher preview uses isolated/ephemeral state and cannot mutate the learner's decisions, attempts, answers, support, reward, progress, signals or events.
+
+## ch03_s05 / LC09 — S05 PRE-PRODUCTION CANON LOCKED
+
+S05 adds no phonology system. Its focus is managing variable performance under fatigue: regulate pace, use meaningful chunks, rebuild a sentence and repair an attempt. `visualStage = in_training` remains scene metadata. No D-numbered decision exists in canonical `SCENE_MAP.md`; no decision or persistent learning field is added. The authored pause/reset beat is narrative copy only. No Confidence or other increment attaches to asking for a pause.
+
+### LC09 — pace, chunking and repair
+
+Use the existing objective challenge pattern with `challenges.lc09`. Exactly three short, visible B1 sentences, all presented without pause punctuation. For each item, the learner chooses one internal boundary between words; items are answered separately and a correct split is preserved. One unique boundary is keyed for each item:
+
+| Sample ID | Exact sentence shown | Answer ID | Correct boundary |
+|---|---|---|---|
+| lc09_sample_01 | When the lesson ends I will rest. | lc09_pause_01 | after “ends” |
+| lc09_sample_02 | If I slow my pace I can hear each word. | lc09_pause_02 | after “pace” |
+| lc09_sample_03 | I know the words but I need a moment. | lc09_pause_03 | after “words” |
+
+The intended chunks respectively mark a dependent clause before its main clause, a conditional clause before its result, and a contrast before its second clause. Do not add comma, ellipsis, line break, extra spacing, capitalization or typography that reveals the answer. Before response, every possible internal boundary/control is equally neutral, including focus and hover; no preselection, colour, bolding or icons. The screen-reader instruction names only the task, not the key. The same sentence is heard/read as a whole before the boundary choice. After a correct split, preserve it and let the learner hear/read the full sentence again divided at their chosen boundary; an optional second repair choice may use the same neutral-to-revealed rule, but is not required by this canon.
+
+Exact learner-facing copy:
+
+- Challenge instruction: “Choose the best place to pause so the sentence is easier to say.”
+- Incorrect feedback: “Not quite. Try again, or use Supported Practice.”
+- Supported Practice prompt: “Listen for the place where the sentence can breathe.”
+- Target-revealing support text, only after explicit opening: “Pause here. Say the first part, then continue with the second.”
+
+Only after the learner explicitly opens target-revealing Supported Practice, show the target divider and sentence below. The divider is absent from every unaided state:
+
+- `lc09_sample_01`: `When the lesson ends | I will rest.`
+- `lc09_sample_02`: `If I slow my pace | I can hear each word.`
+- `lc09_sample_03`: `I know the words | but I need a moment.`
+
+First explicit submission is unaided. Replay is normal-speed and read-only. After an incorrect attempt, offer optional Supported Practice with the neutral cue: “Listen for the place where the sentence can breathe.” If opened, support may divide the target sentence, explain the clause boundary in simple language and allow retry. Opening target-revealing support before successful unaided completion permanently sets monotonic support usage and removes reward eligibility. Mere availability, neutral cue and replay do not. Correct items remain fixed on retry. Support never penalizes or blocks completion.
+
+On all-correct completion, set `challenges.lc09.completed` and append `ch03_lc09_completed` exactly once. If target-revealing support has not been opened, that same idempotent event applies `Pronunciation +1` once. Supported completion gives no increment and no penalty; no later reward upgrade. Keep answers, attempts and support metadata in shared challenge state; reuse the event ledger. Replay, refresh, render and Teacher preview never mutate answers, eligibility, support, reward, completion or narrative decisions. Teacher preview is read-only and isolated.
+
+`ch03_s05_complete` is recorded once only after LC09 completion and explicit student **Continue**; it gives no increment and advances only to `ch03_s06`. No D-numbered decision gate. No duplicate top-level completion field or new persistent fatigue/pace/repair flags.

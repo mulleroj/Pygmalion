@@ -185,3 +185,21 @@ Generation API duration values are respectively 5.28, 2.40, 4.72, 2.80, 4.32, 2.
 All twelve clips use the established foreground AudioManager: explicit learner replay; a newer replay stops the prior foreground take; Sound Off stops foreground; scene changes and Teacher opening clean it up; story voice uses the existing Chapter III story duck; LC08 uses the existing conservative challenge duck (`CH02_AUDIO_MIX`: ambience 0.10 × challengeDuck 0.08 = 0.008 while a sample plays, restored to 0.10 afterward). The unchanged canonical `ch03_lesson_room` loop is `assets/audio/ambience/ch03_higgins_house_lesson_ambient.mp3` (89.992 s, 2,159,803 bytes, SHA-256 `DDF96D046967C4E025AA25E6083220CCD4015C47C2710D4D4755C61BCB9DB311`). No new mixer, ambience file or fallback synthesis was added.
 
 Playback/replay never writes D07, LC08 answers, attempts, support, rewards or scene completion. D07 remains a non-punitive strategy choice. LC08's unaided completion still grants Pronunciation +1 once via `ch03_lc08_completed`; target-revealing support permanently removes that eligibility and supported completion has no reward or penalty. `ch03_s04_complete` still requires D07, completed LC08 and explicit Continue. Teacher preview may explicitly replay clips but remains read-only. S01/S02 Human Audio Mix QA PASS and S03 Human Audio Mix QA PASS are preserved; S04 Human Audio Mix QA = **PASS**.
+
+## ch03_s05 — S05 PRE-PRODUCTION CANON LOCKED; AUDIO PLANNED, NOT GENERATED
+
+Reuse the continuous canonical `ch03_lesson_room` 90-second lesson-room ambience. Let it continue beneath the longer lesson; no rain layer, new ambience, new mixer or reset is needed. Keep the existing AudioManager, Chapter III story duck, LC challenge duck and replay/cleanup lifecycle. Sound and voice remain optional enhancements to the readable book. No ElevenLabs generation has been performed or authorized by this canon task.
+
+Story voice plan: record only these five lines, which carry the tired/frustrated performance, Higgins's controlled reset, and Eliza's recovery. Other lines remain visible text. Preserve Eliza's canonical voice `124kaYCknTDsnwUFdWl9`, stage `Chapter III – Conscious Training`; fatigue and recovery change pacing, breath and control, never voice identity. Higgins uses canonical Kelvin `JlptfLxaUpd8pZcw9dKd`, calm, precise and non-cruel.
+
+| Moment | Speaker / canonical voice | Exact intended recording |
+|---|---|---|
+| AM29-E1, SCRIPT line 5 | Eliza / `124kaYCknTDsnwUFdWl9` | I did it well earlier. Why can't I do it now? |
+| AM29-H1, SCRIPT line 6 | Higgins / Kelvin `JlptfLxaUpd8pZcw9dKd` | You are tired. More force will not help. |
+| AM29-E2, SCRIPT line 9 | Eliza / `124kaYCknTDsnwUFdWl9` | I can finish this page… before we stop. |
+| AM29-H2, SCRIPT line 8 | Higgins / Kelvin `JlptfLxaUpd8pZcw9dKd` | Good. Slower is not worse. It gives you room to hear yourself. |
+| AM29-E3, SCRIPT line 11 | Eliza / `124kaYCknTDsnwUFdWl9` | I can get it back. |
+
+LC09 objective audio: exactly one natural, whole-sentence recording for each keyed sample, default speaker Higgins/Kelvin, with exact transcripts matching the three strings in STATE_AND_BRANCHING.md. Do not record a second “repaired” version: the learner chooses a boundary and then reads/hears the sentence divided in existing text/challenge presentation. Replay the same sample; no timeline, slow mode, browser TTS or answer-bearing take. Each pedagogically important recording has a visible transcript. Planned local names: `lc09_lesson_ends.mp3`, `lc09_slow_my_pace.mp3`, `lc09_know_the_words.mp3` under `assets/audio/challenges/ch03/`; story voice follows established `*_ch03_scene05_NNN.mp3` convention. Filenames are planning only, not created assets. AM29 covers selected story voice moments; AM30 records continued canonical ambience only, not a new file. All planned audio remains NOT GENERATED / NOT INTEGRATED pending later authorization and QA.
+
+Story recordings planned: 5. Objective recordings planned: 3. The canonical Chapter III lesson-room ambience remains planned for unchanged reuse.

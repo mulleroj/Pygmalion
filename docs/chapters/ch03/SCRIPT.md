@@ -235,3 +235,44 @@ Only the first unaided completion earns the LC08 reward described in STATE_AND_B
 Narration: “A few days later, when she is tired, Eliza will need to find the shape again.” S04 gives her a useful listening strategy; S05 tests it during a frustrating lesson without treating a difficult day as failure.
 
 After LC08 completion, explicit student **Continue** records `ch03_s04_complete` once, adds no skill, and advances to `ch03_s05 – The Bad Day`. Render, replay, audio ending, refresh, D07 selection and Teacher preview cannot complete the scene.
+
+## ch03_s05 — The Bad Day — S05 PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED. A few days after S04, a lesson has gone on too long. Eliza knows the technique but fatigue and frustration make her rush, flatten and lose even pacing on a sentence she managed earlier. This is a condition to manage, not lost learning. Higgins first identifies the technical problem, then gives her room to stop, reset, slow down, divide the sentence into meaningful small parts and rebuild it. Eliza chooses to try again. She recovers enough to say, “I can get it back.” There is no flawless-performance demand or giant breakthrough; S06 carries the skill into natural use.
+
+BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. B1-accessible visible dialogue (12 lines):
+
+1. Narration: “A few days later, the lesson has gone on too long. Eliza is tired.”
+2. Higgins: “Try the sentence once more: ‘I can finish this page before we stop.’”
+3. Eliza: “I can finish this page before we stop.”
+4. Higgins: “You rushed the last part. Begin again.”
+5. Eliza: “I did it well earlier. Why can't I do it now?”
+6. Higgins: “You are tired. More force will not help.”
+7. Eliza: “Then I need a moment. Let me start again.”
+8. Higgins: “Good. Slower is not worse. It gives you room to hear yourself.”
+9. Eliza: “I can finish this page… before we stop.”
+10. Higgins: “Yes. Give each part its time.”
+11. Eliza: “I can get it back.”
+12. Narration: “She has not made the sentence perfect. She has found a way back into it.”
+
+The illustrative sentence is not an LC09 item. In the story, show/read it as a natural whole sentence; do not model an LC09 answer or disclose any LC09 pause location before the learner's unaided response.
+
+**LC09 learner-facing copy**
+
+Challenge instruction: “Choose the best place to pause so the sentence is easier to say.”
+
+Incorrect feedback: “Not quite. Try again, or use Supported Practice.”
+
+Supported Practice prompt: “Listen for the place where the sentence can breathe.”
+
+Only after the learner explicitly opens target-revealing Supported Practice, show: “Pause here. Say the first part, then continue with the second.” Then show the relevant split:
+
+- Sample 1: “When the lesson ends | I will rest.”
+- Sample 2: “If I slow my pace | I can hear each word.”
+- Sample 3: “I know the words | but I need a moment.”
+
+The vertical divider appears only in this explicitly opened support state. It never appears in the unaided state.
+
+No main D-numbered decision in S05. Eliza's request to pause and try again is a fixed authored story beat, not a player decision or reward trigger. Higgins is exact and instructional, never humiliating; Eliza remains capable and recognisably herself. No moralising, accent erasure, or equation of fatigue with weakness.
+
+After LC09, keep the story recovery and explicit **Continue**. Only Continue records `ch03_s05_complete` once and advances to `ch03_s06 – A Small Victory`. Completion requires LC09 and Continue; there is no decision gate or Continue increment.

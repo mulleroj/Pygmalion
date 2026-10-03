@@ -226,3 +226,58 @@ Allow a normal-speed unaided first attempt and unlimited replay. After an incorr
 ### 12. Scene Navigation
 
 S04 story demonstration → D07 strategy choice → LC08 unaided or supported completion → reflection that prepares Eliza for a difficult day → explicit student Continue (`ch03_s04_complete`, no skill increment) → `ch03_s05 – The Bad Day`. D07 selection, replay, render, audio ending, refresh and Teacher preview do not complete the scene. S03 remains word stress only; S04 is sentence stress / intonation. S05–S06 content remains unlocked.
+
+## ch03_s05 — TEACHER CONTENT — S05 PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED. Teacher preview is read-only and uses the established 12-section structure.
+
+### 1. Chapter Overview
+
+S05, “The Bad Day,” follows S04 in Higgins's study a few days later. The lesson runs long; tiredness and frustration make Eliza rush a familiar sentence. She pauses, slows down, divides it into useful small parts, tries again and recovers. S06, “A Small Victory,” transfers the skill to a natural interaction.
+
+### 2. Learning Goals
+
+Notice performance can vary; regulate pace without treating slower speech as failure; divide a sentence into manageable parts, rebuild it and make a repair. Previous learning remains available even when access to it temporarily feels harder.
+
+### 3. Language Focus
+
+No new phonology. Practise pace, a pause at a meaningful clause boundary, and self-repair. Learner-facing language: “small parts,” “pause,” “try again,” “give the sentence room.” Slower speech gives the speaker time to hear their own words; it is not inherently better or worse.
+
+### 4. Listening Focus
+
+LC09 uses three whole-sentence recordings. Learners select the natural boundary between clauses, then hear/read the sentence again with that split. Keep the whole sentence and replay available. Exact audio transcripts and speaker plan are in AUDIO_PLAN.md. No audio-only critical information.
+
+### 5. Key Vocabulary
+
+pace, pause, sentence, part, rest, moment, again, ends, slow down, hear. Explain “pace” as how fast someone speaks.
+
+### 6. Cultural / Literary Context
+
+Original adaptation. Do not copy musical dialogue or staging. Eliza is tired, not lazy or incapable; Cockney or another social register is never evidence of intelligence. Fatigue is a condition to manage, not evidence that learning failed. Higgins stays precise and demanding without bullying.
+
+### 7. Decisions – Teacher Notes
+
+No main D-numbered decision in S05. “Let me start again” is fixed story dialogue, not a learner choice. The scene-map's earlier D-less account is authoritative; no D08 or local pace decision is introduced. There is no Confidence increment for asking for a pause.
+
+### 8. Challenge Key
+
+`challenges.lc09`: `lc09_sample_01` → `lc09_pause_01` (after “ends”); `lc09_sample_02` → `lc09_pause_02` (after “pace”); `lc09_sample_03` → `lc09_pause_03` (after “words”). These clause boundaries make each intended split uniquely defensible. The exact unaided instruction is “Choose the best place to pause so the sentence is easier to say.” The exact incorrect feedback is “Not quite. Try again, or use Supported Practice.” The exact Supported Practice prompt is “Listen for the place where the sentence can breathe.” Only after explicit support opening, show “Pause here. Say the first part, then continue with the second.” and its keyed sentence split, as listed in STATE_AND_BRANCHING.md. Initial punctuation/spacing/styling does not reveal any answer. Unaided completion event `ch03_lc09_completed` grants Pronunciation +1 once. Target-revealing support permanently removes reward eligibility; supported completion receives no reward or penalty. Replay and preview do not mutate state.
+
+### 9. Discussion Questions
+
+- What changed when Eliza stopped and tried again?
+- How can a pause help a long sentence?
+- Does one difficult attempt erase what you learned earlier?
+- What could Higgins say that is both clear and respectful?
+
+### 10. Sensitive Framing
+
+Never equate fatigue, a rushed attempt or an accent with low ability or poor character. Eliza keeps agency and identity. Avoid public performance pressure; no learner recording or speech scoring. Support is a learning route, not punishment. A temporary drop in performance does not mean previous learning disappeared.
+
+### 11. Suggested Classroom Use
+
+Read the scene before challenge work. Invite private reflection on when a pause helps; do not require personal disclosure. Try chunking the three neutral sentences, then discuss how support changes access. Keep answer keys in Teacher Mode. Teacher preview/replay never changes learner answers, support, rewards, events or completion.
+
+### 12. Scene Navigation
+
+S05 story → LC09 unaided or supported completion → Eliza: “I can get it back.” → explicit Continue (`ch03_s05_complete`, no increment) → `ch03_s06 – A Small Victory`. No main decision gate. S06 supplies the transfer; S05's modest recovery is not a giant breakthrough.
