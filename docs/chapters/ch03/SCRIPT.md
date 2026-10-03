@@ -1,6 +1,6 @@
 # Chapter III Script — The Lessons
 
-Status: S01 and S02 canon locked; S03 PRE-PRODUCTION CANON LOCKED. Documentation only; no Chapter III runtime or assets are implemented by this document.
+Status: S01 and S02 canon locked; S03 PRE-PRODUCTION CANON LOCKED. This document remains the dialogue and story canon; S03 runtime and approved audio assets are implemented separately.
 
 Authorities: [scene map](../../SCENE_MAP.md), [voice arc](../../audio/ELIZA_VOICE_ARC.md), project story/visual/audio/language bibles. Companion contracts: [state](STATE_AND_BRANCHING.md), [audio](AUDIO_PLAN.md), [visuals](VISUAL_PLAN.md), [Teacher](TEACHER_CONTENT.md). Original adaptation; no musical dialogue, songs or staging.
 
@@ -140,7 +140,7 @@ First attempt is UNAIDED LISTENING without transcript. After that attempt suppor
 
 ## ch03_s03 — Finding the Main Stress — PRE-PRODUCTION CANON LOCKED
 
-Documentation only; NOT IMPLEMENTED / NOT GENERATED. S03 follows S02 in Higgins's study. Eliza moves from individual sounds to the shape inside one multisyllabic word. The goal is word stress only; sentence stress, intonation and whole-sentence rhythm remain for S04. No main narrative decision. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE.
+S03 follows S02 in Higgins's study. Eliza moves from individual sounds to the shape inside one multisyllabic word. The goal is word stress only; sentence stress, intonation and whole-sentence rhythm remain for S04. No main narrative decision. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. Five approved story voice moments and the three LC07 word recordings are integrated; their exact transcripts, asset metadata and Human Audio Mix QA = PASS are in [AUDIO_PLAN.md](AUDIO_PLAN.md).
 
 Eliza expects to control every sound equally. Higgins invites her to listen for the part that stands out. She discovers for herself that one syllable comes forward while the others recede. The discovery belongs to Eliza; Higgins remains collaborative and does not claim a triumph.
 

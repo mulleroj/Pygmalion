@@ -5,12 +5,17 @@ import { AudioManager, isOneShotAvailable, shouldRestartAmbience, SFX_MIX, STORY
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { CH03_SCENE_03 } from '../src/ch03-content.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 function mp3Mpeg1Layer3Duration(bytes) {
   const bitrateKbps = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320];
   let offset = 0, frames = 0;
+  if (bytes.subarray(0, 3).toString('ascii') === 'ID3') {
+    const size = ((bytes[6] & 0x7f) << 21) | ((bytes[7] & 0x7f) << 14) | ((bytes[8] & 0x7f) << 7) | (bytes[9] & 0x7f);
+    offset = 10 + size + ((bytes[5] & 0x10) ? 10 : 0);
+  }
   while (offset + 4 <= bytes.length) {
     assert.equal(bytes[offset], 0xff, `bad MPEG frame sync at byte ${offset}`);
     assert.equal(bytes[offset + 1] & 0xe0, 0xe0, `bad MPEG frame sync at byte ${offset}`);
@@ -761,6 +766,48 @@ test('S01, S02 and S03 use only the canonical Chapter III lesson room loop', asy
   assert.equal(manager.ambientClockTimer, null);
   await manager.ensureAmbience('ch03_s01'); assert.equal(manager.ambience, loop);
   assert.equal(loop.playCalls, 1); assert.ok(elements.every(e => !/rain|gramophone/.test(e.src)));
+});
+
+test('all eight approved S03 MP3 assets match their integrated paths, byte sizes and MPEG frame durations', () => {
+  const assets = [
+    ...CH03_SCENE_03.voice.map(({ src, generationId, transcript }) => ({ src, generationId, transcript })),
+    ...CH03_SCENE_03.challenge.samples.map(({ src, generationId, transcript }) => ({ src, generationId, transcript }))
+  ];
+  const expected = [
+    ['ek6PpoRvjbVRlONnoBjj', 109121], ['hll8CZetNoio50SXnmtS', 56458],
+    ['N57mhxwhlDU8rYNipGte', 52696], ['mZNKT6kgjbnFEmgrfuUG', 76938],
+    ['pv4mhkS6TNRu6fQ6CBYY', 89894], ['MCDlKDcFalPe2MdZKfOe', 55204],
+    ['SrzFkD5thsvpOL5GKbPQ', 42665], ['ViuvcuZerKyJhXcAD3EV', 45173]
+  ];
+  const durations = [5.68, 2.40, 2.16, 3.68, 4.48, 2.32, 1.52, 1.68];
+  assert.equal(assets.length, 8);
+  for (let i = 0; i < assets.length; i++) {
+    assert.equal(assets[i].generationId, expected[i][0], 'exact approved generation is mapped');
+    assert.ok(assets[i].transcript, 'each recording has visible transcript text');
+    const file = path.join(root, assets[i].src.replace(/^\.\/assets\//, 'assets/'));
+    const bytes = fs.readFileSync(file);
+    assert.equal(bytes.length, expected[i][1], assets[i].src);
+    assert.ok(Math.abs(mp3Mpeg1Layer3Duration(bytes) - durations[i]) < 0.12, assets[i].src);
+  }
+});
+
+test('S03 voice and challenge replay share the foreground duck, interrupt and leave lifecycle', async t => {
+  const { manager } = audioHarness(t);
+  manager.unlock(); await manager.ensureAmbience('ch03_s03');
+  const ambience = manager.ambience;
+  const voice = await manager.playVoice(CH03_SCENE_03.voice[0].src);
+  assert.equal(ambience.volume, 0.10 * 0.28);
+  const sample = await manager.playChallenge(CH03_SCENE_03.challenge.samples[0].src);
+  assert.equal(voice.paused, true);
+  assert.equal(ambience.volume, 0.008);
+  sample.emit('ended');
+  assert.equal(ambience.volume, 0.10);
+  const replay = await manager.playVoice(CH03_SCENE_03.voice[0].src);
+  await manager.setEnabled(false);
+  assert.equal(replay.paused, true);
+  manager.leaveScene();
+  assert.equal(manager.foreground, null);
+  assert.equal(manager.ambience, null);
 });
 
 test('S02 continues the same lesson room loop and applies the approved LC06 duck', async t => {

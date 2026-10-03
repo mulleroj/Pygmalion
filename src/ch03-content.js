@@ -299,7 +299,13 @@ export const CH03_SCENE_03 = {
   plate: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
   eliza: { src: './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png', alt: 'Eliza in practical indoor lesson clothes listens with a focused expression.' },
   supporting: [{ src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Higgins supports the lesson from behind the desk.', placement: 'higgins' }],
-  props: [], voice: [],
+  props: [], voice: [
+    { id: 'AM26-S03-HIGGINS-OPEN', src: './assets/audio/characters/higgins/higgins_ch03_scene03_001.mp3', transcript: 'A word has a shape. One syllable usually carries more weight than the others.', label: 'Replay Higgins', inline: true, generationId: 'ek6PpoRvjbVRlONnoBjj', voiceId: 'JlptfLxaUpd8pZcw9dKd' },
+    { id: 'AM26-S03-ELIZA-OPEN', src: './assets/audio/characters/eliza/eliza_ch03_scene03_001.mp3', transcript: "So I needn't fight with every bit of it at once?", label: 'Replay Eliza', inline: true, generationId: 'hll8CZetNoio50SXnmtS', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM26-S03-ELIZA-PRE-LC07', src: './assets/audio/characters/eliza/eliza_ch03_scene03_002.mp3', transcript: 'Right. I want to hear where it leans.', label: 'Replay Eliza', inline: true, generationId: 'N57mhxwhlDU8rYNipGte', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM26-S03-ELIZA-POST-LC07', src: './assets/audio/characters/eliza/eliza_ch03_scene03_003.mp3', transcript: 'I can hear it now. One part comes forward and the rest follow it.', label: 'Replay Eliza', inline: true, generationId: 'mZNKT6kgjbnFEmgrfuUG', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM26-S03-HIGGINS-POST-LC07', src: './assets/audio/characters/higgins/higgins_ch03_scene03_002.mp3', transcript: 'Exactly. Find the stress first, and the word becomes easier to shape.', label: 'Replay Higgins', inline: true, generationId: 'pv4mhkS6TNRu6fQ6CBYY', voiceId: 'JlptfLxaUpd8pZcw9dKd' }
+  ],
   storyBeats: [
     { type: 'dialogue', speaker: 'Higgins', text: 'A word has a shape. One syllable usually carries more weight than the others.' },
     { type: 'dialogue', speaker: 'Eliza', text: "So I needn't fight with every bit of it at once?" },
@@ -310,11 +316,11 @@ export const CH03_SCENE_03 = {
   ],
   challenge: {
     id: 'LC07', kind: 'word-stress', title: 'Finding the Main Stress',
-    intro: 'Choose the syllable that carries the main stress in each word. All syllables begin in the same style. Replay is unavailable in this runtime preview; the challenge remains usable from the visible words.',
+    intro: 'Listen to each word. Choose the syllable that carries the main stress. You can replay each recording.',
     samples: [
-      { id: 'lc07_sample_01', word: 'customer', syllables: ['cus', 'to', 'mer'], options: ['lc07_stress_customer_1', 'lc07_stress_customer_2', 'lc07_stress_customer_3'], answer: 'lc07_stress_customer_1' },
-      { id: 'lc07_sample_02', word: 'expensive', syllables: ['ex', 'pen', 'sive'], options: ['lc07_stress_expensive_1', 'lc07_stress_expensive_2', 'lc07_stress_expensive_3'], answer: 'lc07_stress_expensive_2' },
-      { id: 'lc07_sample_03', word: 'delivery', syllables: ['de', 'liv', 'er', 'y'], options: ['lc07_stress_delivery_1', 'lc07_stress_delivery_2', 'lc07_stress_delivery_3', 'lc07_stress_delivery_4'], answer: 'lc07_stress_delivery_2' }
+      { id: 'lc07_sample_01', word: 'customer', transcript: 'customer', src: './assets/audio/challenges/ch03/lc07_customer.mp3', generationId: 'MCDlKDcFalPe2MdZKfOe', voiceId: 'JlptfLxaUpd8pZcw9dKd', syllables: ['cus', 'to', 'mer'], options: ['lc07_stress_customer_1', 'lc07_stress_customer_2', 'lc07_stress_customer_3'], answer: 'lc07_stress_customer_1' },
+      { id: 'lc07_sample_02', word: 'expensive', transcript: 'expensive', src: './assets/audio/challenges/ch03/lc07_expensive.mp3', generationId: 'SrzFkD5thsvpOL5GKbPQ', voiceId: 'JlptfLxaUpd8pZcw9dKd', syllables: ['ex', 'pen', 'sive'], options: ['lc07_stress_expensive_1', 'lc07_stress_expensive_2', 'lc07_stress_expensive_3'], answer: 'lc07_stress_expensive_2' },
+      { id: 'lc07_sample_03', word: 'delivery', transcript: 'delivery', src: './assets/audio/challenges/ch03/lc07_delivery.mp3', generationId: 'ViuvcuZerKyJhXcAD3EV', voiceId: 'JlptfLxaUpd8pZcw9dKd', syllables: ['de', 'liv', 'er', 'y'], options: ['lc07_stress_delivery_1', 'lc07_stress_delivery_2', 'lc07_stress_delivery_3', 'lc07_stress_delivery_4'], answer: 'lc07_stress_delivery_2' }
     ]
   },
   reflection: [

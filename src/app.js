@@ -334,6 +334,7 @@ function renderLc07(scene) {
     const saved = challenge.answers[sample.id];
     return `<article class="lc07-sample" aria-labelledby="${sample.id}-title">
       <h3 id="${sample.id}-title">Word ${index + 1}: <span class="lc07-word">${escapeHtml(sample.word)}</span></h3>
+      ${renderAudioControl({ ...sample, label: `Replay recording ${index + 1}`, ariaLabel: `Replay recording ${index + 1}` }, 'challenge')}
       <div class="lc07-syllables" role="group" aria-label="Choose the main-stressed syllable in ${escapeHtml(sample.word)}">
         ${sample.syllables.map((syllable, syllableIndex) => {
           const answer = sample.options[syllableIndex];
@@ -351,7 +352,7 @@ function renderLc07(scene) {
     ? `<div class="lc07-support-note" role="status"><p>Supported Practice is open. You can complete the challenge without a penalty; it no longer earns a pronunciation reward.</p><p>${escapeHtml(scene.challenge.samples.map((sample) => `${sample.word}: ${sample.syllables.map((syllable, index) => index === sample.syllables.findIndex((_, i) => sample.options[i] === sample.answer) ? syllable.toUpperCase() : syllable).join('-')}`).join(' · '))}</p><p>${escapeHtml('Listen for the syllable that sounds strongest.')}</p></div>` : '';
   const completion = completed
     ? `<p class="challenge-complete" role="status">LC07 complete. ${challenge.supportUsed ? 'Supported practice completed this challenge.' : 'Unaided completion earned one pronunciation signal.'} Review and replay do not change your saved progress.</p>${renderStoryBeats({ ...scene, storyBeats: scene.reflection })}<p class="transition-line">${escapeHtml(scene.transition)}</p>${state.applied_events.includes('ch03_s03_complete') ? '<p class="end-note">S03 is complete. The sentence lesson is not available in this runtime yet; this scene remains available for review.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button>' : '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue</button>'}` : '';
-  return `<section class="challenge-block lc07-block" aria-labelledby="lc07-title"><p class="eyebrow">Word stress · LC07</p><h2 id="lc07-title">${escapeHtml(scene.challenge.title)}</h2><p>${escapeHtml(scene.challenge.intro)}</p><p class="lc07-audio-note" role="status">LC07 audio is not available in this runtime. This book-first preview uses the visible words; no audio or speech synthesis will play.</p><p class="lc07-attempt-note">${challenge.firstAttempt ? 'Your first attempt is recorded. Keep working with any syllables that are not correct.' : 'Choose the syllable you think carries the main stress in each word.'}</p><div class="lc07-samples">${cards}</div>${support}${supportNote}${completion}</section>`;
+  return `<section class="challenge-block lc07-block" aria-labelledby="lc07-title"><p class="eyebrow">Word stress · LC07</p><h2 id="lc07-title">${escapeHtml(scene.challenge.title)}</h2><p>${escapeHtml(scene.challenge.intro)}</p><p class="lc07-audio-note">The spoken words are shown in text as well. Replay does not change your answers or progress.</p><p class="lc07-attempt-note">${challenge.firstAttempt ? 'Your first attempt is recorded. Keep working with any syllables that are not correct.' : 'Choose the syllable you think carries the main stress in each word.'}</p><div class="lc07-samples">${cards}</div>${support}${supportNote}${completion}</section>`;
 }
 
 function renderEnd(scene) {
@@ -415,7 +416,7 @@ function renderScene(scene) {
         <p class="eyebrow">${escapeHtml(scene.kicker)}</p>
         <h1 id="scene-title">${escapeHtml(scene.title)}</h1>
         ${scene.storyBeats ? renderStoryBeats(scene) : `<div class="narrative">${scene.narration.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</div><div class="dialogue-block" aria-label="Story dialogue">${renderDialogue(scene)}</div>`}
-        ${voiceMarkup ? `<div class="story-voices" aria-label="Optional story voice">${voiceMarkup}</div>` : ''}
+        ${voiceMarkup ? `<div class="story-voices" aria-label="${scene.id === 'ch03_s03' ? 'Story voice' : 'Optional story voice'}">${voiceMarkup}</div>` : ''}
         ${scene.id === 'ch02_s01' ? '<p class="read-only-note">Story audio for this scene is not yet available. All dialogue and the reading challenge work without sound.</p>' : ''}
         ${scene.id === 'ch02_s02' ? '<p class="read-only-note">Optional story voice supports the visible text. The story is complete without sound.</p>' : ''}
         ${sfxMarkup ? `<div class="story-voices" aria-label="Optional sound effect">${sfxMarkup}</div>` : ''}

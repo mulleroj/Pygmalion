@@ -125,7 +125,7 @@ ch03_s01 → ch03_s02 story → LC06 (unaided or supported completion) → refle
 
 ## ch03_s03 — TEACHER CONTENT — PRE-PRODUCTION CANON LOCKED
 
-Documentation only; use the established 12-section Teacher Mode structure. Teacher preview is read-only: it never writes answers, support usage, progress, signals, completion or events.
+Canon and teaching guidance; use the established 12-section Teacher Mode structure. Teacher preview is read-only: it never writes answers, support usage, progress, signals, completion or events. Runtime assets and their QA state are tracked in AUDIO_PLAN.md.
 
 ### 1. Chapter Overview
 
@@ -141,7 +141,7 @@ Word stress is the prominence of one syllable within a word. Teach only word str
 
 ### 4. Listening Focus
 
-LC07 plays each complete target word in a separate sample. Learners select its main-stressed syllable. Listen to the word as a whole and notice which syllable stands out; do not infer stress from spelling or sentence context. Replay is normal speed. No slowed audio.
+LC07 plays each complete target word in a separate canonical Higgins/Kelvin recording. Learners select its main-stressed syllable. Listen to the word as a whole and notice which syllable stands out; do not infer stress from spelling or sentence context. Replay is unlimited at normal speed. No slowed audio or speech synthesis fallback. The visible word and syllable controls remain available as a transcript if audio cannot be played. Individual recordings and the complete S03 mix passed Human Audio QA; status details are in AUDIO_PLAN.md.
 
 ### 5. Key Vocabulary
 
@@ -169,7 +169,7 @@ Do not describe a social accent as wrong, unintelligent or something Eliza must 
 
 ### 11. Suggested Classroom Use
 
-Let learners make an unaided first attempt with all syllables styled identically. Normal replay is available. After an incorrect attempt, offer optional Supported Practice; opening target-revealing support permanently removes reward eligibility for this challenge but allows completion with no penalty. Do not display answer notation before response. Preserve correct answers on retry when shared handling permits. Ensure keyboard/touch operation, visible focus and text status independent of colour; transcript/support is available after the unaided attempt. Teacher preview/replay is read-only.
+Let learners make an unaided first attempt with all syllables styled identically. Unlimited normal-speed replay is available. After an incorrect attempt, offer optional Supported Practice; opening target-revealing support permanently removes reward eligibility for this challenge but allows completion with no penalty. Do not display answer notation before response. Preserve correct answers on retry. Ensure keyboard/touch operation, visible focus and text status independent of colour; visible word/syllables remain available when audio is unavailable. Teacher preview/replay is read-only.
 
 ### 12. Scene Navigation
 

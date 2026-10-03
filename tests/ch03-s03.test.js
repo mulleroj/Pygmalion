@@ -20,14 +20,20 @@ test('S03 is registered with exact locked story, visual stage, assets, no decisi
   assert.equal(CH03_SCENE_03.visualStage, 'in_training');
   assert.equal(CH03_SCENE_03.nextScene, 'ch03_s04');
   assert.equal(CH03_SCENE_03.decision, undefined);
-  assert.deepEqual(CH03_SCENE_03.voice, []);
+  assert.deepEqual(CH03_SCENE_03.voice.map(({ id, generationId, voiceId, transcript, src }) => [id, generationId, voiceId, transcript, src]), [
+    ['AM26-S03-HIGGINS-OPEN', 'ek6PpoRvjbVRlONnoBjj', 'JlptfLxaUpd8pZcw9dKd', 'A word has a shape. One syllable usually carries more weight than the others.', './assets/audio/characters/higgins/higgins_ch03_scene03_001.mp3'],
+    ['AM26-S03-ELIZA-OPEN', 'hll8CZetNoio50SXnmtS', '124kaYCknTDsnwUFdWl9', "So I needn't fight with every bit of it at once?", './assets/audio/characters/eliza/eliza_ch03_scene03_001.mp3'],
+    ['AM26-S03-ELIZA-PRE-LC07', 'N57mhxwhlDU8rYNipGte', '124kaYCknTDsnwUFdWl9', 'Right. I want to hear where it leans.', './assets/audio/characters/eliza/eliza_ch03_scene03_002.mp3'],
+    ['AM26-S03-ELIZA-POST-LC07', 'mZNKT6kgjbnFEmgrfuUG', '124kaYCknTDsnwUFdWl9', 'I can hear it now. One part comes forward and the rest follow it.', './assets/audio/characters/eliza/eliza_ch03_scene03_003.mp3'],
+    ['AM26-S03-HIGGINS-POST-LC07', 'pv4mhkS6TNRu6fQ6CBYY', 'JlptfLxaUpd8pZcw9dKd', 'Exactly. Find the stress first, and the word becomes easier to shape.', './assets/audio/characters/higgins/higgins_ch03_scene03_002.mp3']
+  ]);
   assert.deepEqual(CH03_SCENE_03.background, CH03_SCENE_02.background);
   assert.deepEqual(CH03_SCENE_03.eliza, CH03_SCENE_02.eliza);
   assert.deepEqual(CH03_SCENE_03.supporting, CH03_SCENE_02.supporting);
-  assert.deepEqual(targets.map(({ id, word, syllables, answer }) => [id, word, syllables, answer]), [
-    ['lc07_sample_01', 'customer', ['cus', 'to', 'mer'], 'lc07_stress_customer_1'],
-    ['lc07_sample_02', 'expensive', ['ex', 'pen', 'sive'], 'lc07_stress_expensive_2'],
-    ['lc07_sample_03', 'delivery', ['de', 'liv', 'er', 'y'], 'lc07_stress_delivery_2']
+  assert.deepEqual(targets.map(({ id, word, syllables, answer, src, generationId, voiceId }) => [id, word, syllables, answer, src, generationId, voiceId]), [
+    ['lc07_sample_01', 'customer', ['cus', 'to', 'mer'], 'lc07_stress_customer_1', './assets/audio/challenges/ch03/lc07_customer.mp3', 'MCDlKDcFalPe2MdZKfOe', 'JlptfLxaUpd8pZcw9dKd'],
+    ['lc07_sample_02', 'expensive', ['ex', 'pen', 'sive'], 'lc07_stress_expensive_2', './assets/audio/challenges/ch03/lc07_expensive.mp3', 'SrzFkD5thsvpOL5GKbPQ', 'JlptfLxaUpd8pZcw9dKd'],
+    ['lc07_sample_03', 'delivery', ['de', 'liv', 'er', 'y'], 'lc07_stress_delivery_2', './assets/audio/challenges/ch03/lc07_delivery.mp3', 'ViuvcuZerKyJhXcAD3EV', 'JlptfLxaUpd8pZcw9dKd']
   ]);
   const allDialogue = [...CH03_SCENE_03.storyBeats, ...CH03_SCENE_03.reflection].map(({ text }) => text);
   assert.deepEqual(allDialogue, [
@@ -94,7 +100,7 @@ test('incorrect answers can be retried; opening target-revealing support cancels
   assert.equal(markLc07SupportUsed(state), state);
 });
 
-test('LC07 renders book-first with no answer leak, no audio/TTS, and a read-only 12-section Teacher preview', async (t) => {
+test('approved story voice and LC07 recordings render with transcript parity and read-only replay', async (t) => {
   const originals = Object.fromEntries(['document', 'window', 'localStorage'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; });
   const nodes = new Map(), events = {};
@@ -117,11 +123,18 @@ test('LC07 renders book-first with no answer leak, no audio/TTS, and a read-only
   assert.match(html, /ex.*pen.*sive/);
   assert.match(html, /de.*liv.*er.*y/);
   assert.doesNotMatch(html, /CUS-to-mer|ex-PEN-sive|de-LIV-er-y/);
-  assert.doesNotMatch(html, /data-action="play-(?:voice|challenge)"|speechSynthesis/);
-  assert.match(html, /LC07 audio is not available in this runtime/);
+  assert.match(html, /data-action="play-voice"/);
+  assert.equal((html.match(/data-action="play-challenge"/g) || []).length, 3);
+  for (const sample of targets) assert.ok(html.includes(sample.src));
+  assert.match(html, /The spoken words are shown in text as well/);
+  assert.doesNotMatch(html, /speechSynthesis|LC07 audio is not available/);
   const beforeRender = saved, beforeWrites = writes;
   render();
   assert.equal(saved, beforeRender);
+  assert.equal(writes, beforeWrites);
+  await click('play-voice', { src: CH03_SCENE_03.voice[0].src });
+  await click('play-challenge', { src: targets[0].src, sample: targets[0].id });
+  assert.equal(saved, beforeRender, 'voice and sample replay never writes progress');
   assert.equal(writes, beforeWrites);
 
   await click('open-teacher');

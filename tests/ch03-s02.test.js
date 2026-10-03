@@ -214,6 +214,7 @@ test('S02 UI plays approved files, hides transcripts until support and keeps pre
   assert.equal(JSON.parse(saved).scene, 'ch03_s03');
   assert.equal(window.location.hash, '#ch03_s03');
   assert.match(node('#app').innerHTML, /Finding the Main Stress/);
-  assert.match(node('#app').innerHTML, /LC07 audio is not available in this runtime/);
+  assert.match(node('#app').innerHTML, /Replay recording 1/);
+  assert.match(node('#app').innerHTML, /lc07_customer\.mp3/);
   assert.doesNotMatch(node('#app').innerHTML, /The Flower Girl|The Bargain/);
 });

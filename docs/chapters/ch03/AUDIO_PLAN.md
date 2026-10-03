@@ -118,30 +118,32 @@ Both `ch03_s01` and `ch03_s02` map to `ch03_lesson_room`; the AudioManager keeps
 
 LC06 ambience 0.008 (existing challenge duck ×0.08) is the human-approved runtime value. Replay, Sound Off, and scene cleanup use the existing AudioManager lifecycle; no new AudioManager/mix engine.
 
-## ch03_s03 — AM25 / AM26 — PRE-PRODUCTION CANON LOCKED
+## ch03_s03 — AM25 / AM26 — RUNTIME AUDIO INTEGRATED — HUMAN AUDIO MIX QA PASS
 
-Planning only; do not generate or integrate audio in this checkpoint. BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. Reuse `ch03_lesson_room` → `assets/audio/ambience/ch03_higgins_house_lesson_ambient.mp3` through the established Chapter III ambience architecture.
+BOOK FIRST → AUDIO ENHANCED → CONTEXTUAL AMBIENCE. S03 reuses `ch03_lesson_room` → `assets/audio/ambience/ch03_higgins_house_lesson_ambient.mp3` through the established Chapter III ambience architecture; that ambience file and the existing S01/S02 mix values are unchanged. S03 uses the existing AudioManager foreground replay, duck/restore, Sound Off and scene-exit lifecycle. Audio playback is read-only and does not change challenge answers, support, rewards or scene completion. No browser speech synthesis fallback.
 
-### AM25 — objective LC07 samples
+### AM25 — objective LC07 samples — individual Human Audio QA PASS
 
-Plan three separate local objective recordings, each containing only the target word:
+Three exact approved local objective recordings, each containing only the target word. Learners can replay at normal speed; the visible word/syllables provide the transcript and remain readable with Sound Off. The audio controls expose no additional transcript or answer key before the response. Audio failure leaves the challenge available from its visible text and never changes state.
 
-| Sample ID | Proposed runtime path | Exact spoken text / transcript | Speaker |
-|---|---|---|---|
-| lc07_sample_01 | assets/audio/challenges/ch03/lc07_customer.mp3 | customer | Higgins / Kelvin, canonical voice |
-| lc07_sample_02 | assets/audio/challenges/ch03/lc07_expensive.mp3 | expensive | Higgins / Kelvin, canonical voice |
-| lc07_sample_03 | assets/audio/challenges/ch03/lc07_delivery.mp3 | delivery | Higgins / Kelvin, canonical voice |
+| Sample ID | Runtime path | Exact spoken text / transcript | Speaker | Generation ID | Duration | Bytes | Human Audio QA |
+|---|---|---|---|---|---:|---:|---|
+| lc07_sample_01 | `assets/audio/challenges/ch03/lc07_customer.mp3` | customer | Higgins / Kelvin, canonical voice | `MCDlKDcFalPe2MdZKfOe` | 2.32 s | 55,204 | PASS |
+| lc07_sample_02 | `assets/audio/challenges/ch03/lc07_expensive.mp3` | expensive | Higgins / Kelvin, canonical voice | `SrzFkD5thsvpOL5GKbPQ` | 1.52 s | 42,665 | PASS |
+| lc07_sample_03 | `assets/audio/challenges/ch03/lc07_delivery.mp3` | delivery | Higgins / Kelvin, canonical voice | `ViuvcuZerKyJhXcAD3EV` | 1.68 s | 45,173 | PASS |
 
-Natural British pronunciation, normal word stress, no exaggeration, extra words or coaching. Keep loudness and recording character broadly comparable. No slowed recording or playback-rate/pitch manipulation. Each sample needs accessible transcript/support under the LC07 unaided/support gate; do not expose transcript before initial unaided attempt. Human listening QA remains future work.
+Natural British pronunciation, normal word stress, no exaggeration, extra words or coaching. Do not slow or pitch-shift. LC07 reward/support contract and answer IDs remain unchanged.
 
-### AM26 — required planned story voice moments
+### AM26 — five story voice moments — individual Human Audio QA PASS
 
-All five moments below are part of the S03 audio plan and are to be recorded when audio production begins. This checkpoint plans them only: no audio is generated now. Their text remains visible in the book and playback is learner-controlled. These are the only S03 story voice moments in this plan:
+All five canonical story lines have exact approved runtime recordings. Text/transcript stays in the book; replay is learner-controlled. These are the only S03 story voice moments:
 
-- Higgins opening: “A word has a shape. One syllable usually carries more weight than the others.”
-- Eliza opening: “So I needn't fight with every bit of it at once?”
-- Eliza pre-LC07: “Right. I want to hear where it leans.”
-- Eliza post-LC07: “I can hear it now. One part comes forward and the rest follow it.”
-- Higgins post-LC07: “Exactly. Find the stress first, and the word becomes easier to shape.”
+| Moment | Runtime path | Exact transcript | Generation ID | Duration | Bytes | Human Audio QA |
+|---|---|---|---|---:|---:|---|
+| Higgins opening | `assets/audio/characters/higgins/higgins_ch03_scene03_001.mp3` | A word has a shape. One syllable usually carries more weight than the others. | `ek6PpoRvjbVRlONnoBjj` | 5.68 s | 109,121 | PASS |
+| Eliza opening | `assets/audio/characters/eliza/eliza_ch03_scene03_001.mp3` | So I needn't fight with every bit of it at once? | `hll8CZetNoio50SXnmtS` | 2.40 s | 56,458 | PASS |
+| Eliza pre-LC07 | `assets/audio/characters/eliza/eliza_ch03_scene03_002.mp3` | Right. I want to hear where it leans. | `N57mhxwhlDU8rYNipGte` | 2.16 s | 52,696 | PASS |
+| Eliza post-LC07 | `assets/audio/characters/eliza/eliza_ch03_scene03_003.mp3` | I can hear it now. One part comes forward and the rest follow it. | `mZNKT6kgjbnFEmgrfuUG` | 3.68 s | 76,938 | PASS |
+| Higgins post-LC07 | `assets/audio/characters/higgins/higgins_ch03_scene03_002.mp3` | Exactly. Find the stress first, and the word becomes easier to shape. | `pv4mhkS6TNRu6fQ6CBYY` | 4.48 s | 89,894 | PASS |
 
-Eliza remains `Chapter III – Conscious Training`, canonical voice ID `124kaYCknTDsnwUFdWl9`, following the established voice arc. Higgins remains canonical Kelvin. Pickering has no S03 audio. Pedagogically important objective audio keeps accessible transcript/support; no story line is audio-only. No new ambience, AudioManager, mixer or lifecycle.
+Eliza uses canonical voice ID `124kaYCknTDsnwUFdWl9`, following the established Chapter III voice arc. Higgins uses canonical Kelvin `JlptfLxaUpd8pZcw9dKd`. Pickering has no S03 audio. No new ambience, AudioManager, mixer or lifecycle was added. Individual asset Human Audio QA = PASS; S03 Human Audio Mix QA = **PASS** after the complete scene mix was listened to and approved.
