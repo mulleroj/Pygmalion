@@ -1,4 +1,4 @@
-import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_TEACHER_SECTIONS, CH03_S02_TEACHER_SECTIONS, CH03_S03_TEACHER_SECTIONS, CH03_S04_TEACHER_SECTIONS, chapterThreeCallback } from './ch03-content.js';
+import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05, CH03_TEACHER_SECTIONS, CH03_S02_TEACHER_SECTIONS, CH03_S03_TEACHER_SECTIONS, CH03_S04_TEACHER_SECTIONS, CH03_S05_TEACHER_SECTIONS, chapterThreeCallback } from './ch03-content.js';
 import {
   SCENES,
   SCENE_BY_ID,
@@ -26,6 +26,8 @@ import {
   markLc07SupportUsed,
   recordLc08Answer,
   markLc08SupportUsed,
+  recordLc09Answer,
+  markLc09SupportUsed,
   completeScene,
   recordS03Response,
   completeS04Terms,
@@ -47,7 +49,7 @@ const liveRegion = document.querySelector('#live-region');
 const teacherDialog = document.querySelector('#teacher-dialog');
 const teacherContent = document.querySelector('#teacher-content');
 const teacherContext = document.querySelector('#teacher-context');
-const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH03_SCENE_01.id]: CH03_SCENE_01, [CH03_SCENE_02.id]: CH03_SCENE_02, [CH03_SCENE_03.id]: CH03_SCENE_03, [CH03_SCENE_04.id]: CH03_SCENE_04, [CH02_SCENE_01.id]: CH02_SCENE_01, [CH02_SCENE_02.id]: CH02_SCENE_02, [CH02_SCENE_03.id]: CH02_SCENE_03, [CH02_SCENE_04.id]: CH02_SCENE_04, [CH02_SCENE_05.id]: CH02_SCENE_05 };
+const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH03_SCENE_01.id]: CH03_SCENE_01, [CH03_SCENE_02.id]: CH03_SCENE_02, [CH03_SCENE_03.id]: CH03_SCENE_03, [CH03_SCENE_04.id]: CH03_SCENE_04, [CH03_SCENE_05.id]: CH03_SCENE_05, [CH02_SCENE_01.id]: CH02_SCENE_01, [CH02_SCENE_02.id]: CH02_SCENE_02, [CH02_SCENE_03.id]: CH02_SCENE_03, [CH02_SCENE_04.id]: CH02_SCENE_04, [CH02_SCENE_05.id]: CH02_SCENE_05 };
 let state = loadState();
 let lastTeacherTrigger = null;
 let previousScene = null;
@@ -387,6 +389,28 @@ function renderLc08(scene) {
   return `<section class="challenge-block lc08-block" aria-labelledby="lc08-title"><p class="eyebrow">Sentence stress · LC08</p><h2 id="lc08-title">${escapeHtml(scene.challenge.title)}</h2><p>${escapeHtml(scene.challenge.intro)}</p><p class="lc08-audio-note">The sentence stays visible while you listen. Replay is unlimited and does not change your answers or progress. If a recording is unavailable, continue with the visible text and Supported Practice.</p><p class="lc08-attempt-note">${challenge.firstAttempt ? 'Your first attempt is recorded. Keep working with any words that are not correct.' : 'Choose the word you think carries the strongest part of each sentence.'}</p><div class="lc08-samples">${cards}</div>${support}${supportNote}${completion}</section>`;
 }
 
+function renderLc09(scene) {
+  const challenge = state.challenges.lc09;
+  const supportAvailable = !challenge.completed && challenge.firstAttempt && Object.values(challenge.answers).some(({ correct }) => !correct);
+  const samples = scene.challenge.samples.map((sample, index) => {
+    const saved = challenge.answers[sample.id];
+    const supportOpen = challenge.supportSamples.includes(sample.id);
+    const splitPoints = sample.options.map((pointId, pointIndex) => {
+      const disabled = studentReadOnly() || challenge.completed || saved?.correct;
+      return `<button class="lc09-split-point" type="button" data-action="answer-lc09" data-sample="${sample.id}" data-answer="${pointId}" aria-label="Choose a pause after ${escapeHtml(sample.afterLabels[pointIndex])}" ${disabled ? 'disabled' : ''}>${pointIndex + 1}</button>`;
+    }).join('');
+    const feedback = saved && !saved.correct ? `<p class="lc09-feedback retry" role="status">${escapeHtml(scene.challenge.incorrectFeedback)}</p>` : saved?.correct ? '<p class="lc09-feedback success" role="status">That pause works. Continue with the next sentence.</p>' : '';
+    const support = supportAvailable && saved && !saved.correct && !supportOpen
+      ? `<p class="lc09-support-prompt">${escapeHtml(scene.challenge.supportedPracticePrompt)}</p><p class="lc09-audio-note">No recording is available in this version. Read the sentence and notice where it can breathe.</p><button class="text-button" type="button" data-action="open-lc09-support" data-sample="${sample.id}">Open Supported Practice</button>` : '';
+    const revealed = supportOpen
+      ? `<div class="lc09-support-note" role="status"><p>${escapeHtml(scene.challenge.supportExplanation)}</p><p class="lc09-revealed-split">${escapeHtml(sample.key)}</p></div>` : '';
+    return `<article class="lc09-sample" aria-labelledby="${sample.id}-title"><h3 id="${sample.id}-title">Sentence ${index + 1}</h3><p class="lc09-sentence">${escapeHtml(sample.sentence)}</p><div class="lc09-split-points" role="group" aria-label="Possible pause positions in sentence order">${splitPoints}</div>${feedback}${support}${revealed}</article>`;
+  }).join('');
+  const completion = challenge.completed
+    ? `<p class="challenge-complete" role="status">LC09 complete. ${challenge.supportUsed ? 'Supported completion has no reward or penalty.' : 'Unaided completion earned Pronunciation +1.'}</p>${renderStoryBeats({ ...scene, storyBeats: scene.reflection })}${state.applied_events.includes('ch03_s05_complete') ? '<p class="end-note">The next scene, A Small Victory, is not available in this runtime yet. This scene remains available for review.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button>' : '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue <span aria-hidden="true">→</span></button>'}` : '';
+  return `<section class="challenge-block lc09-block" aria-labelledby="lc09-title"><p class="eyebrow">Pace and repair · LC09</p><h2 id="lc09-title">${escapeHtml(scene.challenge.title)}</h2><p>${escapeHtml(scene.challenge.intro)}</p><p class="lc09-audio-note">This is a text-based pause and chunking activity. No recording is available in this version.</p><div class="lc09-samples">${samples}</div>${completion}</section>`;
+}
+
 function renderEnd(scene) {
   const selected = state.decisions.D03;
   if (!selected) return '';
@@ -429,6 +453,10 @@ function renderScene(scene) {
     if (state.decisions.D07) body += renderStoryBeats({ ...scene, storyBeats: scene.preChallengeBeats });
     body += renderLc08(scene);
   }
+  if (scene.id === 'ch03_s05') {
+    if (scenePreview) body = '<p class="read-only-note" role="status">Teacher preview · read-only</p><button class="secondary-button" type="button" data-action="return-student">Return to student scene</button>';
+    body += renderLc09(scene);
+  }
   if (scene.id === 'ch01_s02') body += renderLc01(scene);
   if (scene.id === 'ch01_s04') body += renderLc02(scene);
   if (scene.id === 'ch01_s05') body += renderEnd(scene);
@@ -442,7 +470,7 @@ function renderScene(scene) {
     body += `<button class="secondary-button next-button" type="button" data-action="next-scene">Continue the story <span aria-hidden="true">→</span></button>`;
   }
   if (scene.id === 'ch01_s03' && decisionSelected) body += `<p class="read-only-note">The exchange is saved as a story detail. Replaying it will not apply the response again.</p>`;
-  const transitionMarkup = scene.transition && scene.id !== 'ch03_s01' && scene.id !== 'ch03_s02' && scene.id !== 'ch03_s04' && !scene.terms && scene.id !== 'ch01_s05' && (!chapterTwo || challengeComplete)
+  const transitionMarkup = scene.transition && scene.id !== 'ch03_s01' && scene.id !== 'ch03_s02' && scene.id !== 'ch03_s04' && scene.id !== 'ch03_s05' && !scene.terms && scene.id !== 'ch01_s05' && (!chapterTwo || challengeComplete)
     ? `<p class="transition-line">${escapeHtml(scene.transition)}</p>` : '';
 
   return `<main class="story-page ${chapterTwo ? 'ch02-story' : ''}" id="story-root" tabindex="-1" aria-labelledby="scene-title">
@@ -478,6 +506,11 @@ function render() {
   }
   if (hashScene === CH03_SCENE_04.id && !state.applied_events.includes('ch03_s03_complete')) {
     const safeScene = state.applied_events.includes('ch03_s02_complete') ? CH03_SCENE_03.id : state.ch03_s01_complete ? CH03_SCENE_02.id : CH03_SCENE_01.id;
+    setLocation(safeScene, true);
+    hashScene = safeScene;
+  }
+  if (hashScene === CH03_SCENE_05.id && !state.applied_events.includes('ch03_s04_complete')) {
+    const safeScene = state.applied_events.includes('ch03_s03_complete') ? CH03_SCENE_04.id : state.applied_events.includes('ch03_s02_complete') ? CH03_SCENE_03.id : state.ch03_s01_complete ? CH03_SCENE_02.id : CH03_SCENE_01.id;
     setLocation(safeScene, true);
     hashScene = safeScene;
   }
@@ -559,6 +592,16 @@ function moveNext() {
   }
   if (scene.id === 'ch03_s04') {
     const next = completeScene(state, scene);
+    if (next !== state) { state = next; save(); }
+    state = setScene(state, CH03_SCENE_05.id); save(); setLocation(CH03_SCENE_05.id); render(); announce('S04 complete and saved. Chapter III, The Bad Day.'); return;
+  }
+  if (scene.id === 'ch03_s05') {
+    const next = completeScene(state, scene);
+    if (next !== state) { state = next; save(); }
+    render(); announce('S05 complete and saved. A Small Victory is not available in this runtime yet; this scene remains available for review.'); return;
+  }
+  if (scene.id === 'ch03_s04') {
+    const next = completeScene(state, scene);
     if (next === state) return announce(advanceBlock);
     state = next; save(); render();
     announce('S04 complete and saved. The next scene is not available yet; this scene remains available for review.');
@@ -635,7 +678,7 @@ function openTeacher(trigger) {
   const scene = document.querySelector('#story-root') ? currentScene() : null;
   const chapterTwo = scene?.id?.startsWith('ch02_');
   teacherContext.textContent = scene ? `Chapter ${chapterLabel(scene)} · ${scene.title}${scene.challenge ? ` · ${scene.id === 'ch03_s02' ? `${scene.challenge.id} · ` : ''}${scene.challenge.title}` : ''}${scene.id.startsWith('ch03_') ? ` · previewMode=${scenePreview}` : ''}` : 'Chapter I · Cover';
-  const sections = scene?.id === 'ch03_s04' ? CH03_S04_TEACHER_SECTIONS : scene?.id === 'ch03_s03' ? CH03_S03_TEACHER_SECTIONS : scene?.id === 'ch03_s02' ? CH03_S02_TEACHER_SECTIONS : scene?.id === 'ch03_s01' ? CH03_TEACHER_SECTIONS : scene?.id === 'ch02_s05' ? CH02_SCENE_05_TEACHER_SECTIONS : scene?.id === 'ch02_s04' ? CH02_SCENE_04_TEACHER_SECTIONS : scene?.id === 'ch02_s03' ? CH02_SCENE_03_TEACHER_SECTIONS : scene?.id === 'ch02_s02' ? CH02_SCENE_02_TEACHER_SECTIONS : chapterTwo ? CH02_TEACHER_SECTIONS : TEACHER_SECTIONS;
+  const sections = scene?.id === 'ch03_s05' ? CH03_S05_TEACHER_SECTIONS : scene?.id === 'ch03_s04' ? CH03_S04_TEACHER_SECTIONS : scene?.id === 'ch03_s03' ? CH03_S03_TEACHER_SECTIONS : scene?.id === 'ch03_s02' ? CH03_S02_TEACHER_SECTIONS : scene?.id === 'ch03_s01' ? CH03_TEACHER_SECTIONS : scene?.id === 'ch02_s05' ? CH02_SCENE_05_TEACHER_SECTIONS : scene?.id === 'ch02_s04' ? CH02_SCENE_04_TEACHER_SECTIONS : scene?.id === 'ch02_s03' ? CH02_SCENE_03_TEACHER_SECTIONS : scene?.id === 'ch02_s02' ? CH02_SCENE_02_TEACHER_SECTIONS : chapterTwo ? CH02_TEACHER_SECTIONS : TEACHER_SECTIONS;
   teacherContent.innerHTML = `${sections.map(([heading, content]) => `<section class="teacher-section"><h3>${escapeHtml(heading)}</h3>${renderTeacherText(content)}</section>`).join('')}
     ${scene ? `<button class="secondary-button teacher-preview" type="button" data-action="teacher-preview">Open / replay this scene (read-only preview)</button>` : ''}`;
   if (typeof teacherDialog.showModal === 'function') teacherDialog.showModal();
@@ -783,6 +826,22 @@ document.addEventListener('click', async (event) => {
     const next = markLc08SupportUsed(state);
     if (next !== state) { state = next; save(); }
     render(); announce('Supported Practice is open. You can finish without a penalty.');
+  }
+  if (action === 'answer-lc09' && currentScene().id === 'ch03_s05' && !studentReadOnly()) {
+    const { sample, answer } = target.dataset;
+    const next = recordLc09Answer(state, sample, answer);
+    if (next !== state) {
+      state = next; save(); render();
+      const savedAnswer = state.challenges.lc09.answers[sample];
+      announce(state.challenges.lc09.completed ? 'LC09 complete.' : savedAnswer?.correct ? 'That pause works. Continue with the next sentence.' : CH03_SCENE_05.challenge.incorrectFeedback);
+      document.querySelector(`[data-action="answer-lc09"][data-sample="${sample}"]:not(:disabled)`)?.focus();
+    }
+  }
+  if (action === 'open-lc09-support' && currentScene().id === 'ch03_s05' && !studentReadOnly()) {
+    const next = markLc09SupportUsed(state, target.dataset.sample);
+    if (next !== state) { state = next; save(); render(); }
+    document.querySelector(`[data-action="answer-lc09"][data-sample="${target.dataset.sample}"]:not(:disabled)`)?.focus();
+    announce('Supported Practice is open. You can complete the challenge without a penalty.');
   }
   if (action === 'answer-lc04') {
     const nextState = recordLc04Answer(state, target.dataset.sample, target.dataset.answer);

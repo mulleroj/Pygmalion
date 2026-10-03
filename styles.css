@@ -363,6 +363,36 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .lc08-support-note { margin-top: .65rem; }
 .lc08-support-note p { margin: 0 0 .45rem; }
 .lc08-block > .text-button { margin-top: .65rem; }
+.ch03-bad-day-spread { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; }
+.ch03-bad-day.storybook-art { min-height: 0; height: auto; aspect-ratio: 1672 / 941; }
+.ch03-bad-day .art-background { filter: none; }
+.ch03-bad-day .art-background img { object-fit: contain; }
+.ch03-bad-day .art-support, .ch03-bad-day .art-eliza { display: block; padding: 0; opacity: 1; }
+.ch03-bad-day .supporting-character, .ch03-bad-day .art-eliza img { position: absolute; width: auto; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); filter: drop-shadow(0 3px 3px rgba(34,27,24,.22)); }
+.ch03-bad-day .art-eliza img { left: 25%; bottom: 2%; height: 84%; z-index: 2; }
+.ch03-bad-day .support-higgins { left: 67%; bottom: 2%; height: 82%; z-index: 0; }
+.ch03-bad-day .art-support::after { content: ''; position: absolute; inset: 0; z-index: 1; background: url('./assets/images/locations/ch02/ch02_higgins-study.webp') center / 100% 100% no-repeat; clip-path: polygon(26% 54%, 39% 52%, 56% 51%, 75% 54%, 76% 62%, 75% 84%, 72% 92%, 54% 94%, 30% 84%); pointer-events: none; }
+.ch03-bad-day .art-eliza::before { left: 15%; bottom: 2%; width: 18%; height: 1.5%; filter: blur(4px); }
+.ch03-bad-day figcaption { display: none; }
+.ch03-bad-day-spread .story-copy { padding-top: clamp(1.4rem, 2.8vw, 2.4rem); }
+.lc09-block { margin-top: 1.3rem; min-width: 0; }
+.lc09-audio-note { margin: .7rem 0; color: var(--muted); font-size: .84rem; line-height: 1.5; }
+.lc09-samples { display: grid; gap: .6rem; }
+.lc09-sample { min-width: 0; padding: .65rem 0; border-bottom: 1px solid var(--line); }
+.lc09-sample h3 { margin: 0 0 .4rem; color: var(--muted); font-size: .78rem; font-weight: 600; }
+.lc09-sentence { margin: 0; font-size: clamp(1rem, 1.7vw, 1.15rem); line-height: 1.6; }
+.lc09-split-points { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .5rem; }
+.lc09-split-point { flex: 0 0 2.75rem; width: 2.75rem; min-width: 2.75rem; height: 2.75rem; padding: 0; border: 1px solid rgba(124, 63, 77, .2); border-radius: 4px; background: rgba(255, 252, 247, .38); color: inherit; font: inherit; cursor: pointer; }
+.lc09-split-point:hover:not(:disabled) { border-color: rgba(124, 63, 77, .2); background: rgba(255, 252, 247, .38); color: inherit; }
+.lc09-split-point:focus-visible { outline: 3px solid var(--rain); outline-offset: 2px; }
+.lc09-split-point:disabled { cursor: default; }
+.lc09-feedback, .lc09-support-prompt { margin: .45rem 0; font-size: .88rem; line-height: 1.45; }
+.lc09-feedback.retry { color: #76513e; }
+.lc09-feedback.success { color: #345a45; }
+.lc09-support-note { margin-top: .6rem; padding: .7rem .85rem; border-left: 3px solid var(--gold); background: #f3eee5; line-height: 1.5; }
+.lc09-support-note p { margin: 0 0 .4rem; }
+.lc09-revealed-split { font-weight: 700; }
+.lc09-block > .text-button { min-height: 2.75rem; margin-top: .3rem; }
 .lc07-block { margin-top: 1.3rem; min-width: 0; }
 .lc07-audio-note, .lc07-attempt-note, .lc07-support-note { padding: .7rem .85rem; border-left: 3px solid var(--rain); background: #edf3f2; color: #425862; line-height: 1.5; }
 .lc07-samples { display: grid; gap: .7rem; }
@@ -406,6 +436,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch03-listening-room-spread { grid-template-columns: minmax(0, 1fr); }
   .ch03-stress-lesson-spread { grid-template-columns: minmax(0, 1fr); }
   .ch03-sentence-lesson-spread { grid-template-columns: minmax(0, 1fr); }
+  .ch03-bad-day-spread { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 599px) {
   .ch03-lesson.storybook-art { aspect-ratio: 1.35; }
@@ -427,11 +458,17 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch03-stress-lesson .art-support::after { background-size: auto 100%; background-position: 28% center; clip-path: polygon(48% 52%, 66% 51%, 100% 54%, 100% 92%, 74% 94%, 49% 80%); }
   .ch03-stress-lesson .art-eliza::before { left: 13%; width: 32%; }
   .ch03-sentence-lesson.storybook-art { aspect-ratio: 1.35; }
+  .ch03-bad-day.storybook-art { aspect-ratio: 1.35; }
   .ch03-sentence-lesson .art-background img { object-fit: cover; object-position: 28% center; }
   .ch03-sentence-lesson .art-eliza img { left: 29%; height: 82%; }
   .ch03-sentence-lesson .support-higgins { left: 73%; bottom: 2%; height: 74%; }
   .ch03-sentence-lesson .art-support::after { background-size: auto 100%; background-position: 28% center; clip-path: polygon(48% 52%, 66% 51%, 100% 54%, 100% 92%, 74% 94%, 49% 80%); }
   .ch03-sentence-lesson .art-eliza::before { left: 13%; width: 32%; }
+  .ch03-bad-day .art-background img { object-fit: cover; object-position: 28% center; }
+  .ch03-bad-day .art-eliza img { left: 29%; height: 82%; }
+  .ch03-bad-day .support-higgins { left: 73%; bottom: 2%; height: 74%; }
+  .ch03-bad-day .art-support::after { background-size: auto 100%; background-position: 28% center; clip-path: polygon(48% 52%, 66% 51%, 100% 54%, 100% 92%, 74% 94%, 49% 80%); }
+  .ch03-bad-day .art-eliza::before { left: 13%; width: 32%; }
   .lc06-sample-heading { flex-direction: column; }
   .lc07-sample { padding: .65rem; }
   .lc07-syllables { gap: .2rem; }

@@ -243,7 +243,7 @@ test('S04 UI keeps neutral answer labels, replay state-neutral, Teacher read-onl
   assert.equal(JSON.parse(saved).applied_events.includes('ch03_s04_complete'), false);
   await click('next-scene');
   assert.ok(JSON.parse(saved).applied_events.includes('ch03_s04_complete'));
-  assert.equal(JSON.parse(saved).scene, 'ch03_s04');
-  assert.match(node('#app').innerHTML, /next scene is not available in this runtime yet/i);
-  assert.match(node('#app').innerHTML, /data-action="review-scene"/);
+  assert.equal(JSON.parse(saved).scene, 'ch03_s05');
+  assert.match(node('#app').innerHTML, /The Bad Day/);
+  assert.match(node('#app').innerHTML, /data-action="answer-lc09"/);
 });

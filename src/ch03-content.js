@@ -403,6 +403,60 @@ export const CH03_SCENE_04 = {
   transition: 'Eliza has a listening strategy to carry into her next lesson.', nextScene: 'ch03_s05'
 };
 
+export const CH03_SCENE_05 = {
+  id: 'ch03_s05', number: 5, chapter: 'III', chapterTitle: 'The Lessons', sceneCount: 6,
+  title: 'The Bad Day', kicker: 'A lesson in pace and repair', visualStage: 'in_training', composition: 'ch03-bad-day',
+  background: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
+  plate: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
+  eliza: { src: './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png', alt: 'Eliza in practical indoor lesson clothes takes a moment during a lesson.' },
+  supporting: [{ src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Higgins supports the lesson from behind the desk.', placement: 'higgins' }],
+  props: [], voice: [],
+  storyBeats: [
+    { type: 'narration', text: 'A few days later, the lesson has gone on too long. Eliza is tired.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Try the sentence once more: ‘I can finish this page before we stop.’' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'I can finish this page before we stop.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'You rushed the last part. Begin again.' },
+    { type: 'dialogue', speaker: 'Eliza', text: "I did it well earlier. Why can't I do it now?" },
+    { type: 'dialogue', speaker: 'Higgins', text: 'You are tired. More force will not help.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'Then I need a moment. Let me start again.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Good. Slower is not worse. It gives you room to hear yourself.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'I can finish this page… before we stop.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Yes. Give each part its time.' }
+  ],
+  reflection: [
+    { type: 'dialogue', speaker: 'Eliza', text: 'I can get it back.' },
+    { type: 'narration', text: 'She has not made the sentence perfect. She has found a way back into it.' }
+  ],
+  challenge: {
+    id: 'LC09', kind: 'pace-chunking', title: 'Give the Sentence Room',
+    intro: 'Choose the best place to pause so the sentence is easier to say.',
+    incorrectFeedback: 'Not quite. Try again, or use Supported Practice.',
+    supportedPracticePrompt: 'Listen for the place where the sentence can breathe.',
+    supportExplanation: 'Pause here. Say the first part, then continue with the second.',
+    samples: [
+      { id: 'lc09_sample_01', sentence: 'When the lesson ends I will rest.', options: ['lc09_01_after_when', 'lc09_01_after_the', 'lc09_01_after_lesson', 'lc09_pause_01', 'lc09_01_after_i', 'lc09_01_after_will'], afterLabels: ['When', 'the', 'lesson', 'ends', 'I', 'will'], answer: 'lc09_pause_01', answerAfter: 'ends', key: 'When the lesson ends | I will rest.' },
+      { id: 'lc09_sample_02', sentence: 'If I slow my pace I can hear each word.', options: ['lc09_02_after_if', 'lc09_02_after_first_i', 'lc09_02_after_slow', 'lc09_02_after_my', 'lc09_pause_02', 'lc09_02_after_second_i', 'lc09_02_after_can', 'lc09_02_after_hear', 'lc09_02_after_each'], afterLabels: ['If', 'first I', 'slow', 'my', 'pace', 'second I', 'can', 'hear', 'each'], answer: 'lc09_pause_02', answerAfter: 'pace', key: 'If I slow my pace | I can hear each word.' },
+      { id: 'lc09_sample_03', sentence: 'I know the words but I need a moment.', options: ['lc09_03_after_first_i', 'lc09_03_after_know', 'lc09_03_after_the', 'lc09_pause_03', 'lc09_03_after_but', 'lc09_03_after_second_i', 'lc09_03_after_need', 'lc09_03_after_a'], afterLabels: ['first I', 'know', 'the', 'words', 'but', 'second I', 'need', 'a'], answer: 'lc09_pause_03', answerAfter: 'words', key: 'I know the words | but I need a moment.' }
+    ]
+  },
+  transition: 'Eliza can recover a sentence when she gives it room.', nextScene: 'ch03_s06'
+};
+
+export const CH03_S05_TEACHER_SECTIONS = [
+  ['Chapter Overview', 'S05, The Bad Day, follows S04 in Higgins’s study. The lesson runs long and Eliza is tired. She rushes a familiar sentence, pauses, slows down, divides it into manageable parts, and recovers.'],
+  ['Learning Goals', 'Notice that performance can vary; regulate pace; divide a sentence into manageable chunks; repair and try again. A temporary performance drop does not erase learning.'],
+  ['Language Focus', 'No new phonology. Practise pacing, a pause at a meaningful clause boundary, and self-repair. Slowing down can give the speaker room to hear the sentence.'],
+  ['Listening Focus', 'LC09 is a text-based pause and chunking activity in this runtime. There are no S05 story or objective recordings and no browser text-to-speech.'],
+  ['Key Vocabulary', 'pace, pause, sentence, part, rest, moment, again, slow down, hear.'],
+  ['Cultural / Literary Context', 'This is an original educational adaptation. Fatigue is a condition to manage, not evidence that learning failed. Cockney or any social register is not evidence of low intelligence.'],
+  ['Decisions – Teacher Notes', 'No main D-numbered decision in S05. There is no D08 and no hidden decision-like branch.'],
+  ['Challenge Key', 'LC09: lc09_sample_01 → lc09_pause_01 (after ends): “When the lesson ends | I will rest.”; lc09_sample_02 → lc09_pause_02 (after pace): “If I slow my pace | I can hear each word.”; lc09_sample_03 → lc09_pause_03 (after words): “I know the words | but I need a moment.” Unaided completion adds Pronunciation +1 once through ch03_lc09_completed. Opening target-revealing support first cancels reward eligibility. Supported completion has no reward or penalty.'],
+  ['Discussion Questions', 'What can change when someone is tired? How can a pause help a long sentence? Does one difficult attempt erase earlier learning? What might a respectful correction sound like?'],
+  ['Sensitive Framing', 'Eliza is tired, not lazy, weak or incapable. Do not blame Cockney or frame fatigue as failure. Support is a valid route and never a penalty.'],
+  ['Suggested Classroom Use', 'Read the scene first. Try each sentence silently or aloud; no recording is required. After an incorrect answer, offer Supported Practice. Teacher preview is read-only and does not alter LC09, reward eligibility, Pronunciation, events or progression. Eliza remains at Chapter III – Conscious Training.'],
+  ['Scene Navigation', 'S05 story → LC09 unaided or supported completion → Eliza’s modest recovery → explicit Continue (ch03_s05_complete, no increment) → ch03_s06, A Small Victory. The S06 story/runtime remains unavailable in this checkpoint.']
+];
+
 export const CH03_S04_TEACHER_SECTIONS = [
   ['Chapter Overview', "S04, A Sentence Has Shape, continues Eliza's Conscious Training in Higgins's study. After S03's word stress, she notices how sentence focus gives another choice for carrying a message."],
   ['Learning Goals', 'Identify a focus word in a short sentence, notice relative prominence across a sentence, and hear that natural speech moves rather than staying mechanically flat.'],
