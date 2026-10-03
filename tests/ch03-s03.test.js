@@ -165,8 +165,10 @@ test('approved story voice and LC07 recordings render with transcript parity and
   assert.equal(JSON.parse(saved).applied_events.includes('ch03_s03_complete'), false);
   await click('next-scene');
   assert.ok(JSON.parse(saved).applied_events.includes('ch03_s03_complete'));
-  assert.equal(JSON.parse(saved).scene, 'ch03_s03');
-  assert.match(node('#app').innerHTML, /sentence lesson is not available in this runtime yet/i);
+  assert.equal(JSON.parse(saved).scene, 'ch03_s04');
+  assert.match(node('#app').innerHTML, /A Sentence Has Shape/);
+  assert.match(node('#app').innerHTML, /Sentence stress · LC08/);
+  assert.equal(JSON.parse(saved).scene, 'ch03_s04');
 
   const appSource = fs.readFileSync(new URL('../src/app.js', import.meta.url), 'utf8');
   assert.doesNotMatch(appSource, /speechSynthesis/);

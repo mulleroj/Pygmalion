@@ -331,6 +331,83 @@ export const CH03_SCENE_03 = {
   nextScene: 'ch03_s04'
 };
 
+export const CH03_SCENE_04 = {
+  id: 'ch03_s04', number: 4, chapter: 'III', chapterTitle: 'The Lessons', sceneCount: 6,
+  title: 'A Sentence Has Shape', kicker: 'A lesson in the shape of a sentence', visualStage: 'in_training', composition: 'ch03-sentence-lesson',
+  background: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
+  plate: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
+  eliza: { src: './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png', alt: 'Eliza in practical indoor lesson clothes listens with a focused expression.' },
+  supporting: [{ src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Higgins supports the lesson from behind the desk.', placement: 'higgins' }],
+  props: [], voice: [],
+  storyBeats: [
+    { type: 'dialogue', speaker: 'Higgins', text: 'You found the shape inside a word. Now listen for the shape of a whole sentence.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'You mean some words matter more than the others?' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Some carry more of the message. Let those words come forward.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'And the little ones can stop fighting for attention.' },
+    { type: 'narration', text: 'Eliza tries the sentence carefully, giving each word much the same weight.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Listen: She ordered the blue hat.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Now listen again: She ordered the BLUE hat.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'The second one sounds as if the colour matters.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Exactly. Stress can tell the listener what matters most.' }
+  ],
+  decision: {
+    id: 'D07', prompt: 'The sentence still feels awkward. What would Eliza like to try next?',
+    choices: [
+      { id: 'd07_repeat_slowly', title: 'Ask Higgins to repeat it slowly', text: 'Would you say that slowly once more?' },
+      { id: 'd07_hear_naturally', title: 'Hear it naturally again', text: 'Let me hear it naturally once more.' },
+      { id: 'd07_try_first', title: 'Try it herself first', text: 'Let me try it myself first.' }
+    ]
+  },
+  consequenceBeats: {
+    d07_repeat_slowly: [
+      { type: 'dialogue', speaker: 'Eliza', text: 'Would you say that slowly once more?' },
+      { type: 'dialogue', speaker: 'Higgins', text: 'Listen to how the strong word carries the point.' }
+    ],
+    d07_hear_naturally: [
+      { type: 'dialogue', speaker: 'Eliza', text: 'Let me hear it naturally once more.' },
+      { type: 'dialogue', speaker: 'Higgins', text: 'Of course. Notice where the message comes forward.' }
+    ],
+    d07_try_first: [
+      { type: 'dialogue', speaker: 'Eliza', text: 'Let me try it myself first.' },
+      { type: 'dialogue', speaker: 'Higgins', text: 'Go ahead. Let the important word come forward.' }
+    ]
+  },
+  preChallengeBeats: [
+    { type: 'dialogue', speaker: 'Eliza', text: 'So the sentence changes shape when the important word changes.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Yes. Listen for the word that carries the meaning.' }
+  ],
+  challenge: {
+    id: 'LC08', kind: 'sentence-stress', title: 'Sentence Has Shape',
+    intro: 'Choose the word you would bring forward in each sentence. The planned recordings are not available in this preview yet; no sound is being simulated.',
+    samples: [
+      { id: 'lc08_sample_01', sentence: 'I wanted the red flowers.', options: ['lc08_focus_i', 'lc08_focus_wanted', 'lc08_focus_the', 'lc08_focus_red', 'lc08_focus_flowers'], answer: 'lc08_focus_red', focusWord: 'red' },
+      { id: 'lc08_sample_02', sentence: 'She bought three tickets.', options: ['lc08_focus_she', 'lc08_focus_bought', 'lc08_focus_three', 'lc08_focus_tickets'], answer: 'lc08_focus_three', focusWord: 'three' },
+      { id: 'lc08_sample_03', sentence: 'We meet on Monday.', options: ['lc08_focus_we', 'lc08_focus_meet', 'lc08_focus_on', 'lc08_focus_monday'], answer: 'lc08_focus_monday', focusWord: 'Monday' }
+    ]
+  },
+  reflection: [
+    { type: 'dialogue', speaker: 'Eliza', text: "I can hear the sentence moving now. It isn't flat." },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Good. Do not force every word. Let the sentence carry you.' },
+    { type: 'narration', text: 'A few days later, when she is tired, Eliza will need to find the shape again.' }
+  ],
+  transition: 'Eliza has a listening strategy to carry into her next lesson.', nextScene: 'ch03_s05'
+};
+
+export const CH03_S04_TEACHER_SECTIONS = [
+  ['Chapter Overview', "S04, A Sentence Has Shape, continues Eliza's Conscious Training in Higgins's study. After S03's word stress, she notices how sentence focus gives another choice for carrying a message."],
+  ['Learning Goals', 'Identify a focus word in a short sentence, notice relative prominence across a sentence, and hear that natural speech moves rather than staying mechanically flat.'],
+  ['Language Focus', 'S03 word stress is prominence inside one word. S04 sentence stress is relative prominence across a sentence. Basic intonation gives speech movement. “Some carry more of the message” is a useful learner simplification, not an absolute rule.'],
+  ['Listening Focus', 'The nine selected story voice moments and three LC08 objective recordings are planned but not generated. This BOOK-FIRST preview does not synthesize or imitate speech; the sentence strips let learners try an intended focus in text.'],
+  ['Key Vocabulary', 'sentence, message, focus, prominent, stress, intonation, meaning, replay.'],
+  ['Cultural / Literary Context', 'This is original educational adaptation. Accent ≠ intelligence. Language practice expands control and choice; it does not erase Eliza’s identity.'],
+  ['Decisions – Teacher Notes', 'D07 is a non-punitive learning-strategy choice: ask for a slow repeat (d07_repeat_slowly), hear it naturally again (d07_hear_naturally), or try it first (d07_try_first). Each rejoins LC08; none is wrong or changes Pronunciation.'],
+  ['Challenge Key', 'LC08: lc08_sample_01 → lc08_focus_red (red); lc08_sample_02 → lc08_focus_three (three); lc08_sample_03 → lc08_focus_monday (Monday). Planned focus words are answers for the future recordings. Before a response, all word controls are neutral. Unaided completion adds Pronunciation +1 once through ch03_lc08_completed. Opening support cancels that reward; supported completion carries no reward or penalty.'],
+  ['Discussion Questions', 'Which word would you bring forward? How does the meaning change when focus changes? How is sentence stress different from stress inside a word?'],
+  ['Sensitive Framing', 'Do not treat a dialect or accent as evidence of intelligence. Avoid “correcting” Eliza’s identity. Support is a valid choice and never a failure.'],
+  ['Suggested Classroom Use', 'Read the story first. Until recordings exist, treat LC08 as a text-only rehearsal and do not ask learners to pretend they heard audio. When recordings are later approved, replay should remain optional and transcripts available. No student voice recording or automated speech judgement.'],
+  ['Scene Navigation', 'Story demonstration → D07 strategy choice → LC08 unaided or supported completion → reflection → explicit Continue (ch03_s04_complete, no signal) toward ch03_s05. Teacher preview is read-only.']
+];
+
 export const CH03_S03_TEACHER_SECTIONS = [
   ['Chapter Overview', "The Lessons continues in Higgins's study. S03 moves from hearing individual sounds to hearing the main stress inside one word. Eliza discovers the word's shape herself."],
   ['Learning Goals', 'Identify the syllable carrying main stress in customer, expensive and delivery. Listen for prominence inside the whole word. This is awareness and repertoire expansion, not accent erasure.'],

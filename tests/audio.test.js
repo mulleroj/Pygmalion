@@ -739,10 +739,11 @@ test('Teacher controls and read-only review are not audio-unlock gestures', () =
   assert.match(app, /event\.isTrusted && AUDIO_UNLOCK_ACTIONS\.has\(action\)/);
 });
 
-test('S01, S02 and S03 use only the canonical Chapter III lesson room loop', async t => {
+test('S01-S04 use only the canonical Chapter III lesson room loop', async t => {
   assert.equal(ambienceForScene('ch03_s01'), 'ch03_lesson_room');
   assert.equal(ambienceForScene('ch03_s02'), 'ch03_lesson_room');
   assert.equal(ambienceForScene('ch03_s03'), 'ch03_lesson_room');
+  assert.equal(ambienceForScene('ch03_s04'), 'ch03_lesson_room');
   assert.equal(AMBIENCE_FILES.ch03_lesson_room, './assets/audio/ambience/ch03_higgins_house_lesson_ambient.mp3');
   assert.notEqual(AMBIENCE_FILES.ch03_lesson_room, AMBIENCE_FILES.higgins_house_interior);
   assert.notEqual(AMBIENCE_FILES.ch03_lesson_room, AMBIENCE_FILES.covent_garden_rain_market);
