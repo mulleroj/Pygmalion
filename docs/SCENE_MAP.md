@@ -301,20 +301,21 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 
 ### ch03_s06 – A Small Victory
 
-- **Lokace:** malý lokální obchod nebo květinový stánek při zkoušce s veřejností.
-- **Čas / atmosféra:** jasné ráno; krátká, konkrétní příležitost použít naučené dovednosti.
-- **Postavy:** Eliza, Mrs Pearce, zákazník, Higgins pozoruje z dálky.
-- **Děj:** Eliza správně rozliší podobný výraz, použije důraz a sama opraví intonaci při objednávce. Úspěch není proměna osobnosti; je to důkaz, že má další nástroj.
-- **Hlavní účel:** uzavřít kapitolu hmatatelným pokrokem a připravit první společenský test.
-- **Rozhodnutí hráče:** žádné hlavní; volba, zda si Eliza vyžádá replay, uloží vlastní poznámku nebo pokračuje bez komentáře.
-- **Možné hodnotové změny:** `Pronunciation +1`, `Confidence +1`; `Independence +1` při vlastní sebereflexi.
-- **Uložení:** `long-term: ano` jako `lesson_progress_snapshot`, nikoli jako známka.
-- **Audio momenty:** `AM31 LISTENING` zákazníkova krátká objednávka; `AM32 VOICE` Elizina úspěšná, ale stále osobitá odpověď.
-- **Challenge:** `LC10` – integrovat phonetics, minimal pair, word stress a intonation v jedné dramatické objednávce.
-- **Teacher Mode:** transfer from exercise to real interaction; self-correction.
-- **Vizuální assety:** Eliza `In Training / encouraged`, květiny, zákazník, Higgins v pozadí.
-- **Audio assety:** `customer_ch03_scene06_001.mp3`, `eliza_ch03_scene06_001.mp3`, `sfx_shop_morning_001.mp3` a přepisy.
-- **Návaznost:** `ch04_s01`.
+- **Status:** S06 PRE-PRODUCTION CANON LOCKED.
+- **Lokace:** Higginsova pracovna / učebna; běžný konec lekce, ne veřejný test.
+- **Čas / atmosféra:** lekce končí; kompozice působí o něco otevřeněji a klidněji než S05, bez triumfálního efektu.
+- **Postavy:** Eliza, Higgins a Mrs Pearce v sousední místnosti.
+- **Děj:** Při prosté žádosti se Eliza sama zarazí, všimne si, že spěchala, a řekne větu znovu. Higgins pojmenuje pouze to, že se slyšela sama. Jde o první malý přenos a sebeopravu, nikoli o dokonalou řeč nebo dokončenou proměnu.
+- **Hlavní účel:** integrovat dříve procvičené poslouchání, srozumitelnou artikulaci, významový důraz, tempo a opravu v jedné běžné interakci. Nepřidávat nový fonologický cíl.
+- **Rozhodnutí hráče:** žádné hlavní D-numbered rozhodnutí v S06. Replay a otevření podpory jsou ovládací akce, ne rozhodnutí ani samostatné score volby.
+- **Možné hodnotové změny:** unaided dokončení LC10 přidá `Pronunciation +1` právě jednou přes `ch03_lc10_completed`. Podporované dokončení nemá odměnu ani penalizaci. Confidence a Independence se nemění.
+- **Uložení:** pouze obvyklý `challenges.lc10` a event ledger; žádný `lesson_progress_snapshot`, Chapter III mastery event ani nové top-level pole.
+- **Audio momenty:** AM31 Elizina sebeoprava; AM32 Higginsovo stručné rozpoznání; AM33 tři LC10 ukázky. Pouze plán, žádné generace.
+- **Challenge:** LC10 – ve třech krátkých praktických příkladech poslechnout první pokus a Elizinu opravu a vybrat zprávu, kterou nakonec zamýšlí sdělit. Přenos dříve naučených strategií, nikoli obecný gramatický test.
+- **Teacher Mode:** 12 sekcí s transfer cílem, klíčem LC10, podporou a odměnou, citlivým rámováním a cestou do Chapter IV.
+- **Vizuální assety:** znovu použít schválenou pracovnu, Eliza `In Training / Conscious Training` a existující Higginsův cutout; více prostoru, žádná nová póza nebo triumfální efekt.
+- **Audio assety:** Eliza `124kaYCknTDsnwUFdWl9`; Higgins `JlptfLxaUpd8pZcw9dKd`. LC10 potřebuje nejvýše tři Eliza ukázky s texty a přepisy; AM31–33 jsou pouze plánované.
+- **Návaznost:** po LC10 a výslovném Continue zaznamenat `ch03_s06_complete` bez dalšího incrementu a přejít do `ch04_s01 – The Invitation`.
 
 ## Chapter IV – The First Test
 

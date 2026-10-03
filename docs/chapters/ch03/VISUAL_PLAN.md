@@ -58,7 +58,7 @@ Reuse the story renderer, renderDecision, state/event store, AudioManager, chall
 
 ## Later Chapter III – NOT YET LOCKED
 
-S03 uses the Higgins study/lesson room specified below. S04 reuses this study/lesson room as specified below. S05 lesson room/frustrated; S06 shop or stall/encouraged remain unlocked. Later poses, paths and compositions remain unlocked.
+S03 uses the Higgins study/lesson room specified below. S04 and S05 reuse the study/lesson room as specified below. S06 A Small Victory is PRE-PRODUCTION CANON LOCKED below and reuses this setting; later Chapter III poses, paths and compositions remain unlocked.
 
 ## S01 book-first runtime composition checkpoint
 
@@ -108,3 +108,11 @@ Reuse the approved plate `assets/images/locations/ch02/ch02_higgins-study.webp`,
 BOOK FIRST; `visualStage = in_training`. Reuse the approved Higgins study/lesson-room plate, approved Eliza training cutout and Higgins cutout where composition needs him. No Mrs Pearce appearance or new character asset is required. Create a quieter S05-scoped composition through pacing and negative space: Eliza may sit or appear lower only if an existing approved asset supports that pose; otherwise retain the approved cutout without fabricating posture. A subtly tense/tired impression may come from spacing and scene-specific blocking, never a dramatic dark filter or a new “sad Eliza” asset. Keep the book readable and Eliza the active learner focus.
 
 Show each LC09 sentence and its selectable word boundaries in the existing book/challenge composition, not a waveform, draggable timeline, complex editor or LMS panel. Before response every split point, control and focus/hover state is neutral and identical; no comma, spacing, line break, colour, bold, icon or preselection reveals the key. The exact target divider is absent from every unaided state and appears only after the learner explicitly opens target-revealing Supported Practice. After it opens, show the keyed split and the exact plain-language explanation in SCRIPT.md. Preserve responsive flow, keyboard/touch access, visible focus, reduced-motion behavior and no horizontal overflow. Scope any later styling to S05; do not touch Chapter I/II regressions or alter shared architecture.
+
+## ch03_s06 — VISUALS — S06 PRE-PRODUCTION CANON LOCKED
+
+BOOK FIRST; `visualStage = in_training` remains scene metadata. Keep S06 in the approved Higgins study/lesson room and reuse the existing plate, Eliza focused training cutout and Higgins cutout. Mrs Pearce is established by visible dialogue from the next room; no new person, character art or victory pose is needed.
+
+Differentiate the scene gently from S05 through a slightly more open composition and calmer spacing. Eliza remains the learner focus and the same person in Chapter III Conscious Training. Do not switch to a Chapter IV outfit/voice-stage, create a polished transformation, add glow/confetti/achievement imagery, or treat her accent as a flaw. Her success is the agency to notice and repair a line herself.
+
+Keep the practical exchange, LC10 situations, visible choices, replay and any explicitly opened support in the familiar storybook flow. Before response, no transcript, punctuation, typography or visual marker reveals LC10's repaired message. After target-revealing support, show the relevant text plainly, not by colour alone. Maintain the existing responsive image layers, desk occlusion, keyboard/touch access, visible focus, reduced-motion behavior and no horizontal overflow. No new visual asset or system is planned.

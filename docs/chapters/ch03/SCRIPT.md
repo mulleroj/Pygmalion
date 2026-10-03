@@ -1,6 +1,6 @@
 # Chapter III Script — The Lessons
 
-Status: S01 and S02 canon locked; S03 PRE-PRODUCTION CANON LOCKED. This document remains the dialogue and story canon; S03 runtime and approved audio assets are implemented separately.
+Status: S01 and S02 canon locked; S03, S05 and S06 PRE-PRODUCTION CANON LOCKED; S04 canon specified. This document remains the dialogue and story canon; existing runtime and approved assets are tracked separately.
 
 Authorities: [scene map](../../SCENE_MAP.md), [voice arc](../../audio/ELIZA_VOICE_ARC.md), project story/visual/audio/language bibles. Companion contracts: [state](STATE_AND_BRANCHING.md), [audio](AUDIO_PLAN.md), [visuals](VISUAL_PLAN.md), [Teacher](TEACHER_CONTENT.md). Original adaptation; no musical dialogue, songs or staging.
 
@@ -85,7 +85,7 @@ Future S01 MUST reuse the existing story renderer, renderDecision, state/event s
 
 ## Later Chapter III – NOT YET LOCKED
 
-S03 was subsequently locked below. S04 A Sentence Has Shape (D07, LC08, sentence stress/intonation) is specified below. S05 The Bad Day (LC09, supportive feedback) and S06 A Small Victory (LC10, real-interaction transfer) → ch04_s01 remain unlocked.
+S03 was subsequently locked below. S04 A Sentence Has Shape (D07, LC08, sentence stress/intonation) is specified below. S05 The Bad Day and S06 A Small Victory are now specified below; S06 transfers self-monitoring into an ordinary interaction and leads to ch04_s01.
 
 
 
@@ -276,3 +276,40 @@ The vertical divider appears only in this explicitly opened support state. It ne
 No main D-numbered decision in S05. Eliza's request to pause and try again is a fixed authored story beat, not a player decision or reward trigger. Higgins is exact and instructional, never humiliating; Eliza remains capable and recognisably herself. No moralising, accent erasure, or equation of fatigue with weakness.
 
 After LC09, keep the story recovery and explicit **Continue**. Only Continue records `ch03_s05_complete` once and advances to `ch03_s06 – A Small Victory`. Completion requires LC09 and Continue; there is no decision gate or Continue increment.
+
+## ch03_s06 — A Small Victory — S06 PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED. S06 remains in Higgins's study at the end of a lesson. It is private, ordinary practice, not a public performance or a new phonetic lesson. Eliza is still in `Chapter III – Conscious Training`; her canonical voice and accent identity do not change. Her growing control is a choice she can use, not a correction of who she is.
+
+### Canonical story dialogue
+
+BOOK FIRST. Keep the whole dialogue visible without sound. The first request is rushed and unfinished; Eliza hears herself and repairs it before Higgins comments. His recognition is brief. The correction is a small act of agency, not perfect pronunciation.
+
+1. Narration: “The lesson is nearly over. Mrs Pearce is in the next room.”
+2. Higgins: “Would you ask Mrs Pearce to bring the blue book, please?”
+3. Eliza: “Mrs Pearce, could you bring the blue book—”
+4. Narration: “Eliza hears the rush in her own words and stops.”
+5. Eliza: “That came too quickly. Let me try again.”
+6. Eliza: “Mrs Pearce, could you bring the blue book, please?”
+7. Mrs Pearce: “Of course, Miss Eliza.”
+8. Eliza: “Thank you.”
+9. Higgins: “You heard it before I spoke.”
+10. Eliza: “I did.”
+11. After LC10: Eliza: “I can hear it myself.”
+12. Narration: “The lesson is over. The learning is not.”
+
+No public test, transformation, sentimental praise or claim that Eliza now speaks “properly.” Cockney and social background are not defects; she is gaining control over how she wants to speak.
+
+### LC10 — Hear the repair
+
+Instruction: “Listen to Eliza's first try and her repair. Choose the message she settles on.” Use three short practical listening items. Each recording contains one first attempt and one self-correction in the same clip. The learner identifies the intended message; this is transfer of earlier listening and speech-control strategies, not a generic grammar quiz. No learner microphone, speech recognition, waveform or runtime AI.
+
+1. Context: Mrs Pearce is counting three books for the lesson. Eliza: “Free books—no, three books, please.” The learner chooses whether she means books at no cost, three books, or three flowers.
+2. Context: Higgins asks which of two books Eliza would like. Eliza: “The blue book—no, the green one, please.” The learner chooses the blue book, the green book, or either book.
+3. Context: Mrs Pearce asks when and where to leave the parcel. Eliza: “Leave it by the door—no, after the lesson, please leave the parcel by the door.” The learner chooses the final time and place, an earlier time at the door, or the table during the lesson.
+
+Before response, no transcript, punctuation or visual styling may disclose the repaired message. Normal replay is read-only. After an incorrect response, offer target-neutral Supported Practice; an explicitly opened target-revealing explanation may show the transcript and intended message. Support never blocks completion or penalizes the learner. Exact stable IDs, copy and reward contract are in `STATE_AND_BRANCHING.md`.
+
+### Ending and transition
+
+After LC10, show Eliza’s short reflection and narration above. No D-numbered decision exists in S06. Only explicit student **Continue** after LC10 records `ch03_s06_complete` once and advances to canonical Chapter IV scene `ch04_s01 – The Invitation`; Continue adds no signal. Do not create a Chapter III mastery bonus or imply the lessons have finished.

@@ -47,7 +47,7 @@ Reuse the existing story renderer, renderDecision, shared state/event store, Aud
 
 ## Later Chapter III – NOT YET LOCKED
 
-S03 AM25–26 and S04 AM27–28 are specified below. S05 AM29–30 correction/rain and S06 AM31–32 customer order/Eliza remain unlocked; their production text, casting, mix and lifecycle are not locked.
+S03 AM25–26, S04 AM27–28 and S05 AM29–30 are specified below. S06 AM31–33 is PRE-PRODUCTION CANON LOCKED below; its audio remains planned and NOT GENERATED. Existing Human Audio QA and mix statuses for S01–S05 remain unchanged.
 
 ## AM21 approved story voice integration checkpoint
 
@@ -209,3 +209,28 @@ LC09 objective audio uses exactly one whole-sentence recording for each keyed sa
 | `lc09_sample_03` | `assets/audio/challenges/ch03/lc09_need_a_moment.mp3` | `zQcI8ajUgqVAh7DnWD7k` | I know the words but I need a moment. | 56,458 | 2.43 s |
 
 All eight approved S05 assets use the established AudioManager: explicit learner replay; a newer foreground take stops the previous one; Sound Off, scene changes and Teacher opening clean it up. Story moments use the existing Chapter III story duck; LC09 uses the existing conservative challenge duck (`CH02_AUDIO_MIX`: ambience 0.10 × challengeDuck 0.08 = 0.008 while a sample plays, restored to 0.10 afterward). The continuous canonical `ch03_lesson_room` ambience is reused unchanged. S01–S04 mappings and mix values are unchanged. Audio replay does not mutate LC09 answers, attempts, support, rewards or scene completion. Individual Human Audio QA is PASS; Human Audio Mix QA is pending. No audio was generated as part of integration.
+
+## ch03_s06 — S06 PRE-PRODUCTION CANON LOCKED; AUDIO PLANNED / NOT GENERATED
+
+Reuse the continuous `ch03_lesson_room` ambience unchanged; no new ambience or SFX is required. Keep the existing AudioManager, Chapter III story/challenge duck and replay/cleanup lifecycle. Audio is optional; dialogue and challenge remain understandable as text. No audio is generated or integrated by this plan.
+
+Eliza remains voice ID `124kaYCknTDsnwUFdWl9`, model `eleven_v3`, Chapter III – Conscious Training: recognisably Cockney, more deliberate than her earlier voice-stage, but not yet Chapter IV Emerging New Speech. Higgins remains Kelvin `JlptfLxaUpd8pZcw9dKd`, `eleven_v3`, precise and understated. No Pickering or Mrs Pearce recording is necessary.
+
+### AM31–32 — optional story voice
+
+| Moment | Speaker / voice ID | Planned file | Exact spoken text | Separate performance intent |
+|---|---|---|---|---|
+| AM31 | Eliza / `124kaYCknTDsnwUFdWl9` | `assets/audio/characters/eliza/eliza_ch03_scene06_001.mp3` | That came too quickly. Let me try again. | Brief self-noticing; calm, practical, no shame. Keep Chapter III identity and articulation. |
+| AM32 | Higgins / `JlptfLxaUpd8pZcw9dKd` | `assets/audio/characters/higgins/higgins_ch03_scene06_001.mp3` | You heard it before I spoke. | Quiet recognition, matter-of-fact; no sentimental praise. |
+
+### AM33 — LC10 objective samples
+
+Use exactly one Eliza recording per sample, each containing the spoken first attempt and self-correction together. One clip per item avoids separate takes for the same sample. For future ElevenLabs `creative_generate_speech.prompt`, include ONLY the exact spoken text quoted below; do not put production instructions inside the speech prompt. Performance intent is metadata kept outside that text.
+
+| Sample ID | Planned file | Voice ID | Exact spoken text / transcript | Separate performance intent |
+|---|---|---|---|---|
+| `lc10_sample_01` | `assets/audio/challenges/ch03/lc10_three_books.mp3` | `124kaYCknTDsnwUFdWl9` | Free books—no, three books, please. | First word tentative; self-correction clear and unforced. Do not exaggerate or mock the contrast. |
+| `lc10_sample_02` | `assets/audio/challenges/ch03/lc10_green_book.mp3` | `124kaYCknTDsnwUFdWl9` | The blue book—no, the green one, please. | Natural contrast on the corrected colour; no overemphasis. |
+| `lc10_sample_03` | `assets/audio/challenges/ch03/lc10_parcel.mp3` | `124kaYCknTDsnwUFdWl9` | Leave it by the door—no, after the lesson, please leave the parcel by the door. | First attempt is quick; the repair has a natural pause and clear chunks, not a lesson-performance voice. |
+
+Replay reuses the same sample. Visible situation and choices remain available without sound; any transcript/reveal follows STATE_AND_BRANCHING.md and its support/reward contract. No browser TTS, student recording, alternate slow take or answer-bearing asset. Sound Off/On, foreground ownership, story/challenge duck and scene cleanup remain on the shared architecture. This is a plan only; no audio generation or runtime mapping exists yet.

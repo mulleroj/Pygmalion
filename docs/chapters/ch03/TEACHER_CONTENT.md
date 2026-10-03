@@ -67,7 +67,7 @@ Future implementation MUST reuse the existing story renderer, renderDecision, st
 
 ## Later Chapter III – NOT YET LOCKED
 
-S03 word stress and S04 sentence stress / intonation are specified below. S05 supportive feedback and S06 transfer/self-correction remain unlocked.
+S03 word stress and S04 sentence stress / intonation are specified below. S05 supportive feedback and S06 transfer/self-correction are specified in their locked sections below.
 
 
 
@@ -225,7 +225,7 @@ Allow a normal-speed unaided first attempt and unlimited replay. After an incorr
 
 ### 12. Scene Navigation
 
-S04 story demonstration → D07 strategy choice → LC08 unaided or supported completion → reflection that prepares Eliza for a difficult day → explicit student Continue (`ch03_s04_complete`, no skill increment) → `ch03_s05 – The Bad Day`. D07 selection, replay, render, audio ending, refresh and Teacher preview do not complete the scene. S03 remains word stress only; S04 is sentence stress / intonation. S05–S06 content remains unlocked.
+S04 story demonstration → D07 strategy choice → LC08 unaided or supported completion → reflection that prepares Eliza for a difficult day → explicit student Continue (`ch03_s04_complete`, no skill increment) → `ch03_s05 – The Bad Day`. D07 selection, replay, render, audio ending, refresh and Teacher preview do not complete the scene. S03 remains word stress only; S04 is sentence stress / intonation. S05–S06 use their respective locked story and learning contracts below.
 
 ## ch03_s05 — TEACHER CONTENT — S05 PRE-PRODUCTION CANON LOCKED
 
@@ -281,3 +281,69 @@ Read the scene before challenge work. Invite private reflection on when a pause 
 ### 12. Scene Navigation
 
 S05 story → LC09 unaided or supported completion → Eliza: “I can get it back.” → explicit Continue (`ch03_s05_complete`, no increment) → `ch03_s06 – A Small Victory`. No main decision gate. S06 supplies the transfer; S05's modest recovery is not a giant breakthrough.
+
+## ch03_s06 — TEACHER CONTENT — S06 PRE-PRODUCTION CANON LOCKED
+
+Documentation only; NOT IMPLEMENTED. Use the established twelve-section Teacher Mode structure. Preview and replay remain read-only.
+
+### 1. Chapter Overview
+
+“A Small Victory” is the final Chapter III scene. At the end of a private lesson in Higgins's study, Eliza catches her own rushed request and says it again before Higgins identifies a problem. This is a small transfer into ordinary interaction, not a public test or completed transformation.
+
+### 2. Learning Goals
+
+- Recognise that noticing and repairing one's own speech is evidence of growing control.
+- Apply earlier listening, articulation, stress and pacing strategies in a new practical sentence.
+- Identify the intended message after a speaker corrects an initial attempt.
+- Understand that practice continues into Chapter IV.
+
+### 3. Language Focus
+
+No new phonological topic. LC10 revisits previously encountered sound contrast, word/meaning focus and pacing/chunking only as needed to understand an intended message. Self-correction is a communication strategy, not proof that a speaker's accent or first attempt is defective.
+
+### 4. Listening Focus
+
+LC10 has three short Eliza examples. Each contains a first try and a self-correction. Learners choose the message she settles on; exact transcripts and answer explanations are available through target-revealing Supported Practice. Text, replay and support preserve access; no microphone, speech recognition, browser TTS or audio-only progression.
+
+### 5. Key Vocabulary
+
+notice, try again, three, free, green, parcel, lesson, door, after.
+
+### 6. Cultural / Literary Context
+
+This is an original adaptation. Eliza remains in Chapter III Conscious Training and keeps her canonical voice and recognizable Cockney identity. Accent/social background is not a defect. Increased control gives her more choice over how she speaks; it does not mean she has learned to stop sounding like herself.
+
+### 7. Decisions – Teacher Notes
+
+No main D-numbered decision in S06. Do not add D08 here; D08 belongs to Chapter IV `ch04_s01`. Replay and Supported Practice are activity controls, not scored or branching decisions. All students use the same route to Chapter IV.
+
+### 8. Challenge Key
+
+`challenges.lc10`, exactly three items:
+
+| Sample ID | Correct answer ID | Correct answer | What the repair makes clear |
+|---|---|---|---|
+| `lc10_sample_01` | `lc10_01_three` | She wants three books. | “Three”, not “free”. |
+| `lc10_sample_02` | `lc10_02_green` | She wants the green book. | The green one, not the blue one. |
+| `lc10_sample_03` | `lc10_03_after_door` | Leave the parcel by the door after the lesson. | Both when and where. |
+
+Instruction: “Listen to Eliza's first try and her repair. Choose the message she settles on.” Incorrect feedback: “Not quite. Listen for what Eliza changes, then try again or open Supported Practice.” Supported Practice prompt: “Listen once more. What does Eliza mean to say?” Explicitly opened support reveals only the relevant transcript and message. Unaided all-correct completion applies Pronunciation +1 exactly once via `ch03_lc10_completed`. If target-revealing support is opened, completion is valid with no reward and no penalty. No Confidence/Independence change.
+
+### 9. Discussion Questions
+
+- What did Eliza notice before Higgins spoke?
+- How is repairing your own sentence different from being given the answer?
+- Which earlier listening or speaking strategy might have helped her?
+- Does one self-correction mean a person never needs practice again?
+
+### 10. Sensitive Framing
+
+Do not present Cockney, social background or a rushed first attempt as low intelligence or low worth. Do not say Eliza now speaks properly or has completed her transformation. Her self-correction shows agency and increased control while her identity remains her own.
+
+### 11. Suggested Classroom Use
+
+Read the ordinary exchange first. Let learners hear each first try and repair at normal speed; allow private replay and Supported Practice. Discuss what meaning the speaker settles on without asking learners to perform publicly, disclose personal experiences, record their voice or imitate an accent. Teacher preview/replay must not alter student state.
+
+### 12. Scene Navigation
+
+Chapter III progression: S01 articulation → S02 listening discrimination → S03 word stress → S04 sentence stress/intonation → S05 fatigue, pace and repair → S06 transfer and self-correction. LC10 unaided or supported completion → Eliza's short reflection → explicit Continue (`ch03_s06_complete`, no increment) → `ch04_s01 – The Invitation`. There is no Chapter III mastery bonus or separate completion event; Chapter IV continues Eliza's development.

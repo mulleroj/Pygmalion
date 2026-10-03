@@ -54,7 +54,7 @@ Teacher preview uses an isolated context and MUST NOT save decisions, attempts, 
 
 ## Later Chapter III – NOT YET LOCKED
 
-S03 / LC07 and S04 / D07 / LC08 are specified below. S05–S06 remain [scene-map](../../SCENE_MAP.md) intent only: LC09 feedback; LC10 transfer. practice_preference may support later narrative and Chapter VI synthesis; no new downstream branching is invented.
+S03 / LC07, S04 / D07 / LC08, S05 / LC09 and S06 / LC10 are specified below. S06 is a transfer challenge with no D-numbered choice or new downstream branch. `practice_preference` may support later narrative and Chapter VI synthesis; no new downstream branching is invented.
 
 
 
@@ -182,3 +182,57 @@ First explicit submission is unaided. Replay is normal-speed and read-only. Afte
 On all-correct completion, set `challenges.lc09.completed` and append `ch03_lc09_completed` exactly once. If target-revealing support has not been opened, that same idempotent event applies `Pronunciation +1` once. Supported completion gives no increment and no penalty; no later reward upgrade. Keep answers, attempts and support metadata in shared challenge state; reuse the event ledger. Replay, refresh, render and Teacher preview never mutate answers, eligibility, support, reward, completion or narrative decisions. Teacher preview is read-only and isolated.
 
 `ch03_s05_complete` is recorded once only after LC09 completion and explicit student **Continue**; it gives no increment and advances only to `ch03_s06`. No D-numbered decision gate. No duplicate top-level completion field or new persistent fatigue/pace/repair flags.
+
+## ch03_s06 / LC10 — S06 PRE-PRODUCTION CANON LOCKED
+
+S06 is an ordinary, private transfer moment in Higgins's study. Eliza notices and repairs a rushed utterance before Higgins names a problem. The scene adds no phonetic topic and no public performance. Her voice remains the Chapter III Conscious Training voice; accent and background are not deficits.
+
+### LC10 — hear the self-correction
+
+Use the shared challenge pattern with `challenges.lc10` and exactly three independent, stable items. Each normal-speed Eliza recording contains the first try and its correction in one clip. Replay does not count as an attempt. The prompt and answer choices are visible; the exact audio transcript is available only through target-revealing support after an incorrect response.
+
+Before learner response, show no transcript; answer-specific icon; default or preselected answer; answer-revealing hover or focus styling; correctness colour; bold or other emphasis indicating the repaired target; player label that discloses the repair; or visual marker revealing the correct answer. Keyboard focus may be visibly accessible, but every choice must receive the same focus treatment and it must not encode correctness. Any normal hover treatment must be identical for all choices.
+
+Challenge instruction: “Listen to Eliza's first try and her repair. Choose the message she settles on.”
+
+Incorrect feedback: “Not quite. Listen for what Eliza changes, then try again or open Supported Practice.”
+
+Supported Practice prompt: “Listen once more. What does Eliza mean to say?”
+
+Target-revealing support: show only the relevant exact transcript and explanation from this table after explicit opening:
+
+| Sample ID | Situation | Exact spoken text / transcript | Answer ID | Correct answer |
+|---|---|---|---|---|
+| `lc10_sample_01` | Mrs Pearce is counting three books for the lesson. | Free books—no, three books, please. | `lc10_01_three` | She wants three books. |
+| `lc10_sample_02` | Higgins asks which of two books Eliza would like. | The blue book—no, the green one, please. | `lc10_02_green` | She wants the green book. |
+| `lc10_sample_03` | Mrs Pearce asks when and where to leave the parcel. | Leave it by the door—no, after the lesson, please leave the parcel by the door. | `lc10_03_after_door` | Leave the parcel by the door after the lesson. |
+
+Exact stable options:
+
+| Sample ID | Option ID | Visible answer label |
+|---|---|---|
+| `lc10_sample_01` | `lc10_01_three` | She wants three books. |
+| `lc10_sample_01` | `lc10_01_free` | She wants books at no cost. |
+| `lc10_sample_01` | `lc10_01_flowers` | She wants three flowers. |
+| `lc10_sample_02` | `lc10_02_green` | She wants the green book. |
+| `lc10_sample_02` | `lc10_02_blue` | She wants the blue book. |
+| `lc10_sample_02` | `lc10_02_either` | She would like either book. |
+| `lc10_sample_03` | `lc10_03_after_door` | Leave the parcel by the door after the lesson. |
+| `lc10_sample_03` | `lc10_03_before_door` | Leave the parcel by the door before the lesson. |
+| `lc10_sample_03` | `lc10_03_during_table` | Leave the parcel on the table during the lesson. |
+
+Keep option presentation order independent of answer IDs. No correction is treated as a grammar or accent score; the learner identifies the intended message after Eliza repairs herself.
+
+Target-revealing explanations, only after explicit support opening:
+
+- sample 1: “She means three books, not free books.”
+- sample 2: “She means the green book, not the blue one.”
+- sample 3: “She wants the parcel left by the door after the lesson.”
+
+The first valid response is unaided. After an incorrect response, Supported Practice becomes available. Its neutral prompt alone does not cancel reward eligibility; opening target-revealing support sets monotonic `supportUsed` inside `challenges.lc10` and removes eligibility. Supported completion is valid and has no reward or penalty. No failure state or Confidence/Independence increment.
+
+On all three correct answers, set `challenges.lc10.completed` and append `ch03_lc10_completed` once. That same idempotent event applies `Pronunciation +1` once only if target-revealing support was not opened. No later reward upgrade. Keep answers, attempts, completion and support metadata inside shared `challenges.lc10`; do not add top-level attempts, `self_correction_seen`, `victory_seen`, `chapter3_mastered`, `speech_transformed`, `eliza_fixed` or a `lesson_progress_snapshot`.
+
+## S06 scene completion
+
+There is no main D-numbered decision in S06. `ch03_s06_complete` is recorded exactly once only after LC10 completion and explicit student **Continue**; it adds no signal and advances to `ch04_s01`. No separate Chapter III completion/mastery event or bonus is created. Render, replay, refresh, audio end, answer entry, support opening and Teacher preview cannot complete or navigate the scene. Audio replay and Sound Off/On use the existing shared AudioManager and do not mutate LC10 answers, attempts, support, reward eligibility, `ch03_lc10_completed`, Pronunciation, `ch03_s06_complete` or scene progression. Teacher preview remains isolated and read-only.
