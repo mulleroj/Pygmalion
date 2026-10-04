@@ -348,6 +348,8 @@ V LC11 má žák slyšet, zda host rozhovor otevírá, drží nebo ukončuje. Po
 
 Small talk v Edwardian social setting může fungovat jako bezpečný rituál, ale zároveň ukazuje přístup k moci a příslušnosti. Chyba v sociální inference není důkaz hlouposti.
 
+**Teacher-only cultural note — later musical adaptation *My Fair Lady*:** The later musical made Eliza's phonetic training famous through “The rain in Spain stays mainly in the plain.” This is a reference to the later musical adaptation, not text from Shaw's original *Pygmalion*. Our game uses original dialogue, including “It rained on the way here, but today the sky is clearing.” Teachers may compare the examples to notice `/eɪ/`. The quotation is not learner-facing story dialogue and is separate from LC11 and AM36. Its optional Teacher Mode audio is speech only, uses a neutral British narrator (casting pending), and runs through existing foreground audio infrastructure in read-only preview; it does not write learner state or progress.
+
 ### 7. Decisions – Teacher Notes
 
 - `D08` používá prompt “Where should Eliza begin?” a tři přípravné volby. Stabilní option ID se ukládá pouze do `decisions.D08`; event `ch04_d08_recorded` právě jednou. Volba je non-punitive character choice, žádná není správná ani nesprávná, nemění score/signals a všechny vedou ke stejnému pokračování.

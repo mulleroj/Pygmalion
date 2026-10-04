@@ -41,6 +41,14 @@ Canonical Eliza voice ID: `124kaYCknTDsnwUFdWl9`. Three optional foreground line
 
 The `/eɪ/` observation in “rained”, “way” and “today” is part of AM36 turn 1, not LC11. Pickering has no S02 foreground voice. Higgins is not an active speaker in S02.
 
+### Teacher Mode cultural reference — separate from AM35/AM36
+
+This optional reference is teacher-facing context only; it is not part of the learner story, LC11, AM35 or AM36. Explicit activation from the Cultural / Literary Context note in Teacher Mode may use the existing foreground audio path, with no second audio system. It is read-only: no challenge, scene progression, learner-state write or learner-progress requirement. Provide the transcript alongside the control.
+
+| Reference audio ID | Exact spoken text | Planned local file | Speaker / casting | Delivery |
+| --- | --- | --- | --- | --- |
+| `teacher_ref_my_fair_lady_rain_in_spain` | “The rain in Spain stays mainly in the plain.” | `assets/audio/characters/narrator/ch04_teacher_reference_rain_in_spain_001.mp3` | Neutral British narrator; `CASTING PENDING – neutral British narrator` | Natural spoken British English, instructional/reference delivery; no singing, melody or theatrical imitation of a specific performance. One approved take only. |
+
 ## Ambience and optional diegetic cue
 
 S02 introduces ambience identity `ch04_social_tea_room`, planned file `assets/audio/ambience/ch04_social_tea_room_ambient.mp3`: restrained drawing-room room tone, a low social murmur and only occasional unobtrusive porcelain texture. No music and no random SFX bed. Crossfade gently from `ch03_lesson_room` on S01→S02. AM35 and AM36 use existing AudioManager ducking; restore the still-running ambience without restarting its loop. Sound Off follows the existing foreground/ambience lifecycle.

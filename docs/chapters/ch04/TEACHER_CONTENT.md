@@ -38,7 +38,13 @@ D08 remains the saved S01 preparation choice; it does not gate S02 or influence 
 
 ## 7. Cultural / Literary Context
 
-Small talk in an Edwardian social setting can be a useful ritual and can also express class expectations. The scene examines those conventions without endorsing them. Cockney is not defective, upper-class speech is not morally better, and accent is not intelligence. The `/eɪ/` weather detail uses original wording and does not quote or imitate dialogue or lyrics from *My Fair Lady*.
+Small talk in an Edwardian social setting can be a useful ritual and can also express class expectations. The scene examines those conventions without endorsing them. Cockney is not defective, upper-class speech is not morally better, and accent is not intelligence.
+
+### Cultural note — later musical adaptation *My Fair Lady*
+
+The later musical adaptation *My Fair Lady* made Eliza's phonetic training famous through the line “The rain in Spain stays mainly in the plain.” This is a brief cultural reference to the later musical, not text from Shaw's original play *Pygmalion*. Our game uses original dialogue: “It rained on the way here, but today the sky is clearing.” Teachers may use the two examples to notice the English diphthong `/eɪ/`; the quoted reference is teacher-facing context, not learner-facing story dialogue, and it is separate from LC11 and AM36.
+
+An optional, explicit Teacher Mode audio control may play the reference line as speech only. Use the existing foreground audio infrastructure; do not sing, use a melody, imitate a specific performance, or use Eliza's canonical story voice. The reference preview is read-only: it does not write learner state, trigger a challenge, advance a scene, or count toward learner progress. Audio ID, path and casting status are in `AUDIO_PLAN.md`.
 
 ## 8. Sensitive Framing
 
