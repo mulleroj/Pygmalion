@@ -1,6 +1,6 @@
 # Chapter IV State and Branching
 
-Status: `S01 implemented and locked; S02 specification locked for pre-production; S02 runtime not implemented`.
+Status: `S01 and S02 implemented against locked canon; S02 Human Visual QA PASS at 1280x800; approved audio playback/integration QA PASS`.
 
 ## Shared state
 

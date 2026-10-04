@@ -6,6 +6,7 @@ const AMBIENCE_FILES = {
   higgins_house_morning_entry: './assets/audio/ambience/higgins_house_morning_entry.mp3',
   higgins_house_interior: './assets/audio/ambience/higgins_house_interior.mp3',
   ch03_lesson_room: './assets/audio/ambience/ch03_higgins_house_lesson_ambient.mp3',
+  ch04_social_tea_room: './assets/audio/ambience/ch04_social_tea_room_ambient.mp3',
   gramophone_distant: './assets/audio/ambience/gramophone_distant.mp3'
 };
 
@@ -368,7 +369,7 @@ export class AudioManager {
     this.sceneId = sceneId;
     this.contextualSpec = contextual;
     // S01 begins from approved interior levels; Chapter III human mix QA is pending.
-    this.mix = sceneId?.startsWith('ch02_') || ['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch04_s01'].includes(sceneId) ? CH02_AUDIO_MIX : CH01_AUDIO_MIX;
+    this.mix = sceneId?.startsWith('ch02_') || ['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch04_s01', 'ch04_s02'].includes(sceneId) ? CH02_AUDIO_MIX : CH01_AUDIO_MIX;
     this.ambienceVolume = this.mix.ambience;
     this.contextualVolume = this.mix.contextual;
     const id = sceneId ? ambienceForScene(sceneId) : null;

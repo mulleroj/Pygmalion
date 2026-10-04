@@ -1,6 +1,6 @@
 # Chapter IV Visual Plan
 
-Status: S01 uses approved existing visuals; Human Visual QA PASS, no new S01 art generated. S02 visual plan locked; S02 asset production pending.
+Status: S01 uses approved existing visuals; Human Visual QA PASS, no new S01 art generated. S02 reuses its approved Eliza and Pickering cutouts with the supplied tea-room image converted to the canonical WebP path; Human Visual QA PASS at 1280x800.
 
 ## S01 — The Invitation
 
@@ -10,8 +10,8 @@ Reuse the approved Higgins study/location and existing Higgins, Pickering and El
 
 ## S02 — Names and Weather
 
-Required: one new approved background for a modest Victorian drawing-room prepared for tea, visibly distinct from Higgins's study, with tea table, seating and sufficient negative space for the runtime characters. Planned path: `assets/images/locations/ch04/ch04_social_tea_room.webp`. Integrate tableware into the background; no separate tea prop is required.
+Required: one background for a modest Victorian drawing-room prepared for tea, visibly distinct from Higgins's study, with tea table and seating. The supplied background is preserved as its original PNG and converted to `assets/images/locations/ch04/ch04_social_tea_room.webp`. Integrate tableware into the background; no separate tea prop is required.
 
 Reuse the approved Eliza `In Training / attentive` visual if the pose and composition fit, and reuse Pickering's existing master. Preserve Eliza's face, hair, age, proportions and identity. The voice-stage **Emerging New Speech** is not a new visual stage. Hostess and guests may remain secondary background participants if labels make the speaking character clear; no new foreground cutouts for three characters are required by default. Optional additions are a restrained background participant group or small name-card details, only if the approved composition needs them.
 
-Do not use a visual to reveal LC11 answers or transcript before an attempt. No image generation has been performed for S02; the new background is the only required new visual asset currently identified.
+Do not use a visual to reveal LC11 answers or transcript before an attempt. No image generation was needed for S02.

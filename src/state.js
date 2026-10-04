@@ -1,5 +1,5 @@
 import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05, CH03_SCENE_06 } from './ch03-content.js';
-import { CH04_SCENE_01 } from './ch04-content.js';
+import { CH04_SCENE_01, CH04_SCENE_02 } from './ch04-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -44,7 +44,8 @@ export function createInitialState() {
       lc07: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false },
       lc08: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false },
       lc09: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [] },
-      lc10: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [] }
+      lc10: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [] },
+      lc11: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [], applicationChoice: null }
     },
     soundEnabled: true
   };
@@ -53,6 +54,7 @@ export function createInitialState() {
 function mergeState(raw) {
   const initial = createInitialState();
   if (!raw || typeof raw !== 'object') return initial;
+  const rawLc11 = raw.challenges?.lc11;
   return {
     ...initial,
     ...raw,
@@ -69,7 +71,13 @@ function mergeState(raw) {
       lc07: { ...initial.challenges.lc07, ...((raw.challenges || {}).lc07 || {}) },
       lc08: { ...initial.challenges.lc08, ...((raw.challenges || {}).lc08 || {}) },
       lc09: { ...initial.challenges.lc09, ...((raw.challenges || {}).lc09 || {}) },
-      lc10: { ...initial.challenges.lc10, ...((raw.challenges || {}).lc10 || {}) }
+      lc10: { ...initial.challenges.lc10, ...((raw.challenges || {}).lc10 || {}) },
+      lc11: {
+        ...initial.challenges.lc11,
+        ...(rawLc11 || {}),
+        answers: rawLc11?.answers && typeof rawLc11.answers === 'object' ? rawLc11.answers : {},
+        supportSamples: Array.isArray(rawLc11?.supportSamples) ? rawLc11.supportSamples : []
+      }
     }
   };
 }
@@ -306,6 +314,7 @@ export function isChallengeComplete(state, challengeId) {
 
 export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === CH04_SCENE_01.id && !state.applied_events.includes('ch03_s06_complete')) return 'Complete Chapter III Scene 06 before opening The Invitation.';
+  if (scene.id === CH04_SCENE_02.id && !state.challenges.lc11.completed) return 'Complete all three LC11 samples before continuing.';
   if (scene.id === 'ch03_s02' && !state.ch03_s01_complete) return 'Complete Chapter III Scene 01 before opening The Listening Room.';
   if (scene.id === 'ch03_s03' && !state.applied_events.includes('ch03_s02_complete')) return 'Complete Chapter III Scene 02 before opening Finding the Main Stress.';
   if (scene.id === 'ch03_s04' && !state.applied_events.includes('ch03_s03_complete')) return 'Complete Chapter III Scene 03 before opening A Sentence Has Shape.';
@@ -329,6 +338,54 @@ export function markChapterComplete(state) {
 
 export function setSoundPreference(state, enabled) {
   return { ...state, soundEnabled: Boolean(enabled) };
+}
+
+export function recordLc11Answer(state, sampleId, answerId) {
+  const challenge = state.challenges.lc11;
+  const sampleIndex = CH04_SCENE_02.challenge.samples.findIndex(({ id }) => id === sampleId);
+  if (state.scene !== CH04_SCENE_02.id || sampleIndex < 0 || challenge.completed || challenge.answers[sampleId]?.correct) return state;
+  const prefix = `lc11_${String(sampleIndex + 1).padStart(2, '0')}_`;
+  const validAnswers = CH04_SCENE_02.challenge.options.map(({ category }) => `${prefix}${category}`);
+  if (!validAnswers.includes(answerId)) return state;
+  const sample = CH04_SCENE_02.challenge.samples[sampleIndex];
+  const answers = { ...challenge.answers, [sampleId]: { answer: answerId, correct: answerId === sample.answer } };
+  const completed = CH04_SCENE_02.challenge.samples.every(({ id }) => answers[id]?.correct);
+  const eventId = 'ch04_lc11_complete';
+  const firstCompletion = completed && !state.applied_events.includes(eventId);
+  return {
+    ...state,
+    applied_events: firstCompletion ? [...state.applied_events, eventId] : state.applied_events,
+    challenges: { ...state.challenges, lc11: {
+      ...challenge, answers, completed, attempts: (challenge.attempts || 0) + 1, firstAttempt: true
+    } }
+  };
+}
+
+export function markLc11SupportUsed(state, sampleId) {
+  const challenge = state.challenges.lc11;
+  const sampleExists = CH04_SCENE_02.challenge.samples.some(({ id }) => id === sampleId);
+  if (state.scene !== CH04_SCENE_02.id || !sampleExists || !challenge.answers[sampleId] ||
+      challenge.supportSamples.includes(sampleId)) return state;
+  return {
+    ...state,
+    challenges: { ...state.challenges, lc11: {
+      ...challenge, supportUsed: true, supportSamples: [...challenge.supportSamples, sampleId]
+    } }
+  };
+}
+
+export function recordLc11ApplicationChoice(state, choiceId) {
+  const challenge = state.challenges.lc11;
+  const allowed = CH04_SCENE_02.application.choices.some(({ id }) => id === choiceId);
+  if (state.scene !== CH04_SCENE_02.id || !challenge.completed || !allowed || challenge.applicationChoice) return state;
+  const eventId = 'ch04_s02_confidence_increased';
+  const applyConfidence = !state.applied_events.includes(eventId);
+  return {
+    ...state,
+    confidence: state.confidence + (applyConfidence ? 1 : 0),
+    applied_events: applyConfidence ? [...state.applied_events, eventId] : state.applied_events,
+    challenges: { ...state.challenges, lc11: { ...challenge, applicationChoice: choiceId } }
+  };
 }
 
 export function completeS04Terms(state) {
@@ -395,6 +452,11 @@ export function completeScene(state, scene) {
   if (scene.id === CH04_SCENE_01.id) {
     const eventId = 'ch04_s01_complete';
     if (!state.decisions.D08 || state.applied_events.includes(eventId)) return state;
+    return { ...state, applied_events: [...state.applied_events, eventId] };
+  }
+  if (scene.id === CH04_SCENE_02.id) {
+    const eventId = 'ch04_s02_complete';
+    if (!state.challenges.lc11.completed || state.applied_events.includes(eventId)) return state;
     return { ...state, applied_events: [...state.applied_events, eventId] };
   }
   return state;

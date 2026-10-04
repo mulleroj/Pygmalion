@@ -1,6 +1,6 @@
 # Chapter IV Teacher Content
 
-Status: S01 implemented; preview is read-only. S02 teacher content locked for pre-production; runtime preview is not implemented.
+Status: S01 and S02 implemented; Teacher Mode preview is read-only. S02 cultural-reference audio is explicitly teacher-triggered and does not write learner state.
 
 ## 1. Chapter Overview
 

@@ -76,6 +76,101 @@ export const CH04_SCENE_01 = {
   nextScene: 'ch04_s02'
 };
 
+const CH04_TEA_ROOM = './assets/images/locations/ch04/ch04_social_tea_room.webp';
+
+const LC11_CATEGORIES = [
+  { category: 'opening', label: 'Opening the conversation' },
+  { category: 'continuing', label: 'Continuing the conversation' },
+  { category: 'closing', label: 'Closing the conversation' }
+];
+
+export const CH04_SCENE_02 = {
+  id: 'ch04_s02',
+  number: 2,
+  chapter: 'IV',
+  chapterTitle: 'The First Test',
+  sceneCount: 5,
+  title: 'Names and Weather',
+  kicker: 'Chapter IV · The First Test',
+  location: 'A modest Victorian drawing-room prepared for tea, early evening',
+  visualStage: 'in_training',
+  voiceStage: 'Emerging New Speech',
+  composition: 'ch04-social-tea-room',
+  background: { src: CH04_TEA_ROOM, alt: 'A Victorian drawing-room at evening, with a tea table, chairs, fireplace and open space for the guests.' },
+  plate: { src: CH04_TEA_ROOM, alt: 'A Victorian drawing-room at evening, with a tea table, chairs, fireplace and open space for the guests.' },
+  eliza: {
+    src: './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png',
+    alt: 'Eliza in her In Training stage, listening attentively in the drawing-room.'
+  },
+  supporting: [
+    { src: './assets/images/characters/pickering/runtime/pickering_master_cutout.png', alt: 'Colonel Pickering attends as a supportive guest.', placement: 'pickering' }
+  ],
+  props: [],
+  storyBeats: [
+    { type: 'narration', text: 'A soft murmur fills the drawing-room. The guests have settled near a table set for tea.' },
+    { type: 'dialogue', speaker: 'Hostess', text: 'You must be Miss Doolittle. I am glad you could come.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'Thank you for inviting me. It is a lovely room.' },
+    { type: 'dialogue', speaker: 'Hostess', text: 'I hope the weather did not make the journey difficult.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'It rained on the way here, but today the sky is clearing.' },
+    { type: 'dialogue', speaker: 'Guest', text: 'Was it a long walk?' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'It was a short walk. I noticed a little bookshop near the square.' },
+    { type: 'dialogue', speaker: 'Guest', text: 'Do you often find time to read?' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'I do. I like hearing how different people tell a story.' },
+    { type: 'dialogue', speaker: 'Pickering', text: 'Then this evening should offer plenty to listen to.' },
+    { type: 'dialogue', speaker: 'Guest', text: 'What sort of story would you choose for a reading?' }
+  ],
+  voice: [
+    { id: 'AM36-001', src: './assets/audio/characters/eliza/eliza_ch04_scene02_001.mp3', transcript: 'It rained on the way here, but today the sky is clearing.', label: 'Replay Eliza', inline: true, generationId: 'DvdnVuQlFQjCkmPr40fu', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM36-002', src: './assets/audio/characters/eliza/eliza_ch04_scene02_002.mp3', transcript: 'It was a short walk. I noticed a little bookshop near the square.', label: 'Replay Eliza', inline: true, generationId: 'YnLHFVdTFxu1n3Y0pl4g', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM36-003', src: './assets/audio/characters/eliza/eliza_ch04_scene02_003.mp3', transcript: 'I do. I like hearing how different people tell a story.', label: 'Replay Eliza', inline: true, generationId: 'T5waq2l96RQJwf2NW1KN', voiceId: '124kaYCknTDsnwUFdWl9' }
+  ],
+  challenge: {
+    id: 'LC11',
+    title: 'Reading the conversational turn',
+    kind: 'lc11',
+    intro: 'Listen to each short turn and decide what it does in the conversation.',
+    prompt: 'Is the speaker opening the conversation, continuing it, or closing it?',
+    options: LC11_CATEGORIES,
+    samples: [
+      { id: 'lc11_sample_01', speaker: 'Clarice — Hostess', src: './assets/audio/listening/ch04_lc11_sample_01.mp3', transcript: 'Miss Doolittle, have you been in London long?', answer: 'lc11_01_opening', answerLabel: 'opening', generationId: 'UpaVXHP9hLlhqfORlnK3' },
+      { id: 'lc11_sample_02', speaker: 'Paul M — Guest', src: './assets/audio/listening/ch04_lc11_sample_02.mp3', transcript: 'I see. And what do you think of the weather today?', answer: 'lc11_02_continuing', answerLabel: 'continuing', generationId: 'uu0U0PzHxaSfVADcTn75' },
+      { id: 'lc11_sample_03', speaker: 'Clarice — Hostess', src: './assets/audio/listening/ch04_lc11_sample_03.mp3', transcript: 'Well, it was lovely speaking with you.', answer: 'lc11_03_closing', answerLabel: 'closing', generationId: 'kkAQBj3swNTpEYoaKC3Q' }
+    ]
+  },
+  application: {
+    prompt: 'What sort of story would you choose for a reading?',
+    choices: [
+      { id: 's02_followup_curiosity', text: 'I like a story with a surprise in it. What do you enjoy?' },
+      { id: 's02_share_interest', text: 'Something with a lively character. I like hearing what other readers notice.' }
+    ]
+  },
+  nextScene: 'ch04_s03'
+};
+
+export const CH04_TEACHER_REFERENCE_AUDIO = {
+  id: 'teacher_ref_my_fair_lady_rain_in_spain',
+  src: './assets/audio/characters/narrator/ch04_teacher_reference_rain_in_spain_001.mp3',
+  transcript: 'The rain in Spain stays mainly in the plain.',
+  generationId: 'A2vA6PGvssv3snWNkpym',
+  voice: 'Paul M — neutral British narrator'
+};
+
+export const CH04_S02_TEACHER_SECTIONS = [
+  ['Chapter Overview', 'S02 moves Eliza from lesson-room preparation into a small tea gathering. Her voice-stage is Emerging New Speech, with a more natural rhythm and growing confidence while preserving the same voice identity.'],
+  ['Learning Goals', 'Recognise opening, continuing and closing conversational turns; practise small talk about weather, a journey and reading; notice how a closing signal shapes turn-taking.'],
+  ['Language Focus', 'Phatic language and short small-talk turns. The social function of a question depends on where it occurs in the exchange.'],
+  ['Listening Focus', 'LC11 asks learners to classify one turn at a time as opening, continuing or closing. A missed cue is a learnable communication moment, not an intelligence test.'],
+  ['Key Vocabulary', 'weather · journey · guest · reading · answer · story · opening · continuing · closing'],
+  ['Cultural / Literary Context', 'Small talk in an Edwardian social setting can express both welcome and class expectations. Accent ≠ intelligence. The later musical adaptation My Fair Lady made Eliza’s phonetic training famous through “The rain in Spain stays mainly in the plain.” This short quote is a reference to the later musical, not text from Shaw’s original play Pygmalion. Our story uses original dialogue, including “It rained on the way here, but today the sky is clearing.” Teachers may compare them to notice the English diphthong /eɪ/. The quote is teacher-facing context only, separate from learner dialogue, LC11 and AM36.'],
+  ['Decisions – Teacher Notes', 'The optional post-challenge reply has two equally valid forms, converges immediately and can add Confidence +1 once. It is not a major decision, does not branch later story and does not gate Continue. D08 is preserved and has no S02 effect.'],
+  ['Challenge Key', 'lc11_sample_01 = opening; lc11_sample_02 = continuing; lc11_sample_03 = closing. Keep each sample’s transcript hidden until the learner has made an attempt on that sample; then transcript/support and replay are available without penalty. LC11 awards no development signal.'],
+  ['Discussion Questions', 'How can you tell that a conversation is beginning, continuing or ending? When might a follow-up question be welcome? What does Eliza choose to notice about the journey and reading?'],
+  ['Sensitive Framing', 'Cockney is not defective, upper-class speech is not morally better, and accent is not intelligence. Eliza expands her repertoire without losing her voice.'],
+  ['Suggested Classroom Use', 'Classify each turn, then role-play a short exchange that ends with a clear polite closing. Optionally compare the two `/eɪ/` examples as pronunciation observations, never as a required LC11 skill.'],
+  ['Scene Navigation', 'S01 opens S02 only after explicit Continue. After all LC11 samples are correct, explicit Continue records ch04_s02_complete once and moves to ch04_s03. The optional reply, replay, Teacher preview and audio completion never navigate automatically.'],
+  ['Teacher Preview Contract', 'Teacher preview is read-only for answers, attempts, support use, challenge completion, optional reply, development signals and scene progression. The cultural reference audio is separate from AM35/AM36; it plays only after an explicit Teacher Mode click through the existing foreground audio path. It writes no learner state and triggers no challenge or progression.']
+];
+
 export const CH04_S01_TEACHER_SECTIONS = [
   ['Chapter Overview', 'Chapter IV moves Eliza from controlled practice toward communication in social situations. S01 establishes an invitation and preparation; the public interaction comes later. Her voice stage is Emerging New Speech: more conscious control and growing function outside the lesson room, not polished final performance.'],
   ['Learning Goals', 'Notice that speaking in a real interaction also requires listening and pacing. Choose a preparation approach without treating one as correct. Recognise that intelligibility and communicative choice do not require erasing identity.'],

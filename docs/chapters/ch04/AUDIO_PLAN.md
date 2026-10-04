@@ -1,6 +1,6 @@
 # Chapter IV Audio Plan
 
-Status: S01 AM34 integrated; Human Audio approval PASS. S02 AM35/AM36 and ambience are planned only; no new S02 audio generated.
+Status: S01 AM34 integrated; Human Audio approval PASS. S02 AM35/AM36, Teacher Mode cultural-reference audio and canonical ambience are integrated from the HUMAN APPROVED ElevenLabs generations listed below; browser playback, duck/restore, Sound Off/On and two ambience loop durations were verified during integration QA.
 
 ## Shared rules
 
@@ -19,25 +19,25 @@ Pickering is visible text-only. No challenge audio is used in S01. S01 reuses `c
 
 ### AM35 — LC11 listening samples
 
-Three short, clearly differentiated social turns; present one at a time. Hostess/Guest production casting and voice IDs remain pending; do not invent canonical IDs. `visible text = transcript = spoken text` for every sample.
+Three short, clearly differentiated social turns; present one at a time. `visible text = transcript = spoken text` for every sample.
 
-| Sample | Exact spoken text | Planned local file | Function |
+| Sample | Exact spoken text | Canonical local file | Function |
 | --- | --- | --- | --- |
-| 1 | “Miss Doolittle, have you been in London long?” | `assets/audio/listening/ch04_lc11_sample_01.mp3` | Opening |
-| 2 | “I see. And what do you think of the weather today?” | `assets/audio/listening/ch04_lc11_sample_02.mp3` | Continuing |
-| 3 | “Well, it was lovely speaking with you.” | `assets/audio/listening/ch04_lc11_sample_03.mp3` | Closing |
+| 1 · `lc11_sample_01` | Clarice — Hostess · “Miss Doolittle, have you been in London long?” | `assets/audio/listening/ch04_lc11_sample_01.mp3` | Opening · generation `UpaVXHP9hLlhqfORlnK3` · HUMAN APPROVED |
+| 2 · `lc11_sample_02` | Paul M — Guest · “I see. And what do you think of the weather today?” | `assets/audio/listening/ch04_lc11_sample_02.mp3` | Continuing · generation `uu0U0PzHxaSfVADcTn75` · HUMAN APPROVED |
+| 3 · `lc11_sample_03` | Clarice — Hostess · “Well, it was lovely speaking with you.” | `assets/audio/listening/ch04_lc11_sample_03.mp3` | Closing · generation `kkAQBj3swNTpEYoaKC3Q` · HUMAN APPROVED |
 
 These are LC11 challenge audio, not story voice. Replay uses the existing challenge playback path; transcript/support follows each sample's first attempt. LC11 scoring and state contract lives in `STATE_AND_BRANCHING.md`.
 
 ### AM36 — Eliza story voice
 
-Canonical Eliza voice ID: `124kaYCknTDsnwUFdWl9`. Three optional foreground lines, user-triggered through the existing story voice UX. Keep visible dialogue, transcript and spoken text identical. Maintain her established voice identity with more natural rhythm, increased confidence and less self-conscious articulation than Chapter III; allow a little Cockney return under mild social pressure. Avoid polished “perfect lady” delivery. Generation IDs and files are pending; the planned filenames are:
+Canonical Eliza voice ID: `124kaYCknTDsnwUFdWl9`. Three optional foreground lines, user-triggered through the existing story voice UX. Keep visible dialogue, transcript and spoken text identical. Maintain her established voice identity with more natural rhythm, increased confidence and less self-conscious articulation than Chapter III; allow a little Cockney return under mild social pressure. Avoid polished “perfect lady” delivery. The files are the final HUMAN APPROVED generations:
 
-| Turn | Exact spoken text | Planned local file |
+| Turn | Exact spoken text | Canonical local file |
 | --- | --- | --- |
-| 1 | “It rained on the way here, but today the sky is clearing.” | `assets/audio/characters/eliza/eliza_ch04_scene02_001.mp3` |
-| 2 | “It was a short walk. I noticed a little bookshop near the square.” | `assets/audio/characters/eliza/eliza_ch04_scene02_002.mp3` |
-| 3 | “I do. I like hearing how different people tell a story.” | `assets/audio/characters/eliza/eliza_ch04_scene02_003.mp3` |
+| 1 | “It rained on the way here, but today the sky is clearing.” | `assets/audio/characters/eliza/eliza_ch04_scene02_001.mp3` · generation `DvdnVuQlFQjCkmPr40fu` · HUMAN APPROVED |
+| 2 | “It was a short walk. I noticed a little bookshop near the square.” | `assets/audio/characters/eliza/eliza_ch04_scene02_002.mp3` · generation `YnLHFVdTFxu1n3Y0pl4g` · HUMAN APPROVED |
+| 3 | “I do. I like hearing how different people tell a story.” | `assets/audio/characters/eliza/eliza_ch04_scene02_003.mp3` · generation `T5waq2l96RQJwf2NW1KN` · HUMAN APPROVED |
 
 The `/eɪ/` observation in “rained”, “way” and “today” is part of AM36 turn 1, not LC11. Pickering has no S02 foreground voice. Higgins is not an active speaker in S02.
 
@@ -45,12 +45,12 @@ The `/eɪ/` observation in “rained”, “way” and “today” is part of AM
 
 This optional reference is teacher-facing context only; it is not part of the learner story, LC11, AM35 or AM36. Explicit activation from the Cultural / Literary Context note in Teacher Mode may use the existing foreground audio path, with no second audio system. It is read-only: no challenge, scene progression, learner-state write or learner-progress requirement. Provide the transcript alongside the control.
 
-| Reference audio ID | Exact spoken text | Planned local file | Speaker / casting | Delivery |
+| Reference audio ID | Exact spoken text | Canonical local file | Speaker / casting | Delivery |
 | --- | --- | --- | --- | --- |
-| `teacher_ref_my_fair_lady_rain_in_spain` | “The rain in Spain stays mainly in the plain.” | `assets/audio/characters/narrator/ch04_teacher_reference_rain_in_spain_001.mp3` | Neutral British narrator; `CASTING PENDING – neutral British narrator` | Natural spoken British English, instructional/reference delivery; no singing, melody or theatrical imitation of a specific performance. One approved take only. |
+| `teacher_ref_my_fair_lady_rain_in_spain` | “The rain in Spain stays mainly in the plain.” | `assets/audio/characters/narrator/ch04_teacher_reference_rain_in_spain_001.mp3` | Paul M — neutral British narrator | Generation `A2vA6PGvssv3snWNkpym` · HUMAN APPROVED. Natural spoken British English, instructional/reference delivery; no singing, melody or theatrical imitation of a specific performance. |
 
 ## Ambience and optional diegetic cue
 
-S02 introduces ambience identity `ch04_social_tea_room`, planned file `assets/audio/ambience/ch04_social_tea_room_ambient.mp3`: restrained drawing-room room tone, a low social murmur and only occasional unobtrusive porcelain texture. No music and no random SFX bed. Crossfade gently from `ch03_lesson_room` on S01→S02. AM35 and AM36 use existing AudioManager ducking; restore the still-running ambience without restarting its loop. Sound Off follows the existing foreground/ambience lifecycle.
+S02 uses ambience identity `ch04_social_tea_room`, file `assets/audio/ambience/ch04_social_tea_room_ambient.mp3`, generation `wRL15MbLQwNR2xSdgvdU` (final HUMAN APPROVED generation, approximately 12 seconds). It contains restrained drawing-room room tone, a low social murmur and occasional unobtrusive porcelain texture. No music and no separate teacup SFX are needed. Crossfade gently from `ch03_lesson_room` on S01→S02. AM35 and AM36 use existing AudioManager ducking; restore the still-running ambience without restarting its loop. Sound Off follows the existing foreground/ambience lifecycle.
 
 An optional single cup-set-down cue may use `assets/audio/sfx/sfx_teacups_001.mp3` only if the ambience does not already convey the moment. If used, play once for one authored diegetic moment; never trigger on render, replay or refresh. This optional cue does not block the scene if omitted.

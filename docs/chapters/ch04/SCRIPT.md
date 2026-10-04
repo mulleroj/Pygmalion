@@ -1,6 +1,6 @@
 # Chapter IV — The First Test
 
-Status: `CH04 S01 canon locked and implemented (Human Visual QA PASS; AM34 Human Audio approval PASS); S02 canon locked for pre-production; S02 runtime not implemented`.
+Status: `CH04 S01 canon locked and implemented (Human Visual QA PASS; AM34 Human Audio approval PASS); S02 canon locked and implemented (Human Visual QA PASS at 1280x800; approved audio playback/integration QA PASS)`.
 
 ## S01 — The Invitation
 
