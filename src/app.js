@@ -44,7 +44,7 @@ import {
   getSceneAdvanceBlock,
   canAdvanceScene
 } from './state.js';
-import { AudioManager } from './audio.js';
+import { AudioManager, CH02_AUDIO_MIX } from './audio.js';
 
 const app = document.querySelector('#app');
 const liveRegion = document.querySelector('#live-region');
@@ -146,9 +146,21 @@ function renderAudioControl(item, kind = 'voice') {
   const action = kind === 'voice' ? 'play-voice' : 'play-challenge';
   const transcript = kind === 'voice' ? `<details open class="transcript"><summary>Transcript</summary><p>${escapeHtml(item.transcript)}</p></details>` : '';
   return `<div class="audio-cue ${kind}-cue">
-    <button class="audio-button" type="button" data-action="${action}" data-src="${escapeHtml(item.src)}" ${kind === 'challenge' && item.id ? `data-sample="${escapeHtml(item.id)}"` : ''} aria-label="${escapeHtml(item.ariaLabel || item.label || 'Replay audio')}"><span aria-hidden="true">▶</span> ${escapeHtml(item.label || 'Replay audio')}</button>
+    <button class="audio-button${item.buttonClass ? ` ${escapeHtml(item.buttonClass)}` : ''}" type="button" data-action="${action}" data-src="${escapeHtml(item.src)}" ${kind === 'challenge' && item.id ? `data-sample="${escapeHtml(item.id)}"` : ''} aria-label="${escapeHtml(item.ariaLabel || item.label || 'Replay audio')}"><span aria-hidden="true">▶</span> ${escapeHtml(item.label || 'Replay audio')}</button>
     ${transcript}
   </div>`;
+}
+
+function ensureSceneAmbience(scene) {
+  const pending = audioManager.ensureAmbience(scene.id, scene.contextual || null);
+  if (scene.id === 'ch03_s06') {
+    // S06 shares the approved Chapter III mix without changing AudioManager's S01–S05 mapping.
+    audioManager.mix = CH02_AUDIO_MIX;
+    audioManager.ambienceVolume = CH02_AUDIO_MIX.ambience;
+    audioManager.contextualVolume = CH02_AUDIO_MIX.contextual;
+    audioManager.applyAmbienceDuck();
+  }
+  return pending;
 }
 
 function renderSfxControl(item) {
@@ -428,7 +440,8 @@ function renderLc10(scene) {
       ? `<p class="lc10-support-prompt">${escapeHtml(scene.challenge.supportedPracticePrompt)}</p><button class="text-button" type="button" data-action="open-lc10-support" data-sample="${sample.id}" ${studentReadOnly() ? 'disabled' : ''}>Open Supported Practice</button>` : '';
     const revealed = supportOpen
       ? `<div class="lc10-support-note" role="status"><p>Spoken text: “${escapeHtml(sample.transcript)}”</p><p>${escapeHtml(sample.support)}</p></div>` : '';
-    return `<article class="lc10-sample" aria-labelledby="${sample.id}-title"><div class="lc10-sample-heading"><h3 id="${sample.id}-title">Sample ${index + 1}</h3><button class="audio-button lc10-replay" type="button" disabled aria-label="Replay sample ${index + 1}; audio not available yet"><span aria-hidden="true">▶</span> Replay</button></div><div class="lc10-options" role="group" aria-label="Sample ${index + 1} answer choices">${options}</div>${feedback}${support}${revealed}</article>`;
+    const replay = renderAudioControl({ ...sample, label: `Replay sample ${index + 1}`, ariaLabel: `Replay sample ${index + 1}`, buttonClass: 'lc10-replay' }, 'challenge');
+    return `<article class="lc10-sample" aria-labelledby="${sample.id}-title"><div class="lc10-sample-heading"><h3 id="${sample.id}-title">Sample ${index + 1}</h3>${replay}</div><div class="lc10-options" role="group" aria-label="Sample ${index + 1} answer choices">${options}</div>${feedback}${support}${revealed}</article>`;
   }).join('');
   const completion = challenge.completed
     ? `${renderStoryBeats({ ...scene, storyBeats: scene.reflection })}<button class="secondary-button next-button" type="button" data-action="next-scene" ${studentReadOnly() ? 'disabled' : ''}>Continue <span aria-hidden="true">→</span></button>` : '';
@@ -601,7 +614,7 @@ function render() {
     const currentSceneId = scene.id;
     audioManager.setSceneAudioReadOnly(scene.id === 'ch02_s04' && (s04AudioPreview || teacherDialog.open));
     audioManager.setEnabled(state.soundEnabled);
-    audioManager.ensureAmbience(currentSceneId, scene.contextual || null);
+    ensureSceneAmbience(scene);
     previousScene = currentSceneId;
   }
 }
@@ -767,6 +780,7 @@ document.addEventListener('click', async (event) => {
     state = setSoundPreference(state, !state.soundEnabled);
     save();
     audioManager.setEnabled(state.soundEnabled);
+    if (state.soundEnabled && currentScene().id === 'ch03_s06') ensureSceneAmbience(currentScene());
     announce(state.soundEnabled ? 'Sound on.' : 'Sound off. The story remains complete without sound.');
   }
   if (action === 'open-story') openStory();
@@ -932,7 +946,7 @@ document.addEventListener('click', async (event) => {
   }
   if (audioGesture && document.querySelector('#story-root')) {
     const scene = currentScene();
-    audioManager.ensureAmbience(scene.id, scene.contextual || null);
+    ensureSceneAmbience(scene);
   }
   if (action === 'play-voice' && !teacherDialog.open) {
     const voice = currentScene().voice.find(({ src }) => src === target.dataset.src);

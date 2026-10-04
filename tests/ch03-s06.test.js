@@ -27,7 +27,9 @@ test('S06 registers exact twelve-line BOOK FIRST story, transition, reused visua
   assert.equal(CH03_SCENE_06.background.src, './assets/images/locations/ch02/ch02_higgins-study.webp');
   assert.equal(CH03_SCENE_06.eliza.src, './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png');
   assert.equal(CH03_SCENE_06.supporting[0].src, './assets/images/characters/higgins/runtime/higgins_master_cutout.png');
-  assert.deepEqual(CH03_SCENE_06.voice, []);
+  assert.deepEqual(CH03_SCENE_06.voice.map(({ id, transcript }) => [id, transcript]), [
+    ['AM31', 'That came too quickly. Let me try again.'], ['AM32', 'You heard it before I spoke.']
+  ]);
   assert.deepEqual(CH03_SCENE_06.storyBeats.map(({ speaker, text }) => [speaker || 'Narration', text]), [
     ['Narration', 'The lesson is nearly over. Mrs Pearce is in the next room.'],
     ['Higgins', 'Would you ask Mrs Pearce to bring the blue book, please?'],
@@ -53,24 +55,23 @@ test('S06 registers exact twelve-line BOOK FIRST story, transition, reused visua
   assert.equal(isContinuousAmbienceTransition('ch03_s05', 'ch03_s06'), true);
 });
 
-test('LC10 uses exact instruction, three sample IDs, options, and answer mapping without audio dependencies', () => {
+test('LC10 uses exact instruction, three sample IDs, options, answer mapping, and audio metadata', () => {
   const challenge = CH03_SCENE_06.challenge;
   assert.equal(challenge.id, 'LC10');
   assert.equal(challenge.intro, "Listen to Eliza's first try and her repair. Choose the message she settles on.");
   assert.equal(challenge.incorrectFeedback, 'Not quite. Listen for what Eliza changes, then try again or open Supported Practice.');
   assert.equal(challenge.supportedPracticePrompt, 'Listen once more. What does Eliza mean to say?');
-  assert.deepEqual(challenge.samples.map(({ id, transcript, answer, options, support, src }) => ({ id, transcript, answer, options, support, src })), [
+  assert.deepEqual(challenge.samples.map(({ id, transcript, answer, options, support, src, generationId, voiceId }) => ({ id, transcript, answer, options, support, src, generationId, voiceId })), [
     { id: 'lc10_sample_01', transcript: 'Free books—no, three books, please.', answer: 'lc10_01_three', options: [
       { id: 'lc10_01_three', label: 'She wants three books.' }, { id: 'lc10_01_free', label: 'She wants books at no cost.' }, { id: 'lc10_01_flowers', label: 'She wants three flowers.' }
-    ], support: 'She means three books, not free books.', src: undefined },
+    ], support: 'She means three books, not free books.', src: './assets/audio/challenges/ch03/lc10_three_books.mp3', generationId: 'v2gdewakrrLYUO3Psmcx', voiceId: '124kaYCknTDsnwUFdWl9' },
     { id: 'lc10_sample_02', transcript: 'The blue book—no, the green one, please.', answer: 'lc10_02_green', options: [
       { id: 'lc10_02_green', label: 'She wants the green book.' }, { id: 'lc10_02_blue', label: 'She wants the blue book.' }, { id: 'lc10_02_either', label: 'She would like either book.' }
-    ], support: 'She means the green book, not the blue one.', src: undefined },
+    ], support: 'She means the green book, not the blue one.', src: './assets/audio/challenges/ch03/lc10_green_book.mp3', generationId: 'WIWxgxtTfjK0d2b23h6f', voiceId: '124kaYCknTDsnwUFdWl9' },
     { id: 'lc10_sample_03', transcript: 'Leave it by the door—no, after the lesson, please leave the parcel by the door.', answer: 'lc10_03_after_door', options: [
       { id: 'lc10_03_after_door', label: 'Leave the parcel by the door after the lesson.' }, { id: 'lc10_03_before_door', label: 'Leave the parcel by the door before the lesson.' }, { id: 'lc10_03_during_table', label: 'Leave the parcel on the table during the lesson.' }
-    ], support: 'She wants the parcel left by the door after the lesson.', src: undefined }
+    ], support: 'She wants the parcel left by the door after the lesson.', src: './assets/audio/challenges/ch03/lc10_after_lesson.mp3', generationId: '6a8SiHtyM6HZzOZ9f9sk', voiceId: '124kaYCknTDsnwUFdWl9' }
   ]);
-  assert.equal(challenge.samples.every(({ src, voiceId, generationId }) => !src && !voiceId && !generationId), true);
 });
 
 test('LC10 retry, support reveal, supported completion and unaided reward are idempotent', () => {
@@ -123,17 +124,40 @@ test('opening LC10 support after an incorrect answer reveals only its sample and
   assert.equal(state.applied_events.filter((event) => event === 'ch03_lc10_completed').length, 1);
 });
 
+test('S06 audio metadata matches approved assets and all five files exist', () => {
+  const story = [
+    ['AM31', 'That came too quickly. Let me try again.', './assets/audio/characters/eliza/eliza_ch03_scene06_001.mp3', 'QqV9Q0ILukD0XTk9tsj6', '124kaYCknTDsnwUFdWl9'],
+    ['AM32', 'You heard it before I spoke.', './assets/audio/characters/higgins/higgins_ch03_scene06_001.mp3', 'YNOGrtkTR0htvWu6hfSu', 'JlptfLxaUpd8pZcw9dKd']
+  ];
+  assert.deepEqual(CH03_SCENE_06.voice.map(({ id, transcript, src, generationId, voiceId }) => [id, transcript, src, generationId, voiceId]), story);
+  assert.deepEqual(CH03_SCENE_06.voice.map(({ transcript }) => CH03_SCENE_06.storyBeats.some(({ text }) => text === transcript)), [true, true]);
+  const samples = [
+    ['lc10_sample_01', 'Free books—no, three books, please.', './assets/audio/challenges/ch03/lc10_three_books.mp3', 'v2gdewakrrLYUO3Psmcx', '124kaYCknTDsnwUFdWl9'],
+    ['lc10_sample_02', 'The blue book—no, the green one, please.', './assets/audio/challenges/ch03/lc10_green_book.mp3', 'WIWxgxtTfjK0d2b23h6f', '124kaYCknTDsnwUFdWl9'],
+    ['lc10_sample_03', 'Leave it by the door—no, after the lesson, please leave the parcel by the door.', './assets/audio/challenges/ch03/lc10_after_lesson.mp3', '6a8SiHtyM6HZzOZ9f9sk', '124kaYCknTDsnwUFdWl9']
+  ];
+  assert.deepEqual(CH03_SCENE_06.challenge.samples.map(({ id, transcript, src, generationId, voiceId }) => [id, transcript, src, generationId, voiceId]), samples);
+  for (const [, , src] of [...story, ...samples]) {
+    const bytes = fs.readFileSync(new URL(`..${src.slice(1)}`, import.meta.url));
+    assert.ok(bytes.length > 1000, `${src} exists`);
+    assert.equal(bytes.subarray(0, 3).toString('ascii'), 'ID3', `${src} retains its MP3 ID3 header`);
+  }
+  assert.equal(CH03_SCENE_06.voice.some(({ transcript }) => /Mrs Pearce/.test(transcript)), false);
+});
+
 test('S06 UI hides all transcripts initially, uses neutral controls, and Teacher Mode is read-only', async (t) => {
   const originals = Object.fromEntries(['document', 'window', 'localStorage', 'Audio'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; });
   const nodes = new Map(), events = {};
   class FakeAudio {
-    constructor(src) { this.src = src; this.paused = true; this.volume = 1; this.muted = false; this.listeners = new Map(); }
-    play() { this.paused = false; return Promise.resolve(); }
+    constructor(src) { this.src = src; this.paused = true; this.volume = 1; this.muted = false; this.listeners = new Map(); FakeAudio.instances.push(this); }
+    play() { this.paused = false; FakeAudio.played.push(this.src); return Promise.resolve(); }
     pause() { this.paused = true; }
     addEventListener(name, fn) { this.listeners.set(name, fn); }
     removeEventListener(name) { this.listeners.delete(name); }
   }
+  FakeAudio.instances = [];
+  FakeAudio.played = [];
   let saved = JSON.stringify(ready()), writes = 0;
   const node = (key) => {
     if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, scrollIntoView() {}, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
@@ -144,7 +168,7 @@ test('S06 UI hides all transcripts initially, uses neutral controls, and Teacher
   globalThis.window = { location: { hash: '#ch03_s06', pathname: '/' }, history: { state: { scene: 'ch03_s06' }, pushState(_state, _title, url) { this.state = _state; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(_state, _title, url) { this.state = _state; window.location.hash = url.startsWith('#') ? url : ''; } }, setTimeout(fn) { fn(); }, addEventListener() {} };
   globalThis.localStorage = { getItem() { return saved; }, setItem(_key, value) { saved = value; writes++; } };
   const { render } = await import('../src/app.js?ch03-s06-ui');
-  const click = (action, data = {}) => events.click({ isTrusted: false, target: { closest() { return { dataset: { action, ...data }, focus() {} }; } } });
+  const click = (action, data = {}) => events.click({ isTrusted: action === 'play-challenge' || action === 'play-voice', target: { closest() { return { dataset: { action, ...data }, focus() {} }; } } });
   render();
   let html = node('#app').innerHTML;
   assert.match(html, /A Small Victory/);
@@ -152,11 +176,12 @@ test('S06 UI hides all transcripts initially, uses neutral controls, and Teacher
   assert.equal((html.match(/data-action="answer-lc10"/g) || []).length, 9);
   assert.equal((html.match(/aria-pressed="false"/g) || []).length, 9);
   assert.doesNotMatch(html, /class="answer-button lc10-answer selected"|aria-pressed="true"/);
-  assert.equal((html.match(/aria-label="Replay sample \d; audio not available yet"/g) || []).length, 3);
+  assert.equal((html.match(/aria-label="Replay sample \d"/g) || []).length, 3);
+  assert.equal((html.match(/data-action="play-challenge"/g) || []).length, 3);
   assert.doesNotMatch(html, /Mrs Pearce (?:is )?counting three books|Mrs Pearce counts three books/i, 'learner UI must not show sample-1 situation text');
   assert.doesNotMatch(html, /Free books—no, three books, please\.|The blue book—no, the green one, please\.|Leave it by the door—no, after the lesson/);
   assert.doesNotMatch(html, /I can hear it myself\.|The lesson is over\. The learning is not\./);
-  assert.doesNotMatch(html, /data-src=/);
+  for (const item of [...CH03_SCENE_06.voice, ...CH03_SCENE_06.challenge.samples]) assert.ok(html.includes(`data-src="${item.src}"`), item.src);
   const answerMarkup = [...html.matchAll(/<button class="answer-button lc10-answer[^>]*>[\s\S]*?<\/button>/g)].map(([button]) => button);
   assert.equal(answerMarkup.length, 9);
   assert.equal(answerMarkup.every((button) => !/<(?:strong|b|em|i)\b|aria-pressed="true"|class="[^"]*selected/.test(button)), true);
@@ -165,7 +190,24 @@ test('S06 UI hides all transcripts initially, uses neutral controls, and Teacher
   assert.match(css, /\.lc10-answer\.answer-button:hover, \.lc10-answer\.answer-button\.selected \{ color: #55484d; background: #fffaf3; border-color: rgba\(124, 63, 77, \.18\); \}/);
   assert.match(css, /\.lc10-answer\.answer-button:focus-visible \{ outline: 3px solid #e1ae59; outline-offset: 3px; \}/);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
-  assert.doesNotMatch(fs.readFileSync(new URL('../src/app.js', import.meta.url), 'utf8'), /speechSynthesis|SpeechSynthesis/);
+  const runtime = fs.readFileSync(new URL('../src/app.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(runtime, /speechSynthesis|SpeechSynthesis/);
+  assert.match(runtime, /scene\.id === 'ch03_s06'[\s\S]*?audioManager\.mix = CH02_AUDIO_MIX/);
+
+  const beforeReplayState = saved, beforeReplayWrites = writes;
+  await click('play-challenge', { sample: 'lc10_sample_01', src: CH03_SCENE_06.challenge.samples[0].src });
+  assert.ok(FakeAudio.played.includes(CH03_SCENE_06.challenge.samples[0].src), 'Replay plays its mapped LC10 asset');
+  assert.equal(saved, beforeReplayState, 'audio replay leaves all LC10 state unchanged');
+  assert.equal(writes, beforeReplayWrites, 'audio replay does not persist state');
+  await click('toggle-sound');
+  const soundOffPlayCount = FakeAudio.played.length;
+  await click('play-challenge', { sample: 'lc10_sample_02', src: CH03_SCENE_06.challenge.samples[1].src });
+  assert.equal(FakeAudio.played.length, soundOffPlayCount, 'Sound Off prevents foreground playback');
+  await click('toggle-sound');
+  await click('play-voice', { src: CH03_SCENE_06.voice[0].src });
+  assert.ok(FakeAudio.played.includes(CH03_SCENE_06.voice[0].src), 'Sound On restores story playback');
+  assert.equal(FakeAudio.instances.filter(({ src }) => src === CH03_SCENE_06.challenge.samples[0].src).length, 1);
+  assert.equal(FakeAudio.instances.find(({ src }) => src === CH03_SCENE_06.challenge.samples[0].src).paused, true, 'new foreground playback stops the previous clip');
 
   await click('open-teacher');
   const beforePreview = saved, beforeWrites = writes;
@@ -208,12 +250,34 @@ test('S06 UI hides all transcripts initially, uses neutral controls, and Teacher
   assert.equal(finalState.scene, 'ch04_s01');
   assert.equal(finalState.applied_events.filter((event) => event === 'ch03_s06_complete').length, 1);
   assert.match(html, /The Invitation/);
+  assert.equal(FakeAudio.instances.every((audio) => audio.paused), true, 'scene transition cleans up all foreground and ambience audio');
 });
 
-test('scene entry requires S05 completion; Mrs Pearce remains off-screen and no S06 audio files are referenced', () => {
+test('scene entry requires S05 completion and Mrs Pearce remains off-screen and text-only', () => {
   const blocked = getSceneAdvanceBlock({ ...ready(), applied_events: ['ch03_s04_complete'] }, CH03_SCENE_06);
   assert.equal(blocked, 'Complete Chapter III Scene 05 before opening A Small Victory.');
   assert.equal(CH03_SCENE_06.supporting.some(({ alt, src }) => /pearce/i.test(`${alt} ${src}`)), false);
-  const runtime = fs.readFileSync(new URL('../src/app.js', import.meta.url), 'utf8');
-  assert.doesNotMatch(runtime, /AM31|AM32|AM33|creative_generate_speech|speechSynthesis/);
+  assert.equal(CH03_SCENE_06.voice.some(({ transcript }) => /Mrs Pearce/.test(transcript)), false);
+});
+
+test('S06 audio canon maps two story lines and three LC10 samples to five local assets', () => {
+  const expectedStory = [
+    ['AM31', 'That came too quickly. Let me try again.', './assets/audio/characters/eliza/eliza_ch03_scene06_001.mp3', 'QqV9Q0ILukD0XTk9tsj6', '124kaYCknTDsnwUFdWl9'],
+    ['AM32', 'You heard it before I spoke.', './assets/audio/characters/higgins/higgins_ch03_scene06_001.mp3', 'YNOGrtkTR0htvWu6hfSu', 'JlptfLxaUpd8pZcw9dKd']
+  ];
+  assert.deepEqual(CH03_SCENE_06.voice.map(({ id, transcript, src, generationId, voiceId }) => [id, transcript, src, generationId, voiceId]), expectedStory);
+  assert.deepEqual(CH03_SCENE_06.voice.map(({ transcript }) => CH03_SCENE_06.storyBeats.some(({ text }) => text === transcript)), [true, true]);
+  const expectedSamples = [
+    ['lc10_sample_01', 'Free books—no, three books, please.', './assets/audio/challenges/ch03/lc10_three_books.mp3', 'v2gdewakrrLYUO3Psmcx', '124kaYCknTDsnwUFdWl9'],
+    ['lc10_sample_02', 'The blue book—no, the green one, please.', './assets/audio/challenges/ch03/lc10_green_book.mp3', 'WIWxgxtTfjK0d2b23h6f', '124kaYCknTDsnwUFdWl9'],
+    ['lc10_sample_03', 'Leave it by the door—no, after the lesson, please leave the parcel by the door.', './assets/audio/challenges/ch03/lc10_after_lesson.mp3', '6a8SiHtyM6HZzOZ9f9sk', '124kaYCknTDsnwUFdWl9']
+  ];
+  assert.deepEqual(CH03_SCENE_06.challenge.samples.map(({ id, transcript, src, generationId, voiceId }) => [id, transcript, src, generationId, voiceId]), expectedSamples);
+  for (const [, , src] of [...expectedStory, ...expectedSamples]) {
+    const bytes = fs.readFileSync(new URL(`..${src.slice(1)}`, import.meta.url));
+    assert.ok(bytes.length > 1000, `${src} exists`);
+    assert.equal(bytes.subarray(0, 3).toString('ascii'), 'ID3', `${src} has its approved MP3 ID3 header`);
+  }
+  assert.equal(CH03_SCENE_06.storyBeats.some(({ speaker, text }) => speaker === 'Mrs Pearce' && /Of course, Miss Eliza\./.test(text)), true);
+  assert.equal(CH03_SCENE_06.voice.some(({ transcript }) => /Mrs Pearce|Miss Eliza/.test(transcript)), false);
 });

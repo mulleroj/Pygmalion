@@ -410,8 +410,8 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .lc10-sample { min-width: 0; padding: .75rem 0; border-bottom: 1px solid var(--line); }
 .lc10-sample-heading { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
 .lc10-sample-heading h3 { margin: 0; color: var(--muted); font-size: .78rem; font-weight: 600; }
-.lc10-replay { cursor: default; }
-.lc10-replay:disabled { opacity: .7; }
+.lc10-sample-heading .audio-cue { padding: 0; border: 0; background: transparent; }
+.lc10-replay { cursor: pointer; }
 .lc10-options { display: grid; gap: .4rem; margin-top: .55rem; }
 .lc10-answer.answer-button { display: block; width: 100%; min-height: 2.75rem; color: #55484d; background: #fffaf3; border-color: rgba(124, 63, 77, .18); font-size: .94rem; line-height: 1.4; }
 .lc10-answer.answer-button:hover, .lc10-answer.answer-button.selected { color: #55484d; background: #fffaf3; border-color: rgba(124, 63, 77, .18); }

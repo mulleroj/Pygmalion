@@ -105,7 +105,7 @@ test('Teacher Mode has the twelve contextual sections and remains a read-only pi
   const teacherFunctions = app.split('function openTeacher(trigger) {')[1].split("document.addEventListener('click'")[0];
   assert.doesNotMatch(teacherFunctions, /save\(|applyDecision\(|recordLc03Answer\(|setScene\(/);
   assert.match(teacherFunctions, /CH02_TEACHER_SECTIONS/);
-  assert.match(app, /audioManager\.ensureAmbience\(currentSceneId, scene\.contextual \|\| null\)/);
+  assert.match(app, /ensureSceneAmbience\(scene\)/);
 });
 
 test('entering Chapter II retires Chapter I rain and starts only the approved house ambience', async (t) => {
