@@ -563,3 +563,17 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 }
 .teacher-table table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: .85rem; }
 .teacher-table th, .teacher-table td { padding: .5rem; text-align: left; vertical-align: top; border: 1px solid var(--line); overflow-wrap: anywhere; }
+.ch04-evening-walk-spread { grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr); align-items: start; }
+.ch04-evening-walk.storybook-art { min-height: 0; height: auto; aspect-ratio: 1672 / 941; background: #26303a; }
+.ch04-evening-walk .art-background { filter: none; }
+.ch04-evening-walk .art-background img { object-fit: contain; }
+.ch04-evening-walk .art-eliza, .ch04-evening-walk .art-support, .ch04-evening-walk .art-props { display: block; padding: 0; opacity: 1; }
+.ch04-evening-walk .art-eliza { z-index: 3; }
+.ch04-evening-walk .art-eliza img { position: absolute; left: 50%; bottom: 0; width: auto; max-width: none; height: 84%; max-height: none; object-fit: contain; transform: translateX(-50%); filter: drop-shadow(0 3px 3px rgba(34,27,24,.22)); }
+.ch04-evening-walk figcaption { display: none; }
+.d08-echo { margin: 1.1rem 0 1.3rem; padding: .8rem 1rem; border-left: 3px solid var(--gold); background: rgba(243,238,229,.88); }
+.d08-echo p { margin: .25rem 0; }
+.d08-echo .eyebrow { margin: 0 0 .25rem; }
+.d08-echo-choice { color: var(--ink); font-weight: 700; }
+@media (max-width: 1023px) { .ch04-evening-walk-spread { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 599px) { .ch04-evening-walk.storybook-art { aspect-ratio: 1672 / 941; } }

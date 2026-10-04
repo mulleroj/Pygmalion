@@ -107,7 +107,7 @@ test('corridor ambience waits for a conscious unlock and the reflection Continue
   const app=fs.readFileSync(path.join(root,'src/app.js'),'utf8');
   const reflection=app.match(/function renderS04Reflection\(scene\) \{[\s\S]*?\n\}/)?.[0] || '';
   assert.match(reflection,/selected && !scenePreview/); assert.match(reflection,/data-action="next-scene"/);
-  assert.match(app,/scene\.id !== 'ch04_s04' && !scene\.challenge/,'generic Continue cannot duplicate the reflection-gated button');
+  assert.match(app,/scene\.id !== 'ch04_s04' && scene\.id !== 'ch04_s05' && !scene\.challenge/,'generic Continue cannot duplicate either scene-specific Continue button');
   assert.match(app,/if \(action === 'choose-s04-reflection'.*?recordS04Reflection/s);
   assert.doesNotMatch(reflection,/correct|incorrect|best|wrong|weak/i);
 });
@@ -169,10 +169,10 @@ test('Teacher preview and the S05 boundary stay read-only and runtime does not l
   assert.match(app,/\[CH04_SCENE_04\.id\]: CH04_SCENE_04/);
   assert.match(app,/choose-s04-reflection/); assert.match(app,/CH04_S04_TEACHER_SECTIONS/);
   assert.match(app,/currentScene\(\)\.id === 'ch04_s04' && studentReadOnly\(\)/);
-  assert.match(app,/hashScene === 'ch04_s05'/);
+  assert.match(app,/hashScene === 'ch05_s01'[\s\S]*?ch04_s05_complete/);
   const s03=app.match(/if \(scene\.id === 'ch04_s03'\) \{[\s\S]*?\n  \}/)?.[0] || '';
   assert.doesNotMatch(s03,/audioManager\.leaveScene\(\)/);
-  assert.match(app,/\['ch04_s02', 'ch04_s03', 'ch04_s04'\]\.includes\(scene\.id\) && scenePreview/);
+  assert.match(app,/\['ch04_s02', 'ch04_s03', 'ch04_s04', 'ch04_s05'\]\.includes\(scene\.id\) && scenePreview/);
   const teacher=CH04_S04_TEACHER_SECTIONS.flat().join(' ');
   assert.match(teacher,/Read-only/); assert.match(teacher,/does not autoplay/i);
 });

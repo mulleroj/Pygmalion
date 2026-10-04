@@ -240,6 +240,58 @@ export const CH04_SCENE_04 = {
   nextScene: 'ch04_s05'
 };
 
+const CH04_EVENING_WALK = './assets/images/locations/ch04/ch04_evening_walk.webp';
+
+export const CH04_SCENE_05 = {
+  id: 'ch04_s05',
+  number: 5,
+  chapter: 'IV',
+  chapterTitle: 'The First Test',
+  sceneCount: 5,
+  title: 'The Walk Home',
+  kicker: 'Chapter IV · The First Test',
+  location: 'A quiet London street, later that evening',
+  visualStage: 'in_training',
+  voiceStage: 'Emerging New Speech',
+  composition: 'ch04-evening-walk',
+  background: { src: CH04_EVENING_WALK, alt: 'A quiet Edwardian London street at evening, with wet cobbles and warm lamplight.' },
+  plate: { src: CH04_EVENING_WALK, alt: 'A quiet Edwardian London street at evening, with wet cobbles and warm lamplight.' },
+  eliza: {
+    src: './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png',
+    alt: 'Eliza stands alone, reflective and thoughtful.'
+  },
+  supporting: [],
+  props: [],
+  storyBeats: [
+    { type: 'narration', text: 'Later, on the walk home, the street is quiet enough for Eliza to hear her own thoughts.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'I can speak carefully when I need to.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'And I can speak more freely when I choose.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'That is not pretending. It is knowing what I can do.' },
+    { type: 'd08Echo' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'Tonight was not a pass or fail.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'It showed me what I can practise — and what I can choose.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'The choice is mine.' }
+  ],
+  voice: [
+    { id: 'AM41-ELIZA-01', src: './assets/audio/characters/eliza/eliza_ch04_scene05_001.mp3', transcript: 'I can speak carefully when I need to.', label: 'Replay Eliza', inline: true, generationId: 'JzVdYPWbMuofm2uzcAg4', assetId: 'cwkmV8lRLLRUrsgHn56U', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM41-ELIZA-02', src: './assets/audio/characters/eliza/eliza_ch04_scene05_002.mp3', transcript: 'And I can speak more freely when I choose.', label: 'Replay Eliza', inline: true, generationId: 'e9kcroAtcknt99UsPPqQ', assetId: 'xHXc4d4wB3hARD352RtR', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM41-ELIZA-03', src: './assets/audio/characters/eliza/eliza_ch04_scene05_003.mp3', transcript: 'That is not pretending. It is knowing what I can do.', label: 'Replay Eliza', inline: true, generationId: 'Dcmnf7pmWvt0oM9A3mll', assetId: '0lopqu17BfOMOJ4Wjk4b', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM41-ELIZA-04', src: './assets/audio/characters/eliza/eliza_ch04_scene05_004.mp3', transcript: 'Tonight was not a pass or fail.', label: 'Replay Eliza', inline: true, generationId: 'Jq5D008RCkfZOJ2VcESF', assetId: 'bNP16PPRix4kt5wy4tU9', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM41-ELIZA-05', src: './assets/audio/characters/eliza/eliza_ch04_scene05_005.mp3', transcript: 'It showed me what I can practise — and what I can choose.', label: 'Replay Eliza', inline: true, generationId: 'FRSONWFUcBifjwlZ5tQw', assetId: 'TGE9jhRVGVXCUhiteuqQ', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM41-ELIZA-06', src: './assets/audio/characters/eliza/eliza_ch04_scene05_006.mp3', transcript: 'The choice is mine.', label: 'Replay Eliza', inline: true, generationId: 'gkOM3bdUr3hFFUdd0Bmg', assetId: 'Hwrpm5M8mWBZV73J2bHc', voiceId: '124kaYCknTDsnwUFdWl9' }
+  ],
+  nextScene: 'ch05_s01'
+};
+
+export const CH04_S05_TEACHER_SECTIONS = [
+  ['Objective', 'Students understand code-switching as a communicative repertoire: speakers can adjust how they speak for context without changing who they are.'],
+  ['Key Point', 'A speaker can choose between more careful and more spontaneous speech depending on context. Changing register is not the same as pretending to be a different person.'],
+  ['Story Point', 'Eliza begins to treat speech choices as tools she controls rather than rules imposed on her. Careful speech is an available skill, not a superior identity.'],
+  ['Equity Notes', 'Accent ≠ intelligence. No single accent or register is appropriate for every context. Successful communication does not require giving up linguistic identity.'],
+  ['Discussion Questions', 'When do you change the way you speak, and does that change who you are? Is adapting your speech a skill, a disguise, or can it be both in different situations?'],
+  ['Teacher Preview Contract', 'Read-only preview. No autoplay, state writes, completion or progression. The existing D08 choice may be shown only when already present; no default is created.']
+];
+
 export const CH04_TEACHER_REFERENCE_AUDIO = {
   id: 'teacher_ref_my_fair_lady_rain_in_spain',
   src: './assets/audio/characters/narrator/ch04_teacher_reference_rain_in_spain_001.mp3',

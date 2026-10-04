@@ -1,5 +1,5 @@
 import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05, CH03_SCENE_06 } from './ch03-content.js';
-import { CH04_SCENE_01, CH04_SCENE_02, CH04_SCENE_03, CH04_SCENE_04 } from './ch04-content.js';
+import { CH04_SCENE_01, CH04_SCENE_02, CH04_SCENE_03, CH04_SCENE_04, CH04_SCENE_05 } from './ch04-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -348,6 +348,7 @@ export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === CH04_SCENE_03.id && !state.applied_events.includes('ch04_d09_recorded')) return 'Choose Eliza’s response before continuing.';
   if (scene.id === CH04_SCENE_04.id && !state.applied_events.includes('ch04_s03_complete')) return 'Complete Chapter IV Scene 03 before opening After the Laughter.';
   if (scene.id === CH04_SCENE_04.id && !state.applied_events.includes('ch04_s04_reflection_recorded')) return 'Choose a reflection focus before continuing.';
+  if (scene.id === CH04_SCENE_05.id && !state.applied_events.includes('ch04_s04_complete')) return 'Complete Chapter IV Scene 04 before opening The Walk Home.';
   if (scene.id === 'ch03_s02' && !state.ch03_s01_complete) return 'Complete Chapter III Scene 01 before opening The Listening Room.';
   if (scene.id === 'ch03_s03' && !state.applied_events.includes('ch03_s02_complete')) return 'Complete Chapter III Scene 02 before opening Finding the Main Stress.';
   if (scene.id === 'ch03_s04' && !state.applied_events.includes('ch03_s03_complete')) return 'Complete Chapter III Scene 03 before opening A Sentence Has Shape.';
@@ -520,6 +521,11 @@ export function completeScene(state, scene) {
   if (scene.id === CH04_SCENE_04.id) {
     const eventId = 'ch04_s04_complete';
     if (!state.applied_events.includes('ch04_s04_reflection_recorded') || state.applied_events.includes(eventId)) return state;
+    return { ...state, applied_events: [...state.applied_events, eventId] };
+  }
+  if (scene.id === CH04_SCENE_05.id) {
+    const eventId = 'ch04_s05_complete';
+    if (!state.applied_events.includes('ch04_s04_complete') || state.applied_events.includes(eventId)) return state;
     return { ...state, applied_events: [...state.applied_events, eventId] };
   }
   return state;
