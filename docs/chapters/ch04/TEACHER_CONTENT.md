@@ -1,6 +1,6 @@
 # Chapter IV Teacher Content
 
-Status: S01 and S02 implemented; Teacher Mode preview is read-only. S02 cultural-reference audio is explicitly teacher-triggered and does not write learner state.
+Status: S01 and S02 implemented; S03 Teacher Mode content is canonically locked in pre-production. Teacher Mode preview is read-only; S02 cultural-reference audio is explicitly teacher-triggered and does not write learner state.
 
 ## 1. Chapter Overview
 
@@ -36,6 +36,25 @@ The three samples and stable answer IDs are documented in `STATE_AND_BRANCHING.m
 
 D08 remains the saved S01 preparation choice; it does not gate S02 or influence LC11. Following LC11, an optional local reply lets Eliza continue the conversation. Either reply is valid, both converge, and either may apply `Confidence +1` once. It is not a major decision and does not alter later branches. No pronunciation reward is attached to weather vocabulary or challenge performance.
 
+## S03 Learning Goals and Teacher Notes
+
+- Distinguish literal meaning from implied meaning in a playful social remark.
+- Notice that grammatical, clearly pronounced speech can still miss an implied meaning; correct pronunciation does not automatically mean correct pragmatic interpretation.
+- Explore pragmatic repair without ranking personal recovery styles.
+
+### LC12 answer key
+
+- Literal (`lc12_literal_meaning`): `literal_city_decided` — “London made a decision about the rain.”
+- Implied (`lc12_implied_meaning`): `implied_rain_joke` — “It has been raining a lot, and the Guest is joking about it.”
+
+LC12 checks these two interpretations only. It does not grade D09. After an item's first submitted attempt, transcript/context support becomes available; replay and support carry no penalty. See `STATE_AND_BRANCHING.md` for the complete item contract.
+
+### D09 and equity framing
+
+There is no single correct recovery style. `rephrase`, `acknowledge_literal` and `wait_for_cue` are all socially plausible strategies with different interpersonal tones. D09 is a recorded preference, not a scored answer; it adds no development signals or score.
+
+Preserve `Accent ≠ intelligence`. Eliza's misunderstanding concerns social inference, not intellectual ability or accent quality. Her pronunciation is successful and her dialogue is original adaptation text.
+
 ## 7. Cultural / Literary Context
 
 Small talk in an Edwardian social setting can be a useful ritual and can also express class expectations. The scene examines those conventions without endorsing them. Cockney is not defective, upper-class speech is not morally better, and accent is not intelligence.
@@ -52,12 +71,14 @@ Do not present social conventions as proof of a person's worth. A missed cue is 
 
 ## 9. Suggested Classroom Use
 
-Ask learners to identify what each speaker's turn invites, then role-play opening, continuing and closing a brief exchange. Discuss why one may stop asking questions after a closing signal. Replay with transcript support after an attempt. Compare Eliza's Chapter III and IV delivery for rhythm and confidence while listening for continuity of voice identity.
+Ask learners to identify what each speaker's turn invites, then role-play opening, continuing and closing a brief exchange. Discuss why one may stop asking questions after a closing signal. For S03, compare literal and implied meanings before discussing the different interpersonal tones of the three equally legitimate recovery strategies. Replay with transcript/context support after an attempt. Compare Eliza's Chapter III and IV delivery for rhythm and confidence while listening for continuity of voice identity.
 
 ## 10. Scene Navigation
 
 Chapter III ends with Eliza: “I can hear it myself.” and narration: “The lesson is over. The learning is not.” After D08 and explicit Continue, S01 records `ch04_s01_complete` once and moves to S02. After all three LC11 samples are correct, explicit Continue is unlocked; it records `ch04_s02_complete` once and moves to S03. LC11, replay, optional reply and Teacher preview never navigate automatically.
 
+In S03, explicit Continue is unlocked only after `ch04_lc12_complete` and `ch04_d09_recorded`. It records `ch04_s03_complete` once and moves to S04. LC12 completion, D09, replay, audio completion and Teacher preview never navigate automatically.
+
 ## 11. Teacher Preview Contract
 
-Preview may display S02 story content, goals, challenge instructions and teacher notes. Opening or rendering preview must not play AM35/AM36, start ambience, or write answers, attempts, support use, completion events, application choice, development signals or scene progression into learner state. Audio requires an explicit learner playback action in student mode.
+Preview may display S02 and S03 story content, goals, challenge instructions, answer keys and teacher notes. Opening or rendering preview must not autoplay any audio or start ambience, or write answers, attempts, support use, completion events, decisions, development signals or scene progression into learner state. AM37/AM38 audio requires an explicit playback action in student mode. Teacher preview is read-only for LC12, D09 and S03 completion.

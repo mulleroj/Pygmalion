@@ -1,6 +1,6 @@
 # Chapter IV Visual Plan
 
-Status: S01 uses approved existing visuals; Human Visual QA PASS, no new S01 art generated. S02 reuses its approved Eliza and Pickering cutouts with the supplied tea-room image converted to the canonical WebP path; Human Visual QA PASS at 1280x800.
+Status: S01 and S02 approved visuals are implemented; S03 visual reuse specification is canonically locked with no new asset production required.
 
 ## S01 — The Invitation
 
@@ -15,3 +15,13 @@ Required: one background for a modest Victorian drawing-room prepared for tea, v
 Reuse the approved Eliza `In Training / attentive` visual if the pose and composition fit, and reuse Pickering's existing master. Preserve Eliza's face, hair, age, proportions and identity. The voice-stage **Emerging New Speech** is not a new visual stage. Hostess and guests may remain secondary background participants if labels make the speaking character clear; no new foreground cutouts for three characters are required by default. Optional additions are a restrained background participant group or small name-card details, only if the approved composition needs them.
 
 Do not use a visual to reveal LC11 answers or transcript before an attempt. No image generation was needed for S02.
+
+## S03 — The Wrong Answer
+
+Reuse the same social tea-room background as S02: `assets/images/locations/ch04/ch04_social_tea_room.webp`. Reuse these approved runtime cutouts:
+
+- Eliza: `assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png`
+- Higgins: `assets/images/characters/higgins/runtime/higgins_master_cutout.png`
+- Pickering: `assets/images/characters/pickering/runtime/pickering_master_cutout.png`
+
+Do not require a new Eliza `surprised` asset or Hostess/Guest foreground cutouts. Convey the mismatch through dialogue, timing, speaker labels, composition and the AM38 reaction. No new props or visual asset production are required. Keep all LC12 choices and answer feedback out of decorative art so it cannot reveal an answer before the applicable attempt.

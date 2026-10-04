@@ -1,6 +1,6 @@
 # Chapter IV — The First Test
 
-Status: `CH04 S01 canon locked and implemented (Human Visual QA PASS; AM34 Human Audio approval PASS); S02 canon locked and implemented (Human Visual QA PASS at 1280x800; approved audio playback/integration QA PASS)`.
+Status: `CH04 S01 and S02 canon locked and implemented; S03 story and interaction specification locked in pre-production; S03 runtime and assets not implemented or produced`.
 
 ## S01 — The Invitation
 
@@ -64,3 +64,27 @@ After LC11, the player may choose one of the two equally valid local follow-up r
 ### Scene end
 
 Once all three LC11 samples are correctly classified, record `ch04_lc11_complete` once and unlock explicit Continue. LC11 completion does not navigate automatically. Continue is available after LC11 whether or not the optional follow-up was chosen; it records `ch04_s02_complete` once and moves to `ch04_s03 – The Wrong Answer`.
+
+## S03 — The Wrong Answer
+
+Location: the same social tea room, among the guests. The scene is a continuation of the conversation; D08 and any optional S02 Confidence increase do not change S03 content or availability.
+
+### Canonical story flow
+
+1. **Guest (AM37):** London seems to have decided we needed more rain.
+2. **Eliza (AM37):** I don't think London can decide anything. It is a city, not a person.
+3. A brief pause follows, then a restrained social reaction: one or several polite chuckles and a short uncertain murmur. There is no loud mockery.
+4. The learner completes LC12, which checks literal and implied meaning separately.
+5. After LC12 completion, D09 lets the learner choose Eliza's recovery style. All options are legitimate and converge.
+
+The dialogue is original project adaptation text. Eliza's English is grammatical, and her pronunciation is clean and controlled. She takes a playful personification literally; the mismatch is pragmatic/inferential, not a pronunciation failure, a sign of lower intelligence, or a joke about Cockney. Keep the social discomfort gentle.
+
+### LC12 and D09
+
+LC12 comprehension is separate from D09's personal recovery preference. Its two ordered items, stable answer IDs, answer key, support/replay and completion contract are specified in `STATE_AND_BRANCHING.md`. LC12 does not evaluate which recovery style is socially best. Once both items are correct, record `ch04_lc12_complete` exactly once; this alone does not advance the scene.
+
+After LC12, show D09 with the three options specified in `STATE_AND_BRANCHING.md`. Persist the selected value in `decisions.D09`, record `ch04_d09_recorded` exactly once, and award no development points. D09 does not advance the scene automatically.
+
+### Scene end
+
+Unlock explicit Continue only when both `ch04_lc12_complete` and `ch04_d09_recorded` exist. Continue records `ch04_s03_complete` once and moves to `ch04_s04`. Rendering, replay, refresh, audio completion and Teacher preview never complete or navigate the scene.

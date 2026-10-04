@@ -1,6 +1,6 @@
 # Chapter IV State and Branching
 
-Status: `S01 and S02 implemented against locked canon; S02 Human Visual QA PASS at 1280x800; approved audio playback/integration QA PASS`.
+Status: `S01 and S02 implemented against locked canon; S03 state and branching contract locked in pre-production; S03 runtime not implemented`.
 
 ## Shared state
 
@@ -66,3 +66,42 @@ Once LC11 is complete, unlock explicit Continue. The optional reply does not gat
 ## S02 visual metadata
 
 `visualStage = in_training`; voice-stage is **Emerging New Speech**. Keep the same Eliza identity, with more natural rhythm, greater confidence and less self-conscious articulation than Chapter III. Under mild pressure her Cockney features may return; this is not failure. Higgins is not a required S02 speaker. Pickering remains supportive and text-only. Teacher preview is read-only for answers, attempts, support, completion, application choice, signals and progression.
+
+## S03 — The Wrong Answer
+
+### Entry and invariants
+
+S03 is entered from S02 only after explicit Continue records `ch04_s02_complete`. Neither `decisions.D08` nor the optional S02 `Confidence +1` gates or changes S03 content. Do not add a top-level Chapter IV state field.
+
+### LC12 identity and items
+
+Stable challenge ID: `LC12`; persist its state under `challenges.lc12`, using the existing nested challenge-state pattern. It has exactly two sequential interpretation items based on the AM37 exchange and AM38 context cue. LC12 tests comprehension only; it does not grade the D09 recovery preference.
+
+| Item ID | Prompt | Option ID | Option text | Key |
+| --- | --- | --- | --- | --- |
+| `lc12_literal_meaning` | Taken literally, what does the Guest's sentence say? | `literal_city_decided` | London made a decision about the rain. | Correct |
+|  |  | `literal_rainy_weather` | London has many rainy days. |  |
+|  |  | `literal_leave_london` | The Guest wants to leave London. |  |
+| `lc12_implied_meaning` | What does the Guest actually mean? | `implied_city_controls_weather` | The city controls the weather. |  |
+|  |  | `implied_rain_joke` | It has been raining a lot, and the Guest is joking about it. | Correct |
+|  |  | `implied_weather_question` | The Guest wants Eliza to explain the weather. |  |
+
+Present the items sequentially. Store answers and per-item progress under `challenges.lc12` with the stable item and option IDs. The first attempt on each item has no support shown. After its first submitted attempt, expose the written AM37 transcript and written context describing the AM38 social reaction. AM37 and AM38 may be replayed; replay and support have no penalty. Incorrect answers can be retried, correct answers persist across refresh, and answer/event writes are idempotent. AM38 is contextual support and never the only source of information needed for a correct answer.
+
+Once both items are correct, record `ch04_lc12_complete` exactly once. LC12 changes no Confidence, Independence, Pronunciation or score; it has no hidden reward. Completion does not navigate automatically.
+
+### D09 — Recovery style
+
+Show D09 only after LC12 completes. Persist exactly one selected stable value in the existing `decisions.D09` ledger entry and record `ch04_d09_recorded` once. No separate `recovery_style` field or duplicate semantic copy is created.
+
+| Stable value | Learner-facing text | Meaning |
+| --- | --- | --- |
+| `rephrase` | Oh — I see. You meant that London has been very rainy. | Carefully reformulate the implied meaning. |
+| `acknowledge_literal` | I took that rather literally, didn't I? | Lightly acknowledge the misunderstanding. |
+| `wait_for_cue` | Perhaps I should listen before I answer. | Pause and wait for another social cue. |
+
+All three options are legitimate, have no answer key, and converge. Do not label any option correct, best, weak or wrong. D09 awards Confidence +0, Independence +0 and Pronunciation +0; it changes no score and creates no hidden reward. Persist the selected choice across refresh. Rerender and revisit must not rewrite the choice or duplicate its event.
+
+### S03 completion and transition
+
+Unlock explicit Continue only when both `ch04_lc12_complete` and `ch04_d09_recorded` are present. Selecting Continue records `ch04_s03_complete` exactly once and transitions to `ch04_s04`. LC12 completion, D09 selection, rendering, replay, refresh, audio completion and Teacher preview never navigate automatically. Completion is idempotent.

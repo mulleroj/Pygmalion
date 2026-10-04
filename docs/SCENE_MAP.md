@@ -362,20 +362,18 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 
 ### ch04_s03 – The Wrong Answer
 
-- **Lokace:** stejná místnost, u skupiny hostů.
-- **Čas / atmosféra:** setkání se rozvíjí; jeden vtip a jedna doslovná odpověď vytvoří ticho.
-- **Postavy:** Eliza, hosté, Higgins, Pickering.
-- **Děj:** Eliza perfektně vysloví formálně naučenou větu, ale doslovně odpoví na implied joke. Humor vzniká z nesouladu formy a obsahu, ne z její hlouposti.
-- **Hlavní účel:** dát hráči první kontrolu nad opravou společenského nesouladu.
-- **Rozhodnutí hráče:** `D09` – zvolit recovery: pečlivě přeformulovat, přiznat doslovné pochopení s lehkostí, nebo chvíli mlčet a počkat na další signál.
-- **Možné hodnotové změny:** `Confidence +1` při aktivní opravě, `Independence +1` při pojmenování vlastního významu, `Pronunciation +1` při kontrolované reformulaci.
-- **Uložení:** `long-term: ano`; uloží se `recovery_style`.
-- **Audio momenty:** `AM37 VOICE` vtip a Elizina doslovná odpověď; `AM38 LISTENING` ticho, smích a změna intonace skupiny.
-- **Challenge:** `LC12` – literal meaning vs implied meaning; zvolit sociálně srozumitelnou opravu bez sebeznehodnocení.
-- **Teacher Mode:** humor, implied meaning, repair strategies.
-- **Vizuální assety:** hosté v malé skupině, Eliza `In Training / surprised`, Higgins sledující výsledek.
-- **Audio assety:** `host_ch04_scene03_001.mp3`, `eliza_ch04_scene03_001.mp3`, `sfx_room_reaction_001.mp3` a přepisy.
-- **Návaznost:** `ch04_s04`.
+- **Lokace a vstup:** stejný social tea room jako S02; S03 je dostupná po `ch04_s02_complete`. D08 ani případná S02 `Confidence +1` nemění její obsah nebo dostupnost.
+- **Postavy:** Eliza, Guest (stejný Guest jako v S02), další hosté, Higgins a Pickering. Aktivní mluvčí AM37 jsou Guest a Eliza.
+- **Canonical story beat (original adaptation dialogue):** Guest: “London seems to have decided we needed more rain.” Eliza: “I don't think London can decide anything. It is a city, not a person.” Eliza větu vysloví čistě, kontrolovaně a gramaticky správně; její doslovná interpretace personifikace je pragmatický/inferenční nesoulad, nikoli výslovnostní chyba ani známka inteligence. Následuje krátká pauza, zdrženlivá společenská reakce, jeden či několik jemných zdvořilých chuckles a krátký neurčitý murmur; bez hlasitého výsměchu.
+- **Účel:** rozlišit doslovný a naznačený význam v hravé společenské poznámce a dát hráči volbu opravy bez sebeznehodnocení.
+- **Challenge:** `LC12` má přesně dva po sobě jdoucí interpretační úkoly: `lc12_literal_meaning` a `lc12_implied_meaning`. Ověřuje porozumění, nikoli volbu sociálně „nejlepší“ opravy. Stabilní možnosti, klíč, podpora, replay a completion jsou v `docs/chapters/ch04/STATE_AND_BRANCHING.md`.
+- **Rozhodnutí:** po dokončení LC12 se zobrazí `D09`, osobní preference recovery bez answer key. Stabilní volba se uloží výhradně do `decisions.D09`; hodnoty jsou `rephrase`, `acknowledge_literal`, `wait_for_cue`. Všechny možnosti konvergují.
+- **Hodnoty a uložení:** S03 nemění Confidence, Independence, Pronunciation ani score. D09 se zapíše jednou jako `decisions.D09` a event `ch04_d09_recorded`; žádný paralelní `recovery_style` field se nevytváří. LC12 jednou zaznamená `ch04_lc12_complete` a nepřiděluje odměny.
+- **Audio:** `AM37 STORY VOICE` obsahuje dvě oddělené story voice repliky s viditelným textem shodným 1:1 se spoken text. Guest používá plánované reuse hlasu Paul M (`zp695rEBCwfZ3GYNJOHx`); Eliza používá `124kaYCknTDsnwUFdWl9`. `AM38 LISTENING / CONTEXT CUE` je přibližně 3–5s neřečová sociální reakce na `assets/audio/listening/ch04_lc12_reaction_001.mp3`, bez nutnosti srozumitelné řeči. Samostatné `assets/audio/sfx/sfx_room_reaction_001.mp3` je redundantní a nahrazené AM38.
+- **Ambience:** pokračovat v `ch04_social_tea_room` bez zbytečného restartu; AM37 standardní ducking, AM38 případně výraznější dočasný ducking, poté obnovit běžící ambience.
+- **Vizuály:** reuse tea-room background, Eliza `eliza_training_focused_cutout.png`, Higgins a Pickering runtime cutouty. Nový Eliza surprised asset ani Hostess/Guest foreground cutouty nejsou potřeba.
+- **Teacher Mode:** literal vs implied meaning, pragmatická oprava, absence jediného správného recovery stylu a equity framing `Accent ≠ intelligence`; preview zůstává read-only.
+- **Dokončení:** Continue se odemkne až po `ch04_lc12_complete` a `ch04_d09_recorded`. Pouze explicitní Continue jednou zapíše `ch04_s03_complete` a přejde do `ch04_s04`.
 
 ### ch04_s04 – After the Laughter
 
@@ -571,7 +569,7 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 | `practice_preference` | Ovlivní, jak Eliza popíše cestu učení a jakou podporu přijme. | Nesmí být skrytým testem poslušnosti. |
 | `intonation_strategy` | Určí míru jistoty, otázkovosti a vědomého postoje ve finálním projevu. | Nesmí zaměnit intonaci za morální sebejistotu. |
 | `decisions.D08` | Uložená přípravná volba může zabarvit Elizinu reflexi sociální zkušenosti. | Nesmí odstranit žádnou možnost ani změnit signal či hodnotit volbu. |
-| `recovery_style` | Změní reakci na dřívější nesoulad a podobu sebereflexe. | Chyba nesmí snížit lidskou hodnotu Elizy. |
+| `decisions.D09` | Uložená recovery preference může později zabarvit formulaci reflexe. | Žádný styl opravy není lepší; volba nesmí snižovat lidskou hodnotu Elizy. |
 | `reception_register_plan` | Vybere adresáty a přirozenější code-switching ve finálním statementu. | Nesmí označit jeden registr za jediný správný. |
 | `credit_response` | Ovlivní, zda vedlejší postavy v epilogu uznají Elizinu práci, kolektiv nebo vlastní experiment. | Strategický odklad nesmí být trest. |
 | `Pronunciation` | Dodá míru artikulační jistoty a dostupné varianty formulace. | Číselný stav nesmí sám blokovat směr. |

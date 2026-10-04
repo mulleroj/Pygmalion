@@ -353,13 +353,13 @@ Small talk v Edwardian social setting může fungovat jako bezpečný rituál, a
 ### 7. Decisions – Teacher Notes
 
 - `D08` používá prompt “Where should Eliza begin?” a tři přípravné volby. Stabilní option ID se ukládá pouze do `decisions.D08`; event `ch04_d08_recorded` právě jednou. Volba je non-punitive character choice, žádná není správná ani nesprávná, nemění score/signals a všechny vedou ke stejnému pokračování.
-- `D09` zkoumá social repair po doslovné odpovědi. Všechny varianty jsou legitimní; uloží `recovery_style` a mohou ovlivnit pozdější formulaci.
+- `D09` následuje až po LC12 a zaznamenává osobní recovery preference po doslovné interpretaci vtipné personifikace. Všechny tři varianty jsou legitimní, bez answer key a bez development reward. Stabilní hodnota se uloží pouze do `decisions.D09` (`rephrase`, `acknowledge_literal`, `wait_for_cue`) a event `ch04_d09_recorded` se zapíše jednou; žádné paralelní `recovery_style` pole nevzniká.
 - S02 po LC11 může nabídnout volitelnou lokální aplikační odpověď. Obě varianty jsou legitimní, sbíhají se a mohou jednou přidat `Confidence +1`; mikrovolba není LC11 gate, major decision ani S03 gate.
 
 ### 8. Challenge Key
 
 - `LC11`: tři stabilní samples; `lc11_sample_01` (“Miss Doolittle, have you been in London long?”) = opening; `lc11_sample_02` (“I see. And what do you think of the weather today?”) = continuing; `lc11_sample_03` (“Well, it was lovely speaking with you.”) = closing. Answer IDs jsou rozepsané v `docs/chapters/ch04/STATE_AND_BRANCHING.md`. Transcript/support zůstává skrytý do prvního pokusu daného sample; poté je explicitně dostupný, bez penalizace. Replay je povolen. Completion event `ch04_lc11_complete` se zapíše jednou po třech správných klasifikacích. LC11 nemění Pronunciation, Confidence, Independence ani score. Dokončení LC11 odemyká explicitní Continue do S03.
-- `LC12`: správně odlišit literal content od implied joke/meaning v kontextu; vlastní styl opravy nemá answer key.
+- `LC12`: přesně dva po sobě jdoucí interpretační úkoly, `lc12_literal_meaning` a `lc12_implied_meaning`. Literal key je `literal_city_decided` (“London made a decision about the rain.”); implied key je `implied_rain_joke` (“It has been raining a lot, and the Guest is joking about it.”). Ostatní stabilní možnosti, prompt, support/replay a event kontrakt jsou v `docs/chapters/ch04/STATE_AND_BRANCHING.md`. LC12 testuje porozumění, nikoli D09 recovery styl. Po obou správných odpovědích se jednou zaznamená `ch04_lc12_complete`; bez skóre, signálů nebo automatického přechodu.
 
 ### 9. Discussion Questions
 
@@ -382,9 +382,11 @@ Práce ve dvojicích s role-play small talku, potom společný replay `LC12`. Or
 | --- | --- | --- | --- | --- | --- |
 | `ch04_s01` | The Invitation | `D08` | — | preparation, listening, social transfer | `AM34` |
 | `ch04_s02` | Names and Weather | optional local reply | `LC11` | small talk, conversational signals, `/eɪ/` observation | `AM35–AM36` |
-| `ch04_s03` | The Wrong Answer | `D09` | `LC12` | literal/implied meaning, repair | `AM37–AM38` |
+| `ch04_s03` | The Wrong Answer | `D09` after LC12 | `LC12` · 2 interpretation items | literal/implied meaning, pragmatic repair | `AM37–AM38` |
 | `ch04_s04` | After the Laughter | — | — | reflection, feedback | `AM39–AM40` |
 | `ch04_s05` | The Walk Home | — | — | register repertoire | `AM41–AM42` |
+
+S03's Guest joke and Eliza's literal reply are original adaptation dialogue. Eliza's pronunciation is successful; the mismatch is pragmatic inference, not accent or intelligence. D09 choices all converge and receive no score or signal. Explicit S03 Continue requires both `ch04_lc12_complete` and `ch04_d09_recorded`, records `ch04_s03_complete` once and moves to S04. Teacher preview of S03 remains read-only: no autoplay, answer/attempt/state/reward writes or scene progression.
 
 ## 8. Chapter V – The Reception
 
