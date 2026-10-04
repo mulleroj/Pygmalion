@@ -66,7 +66,7 @@ Two separate, user-triggered foreground clips. Visible text, transcript and spok
 | Guest (same Guest as S02) | London seems to have decided we needed more rain. | `assets/audio/characters/guest/guest_ch04_scene03_001.mp3` | Planned reuse: Paul M · `zp695rEBCwfZ3GYNJOHx`; natural British social speech, lightly humorous, understated and friendly, never sarcastic toward Eliza. |
 | Eliza | I don't think London can decide anything. It is a city, not a person. | `assets/audio/characters/eliza/eliza_ch04_scene03_001.mp3` | Canonical Eliza voice `124kaYCknTDsnwUFdWl9`; Emerging New Speech, clean controlled pronunciation, sincere, slightly formal and literal, no comedy performance or exaggerated Cockney. |
 
-These are planned assets; neither S03 file nor transcript is produced by this documentation lock.
+Technical status (2026-10-04): the two approved MP3 previews are integrated at the canonical paths with the approved generation and voice IDs. Learner-visible transcripts match the spoken text 1:1. Playback remains explicit; no autoplay.
 
 ### AM38 — Listening / context cue
 
@@ -74,7 +74,7 @@ These are planned assets; neither S03 file nor transcript is produced by this do
 | --- | --- | --- |
 | `assets/audio/listening/ch04_lc12_reaction_001.mp3` | Approximately 3–5 seconds: brief social pause, one or two restrained polite chuckles, slight uncertain group murmur, return toward tea-room room tone. No intelligible dialogue is required. | Contextual support only; must not sound like a crowd laughing at Eliza. Provide a written context description alongside playback; critical pedagogical information is also conveyed in readable text. Replay follows LC12 support rules. |
 
-The previously listed `assets/audio/sfx/sfx_room_reaction_001.mp3` is redundant and superseded by AM38; it is not a separate required asset.
+The approved AM38 MP3 preview is integrated at the canonical path. The previously listed `assets/audio/sfx/sfx_room_reaction_001.mp3` is redundant and superseded by AM38; it is not a separate required asset.
 
 ### S03 ambience and mix
 

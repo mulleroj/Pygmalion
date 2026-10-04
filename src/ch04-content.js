@@ -147,6 +147,51 @@ export const CH04_SCENE_02 = {
   nextScene: 'ch04_s03'
 };
 
+export const CH04_SCENE_03 = {
+  id: 'ch04_s03', number: 3, chapter: 'IV', chapterTitle: 'The First Test', title: 'The Wrong Answer',
+  kicker: 'Chapter IV · The First Test', sceneCount: 5, location: CH04_SCENE_02.location,
+  visualStage: 'in_training', voiceStage: 'Emerging New Speech', composition: CH04_SCENE_02.composition,
+  background: CH04_SCENE_02.background, plate: CH04_SCENE_02.plate,
+  eliza: { ...CH04_SCENE_02.eliza, alt: 'Eliza in her In Training stage, listening and responding in the drawing-room.' },
+  supporting: [
+    ...CH04_SCENE_02.supporting,
+    { src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Professor Higgins observes the exchange from the drawing-room.', placement: 'higgins' }
+  ], props: [],
+  storyBeats: [
+    { type: 'narration', text: 'The conversation turns to the weather. Eliza hears the words clearly and answers their literal meaning.' },
+    { type: 'dialogue', speaker: 'Guest', text: 'London seems to have decided we needed more rain.' },
+    { type: 'dialogue', speaker: 'Eliza', text: "I don't think London can decide anything. It is a city, not a person." },
+    { type: 'narration', text: 'A brief pause follows. A few polite chuckles and an uncertain murmur pass around the room.' }
+  ],
+  voice: [
+    { id: 'AM37-GUEST', src: './assets/audio/characters/guest/guest_ch04_scene03_001.mp3', transcript: 'London seems to have decided we needed more rain.', label: 'Replay Guest', inline: true, generationId: 'iEswFQkkdCbnARcsyJrf', assetId: 'OdeUIsIvTWblA2JJxino', voiceId: 'zp695rEBCwfZ3GYNJOHx' },
+    { id: 'AM37-ELIZA', src: './assets/audio/characters/eliza/eliza_ch04_scene03_001.mp3', transcript: "I don't think London can decide anything. It is a city, not a person.", label: 'Replay Eliza', inline: true, generationId: 'l9YiSv4DeXZVftcFfbxn', assetId: 'bKeWipkyDE2RX10UzWj9', voiceId: '124kaYCknTDsnwUFdWl9' }
+  ],
+  reaction: { id: 'AM38', src: './assets/audio/listening/ch04_lc12_reaction_001.mp3', label: 'Replay the room reaction', description: 'There is a short pause, followed by restrained polite chuckles and an uncertain murmur.', generationId: 'cQoJZhP5BeIge3rFK0FH', assetId: '11fEHELi8y1QyyfpzgyI' },
+  challenge: {
+    id: 'LC12', title: 'Literal meaning and implied meaning', kind: 'lc12',
+    intro: 'Distinguish literal meaning from implied meaning in a playful social remark.',
+    items: [
+      { id: 'lc12_literal_meaning', prompt: "Taken literally, what does the Guest's sentence say?", answer: 'literal_city_decided', options: [
+        { id: 'literal_city_decided', label: 'London made a decision about the rain.' },
+        { id: 'literal_rainy_weather', label: 'London has many rainy days.' },
+        { id: 'literal_leave_london', label: 'The Guest wants to leave London.' }
+      ] },
+      { id: 'lc12_implied_meaning', prompt: 'What does the Guest actually mean?', answer: 'implied_rain_joke', options: [
+        { id: 'implied_city_controls_weather', label: 'The city controls the weather.' },
+        { id: 'implied_rain_joke', label: 'It has been raining a lot, and the Guest is joking about it.' },
+        { id: 'implied_weather_question', label: 'The Guest wants Eliza to explain the weather.' }
+      ] }
+    ]
+  },
+  decision: { id: 'D09', prompt: 'How might Eliza respond now?', choices: [
+    { id: 'rephrase', text: 'Oh — I see. You meant that London has been very rainy.' },
+    { id: 'acknowledge_literal', text: 'I took that rather literally, didn’t I?' },
+    { id: 'wait_for_cue', text: 'Perhaps I should listen before I answer.' }
+  ] },
+  nextScene: 'ch04_s04'
+};
+
 export const CH04_TEACHER_REFERENCE_AUDIO = {
   id: 'teacher_ref_my_fair_lady_rain_in_spain',
   src: './assets/audio/characters/narrator/ch04_teacher_reference_rain_in_spain_001.mp3',
@@ -169,6 +214,15 @@ export const CH04_S02_TEACHER_SECTIONS = [
   ['Suggested Classroom Use', 'Classify each turn, then role-play a short exchange that ends with a clear polite closing. Optionally compare the two `/eɪ/` examples as pronunciation observations, never as a required LC11 skill.'],
   ['Scene Navigation', 'S01 opens S02 only after explicit Continue. After all LC11 samples are correct, explicit Continue records ch04_s02_complete once and moves to ch04_s03. The optional reply, replay, Teacher preview and audio completion never navigate automatically.'],
   ['Teacher Preview Contract', 'Teacher preview is read-only for answers, attempts, support use, challenge completion, optional reply, development signals and scene progression. The cultural reference audio is separate from AM35/AM36; it plays only after an explicit Teacher Mode click through the existing foreground audio path. It writes no learner state and triggers no challenge or progression.']
+];
+
+export const CH04_S03_TEACHER_SECTIONS = [
+  ['Chapter Overview', 'S03 shows a pragmatic misunderstanding after successful pronunciation. Eliza takes a playful remark literally; the story does not frame the moment as an accent problem.'],
+  ['Learning Goals', 'Distinguish literal meaning from implied meaning and notice how a speaker can repair a misunderstanding.'],
+  ['Key Point', 'Correct pronunciation does not automatically mean correct pragmatic interpretation.'],
+  ['Challenge Key', 'LC12 literal: London made a decision about the rain. LC12 implied: It has been raining a lot, and the Guest is joking about it. AM38 is contextual support and is not the sole source of the answer.'],
+  ['D09 and equity framing', 'There is no single correct recovery style. rephrase, acknowledge_literal and wait_for_cue are all socially plausible, with different interpersonal tones. Accent ≠ intelligence.'],
+  ['Teacher Preview Contract', 'Preview is read-only. It does not autoplay, start ambience, write answers or attempts, use support, award signals, complete challenges or scenes, save decisions, or progress the learner.']
 ];
 
 export const CH04_S01_TEACHER_SECTIONS = [

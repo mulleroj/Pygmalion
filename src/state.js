@@ -1,5 +1,5 @@
 import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05, CH03_SCENE_06 } from './ch03-content.js';
-import { CH04_SCENE_01, CH04_SCENE_02 } from './ch04-content.js';
+import { CH04_SCENE_01, CH04_SCENE_02, CH04_SCENE_03 } from './ch04-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -45,7 +45,8 @@ export function createInitialState() {
       lc08: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false },
       lc09: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [] },
       lc10: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [] },
-      lc11: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [], applicationChoice: null }
+      lc11: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [], applicationChoice: null },
+      lc12: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportItems: [] }
     },
     soundEnabled: true
   };
@@ -55,6 +56,7 @@ function mergeState(raw) {
   const initial = createInitialState();
   if (!raw || typeof raw !== 'object') return initial;
   const rawLc11 = raw.challenges?.lc11;
+  const rawLc12 = raw.challenges?.lc12;
   return {
     ...initial,
     ...raw,
@@ -77,7 +79,8 @@ function mergeState(raw) {
         ...(rawLc11 || {}),
         answers: rawLc11?.answers && typeof rawLc11.answers === 'object' ? rawLc11.answers : {},
         supportSamples: Array.isArray(rawLc11?.supportSamples) ? rawLc11.supportSamples : []
-      }
+      },
+      lc12: { ...initial.challenges.lc12, ...(rawLc12 || {}), answers: rawLc12?.answers && typeof rawLc12.answers === 'object' ? rawLc12.answers : {}, supportItems: Array.isArray(rawLc12?.supportItems) ? rawLc12.supportItems : [] }
     }
   };
 }
@@ -118,6 +121,12 @@ export function recordOpeningTone(state, tone) {
 }
 
 export function applyDecision(state, decisionId, optionId) {
+  if (decisionId === 'D09') {
+    const allowed = CH04_SCENE_03.decision.choices.some(({ id }) => id === optionId);
+    const eventId = 'ch04_d09_recorded';
+    if (state.scene !== CH04_SCENE_03.id || !state.applied_events.includes('ch04_lc12_complete') || !allowed || state.decisions.D09 || state.applied_events.includes(eventId)) return state;
+    return { ...state, decisions: { ...state.decisions, D09: optionId }, applied_events: [...state.applied_events, eventId] };
+  }
   if (decisionId === 'D08') {
     const allowed = CH04_SCENE_01.decision.choices.some(({ id }) => id === optionId);
     const eventId = 'ch04_d08_recorded';
@@ -315,6 +324,9 @@ export function isChallengeComplete(state, challengeId) {
 export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === CH04_SCENE_01.id && !state.applied_events.includes('ch03_s06_complete')) return 'Complete Chapter III Scene 06 before opening The Invitation.';
   if (scene.id === CH04_SCENE_02.id && !state.challenges.lc11.completed) return 'Complete all three LC11 samples before continuing.';
+  if (scene.id === CH04_SCENE_03.id && !state.applied_events.includes('ch04_s02_complete')) return 'Complete Chapter IV Scene 02 before opening The Wrong Answer.';
+  if (scene.id === CH04_SCENE_03.id && !state.applied_events.includes('ch04_lc12_complete')) return 'Complete LC12 before continuing.';
+  if (scene.id === CH04_SCENE_03.id && !state.applied_events.includes('ch04_d09_recorded')) return 'Choose Eliza’s response before continuing.';
   if (scene.id === 'ch03_s02' && !state.ch03_s01_complete) return 'Complete Chapter III Scene 01 before opening The Listening Room.';
   if (scene.id === 'ch03_s03' && !state.applied_events.includes('ch03_s02_complete')) return 'Complete Chapter III Scene 02 before opening Finding the Main Stress.';
   if (scene.id === 'ch03_s04' && !state.applied_events.includes('ch03_s03_complete')) return 'Complete Chapter III Scene 03 before opening A Sentence Has Shape.';
@@ -388,6 +400,26 @@ export function recordLc11ApplicationChoice(state, choiceId) {
   };
 }
 
+export function recordLc12Answer(state, itemId, optionId) {
+  const challenge = state.challenges.lc12;
+  const index = CH04_SCENE_03.challenge.items.findIndex(({ id }) => id === itemId);
+  const item = CH04_SCENE_03.challenge.items[index];
+  if (state.scene !== CH04_SCENE_03.id || !state.applied_events.includes('ch04_s02_complete') || !item || !item.options.some(({ id }) => id === optionId) || challenge.completed || challenge.answers[itemId]?.correct) return state;
+  if (index > 0 && !challenge.answers[CH04_SCENE_03.challenge.items[index - 1].id]?.correct) return state;
+  const correct = optionId === item.answer;
+  const answers = { ...challenge.answers, [itemId]: { answer: optionId, correct, attempts: (challenge.answers[itemId]?.attempts || 0) + 1 } };
+  const completed = CH04_SCENE_03.challenge.items.every(({ id }) => answers[id]?.correct);
+  const eventId = 'ch04_lc12_complete';
+  return { ...state, applied_events: completed && !state.applied_events.includes(eventId) ? [...state.applied_events, eventId] : state.applied_events,
+    challenges: { ...state.challenges, lc12: { ...challenge, answers, completed, attempts: (challenge.attempts || 0) + 1, firstAttempt: true } } };
+}
+
+export function markLc12SupportUsed(state, itemId) {
+  const challenge = state.challenges.lc12;
+  if (state.scene !== CH04_SCENE_03.id || !challenge.answers[itemId] || challenge.supportItems.includes(itemId) || !CH04_SCENE_03.challenge.items.some(({ id }) => id === itemId)) return state;
+  return { ...state, challenges: { ...state.challenges, lc12: { ...challenge, supportItems: [...challenge.supportItems, itemId] } } };
+}
+
 export function completeS04Terms(state) {
   if (state.scene !== 'ch02_s04') return state;
   const eventId = 'ch02_s04_terms_understood';
@@ -457,6 +489,11 @@ export function completeScene(state, scene) {
   if (scene.id === CH04_SCENE_02.id) {
     const eventId = 'ch04_s02_complete';
     if (!state.challenges.lc11.completed || state.applied_events.includes(eventId)) return state;
+    return { ...state, applied_events: [...state.applied_events, eventId] };
+  }
+  if (scene.id === CH04_SCENE_03.id) {
+    const eventId = 'ch04_s03_complete';
+    if (!state.applied_events.includes('ch04_lc12_complete') || !state.applied_events.includes('ch04_d09_recorded') || state.applied_events.includes(eventId)) return state;
     return { ...state, applied_events: [...state.applied_events, eventId] };
   }
   return state;
