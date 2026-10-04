@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CH03_SCENE_03, CH03_SCENE_04 } from '../src/ch03-content.js';
+import { CH04_SCENE_01 } from '../src/ch04-content.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -879,6 +880,36 @@ test('S01 story voice duck/replay ownership restores the same interior and Sound
   await manager.setEnabled(false); assert.equal(replay.paused,true); assert.equal(loop.paused,true); assert.equal(loop.volume,0);
   await manager.setEnabled(true); assert.equal(loop.paused,false); assert.equal(replay.playCalls,1);
   assert.equal(manager.foreground,null); assert.equal(loop.volume,0.10);
+});
+
+test('AM34 story voices duck and restore the continuous lesson room without autoplay or loop restart', async t => {
+  assert.equal(ambienceForScene('ch04_s01'), 'ch03_lesson_room');
+  assert.equal(isContinuousAmbienceTransition('ch03_s06', 'ch04_s01'), true);
+  const { manager, elements } = audioHarness(t);
+  await manager.ensureAmbience('ch04_s01');
+  assert.equal(elements.length, 0, 'scene entry does not autoplay voice or ambience before audio is unlocked');
+  manager.unlock();
+  await manager.ensureAmbience('ch04_s01');
+  const loop = manager.ambience;
+  assert.equal(loop.src, AMBIENCE_FILES.ch03_lesson_room);
+  assert.equal(manager.mix, CH02_AUDIO_MIX);
+  for (const voice of CH04_SCENE_01.voice) {
+    const playback = await manager.playVoice(voice.src);
+    assert.equal(playback.src, voice.src);
+    assert.equal(loop.volume, 0.10 * 0.28, `${voice.id} ducks the lesson room`);
+    playback.emit('ended');
+    assert.equal(loop.volume, 0.10, `${voice.id} restores ambience after natural completion`);
+    assert.equal(manager.ambience, loop, 'story playback retains the same ambience instance');
+  }
+  assert.equal(loop.playCalls, 1, 'the ambience loop never restarts during either voice');
+  const replay = await manager.playVoice(CH04_SCENE_01.voice[0].src);
+  await manager.setEnabled(false);
+  assert.equal(replay.paused, true, 'Sound Off stops foreground AM34 playback');
+  assert.equal(loop.paused, true, 'Sound Off stops ambience');
+  await manager.setEnabled(true);
+  assert.equal(loop.paused, false, 'Sound On resumes ambience');
+  assert.equal(replay.playCalls, 1, 'Sound On never replays foreground speech');
+  assert.equal(manager.foreground, null);
 });
 
 test('leaving Chapter III stops foreground and retires the explicit lesson loop without activating fallback', async t => {

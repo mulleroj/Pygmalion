@@ -53,7 +53,26 @@ export const CH04_SCENE_01 = {
       { id: 'd08_listen_first', title: 'Listen first and observe.' }
     ]
   },
-  voice: [],
+  voice: [
+    {
+      id: 'AM34-HIGGINS',
+      src: './assets/audio/characters/higgins/higgins_ch04_scene01_001.mp3',
+      transcript: 'Sensible. We shall prepare the words, not the whole evening.',
+      label: 'Replay Higgins',
+      inline: true,
+      generationId: 'BkxpJUWvNKNKFbxn4HnI',
+      voiceId: 'JlptfLxaUpd8pZcw9dKd'
+    },
+    {
+      id: 'AM34-ELIZA',
+      src: './assets/audio/characters/eliza/eliza_ch04_scene01_001.mp3',
+      transcript: 'I want to know what they mean, not only how I should answer.',
+      label: 'Replay Eliza',
+      inline: true,
+      generationId: 'GNCSWbwXOiHiwxtWbQYY',
+      voiceId: '124kaYCknTDsnwUFdWl9'
+    }
+  ],
   nextScene: 'ch04_s02'
 };
 

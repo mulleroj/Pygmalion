@@ -22,7 +22,38 @@ test('S01 has canonical identity, stages, reused scene assets and no bespoke pro
   assert.equal(CH04_SCENE_01.supporting[0].src, './assets/images/characters/pickering/runtime/pickering_master_cutout.png');
   assert.equal(CH04_SCENE_01.supporting[1].src, './assets/images/characters/higgins/runtime/higgins_master_cutout.png');
   assert.deepEqual(CH04_SCENE_01.props, []);
-  assert.deepEqual(CH04_SCENE_01.voice, []);
+  assert.deepEqual(CH04_SCENE_01.voice.map(({ id, src, transcript, label, inline, generationId, voiceId }) =>
+    ({ id, src, transcript, label, inline, generationId, voiceId })), [
+    {
+      id: 'AM34-HIGGINS',
+      src: './assets/audio/characters/higgins/higgins_ch04_scene01_001.mp3',
+      transcript: 'Sensible. We shall prepare the words, not the whole evening.',
+      label: 'Replay Higgins', inline: true,
+      generationId: 'BkxpJUWvNKNKFbxn4HnI', voiceId: 'JlptfLxaUpd8pZcw9dKd'
+    },
+    {
+      id: 'AM34-ELIZA',
+      src: './assets/audio/characters/eliza/eliza_ch04_scene01_001.mp3',
+      transcript: 'I want to know what they mean, not only how I should answer.',
+      label: 'Replay Eliza', inline: true,
+      generationId: 'GNCSWbwXOiHiwxtWbQYY', voiceId: '124kaYCknTDsnwUFdWl9'
+    }
+  ]);
+  for (const voice of CH04_SCENE_01.voice) {
+    const path = new URL(`../${voice.src.replace(/^\.\//, '')}`, import.meta.url);
+    const audio = fs.readFileSync(path);
+    assert.ok(audio.length > 1000, `${voice.src} should contain audio data`);
+    assert.equal(audio.toString('ascii', 0, 3), 'ID3', `${voice.src} should have an MP3 ID3 header`);
+    const tagSize = ((audio[6] & 0x7f) << 21) | ((audio[7] & 0x7f) << 14) | ((audio[8] & 0x7f) << 7) | (audio[9] & 0x7f);
+    const frameStart = 10 + tagSize + (audio[5] & 0x10 ? 10 : 0);
+    let hasMpegFrame = false;
+    for (let i = frameStart; i < Math.min(frameStart + 4096, audio.length - 1); i += 1) {
+      if (audio[i] === 0xff && (audio[i + 1] & 0xe0) === 0xe0) { hasMpegFrame = true; break; }
+    }
+    assert.ok(hasMpegFrame, `${voice.src} should contain an MPEG audio frame`);
+    assert.ok(CH04_SCENE_01.storyBeats.some(({ text }) => text === voice.transcript), `${voice.id} transcript must match visible story text exactly`);
+  }
+  assert.equal(CH04_SCENE_01.voice.length, 2, 'Pickering remains text-only and no challenge audio is added');
   assert.equal(CH04_SCENE_01.nextScene, 'ch04_s02');
 });
 
@@ -147,7 +178,9 @@ test('S01 UI presents neutral D08 controls, read-only Teacher preview, then expl
   assert.match(html, /Where should Eliza begin\?/);
   assert.equal((html.match(/data-decision="D08"/g) || []).length, 3);
   assert.equal((html.match(/aria-pressed="false"/g) || []).length, 3);
-  assert.doesNotMatch(html, /data-action="next-scene"|LC11|data-action="play-voice"|choice-feedback/);
+  assert.equal((html.match(/data-action="play-voice"/g) || []).length, 2);
+  assert.doesNotMatch(html, /data-action="next-scene"|LC11|choice-feedback/);
+  assert.match(html, /I want to know what they mean, not only how I should answer\.[\s\S]*?Replay Eliza[\s\S]*?Sensible\. We shall prepare the words, not the whole evening\.[\s\S]*?Replay Higgins/);
   assert.equal(node('#story-root').className, undefined);
   await click('open-teacher');
   assert.equal((node('#teacher-content').innerHTML.match(/class="teacher-section"/g) || []).length, 12);
@@ -156,6 +189,7 @@ test('S01 UI presents neutral D08 controls, read-only Teacher preview, then expl
   html = node('#app').innerHTML;
   assert.match(html, /Teacher preview · read-only/);
   assert.match(html, /Return to student scene/);
+  assert.equal((html.match(/data-action="play-voice"/g) || []).length, 2, 'Teacher preview exposes replay controls without triggering playback');
   await click('choose-decision', { decision: 'D08', option: options[0] });
   await click('next-scene');
   assert.equal(saved, beforePreview);
