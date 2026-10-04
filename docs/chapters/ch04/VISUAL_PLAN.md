@@ -41,3 +41,11 @@ Reuse existing runtime cutouts; no new character pose is required:
 - Mrs Pearce (fallback if composition requires): `assets/images/characters/mrs-pearce/runtime/mrs-pearce_fairness-monitoring_cutout.png`
 
 Composition: Eliza is foreground and central emotional focus; Pickering and Mrs Pearce form a supportive grouping; Higgins is visually slightly separated. Do not show the Guest or tea-table props. Do not create a new reflective Eliza pose. Keep reflection choice and feedback text in the story layer, not decorative art.
+
+## S05 — The Walk Home
+
+S05 needs one new background for a quiet London evening street, a believable period-appropriate continuation after the gathering, with room for Eliza's foreground composition. Avoid modern vehicles and signage; the street should not be visually busy and need not identify a famous landmark.
+
+- `assets/images/locations/ch04/ch04_evening_walk.webp` — planned canonical background; not yet produced.
+
+Eliza is the only character. Reuse `assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png`; no new pose is required. Compose her slightly off-centre or centrally according to the existing scene layout, reflective rather than dramatic. No other character cutouts or prop assets are required. Do not create additional visuals unless later human QA shows the existing pose clearly fails.

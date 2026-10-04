@@ -394,20 +394,19 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 
 ### ch04_s05 – The Walk Home
 
-- **Lokace:** večerní ulice mezi společenskou místností a domovem.
-- **Čas / atmosféra:** noc po prvním testu; chlad, doznívající hlasy, prostor pro vlastní myšlenky.
-- **Postavy:** Eliza, případně Pickering v krátkém rozloučení.
-- **Děj:** Eliza si uvědomí, že může zvolit, kdy chce být pečlivá a kdy spontánní. Výsledek testu není „prošla/neprošla“, ale nový datový bod pro její vlastní strategii.
-- **Hlavní účel:** uzavřít první test a připravit veřejnější Chapter V.
-- **Rozhodnutí hráče:** žádné hlavní; volitelná replay reflexe.
-- **Možné hodnotové změny:** uložená volba `decisions.D08` může zabarvit pozdější Elizinu reflexi; žádný signal increment.
-- **Uložení:** používá se stávající decision ledger `decisions.D08`; žádné samostatné pole strategie ani známkování.
-- **Audio momenty:** `AM41 VOICE` Elizina krátká sebereflexe; `AM42 AMBIENCE` noční ulice a kroky.
-- **Challenge:** žádná; kapitola vrcholí interpretací zkušenosti.
-- **Teacher Mode:** code-switching as repertoire, not disguise.
-- **Vizuální assety:** noční ulice, Eliza `In Training / self-aware`, světla domu.
-- **Audio assety:** `eliza_ch04_scene05_001.mp3`, `ambience_evening_walk_001.mp3` a přepis.
-- **Návaznost:** `ch05_s01`.
+- **Status:** DOCUMENTATION-ONLY CANON LOCK; runtime placeholder title `The Reception` is known to be wrong. Correct it during later S05 implementation; runtime is unchanged by this lock.
+- **Lokace a čas:** `evening street`, krátce po S04, cestou domů. Eliza jde sama. Pickering, Higgins ani Mrs Pearce se neobjevují; žádná farewell scene.
+- **Role a účel:** poslední scéna Chapter IV uzavírá Elizin první společenský test jako `prepare → perform → misunderstand → reflect → choose`. Test není pass/fail, známka ani verdikt o inteligenci či identitě. Eliza si sama vybírá, co využije dál: `code-switching as repertoire, not disguise`. Pokračuje její agency ze S04; není vrácena do role Higginsova experimentu.
+- **Canonical story spine:** narrator establishes the quiet evening street; Eliza reflects on careful speech; contrasts careful and spontaneous speech; read-only D08 memory echo; reframes the evening as information, not pass/fail; states the strategy belongs to her; explicit Continue; `ch04_s05_complete`; transition to `ch05_s01`. No challenge, new decision, reflection state, acknowledgement or auto-transition.
+- **Přesný locked dialog (ORIGINAL PROJECT ADAPTATION):** Narrator: `Later, on the walk home, the street is quiet enough for Eliza to hear her own thoughts.` Eliza: `I can speak carefully when I need to.` Eliza: `And I can speak more freely when I choose.` Eliza: `That is not pretending. It is knowing what I can do.` Eliza: `Tonight was not a pass or fail.` Eliza: `It showed me what I can practise — and what I can choose.` Eliza: `The choice is mine.` Viditelný dialog a spoken dialogue jsou 1:1. Nepřidávat ani nezdobit; závěrečná replika je klidná a usazená.
+- **D08 memory echo:** pouze kompaktní read-only karta mezi Eliza 3 a Eliza 4 s titulkem `Your first plan`. Mapování: `d08_practise_greeting` → `Practise the greeting first.`; `d08_plan_message` → `Plan what you want to say.`; `d08_listen_first` → `Listen before answering.`. Pod kartou nehlasový text: `That was one useful strategy. Tonight gave Eliza more information to work with.` Při chybějícím D08 kartu vynechat; bez fallback state. Karta nedělá větvení, gate ani změnu rewardu.
+- **State a dokončení:** vstup vyžaduje pouze `ch04_s04_complete`. `reflections.ch04_s04_focus` S05 nijak neovlivňuje. Bez nových `decisions.*`, `reflections.*` či choice eventů. Confidence +0, Independence +0, Pronunciation +0; bez skóre, skrytého rewardu či development incrementu. Po příběhové sekvenci explicitní `Continue` zapíše `ch04_s05_complete` právě jednou a přejde do `ch05_s01`; completion je idempotentní.
+- **Challenge:** žádná. Nevytvářet LC13, quiz, answer key, retry, score ani correctness semantics.
+- **Audio:** AM41 = šest samostatných Eliza reflection clips dle `AUDIO_PLAN.md`; canonical voice `124kaYCknTDsnwUFdWl9`, Emerging New Speech, standard foreground duck/restore, žádný autoplay ani narration audio. AM42 je souvislá nová ambience `ch04_evening_walk`, plánovaný soubor `assets/audio/ambience/ch04_evening_walk_ambient.mp3`; nepřebírat neschválené `covent-garden-evening-001.mp3`. Při vstupu crossfade `ch04_side_corridor → ch04_evening_walk` přibližně 1.5 s, bez mezilehlého ticha/restartu. AM42 nahrazuje dřívější představu noční ulice a kroků jako odděleného SFX; žádný samostatný footsteps one-shot.
+- **Vizuály:** jediný nový asset je `assets/images/locations/ch04/ch04_evening_walk.webp`, tichá dobově odpovídající londýnská ulice bez moderních vozidel/značení a bez nutnosti slavné památky; prostor pro Elizu. Eliza je jediná postava, použít `assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png`; bez nové pózy, dalších postav či rekvizit.
+- **Teacher Mode:** read-only cíle, jazykové/pragmatické a identity body, equity framing a diskusní otázky jsou v chapter Teacher obsahu; preview nic nepřehrává, nezapisuje a neposouvá.
+- **Adaptace:** přesné S05 dialogy jsou vlastní `ORIGINAL PROJECT ADAPTATION`, tematicky inspirovaná public-domain Shawovým *Pygmalion*; nic není citováno ze Shawa ani převzato z *My Fair Lady*. S05 nepotřebuje kulturní poznámku o muzikálu.
+- **QA poznámka:** závěrečný Chapter IV clean-state walkthrough S01→S02→S03→S04→S05 zůstává otevřeným QA dluhem. Vestavěný úplný reset začíná Chapter I; nepřidávat dev fixture, seed ani debug bypass a neobcházet state guards.
 
 ## Chapter V – The Reception
 

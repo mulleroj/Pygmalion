@@ -131,3 +131,33 @@ The reflection choice does not affect S05 branching, score, Pronunciation, Confi
 Unlock explicit Continue only after `ch04_s04_reflection_recorded`. Explicit Continue appends `ch04_s04_complete` exactly once and transitions to `ch04_s05`. Reflection selection, rendering, replay, refresh, audio completion and Teacher preview never complete or navigate the scene. Completion is idempotent; no additional reward is attached. S05 is outside this contract.
 
 Teacher preview may show the story, reflection options and this contract, but remains read-only: no autoplay, state writes, reflection selection, rewards, completion or progression.
+
+## S05 — The Walk Home
+
+### Entry and invariants
+
+S05 is the final Chapter IV scene, canonical ID `ch04_s05`, title **The Walk Home**. Entry requires `ch04_s04_complete` only. Eliza is alone; no other active character appears. Neither `decisions.D08` nor `reflections.ch04_s04_focus` changes dialogue, branches, gates, or rewards. D08 is used only by the display-only memory echo. Do not add state fields or persist card acknowledgement.
+
+### D08 memory echo
+
+Between Eliza's third and fourth lines, optionally display a compact read-only card labelled `Your first plan`. Map the existing `decisions.D08` value exactly:
+
+| Existing value | Display text |
+| --- | --- |
+| `d08_practise_greeting` | Practise the greeting first. |
+| `d08_plan_message` | Plan what you want to say. |
+| `d08_listen_first` | Listen before answering. |
+
+Below it show `That was one useful strategy. Tonight gave Eliza more information to work with.` This is neutral supporting text, not dialogue and has no audio. If D08 is unexpectedly missing, omit the card; never write fallback state. It is not a gate, branch, reward input or acknowledgement event.
+
+### No challenge, decision or reflection write
+
+S05 has no challenge: do not create LC13, quiz, answer key, retry state, score or correctness semantics. Create no `decisions.*`, `reflections.*` or choice event. The D08 recap only renders existing state. S04's `reflections.ch04_s04_focus` remains local to S04 and has no S05 effect.
+
+### Development signals
+
+S05 awards Confidence +0, Independence +0 and Pronunciation +0. No score, hidden reward or development increment is attached to the reflection. Chapter IV retains only the already locked optional S02 Confidence increment.
+
+### Completion and transition
+
+After the complete story sequence, show explicit **Continue**. Only that action appends `ch04_s05_complete` once and transitions to `ch05_s01`. There is no auto-transition or additional gate; D08 and its recap are not required. Completion is idempotent. S05 Teacher preview is read-only and does not play audio, start ambience, write state or advance progression.

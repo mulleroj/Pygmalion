@@ -112,3 +112,29 @@ Eliza's final line is a calm agency beat, not a rebellion climax. Higgins is ana
 ### Scene end
 
 Require `ch04_s04_reflection_recorded` before enabling explicit Continue. Continue records `ch04_s04_complete` exactly once and transitions to `ch04_s05`; no automatic transition. There is no challenge, score, development increment or hidden reward. Teacher preview remains read-only.
+
+## S05 — The Walk Home
+
+Status: documentation-only canon lock. `ch04_s05` is the final scene of Chapter IV. Location: a quiet evening street, shortly after S04, on Eliza's walk home. Eliza walks alone; Pickering, Higgins and Mrs Pearce do not appear. There is no farewell scene.
+
+The dialogue below is **ORIGINAL PROJECT ADAPTATION**. It is thematically inspired by Shaw's public-domain *Pygmalion*, is not quoted from Shaw, and uses no wording, lyrics or distinctive treatment from *My Fair Lady*. Visible dialogue equals spoken dialogue 1:1. Do not embellish.
+
+### Canonical story flow
+
+1. **Narrator:** Later, on the walk home, the street is quiet enough for Eliza to hear her own thoughts.
+2. **Eliza:** I can speak carefully when I need to.
+3. **Eliza:** And I can speak more freely when I choose.
+4. **Eliza:** That is not pretending. It is knowing what I can do.
+5. Show the compact, read-only D08 memory echo described below, between Eliza 3 and Eliza 4. Its supporting text is not dialogue and has no audio.
+6. **Eliza:** Tonight was not a pass or fail.
+7. **Eliza:** It showed me what I can practise — and what I can choose.
+8. **Eliza:** The choice is mine.
+9. Show explicit Continue; record completion and transition as specified in `STATE_AND_BRANCHING.md`.
+
+Eliza's final line is calm, self-aware and settled, not triumphant or confrontational. Her voice remains **Emerging New Speech**: reflective and increasingly self-directed, not aristocratic, exaggerated Cockney or ashamed of spontaneous speech. Careful speech is an available skill, not a superior identity. Preserve `Accent ≠ intelligence`.
+
+### D08 memory echo
+
+Label: **Your first plan**. Read the existing `decisions.D08` option and display exactly one corresponding line: `d08_practise_greeting` → “Practise the greeting first.”; `d08_plan_message` → “Plan what you want to say.”; `d08_listen_first` → “Listen before answering.” Under it show: “That was one useful strategy. Tonight gave Eliza more information to work with.” This support text is not spoken dialogue. The card is display-only; it does not branch dialogue, create state, gate completion, change rewards or require acknowledgement. If D08 is unexpectedly missing, omit the card; do not write fallback state.
+
+S05 has no challenge and no new decision, reflection write or choice event. `reflections.ch04_s04_focus` remains local to S04 and does not affect this scene. The experience is information, not pass/fail, a grade or a verdict on identity or intelligence.

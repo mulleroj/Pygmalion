@@ -107,3 +107,28 @@ S04 introduces the new logical ambience identity `ch04_side_corridor`, planned f
 At S04 entry crossfade from the currently running `ch04_social_tea_room` to `ch04_side_corridor` over approximately 1.5 seconds. The existing tea-room A/B sequence may finish or continue naturally until that crossfade begins; do not restart Loop A. Once corridor ambience takes over, stop tea-room ambience using the existing AudioManager lifecycle. S04 is a side-corridor location, not a tea-room visual or ambience hold.
 
 The earlier tentative AM40 hallway/distant-guests SFX plan is superseded by this continuous corridor ambience. Do not produce or plan `assets/audio/sfx/sfx_hallway_001.mp3`; do not reuse S03 AM38 laughter/reaction in S04. Distant social presence belongs in the corridor ambience. There is no separate S04 AM40 one-shot.
+
+## S05 — The Walk Home
+
+### AM41 — Eliza reflection sequence
+
+Six separate, user-triggered foreground clips use canonical Eliza voice `124kaYCknTDsnwUFdWl9` and the **Emerging New Speech** stage. Apply standard foreground duck/restore through the existing AudioManager. Do not autoplay on scene entry. Visible dialogue, transcript and spoken text match 1:1. No narrator audio is planned.
+
+| Order | Exact spoken text | Planned local file |
+| --- | --- | --- |
+| 1 | I can speak carefully when I need to. | `assets/audio/characters/eliza/eliza_ch04_scene05_001.mp3` |
+| 2 | And I can speak more freely when I choose. | `assets/audio/characters/eliza/eliza_ch04_scene05_002.mp3` |
+| 3 | That is not pretending. It is knowing what I can do. | `assets/audio/characters/eliza/eliza_ch04_scene05_003.mp3` |
+| 4 | Tonight was not a pass or fail. | `assets/audio/characters/eliza/eliza_ch04_scene05_004.mp3` |
+| 5 | It showed me what I can practise — and what I can choose. | `assets/audio/characters/eliza/eliza_ch04_scene05_005.mp3` |
+| 6 | The choice is mine. | `assets/audio/characters/eliza/eliza_ch04_scene05_006.mp3` |
+
+The delivery is reflective, calm, self-aware and settled: not aristocratic, exaggerated Cockney, ashamed or triumphant. No voice-development state change is written.
+
+### AM42 — Continuous evening-walk ambience
+
+Logical ambience ID: `ch04_evening_walk`. Planned asset: `assets/audio/ambience/ch04_evening_walk_ambient.mp3`. This is a new, quiet Edwardian/London evening street loop, preferably approximately 18–25 seconds and seamless. Gentle distant city presence and occasional subtle carriage/distant movement may be included. No intelligible dialogue, music, dramatic traffic, modern vehicles, repeated signature sound or clock emphasis. Any footsteps texture must be subtle and non-rhythmic, never a conspicuous loop.
+
+Do not automatically reuse `covent-garden-evening-001.mp3`; it has not been approved for S05. At S05 entry, crossfade `ch04_side_corridor → ch04_evening_walk` over approximately 1.5 seconds. Do not stop corridor ambience first, create silence or restart it. Once outdoor ambience takes over, release corridor according to existing AudioManager lifecycle; add no audio subsystem.
+
+AM42 supersedes the earlier scene-map description “night street and footsteps” as a continuous ambience. Do not create a separate footsteps one-shot solely for that old outline. Footsteps, if present, belong only as subtle texture inside AM42.

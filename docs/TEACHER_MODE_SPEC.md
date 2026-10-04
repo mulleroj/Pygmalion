@@ -392,6 +392,22 @@ S04 — **After the Laughter** is set several minutes later in a side corridor; 
 
 S04 requires `ch04_s03_complete` on entry. First valid reflection selection writes only `reflections.ch04_s04_focus` and appends `ch04_s04_reflection_recorded` once. Explicit Continue is available only after that event; it writes `ch04_s04_complete` once and moves to S05. D09 and prior Confidence do not branch or alter the scene. S04 has no challenge, development increment or hidden reward. Its audio plan uses the new `ch04_side_corridor` ambience identity; the earlier proposed AM40 hallway/distant-guests one-shot is superseded by continuous ambience.
 
+## S05 — The Walk Home
+
+### Objective and teaching points
+
+Students understand code-switching as a communicative repertoire: speakers can adjust how they speak for context without changing who they are. A speaker may choose more careful or more spontaneous speech depending on context; changing register is not the same as pretending to be a different person. Eliza begins to treat speech choices as tools she controls rather than rules imposed on her.
+
+### Equity and discussion
+
+Preserve `Accent ≠ intelligence`. No single accent or register is appropriate for every context, and successful communication does not require giving up linguistic identity. Ask: “When do you change the way you speak, and does that change who you are?” Optional: “Is adapting your speech a skill, a disguise, or can it be both in different situations?”
+
+S05 is narrative closure, not pass/fail, a grade, or a verdict about intelligence or identity. It has no challenge, answer key, score, new decision, reflection write or development increment. `reflections.ch04_s04_focus` stays local to S04. D08 can appear only as a read-only recap from existing learner state; missing D08 omits the card without a fallback write or gate. Teacher preview is read-only and does not play AM41, start AM42, write state or advance.
+
+### Canonical scene navigation
+
+`ch04_s05` — **The Walk Home** is the final Chapter IV scene. It requires `ch04_s04_complete`; explicit Continue writes `ch04_s05_complete` once and transitions to `ch05_s01`. Completion is idempotent, with no auto-transition. Eliza is alone on a quiet evening street; there is no farewell scene. The complete story, D08 echo mapping, audio/visual contracts and locked dialogue are in `docs/chapters/ch04/` and `docs/SCENE_MAP.md`.
+
 ## 8. Chapter V – The Reception
 
 ### 1. Chapter Overview

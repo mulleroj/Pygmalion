@@ -1,6 +1,6 @@
 # Chapter IV Teacher Content
 
-Status: S01 and S02 implemented; S03 and S04 Teacher Mode content is canonically locked in pre-production. Teacher Mode preview is read-only; S02 cultural-reference audio is explicitly teacher-triggered and does not write learner state.
+Status: S01 and S02 implemented; S03–S05 Teacher Mode content is canonically locked in pre-production. Teacher Mode preview is read-only; S02 cultural-reference audio is explicitly teacher-triggered and does not write learner state.
 
 ## 1. Chapter Overview
 
@@ -80,6 +80,29 @@ The required, non-graded reflection focuses on one of three legitimate areas: la
 
 S04 dialogue is original project adaptation inspired by the thematic situation in Shaw's public-domain *Pygmalion*; it is not quoted from Shaw. No wording is taken from *My Fair Lady*, no lyrics or distinctive musical dialogue are used, and no S04 cultural note about the musical is required.
 
+## S05 Learning Goals and Teacher Notes
+
+### Objective
+
+Students understand code-switching as a communicative repertoire: speakers can adjust how they speak for context without changing who they are.
+
+### Key language, pragmatics and story points
+
+- A speaker can choose between more careful and more spontaneous speech depending on context.
+- Changing register is not the same as pretending to be a different person.
+- Eliza begins to treat speech choices as tools she controls rather than rules imposed on her.
+- Careful speech is an available skill, not a superior identity; spontaneous speech is not failure.
+
+### Equity framing and discussion
+
+- `Accent ≠ intelligence.`
+- No single accent or register is appropriate for every context.
+- Successful communication does not require giving up linguistic identity.
+- Primary prompt: “When do you change the way you speak, and does that change who you are?”
+- Optional prompt: “Is adapting your speech a skill, a disguise, or can it be both in different situations?”
+
+S05 has no challenge, graded outcome, new decision or reflection write. D08 may be previewed only as the read-only memory echo from existing learner state; never write D08 or substitute a default value. Teacher preview is read-only and does not autoplay, start ambience, write any state, complete the scene or advance progression.
+
 ## 7. Cultural / Literary Context
 
 Small talk in an Edwardian social setting can be a useful ritual and can also express class expectations. The scene examines those conventions without endorsing them. Cockney is not defective, upper-class speech is not morally better, and accent is not intelligence.
@@ -102,8 +125,8 @@ Ask learners to identify what each speaker's turn invites, then role-play openin
 
 Chapter III ends with Eliza: “I can hear it myself.” and narration: “The lesson is over. The learning is not.” After D08 and explicit Continue, S01 records `ch04_s01_complete` once and moves to S02. After all three LC11 samples are correct, explicit Continue is unlocked; it records `ch04_s02_complete` once and moves to S03. LC11, replay, optional reply and Teacher preview never navigate automatically.
 
-In S03, explicit Continue is unlocked only after `ch04_lc12_complete` and `ch04_d09_recorded`. It records `ch04_s03_complete` once and moves to S04. LC12 completion, D09, replay, audio completion and Teacher preview never navigate automatically. S04 requires `ch04_s04_reflection_recorded`; explicit Continue records `ch04_s04_complete` once and moves to `ch04_s05`. Reflection selection, replay, audio completion and Teacher preview never navigate automatically.
+In S03, explicit Continue is unlocked only after `ch04_lc12_complete` and `ch04_d09_recorded`. It records `ch04_s03_complete` once and moves to S04. LC12 completion, D09, replay, audio completion and Teacher preview never navigate automatically. S04 requires `ch04_s04_reflection_recorded`; explicit Continue records `ch04_s04_complete` once and moves to `ch04_s05`. Reflection selection, replay, audio completion and Teacher preview never navigate automatically. S05 requires only `ch04_s04_complete`; after the story sequence, explicit Continue records `ch04_s05_complete` once and moves to `ch05_s01`. D08 recap, replay and Teacher preview do not gate or auto-advance.
 
 ## 11. Teacher Preview Contract
 
-Preview may display story content, goals, challenge instructions, answer keys, reflection options and teacher notes. Opening or rendering preview must not autoplay any audio or start ambience, or write answers, attempts, support use, completion events, decisions, reflection selection, development signals or scene progression into learner state. AM37/AM38 audio requires an explicit playback action in student mode. S04 Teacher preview does not play AM39 or select the reflection; it is read-only for `reflections.ch04_s04_focus`, `ch04_s04_reflection_recorded` and `ch04_s04_complete`.
+Preview may display story content, goals, challenge instructions, answer keys, reflection options and teacher notes. Opening or rendering preview must not autoplay any audio or start ambience, or write answers, attempts, support use, completion events, decisions, reflection selection, development signals or scene progression into learner state. AM37/AM38 audio requires an explicit playback action in student mode. S04 Teacher preview does not play AM39 or select the reflection; it is read-only for `reflections.ch04_s04_focus`, `ch04_s04_reflection_recorded` and `ch04_s04_complete`. S05 preview displays D08 only from existing learner state and never writes a fallback/default or acknowledgement; it does not play AM41, start AM42, write state or progress.
