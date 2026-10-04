@@ -114,7 +114,7 @@ test('Teacher content keeps preview read-only and states the pragmatic and equit
   assert.match(joined, /does not autoplay/i);
 });
 
-test('runtime registers S03 actions, preserves tea-room continuity, and leaves S04 as a boundary', () => {
+test('runtime registers S03 actions, preserves tea-room continuity, and hands S04 to its corridor scene', () => {
   const app = fs.readFileSync(path.join(root, 'src/app.js'), 'utf8');
   assert.match(app, /\[CH04_SCENE_03\.id\]: CH04_SCENE_03/);
   assert.match(app, /data-action="answer-lc12"/);
@@ -123,8 +123,10 @@ test('runtime registers S03 actions, preserves tea-room continuity, and leaves S
   assert.match(app, /audioManager\.playVoice\(target\.dataset\.src/);
   assert.match(app, /CH04_SCENE_03\.nextScene/);
   assert.match(app, /hashScene === 'ch04_s04'/);
-  assert.doesNotMatch(app, /\[CH04_SCENE_04\.id\]/);
+  assert.match(app, /\[CH04_SCENE_04\.id\]: CH04_SCENE_04/);
   const s02Continue = app.match(/if \(scene\.id === 'ch04_s02'\) \{[\s\S]*?\n  \}/)?.[0] || '';
   assert.doesNotMatch(s02Continue, /audioManager\.leaveScene\(\)/, 'S02→S03 keeps the A/B room loop alive');
   assert.match(app, /currentScene\(\)\.id === 'ch04_s03' && studentReadOnly\(\)/);
+  const s03Continue = app.match(/if \(scene\.id === 'ch04_s03'\) \{[\s\S]*?\n  \}/)?.[0] || '';
+  assert.doesNotMatch(s03Continue, /audioManager\.leaveScene\(\)/, 'S03→S04 crossfades from the same tea-room bed');
 });

@@ -1,5 +1,5 @@
 import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05, CH03_SCENE_06 } from './ch03-content.js';
-import { CH04_SCENE_01, CH04_SCENE_02, CH04_SCENE_03 } from './ch04-content.js';
+import { CH04_SCENE_01, CH04_SCENE_02, CH04_SCENE_03, CH04_SCENE_04 } from './ch04-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -35,6 +35,7 @@ export function createInitialState() {
     independence: 0,
     applied_events: [],
     decisions: {},
+    reflections: { ch04_s04_focus: null },
     challenges: {
       lc01: { answers: {}, completed: false, optionOrders: {} },
       lc02: { answers: {}, completed: false, optionOrders: {} },
@@ -57,11 +58,17 @@ function mergeState(raw) {
   if (!raw || typeof raw !== 'object') return initial;
   const rawLc11 = raw.challenges?.lc11;
   const rawLc12 = raw.challenges?.lc12;
+  const rawReflections = raw.reflections;
   return {
     ...initial,
     ...raw,
     applied_events: Array.isArray(raw.applied_events) ? raw.applied_events : [],
     decisions: raw.decisions && typeof raw.decisions === 'object' ? raw.decisions : {},
+    reflections: {
+      ...initial.reflections,
+      ...(rawReflections && typeof rawReflections === 'object' ? rawReflections : {}),
+      ch04_s04_focus: ['language', 'audience', 'feeling'].includes(rawReflections?.ch04_s04_focus) ? rawReflections.ch04_s04_focus : null
+    },
     challenges: {
       ...initial.challenges,
       ...(raw.challenges || {}),
@@ -192,6 +199,18 @@ export function applyDecision(state, decisionId, optionId) {
   if (decisionId === 'D03') next.origin_motivation = optionId;
   if (decisionId === 'D04') next.request_strategy = requestStrategies[optionId];
   return next;
+}
+
+export function recordS04Reflection(state, focusId) {
+  const eventId = 'ch04_s04_reflection_recorded';
+  if (state.scene !== CH04_SCENE_04.id || !state.applied_events.includes('ch04_s03_complete') ||
+      !CH04_SCENE_04.reflection.choices.some(({ id }) => id === focusId) ||
+      state.reflections.ch04_s04_focus || state.applied_events.includes(eventId)) return state;
+  return {
+    ...state,
+    reflections: { ...state.reflections, ch04_s04_focus: focusId },
+    applied_events: [...state.applied_events, eventId]
+  };
 }
 
 export function recordLc03Answer(state, optionId) {
@@ -327,6 +346,8 @@ export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === CH04_SCENE_03.id && !state.applied_events.includes('ch04_s02_complete')) return 'Complete Chapter IV Scene 02 before opening The Wrong Answer.';
   if (scene.id === CH04_SCENE_03.id && !state.applied_events.includes('ch04_lc12_complete')) return 'Complete LC12 before continuing.';
   if (scene.id === CH04_SCENE_03.id && !state.applied_events.includes('ch04_d09_recorded')) return 'Choose Eliza’s response before continuing.';
+  if (scene.id === CH04_SCENE_04.id && !state.applied_events.includes('ch04_s03_complete')) return 'Complete Chapter IV Scene 03 before opening After the Laughter.';
+  if (scene.id === CH04_SCENE_04.id && !state.applied_events.includes('ch04_s04_reflection_recorded')) return 'Choose a reflection focus before continuing.';
   if (scene.id === 'ch03_s02' && !state.ch03_s01_complete) return 'Complete Chapter III Scene 01 before opening The Listening Room.';
   if (scene.id === 'ch03_s03' && !state.applied_events.includes('ch03_s02_complete')) return 'Complete Chapter III Scene 02 before opening Finding the Main Stress.';
   if (scene.id === 'ch03_s04' && !state.applied_events.includes('ch03_s03_complete')) return 'Complete Chapter III Scene 03 before opening A Sentence Has Shape.';
@@ -494,6 +515,11 @@ export function completeScene(state, scene) {
   if (scene.id === CH04_SCENE_03.id) {
     const eventId = 'ch04_s03_complete';
     if (!state.applied_events.includes('ch04_lc12_complete') || !state.applied_events.includes('ch04_d09_recorded') || state.applied_events.includes(eventId)) return state;
+    return { ...state, applied_events: [...state.applied_events, eventId] };
+  }
+  if (scene.id === CH04_SCENE_04.id) {
+    const eventId = 'ch04_s04_complete';
+    if (!state.applied_events.includes('ch04_s04_reflection_recorded') || state.applied_events.includes(eventId)) return state;
     return { ...state, applied_events: [...state.applied_events, eventId] };
   }
   return state;

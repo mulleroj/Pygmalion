@@ -1,6 +1,6 @@
 # Chapter IV State and Branching
 
-Status: `CH04 S01–S03 locked; S04 state and branching contract locked in pre-production; S04 runtime not implemented`.
+Status: `CH04 S01–S04 locked; S04 state and branching contract implemented in the Chapter IV vertical slice`.
 
 ## Shared state
 

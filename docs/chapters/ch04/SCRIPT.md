@@ -1,6 +1,6 @@
 # Chapter IV — The First Test
 
-Status: `CH04 S01–S03 canon locked; S04 story and interaction canon locked in pre-production; S04 runtime and assets not implemented or produced`.
+Status: `CH04 S01–S04 canon locked; S04 runtime and human-approved local assets implemented in the Chapter IV vertical slice`.
 
 ## S01 — The Invitation
 

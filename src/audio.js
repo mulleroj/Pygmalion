@@ -7,8 +7,10 @@ const AMBIENCE_FILES = {
   higgins_house_interior: './assets/audio/ambience/higgins_house_interior.mp3',
   ch03_lesson_room: './assets/audio/ambience/ch03_higgins_house_lesson_ambient.mp3',
   ch04_social_tea_room: './assets/audio/ambience/ch04_social_tea_room_ambient.mp3',
-  gramophone_distant: './assets/audio/ambience/gramophone_distant.mp3'
+  gramophone_distant: './assets/audio/ambience/gramophone_distant.mp3',
+  ch04_side_corridor: './assets/audio/ambience/ch04_side_corridor_ambient.mp3'
 };
+export const CH04_CORRIDOR_CROSSFADE_MS = 1500;
 export const CH04_TEA_ROOM_VARIANTS = Object.freeze([
   { src: AMBIENCE_FILES.ch04_social_tea_room, gain: 1 },
   { src: './assets/audio/ambience/ch04_social_tea_room_ambient_b.mp3', gain: 28.726753282769735 }
@@ -73,6 +75,8 @@ export class AudioManager {
     this.ambienceVariantIndex = 0;
     this.ambienceVariantFade = null;
     this.ambienceVariantTimer = null;
+    this.ambienceTransition = null;
+    this.ambienceTransitionRequested = false;
     this.ambienceDuck = 1;
     this.ambienceDuckTransition = null;
     this.ambienceVolume = this.mix.ambience;
@@ -136,7 +140,8 @@ export class AudioManager {
     if (cue && (cue.started || !cue.element.paused)) this.finishGramophoneCue(cue);
     this.stopForeground();
     this.stopOneShots();
-    const ambiencePlayers = this.ambienceVariants?.players ?? [this.ambience];
+    const ambiencePlayers = this.ambienceTransition ? [this.ambienceTransition.from, this.ambienceTransition.to]
+      : this.ambienceVariants?.players ?? [this.ambience];
     if (this.ambienceVariantTimer !== null) {
       globalThis.clearInterval(this.ambienceVariantTimer);
       this.ambienceVariantTimer = null;
@@ -145,6 +150,13 @@ export class AudioManager {
       const fade = this.ambienceVariantFade;
       fade.pausedProgress = Math.min(1, (Date.now() - fade.startedAt) / CH04_TEA_ROOM_CROSSFADE_MS);
       globalThis.clearInterval(fade.timer);
+      fade.timer = null;
+    }
+    if (this.ambienceTransition) {
+      const fade = this.ambienceTransition;
+      fade.pausedProgress = Math.min(1, (Date.now() - fade.startedAt) / CH04_CORRIDOR_CROSSFADE_MS);
+      globalThis.clearInterval(fade.timer);
+      fade.timer = null;
     }
     return Promise.all([...ambiencePlayers, this.contextual, ...this.retiringLoops].filter(Boolean).map((element) =>
       this.fadeVolume(element, 0, this.soundFadeMs).then((finished) => {
@@ -207,6 +219,11 @@ export class AudioManager {
     this.finishGramophoneCue();
     this.gramophoneCue = null;
     this.stopAmbienceVariantLifecycle();
+    if (this.ambienceTransition) {
+      globalThis.clearInterval(this.ambienceTransition.timer);
+      this.retireLoop(this.ambienceTransition.from, immediate);
+      this.ambienceTransition = null;
+    }
     for (const slot of ['ambience', 'contextual']) {
       this.retireLoop(this[slot], immediate);
       this[slot] = null;
@@ -267,7 +284,11 @@ export class AudioManager {
 
   applyAmbienceDuck() {
     const targetDuck = this.getAmbienceDuckAmount();
-    if (this.ambienceVariants) {
+    if (this.ambienceTransition) {
+      const currentDuck = this.getAmbienceDuckLevel();
+      this.ambienceDuckTransition = { from: currentDuck, to: targetDuck, startedAt: Date.now() };
+      this.updateCorridorTransition(this.ambienceTransition);
+    } else if (this.ambienceVariants) {
       const fade = this.ambienceVariantFade;
       if (fade) {
         const currentDuck = this.getAmbienceDuckLevel();
@@ -498,7 +519,7 @@ export class AudioManager {
 
   checkAmbienceVariantTransition() {
     const variants = this.ambienceVariants;
-    if (!variants || !this.enabled || !this.unlocked || this.ambienceVariantFade) return;
+    if (!variants || !this.enabled || !this.unlocked || this.ambienceVariantFade || this.ambienceTransitionRequested) return;
     const active = variants.players[this.ambienceVariantIndex];
     if (active.paused || !Number.isFinite(active.duration) || active.duration <= 0) return;
     if (active.duration - active.currentTime <= CH04_TEA_ROOM_CROSSFADE_MS / 1000) this.beginAmbienceVariantTransition();
@@ -506,7 +527,7 @@ export class AudioManager {
 
   async beginAmbienceVariantTransition() {
     const variants = this.ambienceVariants;
-    if (!variants || this.ambienceVariantFade || !this.enabled || !this.unlocked) return false;
+    if (!variants || this.ambienceVariantFade || !this.enabled || !this.unlocked || this.ambienceTransitionRequested) return false;
     const fromIndex = this.ambienceVariantIndex;
     const toIndex = (fromIndex + 1) % variants.players.length;
     const from = variants.players[fromIndex], to = variants.players[toIndex];
@@ -562,7 +583,8 @@ export class AudioManager {
     const id = sceneId ? ambienceForScene(sceneId) : null;
     if (contextual?.id !== 'gramophone_distant') this.finishGramophoneCue();
     const results = await Promise.all([
-      id === 'ch04_social_tea_room'
+      id === 'ch04_side_corridor' ? this.ensureCorridorAmbience()
+        : id === 'ch04_social_tea_room'
         ? this.ensureTeaRoomAmbience()
         : (this.ambienceVariants && this.stopAmbienceVariantLifecycle(), this.ensureLoop('ambience', id, AMBIENCE_FILES[id])),
       contextual?.id === 'gramophone_distant'
@@ -571,6 +593,70 @@ export class AudioManager {
     ]);
     this.startAmbientClock();
     return results[0];
+  }
+
+  async ensureCorridorAmbience() {
+    const src = AMBIENCE_FILES.ch04_side_corridor;
+    if (!this.enabled || !this.unlocked) return { id: 'ch04_side_corridor', restarted: false, blocked: false };
+    if (this.ambienceTransition) {
+      const fade = this.ambienceTransition;
+      if (fade.timer !== null) return { id: 'ch04_side_corridor', restarted: false, blocked: false };
+      this.cancelFade(fade.from); this.cancelFade(fade.to);
+      const played = await Promise.all([fade.from, fade.to].map((player) => this.startLoop(player, 'ambience')));
+      if (played.some((value) => !value) || !this.enabled || this.ambienceTransition !== fade) return { id: 'ch04_side_corridor', restarted: false, blocked: true };
+      fade.startedAt = Date.now() - (fade.pausedProgress || 0) * CH04_CORRIDOR_CROSSFADE_MS;
+      fade.timer = globalThis.setInterval(() => this.updateCorridorTransition(fade), 20);
+      this.updateCorridorTransition(fade);
+      return { id: 'ch04_side_corridor', restarted: false, blocked: false };
+    }
+    if (this.ambienceId === 'ch04_side_corridor' && this.ambience) {
+      const played = await this.startLoop(this.ambience, 'ambience');
+      if (played) this.fadeVolume(this.ambience, this.ambienceVolume * this.getAmbienceDuckAmount(), this.fadeMs);
+      return { id: 'ch04_side_corridor', restarted: false, blocked: !played };
+    }
+    const variants = this.ambienceVariants;
+    if (this.ambienceTransitionRequested) return { id: 'ch04_side_corridor', restarted: false, blocked: false };
+    if (!variants || this.ambienceId !== 'ch04_social_tea_room') return this.ensureLoop('ambience', 'ch04_side_corridor', src);
+    this.ambienceTransitionRequested = true;
+    if (this.ambienceVariantFade?.timer === null) await this.ensureTeaRoomAmbience();
+    // Let any in-progress tea-room A/B handoff finish so the corridor fades from one stable bed.
+    if (this.ambienceVariantFade) {
+      await new Promise((resolve) => {
+        const wait = globalThis.setInterval(() => {
+          if (!this.ambienceVariantFade || !this.enabled || this.sceneId !== 'ch04_s04') { globalThis.clearInterval(wait); resolve(); }
+        }, 20);
+      });
+      if (!this.enabled || this.sceneId !== 'ch04_s04') { this.ambienceTransitionRequested = false; return { id: 'ch04_side_corridor', restarted: false, blocked: false }; }
+    }
+    const from = this.ambienceVariants?.players[this.ambienceVariantIndex];
+    if (!from || from.paused) { this.ambienceTransitionRequested = false; return this.ensureLoop('ambience', 'ch04_side_corridor', src); }
+    const to = this.makeAudio(src, 'ambience');
+    if (!to) { this.ambienceTransitionRequested = false; return { id: 'ch04_side_corridor', restarted: false, blocked: true }; }
+    to.loop = true; to.volume = 0;
+    const played = await this.startLoop(to, 'ambience');
+    if (!played || !this.enabled || this.sceneId !== 'ch04_s04') { to.pause(); this.ambienceTransitionRequested = false; return { id: 'ch04_side_corridor', restarted: false, blocked: !played }; }
+    this.cancelFade(from); this.cancelFade(to);
+    this.stopAmbienceVariantLifecycle();
+    this.ambience = to; this.ambienceId = 'ch04_side_corridor'; this.ambienceSource = src;
+    const fade = { from, to, startedAt: Date.now(), pausedProgress: 0, timer: null };
+    this.ambienceTransition = fade;
+    this.ambienceTransitionRequested = false;
+    fade.timer = globalThis.setInterval(() => this.updateCorridorTransition(fade), 20);
+    this.updateCorridorTransition(fade);
+    this.onStatus({ type: 'ambience', id: 'ch04_side_corridor' });
+    return { id: 'ch04_side_corridor', restarted: false, blocked: false };
+  }
+
+  updateCorridorTransition(fade) {
+    if (this.ambienceTransition !== fade) return;
+    const progress = Math.min(1, (Date.now() - fade.startedAt) / CH04_CORRIDOR_CROSSFADE_MS);
+    const base = this.enabled ? this.ambienceVolume * this.getAmbienceDuckLevel() : 0;
+    fade.from.volume = base * Math.cos(progress * Math.PI / 2);
+    fade.to.volume = base * Math.sin(progress * Math.PI / 2);
+    if (progress < 1) return;
+    globalThis.clearInterval(fade.timer);
+    fade.from.pause(); fade.from.volume = 0; fade.to.volume = base;
+    this.ambienceTransition = null;
   }
 
   stopAmbientClock() {

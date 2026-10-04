@@ -77,6 +77,7 @@ export const CH04_SCENE_01 = {
 };
 
 const CH04_TEA_ROOM = './assets/images/locations/ch04/ch04_social_tea_room.webp';
+const CH04_SIDE_CORRIDOR = './assets/images/locations/ch04/ch04_side_corridor.webp';
 
 const LC11_CATEGORIES = [
   { category: 'opening', label: 'Opening the conversation' },
@@ -192,6 +193,53 @@ export const CH04_SCENE_03 = {
   nextScene: 'ch04_s04'
 };
 
+export const CH04_SCENE_04 = {
+  id: 'ch04_s04', number: 4, chapter: 'IV', chapterTitle: 'The First Test', title: 'After the Laughter',
+  kicker: 'Chapter IV · The First Test', sceneCount: 5,
+  location: 'A side corridor, several minutes after the tea-room exchange',
+  visualStage: 'in_training', voiceStage: 'Emerging New Speech', composition: 'ch04-side-corridor',
+  background: { src: CH04_SIDE_CORRIDOR, alt: 'A quiet Victorian side corridor. An open doorway at the far end shows the tea-room gathering at a distance.' },
+  plate: { src: CH04_SIDE_CORRIDOR, alt: 'A quiet Victorian side corridor. An open doorway at the far end shows the tea-room gathering at a distance.' },
+  eliza: {
+    src: './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png',
+    alt: 'Eliza stands at the centre of the corridor, calm and thoughtful.'
+  },
+  supporting: [
+    { src: './assets/images/characters/pickering/runtime/pickering_master_cutout.png', alt: 'Colonel Pickering stands supportively near Eliza.', placement: 'pickering' },
+    { src: './assets/images/characters/mrs-pearce/runtime/mrs-pearce_observant-support_cutout.png', alt: 'Mrs Pearce listens with practical warmth.', placement: 'mrs-pearce' },
+    { src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Professor Higgins stands slightly apart from the others.', placement: 'higgins' }
+  ],
+  props: [],
+  storyBeats: [
+    { type: 'narration', text: 'A few minutes later, the corridor is quieter. The voices from the tea room are muffled behind the door.' },
+    { type: 'dialogue', speaker: 'Pickering', text: 'You spoke clearly, Eliza. The difficulty was not the words.' },
+    { type: 'dialogue', speaker: 'Mrs Pearce', text: 'People often say one thing and mean something more. That takes time to learn.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'Then I must learn the people as well as the language.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Exactly. Tonight is useful because it shows us what still needs work.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'It shows you what still needs work.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'It is a test, Eliza.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'Then I should have a say in what the test is for.' }
+  ],
+  voice: [
+    { id: 'AM39-PICKERING', src: './assets/audio/characters/pickering/pickering_ch04_scene04_001.mp3', transcript: 'You spoke clearly, Eliza. The difficulty was not the words.', label: 'Replay Pickering', inline: true, generationId: 'ZNsgEsjAmdm9TmOJR4OR', assetId: 'JfV4RseG9a5GZAZ034iY', voiceId: 'JBFqnCBsd6RMkjVDRZzb' },
+    { id: 'AM39-MRS-PEARCE', src: './assets/audio/characters/mrs-pearce/mrs-pearce_ch04_scene04_001.mp3', transcript: 'People often say one thing and mean something more. That takes time to learn.', label: 'Replay Mrs Pearce', inline: true, generationId: '0LuiuJqkbexw11VzmhZD', assetId: 'sAYmTLMdBlDm7ivz9ZVk', voiceId: 'kBag1HOZlaVBH7ICPE8x' },
+    { id: 'AM39-ELIZA-01', src: './assets/audio/characters/eliza/eliza_ch04_scene04_001.mp3', transcript: 'Then I must learn the people as well as the language.', label: 'Replay Eliza', inline: true, generationId: '4R37vYV1NwpvO5V7diXs', assetId: 'OmOEpEuboSezj5Vlgttm', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM39-HIGGINS-01', src: './assets/audio/characters/higgins/higgins_ch04_scene04_001.mp3', transcript: 'Exactly. Tonight is useful because it shows us what still needs work.', label: 'Replay Higgins', inline: true, generationId: 'Iqxe4dpiQuDh0ZsebHct', assetId: '3T3mfCVqEkYbnuIeliXJ', voiceId: 'JlptfLxaUpd8pZcw9dKd' },
+    { id: 'AM39-ELIZA-02', src: './assets/audio/characters/eliza/eliza_ch04_scene04_002.mp3', transcript: 'It shows you what still needs work.', label: 'Replay Eliza', inline: true, generationId: 'fOe45TP0PgR3Z2yuGI3J', assetId: '0DiNCvJrha1ZNtpWaH5Y', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM39-HIGGINS-02', src: './assets/audio/characters/higgins/higgins_ch04_scene04_002.mp3', transcript: 'It is a test, Eliza.', label: 'Replay Higgins', inline: true, generationId: 'MEeL5AyD5tMNidQLXTTk', assetId: 'skLkAddQhQ0U4cdeq1PN', voiceId: 'JlptfLxaUpd8pZcw9dKd' },
+    { id: 'AM39-ELIZA-03', src: './assets/audio/characters/eliza/eliza_ch04_scene04_003.mp3', transcript: 'Then I should have a say in what the test is for.', label: 'Replay Eliza', inline: true, generationId: 'DFjggg9jDr1aJGh5vIq2', assetId: '75T0W0JVAdd5y3ef8C5p', voiceId: '124kaYCknTDsnwUFdWl9' }
+  ],
+  reflection: {
+    prompt: 'What should Eliza carry forward from this moment?',
+    choices: [
+      { id: 'language', text: 'I need to listen for meaning, not only words.' },
+      { id: 'audience', text: 'I need to watch how people react before I answer.' },
+      { id: 'feeling', text: 'I need to say when something makes me uncomfortable.' }
+    ]
+  },
+  nextScene: 'ch04_s05'
+};
+
 export const CH04_TEACHER_REFERENCE_AUDIO = {
   id: 'teacher_ref_my_fair_lady_rain_in_spain',
   src: './assets/audio/characters/narrator/ch04_teacher_reference_rain_in_spain_001.mp3',
@@ -223,6 +271,16 @@ export const CH04_S03_TEACHER_SECTIONS = [
   ['Challenge Key', 'LC12 literal: London made a decision about the rain. LC12 implied: It has been raining a lot, and the Guest is joking about it. AM38 is contextual support and is not the sole source of the answer.'],
   ['D09 and equity framing', 'There is no single correct recovery style. rephrase, acknowledge_literal and wait_for_cue are all socially plausible, with different interpersonal tones. Accent ≠ intelligence.'],
   ['Teacher Preview Contract', 'Preview is read-only. It does not autoplay, start ambience, write answers or attempts, use support, award signals, complete challenges or scenes, save decisions, or progress the learner.']
+];
+
+export const CH04_S04_TEACHER_SECTIONS = [
+  ['Objective', 'Students distinguish language accuracy from pragmatic understanding and reflect on who controls feedback and communication goals.'],
+  ['Key language point', 'Clear pronunciation does not guarantee shared meaning. Successful communication also depends on context, audience and implied meaning.'],
+  ['Story point', 'Eliza begins to question not only how she speaks, but who decides what her progress is for.'],
+  ['Reflection', 'language, audience and feeling are three legitimate reflection focuses. There is no correct answer.'],
+  ['Equity', 'Accent ≠ intelligence. Social conventions are learned and culturally variable; misunderstanding them is not evidence of lower ability.'],
+  ['Discussion', 'Who should decide what counts as successful communication? Can feedback be useful without becoming a judgment about the person?'],
+  ['Teacher Preview Contract', 'Read-only. Preview does not autoplay, write state or reflection, award rewards, complete the scene or progress the learner.']
 ];
 
 export const CH04_S01_TEACHER_SECTIONS = [

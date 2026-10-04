@@ -468,6 +468,18 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch04-social-tea-room.storybook-art { min-height: 0; height: auto; aspect-ratio: 1672 / 941; background: #5b4a3f; }
 .ch04-social-tea-room .art-background { filter: none; }
 .ch04-social-tea-room .art-background img { object-fit: contain; }
+.ch04-side-corridor.storybook-art { min-height: 0; height: auto; aspect-ratio: 1672 / 941; background: #61584e; }
+.ch04-side-corridor .art-background { filter: none; }
+.ch04-side-corridor .art-background img { object-fit: contain; }
+.ch04-side-corridor .art-support, .ch04-side-corridor .art-eliza { display: block; padding: 0; opacity: 1; }
+.ch04-side-corridor .art-eliza { z-index: 3; }
+.ch04-side-corridor .art-support { z-index: 2; }
+.ch04-side-corridor .supporting-character, .ch04-side-corridor .art-eliza img { position: absolute; width: auto; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); filter: drop-shadow(0 3px 3px rgba(34,27,24,.22)); }
+.ch04-side-corridor .art-eliza img { left: 50%; bottom: 1%; height: 84%; z-index: 2; }
+.ch04-side-corridor .support-pickering { left: 20%; bottom: 2%; height: 72%; z-index: 1; }
+.ch04-side-corridor .support-mrs-pearce { left: 36%; bottom: 2%; height: 70%; z-index: 1; }
+.ch04-side-corridor .support-higgins { left: 81%; bottom: 2%; height: 72%; z-index: 1; }
+.ch04-side-corridor .art-eliza::before { left: 37%; bottom: 1%; width: 26%; height: 1.5%; filter: blur(4px); }
 .ch04-social-tea-room .art-support, .ch04-social-tea-room .art-eliza { display: block; padding: 0; opacity: 1; }
 .ch04-social-tea-room .supporting-character, .ch04-social-tea-room .art-eliza img { position: absolute; width: auto; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); filter: drop-shadow(0 3px 3px rgba(34,27,24,.22)); }
 .ch04-social-tea-room .art-eliza img { left: 28%; bottom: 1%; height: 84%; z-index: 2; }
@@ -499,6 +511,12 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 @media (max-width: 599px) {
   .ch04-social-tea-room.storybook-art { aspect-ratio: 1.35; }
   .ch04-social-tea-room .art-background img { object-fit: cover; object-position: center; }
+  .ch04-side-corridor.storybook-art { aspect-ratio: 1.35; }
+  .ch04-side-corridor .art-background img { object-fit: cover; object-position: center; }
+  .ch04-side-corridor .art-eliza img { height: 78%; }
+  .ch04-side-corridor .support-pickering { left: 13%; height: 64%; }
+  .ch04-side-corridor .support-mrs-pearce { left: 31%; height: 63%; }
+  .ch04-side-corridor .support-higgins { left: 88%; height: 65%; }
   .ch04-social-tea-room .art-eliza img { left: 29%; height: 79%; }
   .ch04-social-tea-room .support-pickering { left: 75%; height: 73%; }
   .ch04-social-tea-room .support-higgins { left: 57%; height: 68%; }
