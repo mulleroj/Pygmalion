@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CH04_SCENE_01, CH04_SCENE_02, CH04_S02_TEACHER_SECTIONS, CH04_TEACHER_REFERENCE_AUDIO } from '../src/ch04-content.js';
 import { ambienceForScene, isContinuousAmbienceTransition } from '../src/content.js';
-import { AMBIENCE_FILES, AudioManager, CH02_AUDIO_MIX } from '../src/audio.js';
+import { AMBIENCE_FILES, AudioManager, CH02_AUDIO_MIX, CH04_TEA_ROOM_VARIANTS } from '../src/audio.js';
 import {
   canAdvanceScene, completeScene, createInitialState, getSceneAdvanceBlock, loadState,
   markLc11SupportUsed, recordLc11Answer, recordLc11ApplicationChoice, saveState, setScene
@@ -190,6 +190,122 @@ test('S02 ambience uses its approved loop and crossfades from S01', () => {
   assert.equal(AudioManager !== undefined, true);
 });
 
+test('tea-room companion assets are complete MP3 loops with deterministic A/B source registration', () => {
+  assert.deepEqual(CH04_TEA_ROOM_VARIANTS.map(({ src }) => src), [
+    AMBIENCE_FILES.ch04_social_tea_room,
+    './assets/audio/ambience/ch04_social_tea_room_ambient_b.mp3'
+  ]);
+  assert.equal(CH04_TEA_ROOM_VARIANTS[0].gain, 1);
+  assert.equal(CH04_TEA_ROOM_VARIANTS[1].gain, 28.726753282769735, 'Loop B gain follows the measured decoded-PCM RMS delta');
+  for (const { src } of CH04_TEA_ROOM_VARIANTS) {
+    const bytes = fs.readFileSync(path.resolve(root, src.replace(/^\.\//, '')));
+    assert.equal(bytes.toString('ascii', 0, 3), 'ID3');
+    const tagSize = ((bytes[6] & 0x7f) << 21) | ((bytes[7] & 0x7f) << 14) | ((bytes[8] & 0x7f) << 7) | (bytes[9] & 0x7f);
+    let offset = 10 + tagSize + ((bytes[5] & 0x10) ? 10 : 0), frames = 0;
+    const bitrates = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320];
+    while (offset + 4 <= bytes.length) {
+      const header = bytes.readUInt32BE(offset);
+      assert.equal(bytes[offset], 0xff);
+      assert.equal(bytes[offset + 1] & 0xe0, 0xe0);
+      assert.equal((header >>> 19) & 3, 3);
+      assert.equal((header >>> 17) & 3, 1);
+      assert.equal((header >>> 10) & 3, 0);
+      const bitrate = (header >>> 12) & 15;
+      assert.ok(bitrate > 0 && bitrate < 15);
+      offset += Math.floor(144 * bitrates[bitrate] * 1000 / 44100) + ((header >>> 9) & 1);
+      frames++;
+    }
+    assert.equal(offset, bytes.length, `${src} ends at an MPEG frame boundary`);
+    assert.ok(Math.abs(frames * 1152 / 44100 - 12.07) < 0.02, `${src} is approximately 12 seconds`);
+  }
+});
+
+test('tea-room ambience alternates A/B over one persistent S02/S03 lifecycle with ducking and Sound Off/On', async (t) => {
+  const players = [];
+  const audioContext = {
+    state: 'running', destination: {},
+    createMediaElementSource() { return { connect() {} }; },
+    createGain() { return { gain: { value: 1 }, connect() {} }; },
+    close() { this.state = 'closed'; return Promise.resolve(); }
+  };
+  class FakeAudio {
+    constructor(src) { this.src = src; this.volume = 1; this.paused = true; this.muted = false; this.loop = false; this.currentTime = 0; this.duration = 12.068; this.listeners = new Map(); this.playCalls = 0; }
+    async play() { this.playCalls++; this.paused = false; }
+    pause() { this.paused = true; }
+    addEventListener(name, listener) { this.listeners.set(name, listener); }
+    removeEventListener(name) { this.listeners.delete(name); }
+  }
+  const manager = new AudioManager({ audioContextFactory: () => audioContext, createAudio(src) { const player = new FakeAudio(src); players.push(player); return player; }, fadeMs: 0, duckFadeMs: 0, soundFadeMs: 0 });
+  t.after(() => manager.dispose());
+  manager.unlock();
+  await manager.ensureAmbience('ch04_s01');
+  const previousRoom = manager.ambience;
+  await manager.ensureAmbience('ch04_s02');
+  assert.equal(players.length, 3);
+  const [, a, b] = players;
+  assert.equal(previousRoom.paused, true, 'the previous S01 room retires after the existing identity crossfade');
+  assert.equal(manager.ambience, a, 'Loop A starts first');
+  assert.equal(a.paused, false);
+  assert.equal(b.paused, true);
+  assert.equal(a.__ambienceGainNode.gain.value, CH04_TEA_ROOM_VARIANTS[0].gain);
+  assert.equal(b.__ambienceGainNode.gain.value, CH04_TEA_ROOM_VARIANTS[1].gain, 'measured B correction is applied through Web Audio gain');
+
+  assert.equal(await manager.beginAmbienceVariantTransition(), true);
+  let fade = manager.ambienceVariantFade;
+  assert.equal(b.paused, false);
+  fade.startedAt -= 500;
+  manager.updateAmbienceVariantFade(fade);
+  assert.ok(a.volume > 0 && b.volume > 0, 'crossfade keeps both streams present');
+  const rmsA = 0.021471688505507514, rmsB = 0.0007474457100721574;
+  const effectivePower = (a.volume * rmsA * CH04_TEA_ROOM_VARIANTS[0].gain) ** 2
+    + (b.volume * rmsB * CH04_TEA_ROOM_VARIANTS[1].gain) ** 2;
+  assert.ok(Math.abs(effectivePower - (manager.ambienceVolume * rmsA) ** 2) < 1e-12, 'equal-power curves preserve measured ambience energy through the crossfade');
+  manager.duck('foreground', 0.28);
+  assert.equal(manager.ambienceVariantIndex, 0, 'ducking does not advance or reset the sequence');
+  const duckedEffectivePower = (a.volume * rmsA) ** 2 + (b.volume * rmsB * CH04_TEA_ROOM_VARIANTS[1].gain) ** 2;
+  assert.ok(duckedEffectivePower < (manager.ambienceVolume * rmsA) ** 2);
+  fade.startedAt -= 500;
+  manager.updateAmbienceVariantFade(fade);
+  assert.equal(manager.ambience, b, 'A transitions to B');
+  assert.equal(a.paused, true);
+  manager.unduck('foreground');
+
+  const sequencePlayers = [...players];
+  await manager.ensureAmbience('ch04_s03');
+  assert.equal(manager.ambience, b, 'S02 to S03 preserves the active B source');
+  assert.deepEqual(players, sequencePlayers, 'scene boundary creates no new ambience players');
+  assert.equal(isContinuousAmbienceTransition('ch04_s02', 'ch04_s03'), true);
+
+  assert.equal(await manager.beginAmbienceVariantTransition(), true);
+  fade = manager.ambienceVariantFade;
+  fade.startedAt -= 1000;
+  manager.updateAmbienceVariantFade(fade);
+  assert.equal(manager.ambience, a, 'B transitions back to A');
+  assert.equal(await manager.beginAmbienceVariantTransition(), true);
+  fade = manager.ambienceVariantFade;
+  fade.startedAt -= 1000;
+  manager.updateAmbienceVariantFade(fade);
+  assert.equal(manager.ambience, b, 'sequence continues beyond one complete cycle');
+
+  assert.equal(await manager.beginAmbienceVariantTransition(), true);
+  fade = manager.ambienceVariantFade;
+  fade.startedAt -= 350;
+  await manager.setEnabled(false);
+  assert.equal(a.paused, true);
+  assert.equal(b.paused, true);
+  assert.equal(manager.ambienceVariantFade, fade, 'Sound Off retains an in-progress crossfade');
+  const pausedProgress = fade.pausedProgress;
+  await manager.setEnabled(true);
+  assert.equal(players.length, 3, 'Sound On resumes the pair without duplicate players');
+  assert.equal(manager.ambienceVariantFade, fade, 'Sound On resumes the same transition');
+  assert.ok(fade.pausedProgress >= pausedProgress);
+  assert.equal(a.paused, false);
+  assert.equal(b.paused, false);
+  fade.startedAt -= 1000;
+  manager.updateAmbienceVariantFade(fade);
+  assert.equal(manager.ambience, a, 'resumed transition completes at A without resetting its sequence');
+});
+
 test('S02 speech and listening challenges use the existing AudioManager foreground duck mix', () => {
   const manager = new AudioManager({ createAudio: () => ({}), fadeMs: 0, duckFadeMs: 0 });
   manager.ensureAmbience('ch04_s02');
@@ -199,7 +315,7 @@ test('S02 speech and listening challenges use the existing AudioManager foregrou
   manager.dispose();
 });
 
-test('S02 speech ducks and restores the same ambience loop; Sound Off and On stops and resumes only the loop', async (t) => {
+test('S02 speech ducks and restores the same ambience pair; Sound Off and On pauses and resumes both variants', async (t) => {
   const elements = [];
   class FakeAudio {
     constructor(src) { this.src = src; this.volume = 1; this.paused = true; this.currentTime = 0; this.listeners = new Map(); this.playCalls = 0; }
@@ -214,7 +330,8 @@ test('S02 speech ducks and restores the same ambience loop; Sound Off and On sto
   manager.unlock();
   await manager.ensureAmbience('ch04_s02');
   const loop = manager.ambience;
-  assert.equal(loop.loop, true);
+  const [loopA, loopB] = manager.ambienceVariants.players;
+  assert.equal(loop.loop, false, 'alternation is managed by the AudioManager, not native same-source looping');
   loop.currentTime = 7;
   const voice = await manager.playVoice(CH04_SCENE_02.voice[0].src);
   assert.equal(loop.volume, manager.ambienceVolume * manager.mix.storyDuck);
@@ -223,12 +340,14 @@ test('S02 speech ducks and restores the same ambience loop; Sound Off and On sto
   assert.equal(loop.currentTime, 7);
   assert.equal(loop.volume, manager.ambienceVolume);
   await manager.setEnabled(false);
-  assert.equal(loop.paused, true);
+  assert.equal(loopA.paused, true);
+  assert.equal(loopB.paused, true);
   assert.equal(voice.paused, true);
   await manager.setEnabled(true);
   assert.equal(manager.ambience, loop);
   assert.equal(loop.paused, false);
   assert.equal(loop.playCalls, 2);
+  assert.equal(loopB.paused, true, 'Sound On does not start an inactive second variant');
   assert.equal(voice.playCalls, 1, 'Sound On does not replay foreground speech');
 });
 

@@ -9,6 +9,11 @@ const AMBIENCE_FILES = {
   ch04_social_tea_room: './assets/audio/ambience/ch04_social_tea_room_ambient.mp3',
   gramophone_distant: './assets/audio/ambience/gramophone_distant.mp3'
 };
+export const CH04_TEA_ROOM_VARIANTS = Object.freeze([
+  { src: AMBIENCE_FILES.ch04_social_tea_room, gain: 1 },
+  { src: './assets/audio/ambience/ch04_social_tea_room_ambient_b.mp3', gain: 28.726753282769735 }
+].map(Object.freeze));
+const CH04_TEA_ROOM_CROSSFADE_MS = 1000;
 
 const S04_CLOCK_MIX = { gain: 0.08, ambienceDuck: 1 };
 export const SFX_MIX = {
@@ -45,9 +50,14 @@ export function isOneShotAvailable(played, oneShotId) {
 
 export class AudioManager {
   constructor({ onStatus = () => {}, createAudio = (src) => new Audio(src),
-    fadeMs = 700, duckFadeMs = 160, soundFadeMs = 180 } = {}) {
+    audioContextFactory = () => {
+      const Context = globalThis.AudioContext ?? globalThis.webkitAudioContext;
+      return typeof Context === 'function' ? new Context() : null;
+    }, fadeMs = 700, duckFadeMs = 160, soundFadeMs = 180 } = {}) {
     this.onStatus = onStatus;
     this.createAudio = createAudio;
+    this.audioContextFactory = audioContextFactory;
+    this.audioContext = null;
     this.fadeMs = fadeMs;
     this.duckFadeMs = duckFadeMs;
     this.soundFadeMs = soundFadeMs;
@@ -59,6 +69,12 @@ export class AudioManager {
     this.mix = CH01_AUDIO_MIX;
     this.ambience = null;
     this.ambienceId = null;
+    this.ambienceVariants = null;
+    this.ambienceVariantIndex = 0;
+    this.ambienceVariantFade = null;
+    this.ambienceVariantTimer = null;
+    this.ambienceDuck = 1;
+    this.ambienceDuckTransition = null;
     this.ambienceVolume = this.mix.ambience;
     this.contextual = null;
     this.contextualId = null;
@@ -81,6 +97,28 @@ export class AudioManager {
 
   unlock() {
     this.unlocked = true;
+    if (!this.audioContext) {
+      try { this.audioContext = this.audioContextFactory(); }
+      catch (error) { this.lastError = error; }
+    }
+    if (this.audioContext?.state === 'suspended') this.audioContext.resume()?.catch?.((error) => { this.lastError = error; });
+  }
+
+  connectAmbienceGain(element, gain) {
+    if (!this.audioContext?.createMediaElementSource || !this.audioContext?.createGain) return false;
+    try {
+      const source = this.audioContext.createMediaElementSource(element);
+      const gainNode = this.audioContext.createGain();
+      source.connect(gainNode);
+      gainNode.connect(this.audioContext.destination);
+      gainNode.gain.value = gain;
+      element.__ambienceGainNode = gainNode;
+      return true;
+    } catch (error) {
+      this.lastError = error;
+      this.onStatus({ type: 'unavailable', kind: 'ambience' });
+      return false;
+    }
   }
 
   setEnabled(enabled) {
@@ -98,7 +136,17 @@ export class AudioManager {
     if (cue && (cue.started || !cue.element.paused)) this.finishGramophoneCue(cue);
     this.stopForeground();
     this.stopOneShots();
-    return Promise.all([this.ambience, this.contextual, ...this.retiringLoops].filter(Boolean).map((element) =>
+    const ambiencePlayers = this.ambienceVariants?.players ?? [this.ambience];
+    if (this.ambienceVariantTimer !== null) {
+      globalThis.clearInterval(this.ambienceVariantTimer);
+      this.ambienceVariantTimer = null;
+    }
+    if (this.ambienceVariantFade) {
+      const fade = this.ambienceVariantFade;
+      fade.pausedProgress = Math.min(1, (Date.now() - fade.startedAt) / CH04_TEA_ROOM_CROSSFADE_MS);
+      globalThis.clearInterval(fade.timer);
+    }
+    return Promise.all([...ambiencePlayers, this.contextual, ...this.retiringLoops].filter(Boolean).map((element) =>
       this.fadeVolume(element, 0, this.soundFadeMs).then((finished) => {
         if (finished && !this.enabled) {
           element.muted = true;
@@ -158,6 +206,7 @@ export class AudioManager {
   stopAmbience({ immediate = false } = {}) {
     this.finishGramophoneCue();
     this.gramophoneCue = null;
+    this.stopAmbienceVariantLifecycle();
     for (const slot of ['ambience', 'contextual']) {
       this.retireLoop(this[slot], immediate);
       this[slot] = null;
@@ -165,6 +214,25 @@ export class AudioManager {
       this[slot + 'Source'] = null;
     }
     this.lastError = null;
+  }
+
+  stopAmbienceVariantLifecycle() {
+    const variants = this.ambienceVariants;
+    if (this.ambienceVariantTimer !== null) globalThis.clearInterval(this.ambienceVariantTimer);
+    this.ambienceVariantTimer = null;
+    if (this.ambienceVariantFade) {
+      globalThis.clearInterval(this.ambienceVariantFade.timer);
+      this.ambienceVariantFade = null;
+    }
+    if (variants) {
+      variants.players.forEach((player, index) => {
+        player.removeEventListener('timeupdate', variants.check);
+        player.removeEventListener('ended', variants.check);
+        if (index !== this.ambienceVariantIndex) this.retireLoop(player, true);
+      });
+    }
+    this.ambienceVariants = null;
+    this.ambienceVariantIndex = 0;
   }
 
   leaveScene() {
@@ -198,7 +266,21 @@ export class AudioManager {
   }
 
   applyAmbienceDuck() {
-    this.fadeVolume(this.ambience, this.enabled ? this.ambienceVolume * this.getAmbienceDuckAmount() : 0, this.duckFadeMs);
+    const targetDuck = this.getAmbienceDuckAmount();
+    if (this.ambienceVariants) {
+      const fade = this.ambienceVariantFade;
+      if (fade) {
+        const currentDuck = this.getAmbienceDuckLevel();
+        this.ambienceDuckTransition = { from: currentDuck, to: targetDuck, startedAt: Date.now() };
+        this.updateAmbienceVariantFade(fade);
+      }
+      else {
+        this.ambienceDuck = targetDuck;
+        this.ambienceDuckTransition = null;
+        const player = this.ambienceVariants.players[this.ambienceVariantIndex];
+        this.fadeVolume(player, this.enabled ? this.ambienceVolume * this.ambienceDuck : 0, this.duckFadeMs);
+      }
+    } else this.fadeVolume(this.ambience, this.enabled ? this.ambienceVolume * targetDuck : 0, this.duckFadeMs);
     const cue = this.gramophoneCue;
     if (cue && !cue.finished && this.contextual === cue.element) {
       this.updateGramophoneVolume(cue);
@@ -212,6 +294,16 @@ export class AudioManager {
     } else {
       this.fadeVolume(this.contextual, this.enabled ? this.contextualVolume * this.getContextualDuckAmount() : 0, this.duckFadeMs);
     }
+  }
+
+  getAmbienceDuckLevel() {
+    const transition = this.ambienceDuckTransition;
+    if (!transition) return this.ambienceDuck;
+    const progress = this.duckFadeMs > 0
+      ? Math.min(1, (Date.now() - transition.startedAt) / this.duckFadeMs) : 1;
+    this.ambienceDuck = transition.from + (transition.to - transition.from) * progress;
+    if (progress >= 1) this.ambienceDuckTransition = null;
+    return this.ambienceDuck;
   }
 
   finishGramophoneCue(cue = this.gramophoneCue) {
@@ -357,6 +449,101 @@ export class AudioManager {
     return { id, restarted: Boolean(previous && !same), blocked: !played };
   }
 
+  async ensureTeaRoomAmbience() {
+    let variants = this.ambienceVariants;
+    if (!this.enabled || !this.unlocked) return { id: 'ch04_social_tea_room', restarted: false, blocked: false };
+    if (!variants) {
+      const previous = this.ambience;
+      const players = CH04_TEA_ROOM_VARIANTS.map(({ src }) => this.makeAudio(src, 'ambience'));
+      if (players.some((player) => !player)) {
+        players.filter(Boolean).forEach((player) => this.retireLoop(player, true));
+        return { id: 'ch04_social_tea_room', restarted: false, blocked: true };
+      }
+      variants = { players, check: null };
+      variants.check = () => this.checkAmbienceVariantTransition();
+      this.ambienceVariants = variants;
+      this.ambienceVariantIndex = 0;
+      players.forEach((player, index) => {
+        player.loop = false;
+        player.volume = 0;
+        this.connectAmbienceGain(player, CH04_TEA_ROOM_VARIANTS[index].gain);
+        if (index !== 0) player.pause();
+        player.addEventListener('timeupdate', variants.check);
+        player.addEventListener('ended', variants.check);
+      });
+      this.ambience = players[0];
+      this.ambienceId = 'ch04_social_tea_room';
+      this.ambienceSource = CH04_TEA_ROOM_VARIANTS[0].src;
+      if (previous && previous !== players[0] && previous !== players[1]) this.retireLoop(previous);
+    }
+    if (this.ambienceVariantFade) {
+      const fade = this.ambienceVariantFade;
+      const players = await Promise.all([fade.from, fade.to].map((player) => this.startLoop(player, 'ambience')));
+      if (players.some((played) => !played) || this.ambienceVariants !== variants || !this.enabled) return { id: 'ch04_social_tea_room', restarted: false, blocked: true };
+      fade.startedAt = Date.now() - (fade.pausedProgress ?? 0) * CH04_TEA_ROOM_CROSSFADE_MS;
+      fade.timer = globalThis.setInterval(() => this.updateAmbienceVariantFade(fade), 20);
+      this.updateAmbienceVariantFade(fade);
+    }
+    const active = variants.players[this.ambienceVariantIndex];
+    const played = await this.startLoop(active, 'ambience');
+    if (!played || this.ambienceVariants !== variants || !this.enabled) return { id: 'ch04_social_tea_room', restarted: false, blocked: !played };
+    if (!this.ambienceVariantFade) {
+      this.fadeVolume(active, this.ambienceVolume * this.ambienceDuck, this.fadeMs);
+    }
+    if (!this.ambienceVariantTimer) {
+      this.ambienceVariantTimer = globalThis.setInterval(() => this.checkAmbienceVariantTransition(), 40);
+    }
+    return { id: 'ch04_social_tea_room', restarted: false, blocked: false };
+  }
+
+  checkAmbienceVariantTransition() {
+    const variants = this.ambienceVariants;
+    if (!variants || !this.enabled || !this.unlocked || this.ambienceVariantFade) return;
+    const active = variants.players[this.ambienceVariantIndex];
+    if (active.paused || !Number.isFinite(active.duration) || active.duration <= 0) return;
+    if (active.duration - active.currentTime <= CH04_TEA_ROOM_CROSSFADE_MS / 1000) this.beginAmbienceVariantTransition();
+  }
+
+  async beginAmbienceVariantTransition() {
+    const variants = this.ambienceVariants;
+    if (!variants || this.ambienceVariantFade || !this.enabled || !this.unlocked) return false;
+    const fromIndex = this.ambienceVariantIndex;
+    const toIndex = (fromIndex + 1) % variants.players.length;
+    const from = variants.players[fromIndex], to = variants.players[toIndex];
+    this.cancelFade(from);
+    this.cancelFade(to);
+    to.currentTime = 0;
+    to.volume = 0;
+    const played = await this.startLoop(to, 'ambience');
+    if (!played || this.ambienceVariants !== variants || !this.enabled || this.ambienceVariantFade) {
+      to.pause();
+      return false;
+    }
+    const fade = { from, to, fromIndex, toIndex, startedAt: Date.now(), timer: null };
+    this.ambienceVariantFade = fade;
+    fade.timer = globalThis.setInterval(() => this.updateAmbienceVariantFade(fade), 20);
+    this.updateAmbienceVariantFade(fade);
+    return true;
+  }
+
+  updateAmbienceVariantFade(fade) {
+    if (!fade || this.ambienceVariantFade !== fade) return;
+    const progress = Math.min(1, (Date.now() - fade.startedAt) / CH04_TEA_ROOM_CROSSFADE_MS);
+    const base = this.enabled ? this.ambienceVolume * this.getAmbienceDuckLevel() : 0;
+    // Equal-power curves keep the bed present while independent room recordings overlap.
+    fade.from.volume = base * Math.cos(progress * Math.PI / 2);
+    fade.to.volume = base * Math.sin(progress * Math.PI / 2);
+    if (progress < 1) return;
+    globalThis.clearInterval(fade.timer);
+    fade.from.pause();
+    fade.from.volume = 0;
+    fade.to.volume = base;
+    this.ambienceVariantIndex = fade.toIndex;
+    this.ambience = fade.to;
+    this.ambienceSource = CH04_TEA_ROOM_VARIANTS[fade.toIndex].src;
+    this.ambienceVariantFade = null;
+  }
+
   async ensureAmbience(sceneId, contextual = null) {
     if (sceneId !== this.sceneId) {
       this.stopAmbientClock();
@@ -369,13 +556,15 @@ export class AudioManager {
     this.sceneId = sceneId;
     this.contextualSpec = contextual;
     // S01 begins from approved interior levels; Chapter III human mix QA is pending.
-    this.mix = sceneId?.startsWith('ch02_') || ['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch04_s01', 'ch04_s02'].includes(sceneId) ? CH02_AUDIO_MIX : CH01_AUDIO_MIX;
+    this.mix = sceneId?.startsWith('ch02_') || ['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch04_s01', 'ch04_s02', 'ch04_s03'].includes(sceneId) ? CH02_AUDIO_MIX : CH01_AUDIO_MIX;
     this.ambienceVolume = this.mix.ambience;
     this.contextualVolume = this.mix.contextual;
     const id = sceneId ? ambienceForScene(sceneId) : null;
     if (contextual?.id !== 'gramophone_distant') this.finishGramophoneCue();
     const results = await Promise.all([
-      this.ensureLoop('ambience', id, AMBIENCE_FILES[id]),
+      id === 'ch04_social_tea_room'
+        ? this.ensureTeaRoomAmbience()
+        : (this.ambienceVariants && this.stopAmbienceVariantLifecycle(), this.ensureLoop('ambience', id, AMBIENCE_FILES[id])),
       contextual?.id === 'gramophone_distant'
         ? this.ensureGramophoneCue(contextual)
         : this.ensureLoop('contextual', contextual?.id, contextual?.src)
@@ -549,6 +738,7 @@ export class AudioManager {
     for (const element of this.retiringLoops) element.pause();
     this.retiringLoops.clear();
     for (const element of [...this.fades.keys()]) this.cancelFade(element);
+    if (this.audioContext && this.audioContext.state !== 'closed') this.audioContext.close?.();
   }
 }
 
