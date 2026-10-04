@@ -1,55 +1,57 @@
 # Chapter IV Teacher Content
 
-Status: `CH04 S01 PRE-PRODUCTION CANON READY FOR HUMAN REVIEW` — read-only preview.
+Status: S01 implemented; preview is read-only. S02 teacher content locked for pre-production; runtime preview is not implemented.
 
 ## 1. Chapter Overview
 
-Chapter IV moves Eliza from controlled practice toward communication in social situations. S01 establishes an invitation and preparation; the public interaction comes later. Her voice-stage is Emerging New Speech: more conscious control and growing function outside the lesson room, not polished final performance.
+Chapter IV moves Eliza from controlled practice toward communication in social situations. Her voice-stage is **Emerging New Speech**: more natural rhythm, greater confidence and less self-conscious articulation, while keeping her established identity. This is growing communicative choice, not polished final performance or identity erasure.
 
-## 2. Learning Goals
+## 2. S01 Learning Goals
 
 - Notice that speaking in a real interaction also requires listening and pacing.
 - Choose a preparation approach without treating one as correct.
 - Recognise that intelligibility and communicative choice do not require erasing identity.
 
-## 3. Language Focus
+S01 has no pronunciation challenge. D08 is a non-punitive preparation choice. Teacher preview shows the scene and choice content but does not mutate learner state.
 
-Short greetings, planning a message, and the difference between rehearsed practice and an unfolding conversation. No new pronunciation system is introduced.
+## 3. S02 Learning Goals
 
-## 4. Listening Focus
+- Recognise conversational opening, continuation and closing signals.
+- Practise short B1 small-talk turns about names, weather, the journey and reading.
+- Notice that a clear closing signal may make another follow-up question unsuitable.
+- Observe `/eɪ/` in Eliza's original weather line as a secondary pronunciation detail, never as a judgement of her accent.
+- Hear a more natural rhythm and greater confidence than in Chapter III, with less self-conscious articulation and the same voice identity. Mild pressure may bring back some Cockney features; that is normal variation, not failure.
 
-Attend to what another person means and allow time to respond. S01 is preparation, not a listening challenge; `LC11` belongs to S02.
+## 4. Language and listening focus
 
-## 5. Key Vocabulary
+LC11 asks learners to classify a conversational turn as opening, continuing or closing. It teaches phatic language and turn-taking: a question may invite a first exchange, a follow-up can keep it going, and a polite closing can signal that the exchange is complete. After a closing signal, another question may ignore the other speaker's cue. This is social inference under mild pressure, not an intelligence test.
 
-`invitation`, `reading`, `greeting`, `practise`, `conversation`, `listen`, `answer`.
+Eliza's line “It rained on the way here, but today the sky is clearing.” contains `/eɪ/` in “rained”, “way” and “today”. Treat this as an optional listening observation, not a required LC11 skill or a caricatured `rain / Spain / plain` exercise.
 
-## 6. Cultural / Literary Context
+## 5. LC11 Teacher Notes
 
-The invitation creates an opportunity in a society with class expectations. The story examines those expectations; it does not endorse upper-class speech as morally better or Cockney as defective.
+The three samples and stable answer IDs are documented in `STATE_AND_BRANCHING.md`: sample 1 opens, sample 2 continues, sample 3 closes. Before a sample's first attempt, do not expose its transcript or answer. After that attempt, the learner may explicitly request replay and transcript/support. Support is accessible and carries no penalty. Correct answers persist; an incorrect answer may be tried again. LC11 adds no Pronunciation, Confidence, Independence or score.
 
-## 7. Decisions – Teacher Notes
+## 6. Decisions and signals
 
-`D08` prompt: “Where should Eliza begin?” It is a non-punitive character/preparation choice stored only as the selected stable option ID in `decisions.D08`. No choice is correct or wrong, no score or development signal is attached, and there is no immediate branch-specific flavour/result text. All options converge. Labels: `d08_practise_greeting` — “Practise a simple greeting.”; `d08_plan_message` — “Think about what she wants to say.”; `d08_listen_first` — “Listen first and observe.”
+D08 remains the saved S01 preparation choice; it does not gate S02 or influence LC11. Following LC11, an optional local reply lets Eliza continue the conversation. Either reply is valid, both converge, and either may apply `Confidence +1` once. It is not a major decision and does not alter later branches. No pronunciation reward is attached to weather vocabulary or challenge performance.
 
-## 8. Challenge Key
+## 7. Cultural / Literary Context
 
-No LC challenge, hidden pronunciation task, challenge score or challenge reward in S01; there is no answer key. `LC11` begins in S02, `Names and Weather`, and concerns small-talk turn signals.
+Small talk in an Edwardian social setting can be a useful ritual and can also express class expectations. The scene examines those conventions without endorsing them. Cockney is not defective, upper-class speech is not morally better, and accent is not intelligence. The `/eɪ/` weather detail uses original wording and does not quote or imitate dialogue or lyrics from *My Fair Lady*.
 
-## 9. Discussion Questions
+## 8. Sensitive Framing
 
-- How is practising in a quiet room different from speaking with someone new?
-- What can listening first help Eliza notice?
-- Can a speaker prepare and still choose their own words?
+Do not present social conventions as proof of a person's worth. A missed cue is a learnable communication moment, not evidence of low intelligence. Eliza expands her repertoire without losing her voice; clearer speech does not require a “perfect lady” performance.
 
-## 10. Sensitive Framing
+## 9. Suggested Classroom Use
 
-Class and accent pressures are examined, not endorsed. Upper-class speech is not morally better, and Cockney is not defective. Accent ≠ intelligence. Eliza's development means greater control, choice and intelligibility, not erasure of identity. Her voice stage is Emerging New Speech; the separate visual stage remains `in_training`.
+Ask learners to identify what each speaker's turn invites, then role-play opening, continuing and closing a brief exchange. Discuss why one may stop asking questions after a closing signal. Replay with transcript support after an attempt. Compare Eliza's Chapter III and IV delivery for rhythm and confidence while listening for continuity of voice identity.
 
-## 11. Suggested Classroom Use
+## 10. Scene Navigation
 
-Read the scene, then let learners compare the three preparation approaches without ranking them. A brief pair activity can rehearse a greeting, plan a message, or listen to a partner before replying. Teacher preview is read-only and must not mutate learner state.
+Chapter III ends with Eliza: “I can hear it myself.” and narration: “The lesson is over. The learning is not.” After D08 and explicit Continue, S01 records `ch04_s01_complete` once and moves to S02. After all three LC11 samples are correct, explicit Continue is unlocked; it records `ch04_s02_complete` once and moves to S03. LC11, replay, optional reply and Teacher preview never navigate automatically.
 
-## 12. Scene Navigation
+## 11. Teacher Preview Contract
 
-Chapter III ends with Eliza: “I can hear it myself.” and narration: “The lesson is over. The learning is not.” After D08 and explicit Continue, S01 records `ch04_s01_complete` once without a signal increment and moves to `ch04_s02 – Names and Weather`. S01 has no challenge; LC11 remains in S02.
+Preview may display S02 story content, goals, challenge instructions and teacher notes. Opening or rendering preview must not play AM35/AM36, start ambience, or write answers, attempts, support use, completion events, application choice, development signals or scene progression into learner state. Audio requires an explicit learner playback action in student mode.

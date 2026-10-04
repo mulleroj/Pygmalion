@@ -333,7 +333,7 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 - **Rozhodnutí hráče:** `D08`, prompt “Where should Eliza begin?”: `d08_practise_greeting` — “Practise a simple greeting.”; `d08_plan_message` — “Think about what she wants to say.”; `d08_listen_first` — “Listen first and observe.” Žádná volba není správná či nesprávná; všechny jsou nepunitive a sbíhají se do stejného pokračování S01. Bez branch-specific flavour textu.
 - **Možné hodnotové změny:** žádné. D08 nepřidává ani neodečítá `Pronunciation`, `Confidence` či `Independence`.
 - **Uložení:** zvolený stabilní option ID pouze v existujícím `decisions.D08`; event `ch04_d08_recorded` se aplikuje právě jednou. Rozhodnutí se obnoví po refreshi přes existující persisted decision ledger; žádný nový top-level field.
-- **Audio moment:** `AM34` – volitelné story voice repliky Higginse a Elizy. AM33 je již použit pro tři LC10 ukázky v S06; S01 nemá samostatný audio moment ambience. Žádné audio není vygenerováno.
+- **Audio moment:** `AM34` – dvě volitelné story voice repliky Higginse a Elizy. AM33 zůstává přiřazen třem LC10 ukázkám v S06. AM34 je integrováno a má Human Audio approval PASS; ambience S01 reuse `ch03_lesson_room`. S01 Human Visual QA = PASS.
 - **Challenge:** žádná. `LC11` zůstává v S02.
 - **Teacher Mode:** přenos z lekce do sociálního prostředí; příprava, naslouchání a volba; accent ≠ intelligence.
 - **Vizuální assety:** znovu použít Higginsovu pracovnu a existující postavy. Klasifikace pozvánky: A — žádný vizuální prop není vyžadován; dialog a narace stačí. BOOK FIRST zůstává srozumitelný bez viditelné karty. Eliza zůstává rozpoznatelně stejná; změna se projeví pouze klidnější kompozicí, mírně jistějším držením těla, pokud je podpořeno schváleným assetem, a menším napětím pracovního tréninku.
@@ -343,20 +343,22 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 
 ### ch04_s02 – Names and Weather
 
-- **Lokace:** společenská místnost s čajovým stolem.
-- **Čas / atmosféra:** první část setkání; zdvořilý hluk, šálky, počasí jako small-talk téma.
-- **Postavy:** Eliza, hostitelka, dva hosté, Pickering.
-- **Děj:** Eliza vede small talk o jménech, počasí a cestě. Výslovnost drží, ale musí rozpoznat, kdy host chce pokračovat a kdy jen zdvořile ukončit výměnu.
-- **Hlavní účel:** představit social conventions a listening under pressure v malé dávce.
-- **Rozhodnutí hráče:** žádné hlavní; hráč volí pořadí odpovědí a možnost položit doplňující otázku.
-- **Možné hodnotové změny:** `Confidence +1` za vhodné pokračování; `Pronunciation +1` za stabilní důraz.
-- **Uložení:** `long-term: ne`.
-- **Audio momenty:** `AM35 LISTENING` hosté používají zdvořilé ukončovací signály; `AM36 VOICE` Eliza ve třech malých talk turns.
-- **Challenge:** `LC11` – určit, zda replika otevírá, drží, nebo ukončuje small talk.
-- **Teacher Mode:** turn-taking, phatic language, weather talk.
-- **Vizuální assety:** čajový stůl, jmenovky, Eliza `In Training / attentive`.
-- **Audio assety:** `host_ch04_scene02_001.mp3`, `eliza_ch04_scene02_001.mp3`, `sfx_teacups_001.mp3` a přepisy.
-- **Návaznost:** `ch04_s03`.
+- **Lokace:** nová malá viktoriánská společenská drawing-room / tea-room, vizuálně odlišná od Higginsovy pracovny.
+- **Čas / atmosféra:** první část setkání; klidný společenský ruch, čaj a počasí jako nenucené small-talk téma.
+- **Postavy:** Eliza, Hostess, jeden či více Guest podle kompozice, Pickering. Higgins není aktivní mluvčí.
+- **Děj:** Hostess Elizu představí a rozhovor začne jménem, počasím a cestou. Eliza přirozeněji vede krátký small talk a drží čistší výslovnost. Po story beats hráč v LC11 poslouchá tři odlišné conversational signals a určí, zda tah rozhovor otevírá, pokračuje v něm, nebo jej uzavírá. Poté je dostupná krátká lokální aplikační mikrovolba; žádná volba nevětví hlavní story spine.
+- **Hlavní účel:** ukázat první skutečné použití řeči při společenském setkání, opening / continuing / closing signal a mírný tlak bez karikatury „perfect lady“.
+- **Originální `/eɪ/` moment:** Eliza říká přesně `It rained on the way here, but today the sky is clearing.` Teacher Mode může upozornit na `/eɪ/` v `rained`, `way`, `today`. Nejde o LC11 sample ani answer content. Nepoužívá se student-facing řetězec `rain / Spain / plain` ani jeho rytmická parafráze.
+- **Rozhodnutí hráče:** bez major decision ID. Po LC11 může hráč zvolit jednu ze dvou stejně platných krátkých společenských odpovědí, které nechají rozhovoru prostor; obě se sbíhají do stejného pokračování. D08 zůstává uložené, není gate a nemění obtížnost ani výsledek LC11.
+- **Možné hodnotové změny:** LC11 sama nemění žádný development signal. Volitelná lokální aplikační odpověď může jednou přidat `Confidence +1` za vhodné pokračování; žádná `Pronunciation` změna se nepřidává.
+- **Uložení:** challenge v existujícím `challenges.lc11` tvaru a event ledgeru. Všechny tři samples musí být správně klasifikovány pro LC11 completion; `ch04_lc11_complete` se zaznamená jednou. Volba aplikační odpovědi zůstává lokální pro S02, bez nového top-level pole.
+- **Audio momenty:** `AM35 LISTENING` = tři LC11 host/guest samples; `AM36 VOICE` = tři Eliziny story turns. AM35 voice casting je production casting pending; nevymýšlet canonical voice ID. AM36 používá canonical Eliza voice `124kaYCknTDsnwUFdWl9`; visible text = spoken text 1:1.
+- **Challenge:** `LC11` – tři stabilní samples: opening, continuing, closing. Replay je povolen. Transcript není viditelný před prvním pokusem; explicitně vyžádaná support/transcript možnost je dostupná poté, bez penalizace. LC11 nepřidává `Pronunciation`, `Confidence` ani `Independence`.
+- **Teacher Mode:** phatic language, turn-taking, weather talk, proč další otázka po jasném closing signal nemusí být vhodná; `/eɪ/` je vedlejší observation. Teacher preview je read-only.
+- **Vizuální assety:** required nová location ilustrace společenské tea-room s čajovým stolem, místy k sezení a negativním prostorem pro runtime characters. Reuse Eliza `In Training / attentive` approved varianty, pokud kompozice funguje, a Pickering master. Hostess/guests mohou být sekundární background participants; nové hlavní character cutouts nejsou automaticky required. Samostatné jmenovky jsou optional.
+- **Audio assety:** `assets/audio/listening/ch04_lc11_sample_01.mp3`, `_02.mp3`, `_03.mp3`; `assets/audio/characters/eliza/eliza_ch04_scene02_001.mp3`, `_002.mp3`, `_003.mp3`; ambience `assets/audio/ambience/ch04_social_tea_room_ambient.mp3`. Volitelný `assets/audio/sfx/sfx_teacups_001.mp3` je nejvýše jeden jednorázový diegetický cue.
+- **Ambience:** `ch04_social_tea_room`, tlumený společenský murmur a jemný room tone, bez hudby a náhodných efektů. Při přechodu `ch03_lesson_room` → `ch04_social_tea_room` použít jemný crossfade. AM35 a AM36 duckují přes existující AudioManager; po skončení se ambience vrací bez restartu.
+- **Dokončení a návaznost:** až po LC11 completion se zpřístupní explicitní Continue; challenge ani mikrovolba scénu automaticky nepřepínají. Po Continue jednou zaznamenat `ch04_s02_complete` a přejít do `ch04_s03 – The Wrong Answer`.
 
 ### ch04_s03 – The Wrong Answer
 

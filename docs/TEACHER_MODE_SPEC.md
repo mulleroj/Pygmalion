@@ -315,11 +315,13 @@ Společný poslech s replay a transcript support, poté práce ve dvojicích na 
 
 ### 1. Chapter Overview
 
-Eliza přechází od kontrolovaného tréninku k použití řeči v sociálních situacích. S01 otevírá kapitolu pozváním a přípravou; veřejná interakce přichází až později. Její voice-stage je Emerging New Speech: vědomější kontrola, která začíná fungovat mimo pracovnu, nikoli hotový výkon Chapter V. Kapitola rozšiřuje její repertoár, ne opravuje její osobnost.
+Eliza přechází od kontrolovaného tréninku k použití řeči v sociálních situacích. S01 otevírá kapitolu pozváním a přípravou; S02 je první skutečné společenské setkání. Její voice-stage je Emerging New Speech: přirozenější rytmus, větší jistota a méně self-conscious articulation při zachování stejné hlasové identity. Kapitola rozšiřuje její repertoár, ne opravuje její osobnost.
 
 ### 2. Learning Goals
 
 - zahájit, držet a ukončit small talk;
+- slyšet, kdy společenský tah otevírá, pokračuje nebo končí rozhovor;
+- rozpoznat, proč další otázka po jasném closing signal nemusí být vhodná;
 - rozeznat literal meaning a intended meaning;
 - použít social repair po nedorozumění;
 - spojit pronunciation s audience awareness;
@@ -327,15 +329,16 @@ Eliza přechází od kontrolovaného tréninku k použití řeči v sociálních
 
 ### 3. Language Focus
 
-- vocabulary: weather, name, guest, joke, quiet, answer, explain;
-- functional language: follow-up question, polite closing, repair and clarification;
+- S02 vocabulary: weather, journey, guest, reading, answer, story;
+- S02 functional language: opening a conversation, follow-up question, polite closing;
+- later Chapter IV functional language: repair and clarification;
 - register: small talk, careful vs spontaneous;
 - discourse: turn-taking, implied meaning, humor;
-- pronunciation: srozumitelnost pod mírným tlakem.
+- pronunciation: srozumitelnost pod mírným tlakem; `/eɪ/` in Eliza's original S02 weather line is a secondary observation, not LC11 assessment.
 
 ### 4. Listening Focus
 
-Žák má slyšet, zda host rozhovor otevírá, drží nebo ukončuje, a kdy je věta literal joke nebo social signal. Teacher Mode rozlišuje hearing intonation od judging personality.
+V LC11 má žák slyšet, zda host rozhovor otevírá, drží nebo ukončuje. Po closing signal může další otázka ignorovat zdvořilý signál druhé osoby. Teacher Mode rozlišuje hearing intonation od judging personality. Elizina věta `It rained on the way here, but today the sky is clearing.` obsahuje `/eɪ/` v `rained`, `way` a `today`; jde o původní story text a vedlejší pozorování, nikoli challenge sample.
 
 ### 5. Key Vocabulary
 
@@ -349,10 +352,11 @@ Small talk v Edwardian social setting může fungovat jako bezpečný rituál, a
 
 - `D08` používá prompt “Where should Eliza begin?” a tři přípravné volby. Stabilní option ID se ukládá pouze do `decisions.D08`; event `ch04_d08_recorded` právě jednou. Volba je non-punitive character choice, žádná není správná ani nesprávná, nemění score/signals a všechny vedou ke stejnému pokračování.
 - `D09` zkoumá social repair po doslovné odpovědi. Všechny varianty jsou legitimní; uloží `recovery_style` a mohou ovlivnit pozdější formulaci.
+- S02 po LC11 může nabídnout volitelnou lokální aplikační odpověď. Obě varianty jsou legitimní, sbíhají se a mohou jednou přidat `Confidence +1`; mikrovolba není LC11 gate, major decision ani S03 gate.
 
 ### 8. Challenge Key
 
-- `LC11`: správně určit, zda signál small talk otevírá, drží nebo ukončuje turn; běžná chyba je položit další otázku po jasném closing signal.
+- `LC11`: tři stabilní samples; `lc11_sample_01` (“Miss Doolittle, have you been in London long?”) = opening; `lc11_sample_02` (“I see. And what do you think of the weather today?”) = continuing; `lc11_sample_03` (“Well, it was lovely speaking with you.”) = closing. Answer IDs jsou rozepsané v `docs/chapters/ch04/STATE_AND_BRANCHING.md`. Transcript/support zůstává skrytý do prvního pokusu daného sample; poté je explicitně dostupný, bez penalizace. Replay je povolen. Completion event `ch04_lc11_complete` se zapíše jednou po třech správných klasifikacích. LC11 nemění Pronunciation, Confidence, Independence ani score. Dokončení LC11 odemyká explicitní Continue do S03.
 - `LC12`: správně odlišit literal content od implied joke/meaning v kontextu; vlastní styl opravy nemá answer key.
 
 ### 9. Discussion Questions
@@ -375,7 +379,7 @@ Práce ve dvojicích s role-play small talku, potom společný replay `LC12`. Or
 | Scene ID | Scene title | Decisions | Challenges | Language focus | Audio moments |
 | --- | --- | --- | --- | --- | --- |
 | `ch04_s01` | The Invitation | `D08` | — | preparation, listening, social transfer | `AM34` |
-| `ch04_s02` | Names and Weather | — | `LC11` | small talk, turn-taking | `AM35–AM36` |
+| `ch04_s02` | Names and Weather | optional local reply | `LC11` | small talk, conversational signals, `/eɪ/` observation | `AM35–AM36` |
 | `ch04_s03` | The Wrong Answer | `D09` | `LC12` | literal/implied meaning, repair | `AM37–AM38` |
 | `ch04_s04` | After the Laughter | — | — | reflection, feedback | `AM39–AM40` |
 | `ch04_s05` | The Walk Home | — | — | register repertoire | `AM41–AM42` |
