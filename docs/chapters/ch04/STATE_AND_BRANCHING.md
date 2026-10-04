@@ -1,6 +1,6 @@
 # Chapter IV State and Branching
 
-Status: `S01 and S02 implemented against locked canon; S03 state and branching contract locked in pre-production; S03 runtime not implemented`.
+Status: `CH04 S01–S03 locked; S04 state and branching contract locked in pre-production; S04 runtime not implemented`.
 
 ## Shared state
 
@@ -105,3 +105,29 @@ All three options are legitimate, have no answer key, and converge. Do not label
 ### S03 completion and transition
 
 Unlock explicit Continue only when both `ch04_lc12_complete` and `ch04_d09_recorded` are present. Selecting Continue records `ch04_s03_complete` exactly once and transitions to `ch04_s04`. LC12 completion, D09 selection, rendering, replay, refresh, audio completion and Teacher preview never navigate automatically. Completion is idempotent.
+
+## S04 — After the Laughter
+
+### Entry and invariants
+
+S04 requires `ch04_s03_complete`. The inherited `ch04_lc12_complete`, `decisions.D09` and `ch04_d09_recorded` remain available, but none branches or gates S04. `rephrase`, `acknowledge_literal` and `wait_for_cue` do not produce dialogue variants. Previous Confidence values do not gate or alter S04. Do not create a top-level Chapter IV field for this scene.
+
+### Required reflection choice
+
+S04 has no language challenge, answer key, correctness state, retry, score or challenge ID. Its required, non-graded reflection is stored only at `reflections.ch04_s04_focus` with one stable value:
+
+| Stable value | Visible Eliza line | Meaning |
+| --- | --- | --- |
+| `language` | I need to listen for meaning, not only words. | Focus on interpreting meaning. |
+| `audience` | I need to watch how people react before I answer. | Focus on audience cues. |
+| `feeling` | I need to say when something makes me uncomfortable. | Focus on naming a feeling. |
+
+All choices are legitimate and converge. None is correct, best, weak or wrong. On the first valid selection, write `reflections.ch04_s04_focus` and append `ch04_s04_reflection_recorded` once. Repeated selection, render, refresh or replay must not rewrite the selected preference or duplicate the event. Do not create `reflection_focus` or an equivalent duplicate field.
+
+The reflection choice does not affect S05 branching, score, Pronunciation, Confidence or Independence. S04 changes no development signal: Confidence +0, Independence +0, Pronunciation +0. It has no hidden reward.
+
+### Completion and transition
+
+Unlock explicit Continue only after `ch04_s04_reflection_recorded`. Explicit Continue appends `ch04_s04_complete` exactly once and transitions to `ch04_s05`. Reflection selection, rendering, replay, refresh, audio completion and Teacher preview never complete or navigate the scene. Completion is idempotent; no additional reward is attached. S05 is outside this contract.
+
+Teacher preview may show the story, reflection options and this contract, but remains read-only: no autoplay, state writes, reflection selection, rewards, completion or progression.

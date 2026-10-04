@@ -383,10 +383,14 @@ Práce ve dvojicích s role-play small talku, potom společný replay `LC12`. Or
 | `ch04_s01` | The Invitation | `D08` | — | preparation, listening, social transfer | `AM34` |
 | `ch04_s02` | Names and Weather | optional local reply | `LC11` | small talk, conversational signals, `/eɪ/` observation | `AM35–AM36` |
 | `ch04_s03` | The Wrong Answer | `D09` after LC12 | `LC12` · 2 interpretation items | literal/implied meaning, pragmatic repair | `AM37–AM38` |
-| `ch04_s04` | After the Laughter | — | — | reflection, feedback | `AM39–AM40` |
+| `ch04_s04` | After the Laughter | reflection focus | — | reflection, feedback | `AM39` + corridor ambience (`AM40` superseded) |
 | `ch04_s05` | The Walk Home | — | — | register repertoire | `AM41–AM42` |
 
 S03's Guest joke and Eliza's literal reply are original adaptation dialogue. Eliza's pronunciation is successful; the mismatch is pragmatic inference, not accent or intelligence. D09 choices all converge and receive no score or signal. Explicit S03 Continue requires both `ch04_lc12_complete` and `ch04_d09_recorded`, records `ch04_s03_complete` once and moves to S04. Teacher preview of S03 remains read-only: no autoplay, answer/attempt/state/reward writes or scene progression.
+
+S04 — **After the Laughter** is set several minutes later in a side corridor; tea-room voices are muffled behind a closed or partly closed door. Its objective is to distinguish language accuracy from pragmatic understanding and reflect on who controls feedback and communication goals. Clear pronunciation does not guarantee shared meaning; context, audience and implied meaning also matter. Eliza questions who decides what her progress is for. Her recorded reflection focus (`language`, `audience` or `feeling`) is required, non-graded and has no answer key. All three options are legitimate and converge; none changes S05, score, Pronunciation, Confidence or Independence. Preserve `Accent ≠ intelligence`; social conventions are learned and culturally variable, and misunderstanding them is not evidence of lower ability. Discuss: “Who should decide what counts as successful communication?” Optionally ask: “Can feedback be useful without becoming a judgment about the person?” S04 preview is read-only and does not play audio or write reflection/progression state. All S04 dialogue is original project adaptation, not quoted from Shaw or *My Fair Lady*; no musical wording or cultural note is used.
+
+S04 requires `ch04_s03_complete` on entry. First valid reflection selection writes only `reflections.ch04_s04_focus` and appends `ch04_s04_reflection_recorded` once. Explicit Continue is available only after that event; it writes `ch04_s04_complete` once and moves to S05. D09 and prior Confidence do not branch or alter the scene. S04 has no challenge, development increment or hidden reward. Its audio plan uses the new `ch04_side_corridor` ambience identity; the earlier proposed AM40 hallway/distant-guests one-shot is superseded by continuous ambience.
 
 ## 8. Chapter V – The Reception
 

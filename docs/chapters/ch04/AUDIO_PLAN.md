@@ -1,6 +1,6 @@
 # Chapter IV Audio Plan
 
-Status: S01 AM34 and S02 AM35/AM36, Teacher Mode cultural-reference audio and canonical ambience are integrated and approved as documented below. S03 AM37/AM38 production plan is canonically locked; S03 audio and transcripts have not been generated.
+Status: S01 AM34 and S02 AM35/AM36, Teacher Mode cultural-reference audio and canonical ambience are integrated and approved as documented below. S03 AM37/AM38 are integrated as documented. S04 AM39 and side-corridor ambience production contracts are canonically locked; S04 voice and corridor ambience assets remain unproduced.
 
 ## Shared rules
 
@@ -79,3 +79,31 @@ The approved AM38 MP3 preview is integrated at the canonical path. The previousl
 ### S03 ambience and mix
 
 Continue the S02 ambience identity `ch04_social_tea_room` and its current alternating A/B source lifecycle through S02→S03. Do not start another ambience identity or restart/reset the running variant. AM37 foreground speech uses standard ducking. AM38 may use stronger temporary ducking; restore the same running tea-room ambience afterward. Use the existing AudioManager and lifecycle.
+
+## S04 — After the Laughter
+
+### AM39 — Corridor dialogue
+
+AM39 is a sequence of separate, user-triggered foreground clips. Keep visible text, transcript and spoken text identical. No autoplay on scene entry. All clips use standard ambience duck/restore through the existing AudioManager.
+
+| Order | Speaker | Exact spoken text | Planned local file | Canonical voice / performance |
+| --- | --- | --- | --- | --- |
+| 1 | Pickering | You spoke clearly, Eliza. The difficulty was not the words. | `assets/audio/characters/pickering/pickering_ch04_scene04_001.mp3` | George, `JBFqnCBsd6RMkjVDRZzb`; warm, calm, observant and nonjudgmental. |
+| 2 | Mrs Pearce | People often say one thing and mean something more. That takes time to learn. | `assets/audio/characters/mrs-pearce/mrs-pearce_ch04_scene04_001.mp3` | Sally Ford, `kBag1HOZlaVBH7ICPE8x`; mature British, practical, grounded, warm but unsentimental. |
+| 3 | Eliza | Then I must learn the people as well as the language. | `assets/audio/characters/eliza/eliza_ch04_scene04_001.mp3` | Canonical Eliza, `124kaYCknTDsnwUFdWl9`; Emerging New Speech, calm and deliberate. |
+| 4 | Higgins | Exactly. Tonight is useful because it shows us what still needs work. | `assets/audio/characters/higgins/higgins_ch04_scene04_001.mp3` | Kelvin, `JlptfLxaUpd8pZcw9dKd`; analytical, matter-of-fact, emotionally blind, not villainous. |
+| 5 | Eliza | It shows you what still needs work. | `assets/audio/characters/eliza/eliza_ch04_scene04_002.mp3` | Canonical Eliza, `124kaYCknTDsnwUFdWl9`; calm and deliberate. |
+| 6 | Higgins | It is a test, Eliza. | `assets/audio/characters/higgins/higgins_ch04_scene04_002.mp3` | Kelvin, `JlptfLxaUpd8pZcw9dKd`; brief, matter-of-fact, without melodrama. |
+| 7 | Eliza | Then I should have a say in what the test is for. | `assets/audio/characters/eliza/eliza_ch04_scene04_003.mp3` | Canonical Eliza, `124kaYCknTDsnwUFdWl9`; calm and deliberate, not shouted. |
+
+The narrator's exact location line is visible story text; no narrator voice asset is specified for S04. All seven dialogue lines above are the complete AM39 foreground sequence. The three selectable reflection lines in `STATE_AND_BRANCHING.md` are written responses and are not additional AM39 clips. Do not embellish or voice additional lines.
+
+Mrs Pearce's canonical voice is Sally Ford, Voice ID `kBag1HOZlaVBH7ICPE8x`, as recorded in the project audio voice bible; no voice ID needs to be invented or deferred.
+
+### S04 corridor ambience
+
+S04 introduces the new logical ambience identity `ch04_side_corridor`, planned file `assets/audio/ambience/ch04_side_corridor_ambient.mp3` (not yet produced). Plan a seamless loop of approximately 15–20 seconds: quiet interior corridor, soft building room tone, distant muffled tea-room social murmur behind a door, and at most very subtle occasional movement. No intelligible speech, music, clock emphasis, rhythmic porcelain, dramatic footsteps loop or conspicuous repeated event.
+
+At S04 entry crossfade from the currently running `ch04_social_tea_room` to `ch04_side_corridor` over approximately 1.5 seconds. The existing tea-room A/B sequence may finish or continue naturally until that crossfade begins; do not restart Loop A. Once corridor ambience takes over, stop tea-room ambience using the existing AudioManager lifecycle. S04 is a side-corridor location, not a tea-room visual or ambience hold.
+
+The earlier tentative AM40 hallway/distant-guests SFX plan is superseded by this continuous corridor ambience. Do not produce or plan `assets/audio/sfx/sfx_hallway_001.mp3`; do not reuse S03 AM38 laughter/reaction in S04. Distant social presence belongs in the corridor ambience. There is no separate S04 AM40 one-shot.

@@ -1,6 +1,6 @@
 # Chapter IV — The First Test
 
-Status: `CH04 S01 and S02 canon locked and implemented; S03 story and interaction specification locked in pre-production; S03 runtime and assets not implemented or produced`.
+Status: `CH04 S01–S03 canon locked; S04 story and interaction canon locked in pre-production; S04 runtime and assets not implemented or produced`.
 
 ## S01 — The Invitation
 
@@ -88,3 +88,27 @@ After LC12, show D09 with the three options specified in `STATE_AND_BRANCHING.md
 ### Scene end
 
 Unlock explicit Continue only when both `ch04_lc12_complete` and `ch04_d09_recorded` exist. Continue records `ch04_s03_complete` once and moves to `ch04_s04`. Rendering, replay, refresh, audio completion and Teacher preview never complete or navigate the scene.
+
+## S04 — After the Laughter
+
+Location: the side corridor, several minutes after S03. The tea-room gathering remains behind a closed or partly closed door and is heard only at a distance. S04 is a new acoustic and visual location, not a tea-room hold.
+
+### Canonical story flow
+
+All dialogue below is original project adaptation, not quoted from Shaw or *My Fair Lady*. The scene moves from “What did Eliza misunderstand?” to “Who decides what successful communication means?” Her S03 difficulty was pragmatic inference, not pronunciation. Keep her voice at **Emerging New Speech**: calm and deliberate, with no Cockney relapse, aristocratic imitation or angry climax.
+
+1. **Narrator:** A few minutes later, the corridor is quieter. The voices from the tea room are muffled behind the door.
+2. **Pickering:** You spoke clearly, Eliza. The difficulty was not the words.
+3. **Mrs Pearce:** People often say one thing and mean something more. That takes time to learn.
+4. **Eliza:** Then I must learn the people as well as the language.
+5. **Higgins:** Exactly. Tonight is useful because it shows us what still needs work.
+6. **Eliza:** It shows you what still needs work.
+7. **Higgins:** It is a test, Eliza.
+8. **Eliza:** Then I should have a say in what the test is for.
+9. The learner selects Eliza's required, non-graded reflection focus: language, audience or feeling. Each option has its exact visible Eliza line in `STATE_AND_BRANCHING.md`; these are selectable written responses, not additional AM39 voice clips. All options converge.
+
+Eliza's final line is a calm agency beat, not a rebellion climax. Higgins is analytical and matter-of-fact, emotionally blind rather than intentionally cruel; his brief appearance does not make him the dominant speaker. Pickering is supportive and nonjudgmental. Mrs Pearce is practical and perceptive, distinguishing words from implied meaning without patronising Eliza. Do not imply that accent signals intelligence or social polish determines personal worth.
+
+### Scene end
+
+Require `ch04_s04_reflection_recorded` before enabling explicit Continue. Continue records `ch04_s04_complete` exactly once and transitions to `ch04_s05`; no automatic transition. There is no challenge, score, development increment or hidden reward. Teacher preview remains read-only.

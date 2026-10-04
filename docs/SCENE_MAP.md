@@ -11,7 +11,7 @@ Scénově specifické Teacher Mode poznámky zůstávají u jednotlivých scén.
 - Hodnoty `Pronunciation`, `Confidence` a `Independence` jsou vývojové signály, nikoli good/bad nebo morality scores.
 - `Dxx` označuje hlavní rozhodnutí; `LCxx` jazykovou nebo poslechovou výzvu; `AMxx` plánovaný audio moment.
 - `long-term: ano` znamená, že se volba nebo významný výsledek ukládá do progressu. `long-term: ne` označuje lokální důsledek nebo scénovou stopu.
-- Všechny nové dialogy jsou pouze pracovní záměr. Signature line z Chapter I je jediný zde uvedený pevný text.
+- Nové dialogy jsou pracovní záměr, pokud konkrétní scene contract výslovně neoznačuje přesný text jako locked. Signature line z Chapter I zůstává jediný pevný text mimo scénové locky.
 - Eliza používá pouze canonical vizuální fáze `Flower Girl`, `In Training` a `Her Own Voice`.
 
 ## State rules
@@ -321,7 +321,7 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 
 **Dramatic arc:** Eliza moves from controlled training toward using speech in real social situations. Chapter IV opens with preparation for an invitation, then tests listening, pacing, intelligibility and repair in small steps. Eliza's voice-stage is **Emerging New Speech**: the same canonical voice and Cockney identity, with more conscious control; not polished Chapter V performance. Social expectations are examined, not endorsed.
 
-**Audio profile:** `VOICE` small talk, humor a recovery; `LISTENING` turn-taking a implied meaning; `PRONUNCIATION` stabilní artikulace pod tlakem; `SFX` šálky, místnost a kroky; `AMBIENCE` čajové setkání, chodba a noční cesta.
+**Audio profile:** `VOICE` small talk, humor a recovery; `LISTENING` turn-taking a implied meaning; `PRONUNCIATION` stabilní artikulace pod tlakem; `SFX` šálky a kroky; `AMBIENCE` čajové setkání, boční chodba a noční cesta.
 
 ### ch04_s01 – The Invitation
 
@@ -377,20 +377,20 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 
 ### ch04_s04 – After the Laughter
 
-- **Lokace:** boční chodba společenské místnosti.
-- **Čas / atmosféra:** několik minut po situaci; tlumenější zvuk, prostor pro nadechnutí.
-- **Postavy:** Eliza, Pickering, Mrs Pearce, Higgins krátce.
-- **Děj:** Eliza hodnotí, co se stalo. Pickering ji neposuzuje podle elegance; Mrs Pearce pomůže oddělit výslovnost od společenské inference. Higgins mluví o výsledku testu, což znovu otevře otázku vlastnictví úspěchu.
-- **Hlavní účel:** převést chybu na reflexi a zachovat Elizinu agency.
-- **Rozhodnutí hráče:** žádné hlavní; hráč vybere, zda si Eliza uloží poznámku o jazyce, publiku nebo vlastním pocitu.
-- **Možné hodnotové změny:** lokální `reflection_focus`; při pojmenování vlastního pocitu `Confidence +1`.
-- **Uložení:** `long-term: ne`.
-- **Audio momenty:** `AM39 VOICE` Pickering a Mrs Pearce jako podpůrné hlasy; `AM40 SFX` tlumený chodník a vzdálený návrat hostů.
-- **Challenge:** žádná nová; replay předchozí reakce je volitelná podpora.
-- **Teacher Mode:** reflection language, separating feedback from identity.
-- **Vizuální assety:** chodba, Eliza `In Training / reflective`, Higgins odděleně od skupiny.
-- **Audio assety:** `pickering_ch04_scene04_001.mp3`, `mrs-pearce_ch04_scene04_001.mp3`, `sfx_hallway_001.mp3` a přepisy.
-- **Návaznost:** `ch04_s05`.
+- **Lokace a přechod:** `side corridor`, několik minut po S03; není to bezprostřední pokračování u hostů ani tea-room visual hold. Gathering zůstává za zavřenými či přivřenými dveřmi a je slyšet pouze vzdáleně. Přechod ambience: `ch04_social_tea_room → ch04_side_corridor`.
+- **Postavy:** Eliza, Pickering, Mrs Pearce a Higgins krátce; všichni čtyři promluví. Higgins je krátký vstup, nikoli dominantní speaker.
+- **Hlavní účel:** posunout otázku z “What did Eliza misunderstand?” na “Who decides what successful communication means?” a dát Elize větší agency. S03 bylo pragmatic inference mismatch, nikoli pronunciation failure. Platí `Accent ≠ intelligence` a `social polish ≠ personal worth`.
+- **Canonical story spine:** tišší chodba; Pickering oddělí clarity od nedorozumění; Mrs Pearce rozliší vyslovená slova a implied meaning; Eliza pojmenuje, že se učí lidi i jazyk; Higgins označí večer za užitečný test; Eliza zpochybní vlastnictví rámce experimentu; hráč zvolí Elizin reflection focus; volba se sbíhá; následuje explicit Continue, completion a přechod do S05.
+- **Přesný locked dialog:** Narrator: `A few minutes later, the corridor is quieter. The voices from the tea room are muffled behind the door.` Pickering: `You spoke clearly, Eliza. The difficulty was not the words.` Mrs Pearce: `People often say one thing and mean something more. That takes time to learn.` Eliza: `Then I must learn the people as well as the language.` Higgins: `Exactly. Tonight is useful because it shows us what still needs work.` Eliza: `It shows you what still needs work.` Higgins: `It is a test, Eliza.` Eliza: `Then I should have a say in what the test is for.`
+- **Character framing:** Eliza zůstává ve voice-stage `Emerging New Speech`; bez Cockney relapse a bez perfect-lady hlasu. Závěrečná replika je klidná a rozvážná, agency beat bez revolučního vyvrcholení. Higgins je analytický a věcný, emočně slepý, nikoli úmyslně krutý. Pickering je podpůrný a nehodnotící. Mrs Pearce je praktická a sociálně vnímavá, bez patronizace.
+- **Reflexe:** required, non-graded volba `language`, `audience` nebo `feeling`; přesné visible lines a state contract jsou v `docs/chapters/ch04/STATE_AND_BRANCHING.md`. Všechny možnosti jsou legitimní a konvergují.
+- **Hodnoty a uložení:** volba se zapíše pouze do `reflections.ch04_s04_focus`; jednou se přidá `ch04_s04_reflection_recorded`. Bez `reflection_focus` duplicitního pole. S04 dává Confidence +0, Independence +0, Pronunciation +0; žádný score či skrytý reward. D09 ani předchozí Confidence S04 nemění.
+- **Challenge:** žádná; žádné LC13, answer key, correctness, retries ani score.
+- **Audio:** `AM39 VOICE` obsahuje všech sedm voiced dialogue lines podle `docs/chapters/ch04/AUDIO_PLAN.md`; visible text = transcript = spoken text, explicit playback, standard duck/restore. Narrator line je visible text bez plánovaného voice souboru. Předchozí AM40 hallway/distant-guests SFX je superseded; samostatný SFX ani S03 AM38 replay se neplánují. Nová ambience identity `ch04_side_corridor` má plánovaný soubor `assets/audio/ambience/ch04_side_corridor_ambient.mp3`; při vstupu crossfade přibližně 1.5 s z aktuálně běžící tea-room A/B, bez restartu Loop A.
+- **Vizuály:** povinný nový background `assets/images/locations/ch04/ch04_side_corridor.webp` (zatím nevyroben). Reuse stávajících Eliza/Pickering/Higgins/Mrs Pearce runtime cutoutů dle `VISUAL_PLAN.md`; žádná nová póza. Eliza centrálně vpředu, podpůrná dvojice vedle ní, Higgins mírně oddělen; bez hosta a čajového stolku.
+- **Teacher Mode:** rozlišení language accuracy a pragmatics, reflexe kdo určuje úspěšnou komunikaci, equity notes `Accent ≠ intelligence` a kulturní variabilita společenských konvencí. Preview zůstává read-only.
+- **Adaptace:** přesný dialog je `ORIGINAL PROJECT ADAPTATION`, inspirovaný tematickou situací Shawova public-domain *Pygmalion*, ale není citací Shawa. Žádné znění z *My Fair Lady*, lyrics ani distinctive musical dialogue; S04 kulturní poznámka o muzikálu není vyžadována.
+- **Dokončení:** vstup vyžaduje `ch04_s03_complete`. Continue se odemkne po `ch04_s04_reflection_recorded`; explicitní Continue zapíše `ch04_s04_complete` právě jednou a přejde do `ch04_s05`. Žádný auto-transition.
 
 ### ch04_s05 – The Walk Home
 

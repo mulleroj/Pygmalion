@@ -1,6 +1,6 @@
 # Chapter IV Visual Plan
 
-Status: S01 and S02 approved visuals are implemented; S03 visual reuse specification is canonically locked with no new asset production required.
+Status: S01 and S02 approved visuals are implemented; S03 visual reuse and S04 corridor visual specifications are canonically locked. S04 corridor background is not yet produced.
 
 ## S01 — The Invitation
 
@@ -25,3 +25,19 @@ Reuse the same social tea-room background as S02: `assets/images/locations/ch04/
 - Pickering: `assets/images/characters/pickering/runtime/pickering_master_cutout.png`
 
 Do not require a new Eliza `surprised` asset or Hostess/Guest foreground cutouts. Convey the mismatch through dialogue, timing, speaker labels, composition and the AM38 reaction. No new props or visual asset production are required. Keep all LC12 choices and answer feedback out of decorative art so it cannot reveal an answer before the applicable attempt.
+
+## S04 — After the Laughter
+
+S04 is set in a side corridor several minutes after S03. It is a new location, not a tea-room visual hold. A new corridor background is required for asset production:
+
+- `assets/images/locations/ch04/ch04_side_corridor.webp` — planned canonical path; asset does not yet exist.
+
+Reuse existing runtime cutouts; no new character pose is required:
+
+- Eliza: `assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png`
+- Pickering: `assets/images/characters/pickering/runtime/pickering_master_cutout.png`
+- Higgins: `assets/images/characters/higgins/runtime/higgins_master_cutout.png`
+- Mrs Pearce (preferred): `assets/images/characters/mrs-pearce/runtime/mrs-pearce_observant-support_cutout.png`
+- Mrs Pearce (fallback if composition requires): `assets/images/characters/mrs-pearce/runtime/mrs-pearce_fairness-monitoring_cutout.png`
+
+Composition: Eliza is foreground and central emotional focus; Pickering and Mrs Pearce form a supportive grouping; Higgins is visually slightly separated. Do not show the Guest or tea-table props. Do not create a new reflective Eliza pose. Keep reflection choice and feedback text in the story layer, not decorative art.

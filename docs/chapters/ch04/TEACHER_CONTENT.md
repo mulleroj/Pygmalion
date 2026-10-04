@@ -1,6 +1,6 @@
 # Chapter IV Teacher Content
 
-Status: S01 and S02 implemented; S03 Teacher Mode content is canonically locked in pre-production. Teacher Mode preview is read-only; S02 cultural-reference audio is explicitly teacher-triggered and does not write learner state.
+Status: S01 and S02 implemented; S03 and S04 Teacher Mode content is canonically locked in pre-production. Teacher Mode preview is read-only; S02 cultural-reference audio is explicitly teacher-triggered and does not write learner state.
 
 ## 1. Chapter Overview
 
@@ -55,6 +55,31 @@ There is no single correct recovery style. `rephrase`, `acknowledge_literal` and
 
 Preserve `Accent ≠ intelligence`. Eliza's misunderstanding concerns social inference, not intellectual ability or accent quality. Her pronunciation is successful and her dialogue is original adaptation text.
 
+## S04 Learning Goals and Teacher Notes
+
+### Objective
+
+Students distinguish language accuracy from pragmatic understanding and reflect on who controls feedback and communication goals.
+
+### Key language and story points
+
+Clear pronunciation does not guarantee shared meaning. Successful communication also depends on context, audience and implied meaning. Eliza begins to question not only how she speaks, but who decides what her progress is for.
+
+S04 follows a pragmatic inference mismatch, not a pronunciation failure. Eliza's calm final line is an agency beat, not a rebellion climax. Higgins is matter-of-fact and emotionally blind, not intentionally cruel; Pickering and Mrs Pearce support Eliza without ranking her worth by social polish.
+
+### Reflection choice
+
+The required, non-graded reflection focuses on one of three legitimate areas: language, audience or feeling. There is no correct answer. The stable choices and exact visible lines are in `STATE_AND_BRANCHING.md`. The choice has no score, reward, Confidence, Independence or Pronunciation effect and does not branch S05.
+
+### Equity framing and discussion
+
+- `Accent ≠ intelligence.`
+- Social conventions are learned and culturally variable; misunderstanding them is not evidence of lower ability.
+- Primary discussion prompt: “Who should decide what counts as successful communication?”
+- Optional secondary prompt: “Can feedback be useful without becoming a judgment about the person?”
+
+S04 dialogue is original project adaptation inspired by the thematic situation in Shaw's public-domain *Pygmalion*; it is not quoted from Shaw. No wording is taken from *My Fair Lady*, no lyrics or distinctive musical dialogue are used, and no S04 cultural note about the musical is required.
+
 ## 7. Cultural / Literary Context
 
 Small talk in an Edwardian social setting can be a useful ritual and can also express class expectations. The scene examines those conventions without endorsing them. Cockney is not defective, upper-class speech is not morally better, and accent is not intelligence.
@@ -77,8 +102,8 @@ Ask learners to identify what each speaker's turn invites, then role-play openin
 
 Chapter III ends with Eliza: “I can hear it myself.” and narration: “The lesson is over. The learning is not.” After D08 and explicit Continue, S01 records `ch04_s01_complete` once and moves to S02. After all three LC11 samples are correct, explicit Continue is unlocked; it records `ch04_s02_complete` once and moves to S03. LC11, replay, optional reply and Teacher preview never navigate automatically.
 
-In S03, explicit Continue is unlocked only after `ch04_lc12_complete` and `ch04_d09_recorded`. It records `ch04_s03_complete` once and moves to S04. LC12 completion, D09, replay, audio completion and Teacher preview never navigate automatically.
+In S03, explicit Continue is unlocked only after `ch04_lc12_complete` and `ch04_d09_recorded`. It records `ch04_s03_complete` once and moves to S04. LC12 completion, D09, replay, audio completion and Teacher preview never navigate automatically. S04 requires `ch04_s04_reflection_recorded`; explicit Continue records `ch04_s04_complete` once and moves to `ch04_s05`. Reflection selection, replay, audio completion and Teacher preview never navigate automatically.
 
 ## 11. Teacher Preview Contract
 
-Preview may display S02 and S03 story content, goals, challenge instructions, answer keys and teacher notes. Opening or rendering preview must not autoplay any audio or start ambience, or write answers, attempts, support use, completion events, decisions, development signals or scene progression into learner state. AM37/AM38 audio requires an explicit playback action in student mode. Teacher preview is read-only for LC12, D09 and S03 completion.
+Preview may display story content, goals, challenge instructions, answer keys, reflection options and teacher notes. Opening or rendering preview must not autoplay any audio or start ambience, or write answers, attempts, support use, completion events, decisions, reflection selection, development signals or scene progression into learner state. AM37/AM38 audio requires an explicit playback action in student mode. S04 Teacher preview does not play AM39 or select the reflection; it is read-only for `reflections.ch04_s04_focus`, `ch04_s04_reflection_recorded` and `ch04_s04_complete`.
