@@ -19,7 +19,7 @@ test('S03 scene registration, exact approved dialogue/audio, items, options and 
   assert.equal(CH04_SCENE_03.background.src, CH04_SCENE_02.background.src);
   assert.deepEqual(CH04_SCENE_03.voice.map(({ transcript, generationId, assetId, voiceId }) => [transcript, generationId, assetId, voiceId]), [
     ['London seems to have decided we needed more rain.', 'iEswFQkkdCbnARcsyJrf', 'OdeUIsIvTWblA2JJxino', 'zp695rEBCwfZ3GYNJOHx'],
-    ["I don't think London can decide anything. It is a city, not a person.", 'l9YiSv4DeXZVftcFfbxn', 'bKeWipkyDE2RX10UzWj9', '124kaYCknTDsnwUFdWl9']
+    ["I don't think London can decide anything. It is a city, not a person.", 'TiXtDJwsylxMdRYK2hbJ', 'UMu4qIp9n8yLJwPmGQcQ', '124kaYCknTDsnwUFdWl9']
   ]);
   assert.deepEqual(CH04_SCENE_03.challenge.items.map(({ id }) => id), ['lc12_literal_meaning', 'lc12_implied_meaning']);
   assert.deepEqual(CH04_SCENE_03.challenge.items.map(({ options }) => options.map(({ id }) => id)), [

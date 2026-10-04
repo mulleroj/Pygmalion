@@ -166,7 +166,7 @@ export const CH04_SCENE_03 = {
   ],
   voice: [
     { id: 'AM37-GUEST', src: './assets/audio/characters/guest/guest_ch04_scene03_001.mp3', transcript: 'London seems to have decided we needed more rain.', label: 'Replay Guest', inline: true, generationId: 'iEswFQkkdCbnARcsyJrf', assetId: 'OdeUIsIvTWblA2JJxino', voiceId: 'zp695rEBCwfZ3GYNJOHx' },
-    { id: 'AM37-ELIZA', src: './assets/audio/characters/eliza/eliza_ch04_scene03_001.mp3', transcript: "I don't think London can decide anything. It is a city, not a person.", label: 'Replay Eliza', inline: true, generationId: 'l9YiSv4DeXZVftcFfbxn', assetId: 'bKeWipkyDE2RX10UzWj9', voiceId: '124kaYCknTDsnwUFdWl9' }
+    { id: 'AM37-ELIZA', src: './assets/audio/characters/eliza/eliza_ch04_scene03_001.mp3', transcript: "I don't think London can decide anything. It is a city, not a person.", label: 'Replay Eliza', inline: true, generationId: 'TiXtDJwsylxMdRYK2hbJ', assetId: 'UMu4qIp9n8yLJwPmGQcQ', voiceId: '124kaYCknTDsnwUFdWl9' }
   ],
   reaction: { id: 'AM38', src: './assets/audio/listening/ch04_lc12_reaction_001.mp3', label: 'Replay the room reaction', description: 'There is a short pause, followed by restrained polite chuckles and an uncertain murmur.', generationId: 'cQoJZhP5BeIge3rFK0FH', assetId: '11fEHELi8y1QyyfpzgyI' },
   challenge: {
