@@ -1,4 +1,4 @@
-import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05 } from './ch03-content.js';
+import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05, CH03_SCENE_06 } from './ch03-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -42,7 +42,8 @@ export function createInitialState() {
       lc06: { answers: {}, completed: false, optionOrders: {}, attempts: 0, firstAttempt: false, supportUsed: false },
       lc07: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false },
       lc08: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false },
-      lc09: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [] }
+      lc09: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [] },
+      lc10: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [] }
     },
     soundEnabled: true
   };
@@ -66,7 +67,8 @@ function mergeState(raw) {
       lc06: { ...initial.challenges.lc06, ...((raw.challenges || {}).lc06 || {}) },
       lc07: { ...initial.challenges.lc07, ...((raw.challenges || {}).lc07 || {}) },
       lc08: { ...initial.challenges.lc08, ...((raw.challenges || {}).lc08 || {}) },
-      lc09: { ...initial.challenges.lc09, ...((raw.challenges || {}).lc09 || {}) }
+      lc09: { ...initial.challenges.lc09, ...((raw.challenges || {}).lc09 || {}) },
+      lc10: { ...initial.challenges.lc10, ...((raw.challenges || {}).lc10 || {}) }
     }
   };
 }
@@ -300,6 +302,7 @@ export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === 'ch03_s03' && !state.applied_events.includes('ch03_s02_complete')) return 'Complete Chapter III Scene 02 before opening Finding the Main Stress.';
   if (scene.id === 'ch03_s04' && !state.applied_events.includes('ch03_s03_complete')) return 'Complete Chapter III Scene 03 before opening A Sentence Has Shape.';
   if (scene.id === 'ch03_s05' && !state.applied_events.includes('ch03_s04_complete')) return 'Complete Chapter III Scene 04 before opening The Bad Day.';
+  if (scene.id === 'ch03_s06' && !state.applied_events.includes('ch03_s05_complete')) return 'Complete Chapter III Scene 05 before opening A Small Victory.';
   if (scene.id === 'ch01_s01' && !state.opening_tone) return 'Choose a first response before continuing.';
   if (scene.decision && !state.decisions[scene.decision.id]) return 'Choose a response to continue.';
   if (scene.id === 'ch02_s01') return state.ch02_lc03_completed ? '' : 'Complete the reading challenge to continue.';
@@ -374,6 +377,11 @@ export function completeScene(state, scene) {
   if (scene.id === 'ch03_s05') {
     const eventId = 'ch03_s05_complete';
     if (!state.challenges.lc09.completed || state.applied_events.includes(eventId)) return state;
+    return { ...state, applied_events: [...state.applied_events, eventId] };
+  }
+  if (scene.id === 'ch03_s06') {
+    const eventId = 'ch03_s06_complete';
+    if (!state.challenges.lc10.completed || state.applied_events.includes(eventId)) return state;
     return { ...state, applied_events: [...state.applied_events, eventId] };
   }
   return state;
@@ -496,6 +504,39 @@ export function markLc09SupportUsed(state, sampleId) {
   return {
     ...state,
     challenges: { ...state.challenges, lc09: {
+      ...challenge, supportUsed: true, supportSamples: [...challenge.supportSamples, sampleId]
+    } }
+  };
+}
+
+export function recordLc10Answer(state, sampleId, answerId) {
+  const sample = CH03_SCENE_06.challenge.samples.find(({ id }) => id === sampleId);
+  const challenge = state.challenges.lc10;
+  const eventId = 'ch03_lc10_completed';
+  if (state.scene !== 'ch03_s06' || !state.applied_events.includes('ch03_s05_complete') || !sample ||
+      !sample.options.some(({ id }) => id === answerId) || challenge.completed ||
+      state.applied_events.includes(eventId) || challenge.answers[sampleId]?.correct) return state;
+
+  const answers = { ...challenge.answers, [sampleId]: { answer: answerId, correct: answerId === sample.answer } };
+  const completed = CH03_SCENE_06.challenge.samples.every(({ id }) => answers[id]?.correct);
+  const firstCompletion = completed && !challenge.completed && !state.applied_events.includes(eventId);
+  return {
+    ...state,
+    pronunciation: state.pronunciation + (firstCompletion && !challenge.supportUsed ? 1 : 0),
+    applied_events: firstCompletion ? [...state.applied_events, eventId] : state.applied_events,
+    challenges: { ...state.challenges, lc10: { ...challenge, answers, completed, attempts: (challenge.attempts || 0) + 1, firstAttempt: true } }
+  };
+}
+
+export function markLc10SupportUsed(state, sampleId) {
+  const sample = CH03_SCENE_06.challenge.samples.find(({ id }) => id === sampleId);
+  const challenge = state.challenges.lc10;
+  if (state.scene !== 'ch03_s06' || !challenge.firstAttempt || challenge.completed || !sample ||
+      challenge.answers[sampleId]?.correct || challenge.answers[sampleId]?.answer === undefined ||
+      challenge.supportSamples.includes(sampleId)) return state;
+  return {
+    ...state,
+    challenges: { ...state.challenges, lc10: {
       ...challenge, supportUsed: true, supportSamples: [...challenge.supportSamples, sampleId]
     } }
   };

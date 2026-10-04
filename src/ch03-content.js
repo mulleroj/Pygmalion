@@ -448,6 +448,65 @@ export const CH03_SCENE_05 = {
   transition: 'Eliza can recover a sentence when she gives it room.', nextScene: 'ch03_s06'
 };
 
+export const CH03_SCENE_06 = {
+  id: 'ch03_s06', number: 6, chapter: 'III', chapterTitle: 'The Lessons', sceneCount: 6,
+  title: 'A Small Victory', kicker: 'A moment of self-correction', visualStage: 'in_training', composition: 'ch03-small-victory',
+  background: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
+  plate: { src: './assets/images/locations/ch02/ch02_higgins-study.webp', alt: 'Higgins’s study, with a desk, books and fireplace.' },
+  eliza: { src: './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png', alt: 'Eliza in practical indoor lesson clothes listens with a focused expression.' },
+  supporting: [{ src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Higgins listens from behind the desk.', placement: 'higgins' }],
+  props: [], voice: [],
+  storyBeats: [
+    { type: 'narration', text: 'The lesson is nearly over. Mrs Pearce is in the next room.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Would you ask Mrs Pearce to bring the blue book, please?' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'Mrs Pearce, could you bring the blue book—' },
+    { type: 'narration', text: 'Eliza hears the rush in her own words and stops.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'That came too quickly. Let me try again.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'Mrs Pearce, could you bring the blue book, please?' },
+    { type: 'dialogue', speaker: 'Mrs Pearce', text: 'Of course, Miss Eliza.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'Thank you.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'You heard it before I spoke.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'I did.' }
+  ],
+  challenge: {
+    id: 'LC10', kind: 'self-correction-transfer', title: 'Hear the repair',
+    intro: "Listen to Eliza's first try and her repair. Choose the message she settles on.",
+    incorrectFeedback: 'Not quite. Listen for what Eliza changes, then try again or open Supported Practice.',
+    supportedPracticePrompt: 'Listen once more. What does Eliza mean to say?',
+    samples: [
+      { id: 'lc10_sample_01', transcript: 'Free books—no, three books, please.', answer: 'lc10_01_three', options: [
+        { id: 'lc10_01_three', label: 'She wants three books.' }, { id: 'lc10_01_free', label: 'She wants books at no cost.' }, { id: 'lc10_01_flowers', label: 'She wants three flowers.' }
+      ], support: 'She means three books, not free books.' },
+      { id: 'lc10_sample_02', transcript: 'The blue book—no, the green one, please.', answer: 'lc10_02_green', options: [
+        { id: 'lc10_02_green', label: 'She wants the green book.' }, { id: 'lc10_02_blue', label: 'She wants the blue book.' }, { id: 'lc10_02_either', label: 'She would like either book.' }
+      ], support: 'She means the green book, not the blue one.' },
+      { id: 'lc10_sample_03', transcript: 'Leave it by the door—no, after the lesson, please leave the parcel by the door.', answer: 'lc10_03_after_door', options: [
+        { id: 'lc10_03_after_door', label: 'Leave the parcel by the door after the lesson.' }, { id: 'lc10_03_before_door', label: 'Leave the parcel by the door before the lesson.' }, { id: 'lc10_03_during_table', label: 'Leave the parcel on the table during the lesson.' }
+      ], support: 'She wants the parcel left by the door after the lesson.' }
+    ]
+  },
+  reflection: [
+    { type: 'dialogue', speaker: 'Eliza', text: 'I can hear it myself.' },
+    { type: 'narration', text: 'The lesson is over. The learning is not.' }
+  ],
+  nextScene: 'ch04_s01'
+};
+
+export const CH03_S06_TEACHER_SECTIONS = [
+  ['Chapter Overview', '“A Small Victory” is the final Chapter III scene. At the end of a private lesson in Higgins’s study, Eliza catches her own rushed request and says it again before Higgins identifies a problem. Mrs Pearce is in the next room and remains off-screen. This is a small transfer into ordinary interaction, not a public test or completed transformation.'],
+  ['Learning Goals', 'Recognise that noticing and repairing one’s own speech is evidence of growing control; apply earlier listening, articulation, stress and pacing strategies in a new practical sentence; identify the intended message after a speaker corrects an initial attempt; understand that practice continues into Chapter IV.'],
+  ['Language Focus', 'No new phonological topic. LC10 revisits previously encountered sound contrast, word/meaning focus and pacing/chunking only as needed to understand an intended message. Self-correction is a communication strategy, not proof that a speaker’s accent or first attempt is defective.'],
+  ['Listening Focus', 'LC10 has three short Eliza examples. Each contains a first try and a self-correction. Learners choose the message she settles on; exact transcripts and answer explanations are available through target-revealing Supported Practice. Text, replay and support preserve access; no microphone, speech recognition, browser TTS or audio-only progression. Audio recordings are planned and not yet available.'],
+  ['Key Vocabulary', 'notice, try again, three, free, green, parcel, lesson, door, after.'],
+  ['Cultural / Literary Context', 'This is an original adaptation. Eliza remains in Chapter III Conscious Training and keeps her canonical voice and recognisable Cockney identity. Accent and social background are not defects. Increased control gives her more choice over how she speaks; it does not mean she has learned to stop sounding like herself. This is her first movement toward Chapter IV Emerging New Speech, not a completed transformation.'],
+  ['Decisions – Teacher Notes', 'There is no D-numbered decision in S06. Do not add D08 here; D08 belongs to Chapter IV ch04_s01. Replay and Supported Practice are activity controls, not scored or branching decisions. Self-correction is progress and all students use the same route to Chapter IV.'],
+  ['Challenge Key', 'LC10, challenges.lc10: lc10_sample_01 → lc10_01_three, “She wants three books.”; lc10_sample_02 → lc10_02_green, “She wants the green book.”; lc10_sample_03 → lc10_03_after_door, “Leave the parcel by the door after the lesson.” Unaided completion applies Pronunciation +1 exactly once through ch03_lc10_completed. Opening target-revealing support before unaided success permanently cancels reward eligibility. Supported completion has no reward or penalty. No Confidence or Independence increment.'],
+  ['Discussion Questions', 'What did Eliza notice before Higgins spoke? How is repairing your own sentence different from being given the answer? Which earlier listening or speaking strategy might have helped her? Does one self-correction mean a person never needs practice again?'],
+  ['Sensitive Framing', 'Do not present Cockney, social background or a rushed first attempt as low intelligence or low worth. Do not say Eliza now speaks properly or has completed her transformation. Her self-correction shows agency and increased control while her identity remains her own.'],
+  ['Suggested Classroom Use', 'Read the ordinary exchange first. Let learners hear each first try and repair at normal speed; allow private replay and Supported Practice. Discuss what meaning the speaker settles on without asking learners to perform publicly, disclose personal experiences, record their voice or imitate an accent. Teacher preview and replay must not alter student state.'],
+  ['Scene Navigation', 'Chapter III progression: S01 articulation → S02 listening discrimination → S03 word stress → S04 sentence stress/intonation → S05 fatigue, pace and repair → S06 transfer and self-correction. LC10 unaided or supported completion → “I can hear it myself.” → explicit Continue (ch03_s06_complete, no increment) → ch04_s01 – The Invitation. There is no Chapter III mastery bonus or separate completion event.']
+];
+
 export const CH03_S05_TEACHER_SECTIONS = [
   ['Chapter Overview', 'S05, The Bad Day, follows S04 in Higgins’s study. The lesson runs long and Eliza is tired. She rushes a familiar sentence, pauses, slows down, divides it into manageable parts, and recovers.'],
   ['Learning Goals', 'Notice that performance can vary; regulate pace; divide a sentence into manageable chunks; repair and try again. A temporary performance drop does not erase learning.'],

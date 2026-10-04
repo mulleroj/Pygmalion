@@ -1,0 +1,219 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { CH03_SCENE_06, CH03_S06_TEACHER_SECTIONS } from '../src/ch03-content.js';
+import { ambienceForScene, isContinuousAmbienceTransition } from '../src/content.js';
+import {
+  completeScene, createInitialState, getSceneAdvanceBlock, markLc10SupportUsed, recordLc10Answer, setScene
+} from '../src/state.js';
+
+const ready = () => ({
+  ...setScene(createInitialState(), 'ch03_s06'),
+  started: true,
+  applied_events: ['ch03_s01_complete', 'ch03_s02_complete', 'ch03_s03_complete', 'ch03_s04_complete', 'ch03_s05_complete']
+});
+const answer = (state, index, answerId) => recordLc10Answer(state, CH03_SCENE_06.challenge.samples[index].id, answerId);
+const correctIds = ['lc10_01_three', 'lc10_02_green', 'lc10_03_after_door'];
+
+test('S06 registers exact twelve-line BOOK FIRST story, transition, reused visuals, and twelve Teacher sections', () => {
+  assert.equal(CH03_SCENE_06.id, 'ch03_s06');
+  assert.equal(CH03_SCENE_06.title, 'A Small Victory');
+  assert.equal(CH03_SCENE_06.chapter, 'III');
+  assert.equal(CH03_SCENE_06.visualStage, 'in_training');
+  assert.equal(CH03_SCENE_06.nextScene, 'ch04_s01');
+  assert.equal(CH03_SCENE_06.decision, undefined);
+  assert.equal(CH03_SCENE_06.choices, undefined, 'S06 adds no microchoice');
+  assert.equal(CH03_SCENE_06.storyBeats.length + CH03_SCENE_06.reflection.length, 12);
+  assert.equal(CH03_SCENE_06.background.src, './assets/images/locations/ch02/ch02_higgins-study.webp');
+  assert.equal(CH03_SCENE_06.eliza.src, './assets/images/characters/eliza/runtime/eliza_training_focused_cutout.png');
+  assert.equal(CH03_SCENE_06.supporting[0].src, './assets/images/characters/higgins/runtime/higgins_master_cutout.png');
+  assert.deepEqual(CH03_SCENE_06.voice, []);
+  assert.deepEqual(CH03_SCENE_06.storyBeats.map(({ speaker, text }) => [speaker || 'Narration', text]), [
+    ['Narration', 'The lesson is nearly over. Mrs Pearce is in the next room.'],
+    ['Higgins', 'Would you ask Mrs Pearce to bring the blue book, please?'],
+    ['Eliza', 'Mrs Pearce, could you bring the blue book—'],
+    ['Narration', 'Eliza hears the rush in her own words and stops.'],
+    ['Eliza', 'That came too quickly. Let me try again.'],
+    ['Eliza', 'Mrs Pearce, could you bring the blue book, please?'],
+    ['Mrs Pearce', 'Of course, Miss Eliza.'],
+    ['Eliza', 'Thank you.'],
+    ['Higgins', 'You heard it before I spoke.'],
+    ['Eliza', 'I did.']
+  ]);
+  assert.deepEqual(CH03_SCENE_06.reflection.map(({ speaker, text }) => [speaker || 'Narration', text]), [
+    ['Eliza', 'I can hear it myself.'], ['Narration', 'The lesson is over. The learning is not.']
+  ]);
+  assert.equal(CH03_S06_TEACHER_SECTIONS.length, 12);
+  assert.match(CH03_S06_TEACHER_SECTIONS[6][1], /no D-numbered decision/);
+  assert.match(CH03_S06_TEACHER_SECTIONS[5][1], /Chapter III Conscious Training/);
+  assert.match(CH03_S06_TEACHER_SECTIONS[5][1], /first movement toward Chapter IV Emerging New Speech/);
+  assert.match(CH03_S06_TEACHER_SECTIONS[10][1], /Teacher preview and replay must not alter student state/);
+  assert.match(CH03_S06_TEACHER_SECTIONS[11][1], /ch04_s01 – The Invitation/);
+  assert.equal(ambienceForScene('ch03_s06'), 'ch03_lesson_room');
+  assert.equal(isContinuousAmbienceTransition('ch03_s05', 'ch03_s06'), true);
+});
+
+test('LC10 uses exact instruction, three sample IDs, options, and answer mapping without audio dependencies', () => {
+  const challenge = CH03_SCENE_06.challenge;
+  assert.equal(challenge.id, 'LC10');
+  assert.equal(challenge.intro, "Listen to Eliza's first try and her repair. Choose the message she settles on.");
+  assert.equal(challenge.incorrectFeedback, 'Not quite. Listen for what Eliza changes, then try again or open Supported Practice.');
+  assert.equal(challenge.supportedPracticePrompt, 'Listen once more. What does Eliza mean to say?');
+  assert.deepEqual(challenge.samples.map(({ id, transcript, answer, options, support, src }) => ({ id, transcript, answer, options, support, src })), [
+    { id: 'lc10_sample_01', transcript: 'Free books—no, three books, please.', answer: 'lc10_01_three', options: [
+      { id: 'lc10_01_three', label: 'She wants three books.' }, { id: 'lc10_01_free', label: 'She wants books at no cost.' }, { id: 'lc10_01_flowers', label: 'She wants three flowers.' }
+    ], support: 'She means three books, not free books.', src: undefined },
+    { id: 'lc10_sample_02', transcript: 'The blue book—no, the green one, please.', answer: 'lc10_02_green', options: [
+      { id: 'lc10_02_green', label: 'She wants the green book.' }, { id: 'lc10_02_blue', label: 'She wants the blue book.' }, { id: 'lc10_02_either', label: 'She would like either book.' }
+    ], support: 'She means the green book, not the blue one.', src: undefined },
+    { id: 'lc10_sample_03', transcript: 'Leave it by the door—no, after the lesson, please leave the parcel by the door.', answer: 'lc10_03_after_door', options: [
+      { id: 'lc10_03_after_door', label: 'Leave the parcel by the door after the lesson.' }, { id: 'lc10_03_before_door', label: 'Leave the parcel by the door before the lesson.' }, { id: 'lc10_03_during_table', label: 'Leave the parcel on the table during the lesson.' }
+    ], support: 'She wants the parcel left by the door after the lesson.', src: undefined }
+  ]);
+  assert.equal(challenge.samples.every(({ src, voiceId, generationId }) => !src && !voiceId && !generationId), true);
+});
+
+test('LC10 retry, support reveal, supported completion and unaided reward are idempotent', () => {
+  let state = ready();
+  assert.equal(getSceneAdvanceBlock(state, CH03_SCENE_06), 'Complete the listening challenge to continue.');
+  assert.equal(completeScene(state, CH03_SCENE_06), state, 'scene render cannot complete S06');
+  assert.equal(answer(state, 0, 'unknown'), state);
+  state = answer(state, 0, 'lc10_01_free');
+  assert.equal(state.challenges.lc10.firstAttempt, true);
+  assert.equal(state.challenges.lc10.answers.lc10_sample_01.correct, false);
+  assert.equal(state.challenges.lc10.completed, false);
+  state = answer(state, 0, correctIds[0]);
+  assert.equal(state.challenges.lc10.answers.lc10_sample_01.correct, true);
+  assert.equal(answer(state, 0, 'lc10_01_free'), state, 'solved item stays frozen');
+  state = answer(state, 1, correctIds[1]);
+  state = answer(state, 2, correctIds[2]);
+  assert.equal(state.challenges.lc10.completed, true);
+  assert.equal(answer(state, 2, 'lc10_03_after_door'), state, 'completed challenge cannot be replay-rewarded');
+  assert.equal(state.pronunciation, 1);
+  assert.equal(state.confidence, 0);
+  assert.equal(state.independence, 0);
+  assert.equal(state.applied_events.filter((event) => event === 'ch03_lc10_completed').length, 1);
+  assert.equal(state.applied_events.includes('ch03_s06_complete'), false);
+  assert.equal(getSceneAdvanceBlock(state, CH03_SCENE_06), '');
+  const continued = completeScene(state, CH03_SCENE_06);
+  assert.equal(continued.applied_events.filter((event) => event === 'ch03_s06_complete').length, 1);
+  assert.equal(completeScene(continued, CH03_SCENE_06), continued, 'Continue completion event is idempotent');
+  assert.equal(continued.pronunciation, 1);
+  assert.equal(continued.confidence, 0);
+  assert.equal(continued.independence, 0);
+  assert.equal('lesson_progress_snapshot' in continued, false);
+  for (const forbidden of ['self_correction_seen', 'victory_seen', 'chapter3_mastered', 'speech_transformed', 'eliza_fixed']) assert.equal(forbidden in continued, false);
+});
+
+test('opening LC10 support after an incorrect answer reveals only its sample and permanently removes reward', () => {
+  let state = answer(ready(), 0, 'lc10_01_free');
+  state = markLc10SupportUsed(state, 'lc10_sample_02');
+  assert.equal(state.challenges.lc10.supportUsed, false, 'support cannot open before an incorrect response on that item');
+  state = markLc10SupportUsed(state, 'lc10_sample_01');
+  assert.equal(state.challenges.lc10.supportUsed, true);
+  assert.deepEqual(state.challenges.lc10.supportSamples, ['lc10_sample_01']);
+  assert.equal(markLc10SupportUsed(state, 'lc10_sample_01'), state);
+  state = answer(state, 0, correctIds[0]);
+  state = answer(state, 1, correctIds[1]);
+  state = answer(state, 2, correctIds[2]);
+  assert.equal(state.challenges.lc10.completed, true);
+  assert.equal(state.pronunciation, 0);
+  assert.equal(state.confidence, 0);
+  assert.equal(state.independence, 0);
+  assert.equal(state.applied_events.filter((event) => event === 'ch03_lc10_completed').length, 1);
+});
+
+test('S06 UI hides all transcripts initially, uses neutral controls, and Teacher Mode is read-only', async (t) => {
+  const originals = Object.fromEntries(['document', 'window', 'localStorage', 'Audio'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
+  t.after(() => { for (const [key, descriptor] of Object.entries(originals)) if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; });
+  const nodes = new Map(), events = {};
+  class FakeAudio {
+    constructor(src) { this.src = src; this.paused = true; this.volume = 1; this.muted = false; this.listeners = new Map(); }
+    play() { this.paused = false; return Promise.resolve(); }
+    pause() { this.paused = true; }
+    addEventListener(name, fn) { this.listeners.set(name, fn); }
+    removeEventListener(name) { this.listeners.delete(name); }
+  }
+  let saved = JSON.stringify(ready()), writes = 0;
+  const node = (key) => {
+    if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, scrollIntoView() {}, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
+    return nodes.get(key);
+  };
+  globalThis.document = { querySelector: node, addEventListener(name, fn) { events[name] = fn; } };
+  globalThis.Audio = FakeAudio;
+  globalThis.window = { location: { hash: '#ch03_s06', pathname: '/' }, history: { state: { scene: 'ch03_s06' }, pushState(_state, _title, url) { this.state = _state; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(_state, _title, url) { this.state = _state; window.location.hash = url.startsWith('#') ? url : ''; } }, setTimeout(fn) { fn(); }, addEventListener() {} };
+  globalThis.localStorage = { getItem() { return saved; }, setItem(_key, value) { saved = value; writes++; } };
+  const { render } = await import('../src/app.js?ch03-s06-ui');
+  const click = (action, data = {}) => events.click({ isTrusted: false, target: { closest() { return { dataset: { action, ...data }, focus() {} }; } } });
+  render();
+  let html = node('#app').innerHTML;
+  assert.match(html, /A Small Victory/);
+  assert.match(html, /LC10/);
+  assert.equal((html.match(/data-action="answer-lc10"/g) || []).length, 9);
+  assert.equal((html.match(/aria-pressed="false"/g) || []).length, 9);
+  assert.doesNotMatch(html, /class="answer-button lc10-answer selected"|aria-pressed="true"/);
+  assert.equal((html.match(/aria-label="Replay sample \d; audio not available yet"/g) || []).length, 3);
+  assert.doesNotMatch(html, /Mrs Pearce (?:is )?counting three books|Mrs Pearce counts three books/i, 'learner UI must not show sample-1 situation text');
+  assert.doesNotMatch(html, /Free books—no, three books, please\.|The blue book—no, the green one, please\.|Leave it by the door—no, after the lesson/);
+  assert.doesNotMatch(html, /I can hear it myself\.|The lesson is over\. The learning is not\./);
+  assert.doesNotMatch(html, /data-src=/);
+  const answerMarkup = [...html.matchAll(/<button class="answer-button lc10-answer[^>]*>[\s\S]*?<\/button>/g)].map(([button]) => button);
+  assert.equal(answerMarkup.length, 9);
+  assert.equal(answerMarkup.every((button) => !/<(?:strong|b|em|i)\b|aria-pressed="true"|class="[^"]*selected/.test(button)), true);
+  assert.doesNotMatch(html, /LC10 complete|data-action="next-scene"/, 'Continue is unavailable before LC10 is complete');
+  const css = fs.readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
+  assert.match(css, /\.lc10-answer\.answer-button:hover, \.lc10-answer\.answer-button\.selected \{ color: #55484d; background: #fffaf3; border-color: rgba\(124, 63, 77, \.18\); \}/);
+  assert.match(css, /\.lc10-answer\.answer-button:focus-visible \{ outline: 3px solid #e1ae59; outline-offset: 3px; \}/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.doesNotMatch(fs.readFileSync(new URL('../src/app.js', import.meta.url), 'utf8'), /speechSynthesis|SpeechSynthesis/);
+
+  await click('open-teacher');
+  const beforePreview = saved, beforeWrites = writes;
+  assert.equal((node('#teacher-content').innerHTML.match(/class="teacher-section"/g) || []).length, 12);
+  assert.match(node('#teacher-content').innerHTML, /no D-numbered decision/);
+  assert.match(node('#teacher-content').innerHTML, /Mrs Pearce remains text-only|next room/i);
+  await click('teacher-preview');
+  await click('answer-lc10', { sample: 'lc10_sample_01', answer: 'lc10_01_three' });
+  await click('open-lc10-support', { sample: 'lc10_sample_01' });
+  assert.equal(saved, beforePreview);
+  assert.equal(writes, beforeWrites);
+  await click('return-student');
+  await click('answer-lc10', { sample: 'lc10_sample_01', answer: 'lc10_01_free' });
+  html = node('#app').innerHTML;
+  assert.match(html, /Not quite\. Listen for what Eliza changes, then try again or open Supported Practice\./);
+  assert.match(html, /Listen once more\. What does Eliza mean to say\?/);
+  assert.doesNotMatch(html, /Spoken text:.*Free books—no, three books, please\./);
+  await click('open-lc10-support', { sample: 'lc10_sample_01' });
+  html = node('#app').innerHTML;
+  assert.match(html, /Spoken text: “Free books—no, three books, please\.”/);
+  assert.match(html, /She means three books, not free books\./);
+  assert.doesNotMatch(html, /The blue book—no, the green one/);
+  await click('answer-lc10', { sample: 'lc10_sample_01', answer: correctIds[0] });
+  await click('answer-lc10', { sample: 'lc10_sample_02', answer: correctIds[1] });
+  html = node('#app').innerHTML;
+  assert.doesNotMatch(html, /I can hear it myself\.|The lesson is over\. The learning is not\./);
+  await click('answer-lc10', { sample: 'lc10_sample_03', answer: correctIds[2] });
+  html = node('#app').innerHTML;
+  assert.match(html, /I can hear it myself\./);
+  assert.match(html, /The lesson is over\. The learning is not\./);
+  assert.match(html, /data-action="next-scene"/);
+  let finalState = JSON.parse(saved);
+  assert.equal(finalState.pronunciation, 0, 'opened target-revealing support cancels reward');
+  assert.equal(finalState.challenges.lc10.completed, true);
+  assert.equal(finalState.applied_events.filter((event) => event === 'ch03_lc10_completed').length, 1);
+  await click('next-scene');
+  html = node('#app').innerHTML;
+  finalState = JSON.parse(saved);
+  assert.equal(window.location.hash, '#ch04_s01');
+  assert.equal(finalState.scene, 'ch04_s01');
+  assert.equal(finalState.applied_events.filter((event) => event === 'ch03_s06_complete').length, 1);
+  assert.match(html, /The Invitation/);
+});
+
+test('scene entry requires S05 completion; Mrs Pearce remains off-screen and no S06 audio files are referenced', () => {
+  const blocked = getSceneAdvanceBlock({ ...ready(), applied_events: ['ch03_s04_complete'] }, CH03_SCENE_06);
+  assert.equal(blocked, 'Complete Chapter III Scene 05 before opening A Small Victory.');
+  assert.equal(CH03_SCENE_06.supporting.some(({ alt, src }) => /pearce/i.test(`${alt} ${src}`)), false);
+  const runtime = fs.readFileSync(new URL('../src/app.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(runtime, /AM31|AM32|AM33|creative_generate_speech|speechSynthesis/);
+});

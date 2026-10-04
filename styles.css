@@ -393,6 +393,36 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .lc09-support-note p { margin: 0 0 .4rem; }
 .lc09-revealed-split { font-weight: 700; }
 .lc09-block > .text-button { min-height: 2.75rem; margin-top: .3rem; }
+.ch03-small-victory-spread { grid-template-columns: minmax(0, 1.24fr) minmax(0, 1fr); align-items: start; }
+.ch03-small-victory.storybook-art { min-height: 0; height: auto; aspect-ratio: 1672 / 941; }
+.ch03-small-victory .art-background { filter: none; }
+.ch03-small-victory .art-background img { object-fit: contain; }
+.ch03-small-victory .art-support, .ch03-small-victory .art-eliza { display: block; padding: 0; opacity: 1; }
+.ch03-small-victory .supporting-character, .ch03-small-victory .art-eliza img { position: absolute; width: auto; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); filter: drop-shadow(0 3px 3px rgba(34,27,24,.22)); }
+.ch03-small-victory .art-eliza img { left: 24%; bottom: 2%; height: 84%; z-index: 2; }
+.ch03-small-victory .support-higgins { left: 68%; bottom: 2%; height: 82%; z-index: 0; }
+.ch03-small-victory .art-support::after { content: ''; position: absolute; inset: 0; z-index: 1; background: url('./assets/images/locations/ch02/ch02_higgins-study.webp') center / 100% 100% no-repeat; clip-path: polygon(26% 54%, 39% 52%, 56% 51%, 75% 54%, 76% 62%, 75% 84%, 72% 92%, 54% 94%, 30% 84%); pointer-events: none; }
+.ch03-small-victory .art-eliza::before { left: 14%; bottom: 2%; width: 18%; height: 1.5%; filter: blur(4px); }
+.ch03-small-victory figcaption { display: none; }
+.ch03-small-victory-spread .story-copy { padding-top: clamp(1.35rem, 2.5vw, 2.2rem); }
+.lc10-block { margin-top: 1.3rem; min-width: 0; }
+.lc10-samples { display: grid; gap: .6rem; }
+.lc10-sample { min-width: 0; padding: .75rem 0; border-bottom: 1px solid var(--line); }
+.lc10-sample-heading { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+.lc10-sample-heading h3 { margin: 0; color: var(--muted); font-size: .78rem; font-weight: 600; }
+.lc10-replay { cursor: default; }
+.lc10-replay:disabled { opacity: .7; }
+.lc10-options { display: grid; gap: .4rem; margin-top: .55rem; }
+.lc10-answer.answer-button { display: block; width: 100%; min-height: 2.75rem; color: #55484d; background: #fffaf3; border-color: rgba(124, 63, 77, .18); font-size: .94rem; line-height: 1.4; }
+.lc10-answer.answer-button:hover, .lc10-answer.answer-button.selected { color: #55484d; background: #fffaf3; border-color: rgba(124, 63, 77, .18); }
+.lc10-answer.answer-button:focus-visible { outline: 3px solid #e1ae59; outline-offset: 3px; }
+.lc10-feedback, .lc10-support-prompt { margin: .45rem 0; font-size: .88rem; line-height: 1.45; }
+.lc10-feedback { color: #76513e; }
+.lc10-support-note { margin-top: .6rem; padding: .7rem .85rem; border-left: 3px solid var(--gold); background: #f3eee5; line-height: 1.5; }
+.lc10-support-note p { margin: 0 0 .4rem; }
+.lc10-sample > .text-button { min-height: 2.75rem; margin-top: .3rem; }
+.lc10-block .story-beats { margin-top: 1.25rem; }
+.runtime-boundary { max-width: 48rem; margin: 2rem auto; padding: 2rem; background: var(--paper); }
 .lc07-block { margin-top: 1.3rem; min-width: 0; }
 .lc07-audio-note, .lc07-attempt-note, .lc07-support-note { padding: .7rem .85rem; border-left: 3px solid var(--rain); background: #edf3f2; color: #425862; line-height: 1.5; }
 .lc07-samples { display: grid; gap: .7rem; }
@@ -437,6 +467,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch03-stress-lesson-spread { grid-template-columns: minmax(0, 1fr); }
   .ch03-sentence-lesson-spread { grid-template-columns: minmax(0, 1fr); }
   .ch03-bad-day-spread { grid-template-columns: minmax(0, 1fr); }
+  .ch03-small-victory-spread { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 599px) {
   .ch03-lesson.storybook-art { aspect-ratio: 1.35; }
@@ -459,6 +490,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch03-stress-lesson .art-eliza::before { left: 13%; width: 32%; }
   .ch03-sentence-lesson.storybook-art { aspect-ratio: 1.35; }
   .ch03-bad-day.storybook-art { aspect-ratio: 1.35; }
+  .ch03-small-victory.storybook-art { aspect-ratio: 1.35; }
   .ch03-sentence-lesson .art-background img { object-fit: cover; object-position: 28% center; }
   .ch03-sentence-lesson .art-eliza img { left: 29%; height: 82%; }
   .ch03-sentence-lesson .support-higgins { left: 73%; bottom: 2%; height: 74%; }
@@ -469,6 +501,11 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch03-bad-day .support-higgins { left: 73%; bottom: 2%; height: 74%; }
   .ch03-bad-day .art-support::after { background-size: auto 100%; background-position: 28% center; clip-path: polygon(48% 52%, 66% 51%, 100% 54%, 100% 92%, 74% 94%, 49% 80%); }
   .ch03-bad-day .art-eliza::before { left: 13%; width: 32%; }
+  .ch03-small-victory .art-background img { object-fit: cover; object-position: 28% center; }
+  .ch03-small-victory .art-eliza img { left: 29%; height: 82%; }
+  .ch03-small-victory .support-higgins { left: 73%; bottom: 2%; height: 74%; }
+  .ch03-small-victory .art-support::after { background-size: auto 100%; background-position: 28% center; clip-path: polygon(48% 52%, 66% 51%, 100% 54%, 100% 92%, 74% 94%, 49% 80%); }
+  .ch03-small-victory .art-eliza::before { left: 13%; width: 32%; }
   .lc06-sample-heading { flex-direction: column; }
   .lc07-sample { padding: .65rem; }
   .lc07-syllables { gap: .2rem; }
