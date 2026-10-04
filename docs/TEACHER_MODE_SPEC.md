@@ -315,7 +315,7 @@ Společný poslech s replay a transcript support, poté práce ve dvojicích na 
 
 ### 1. Chapter Overview
 
-Eliza použije nově naučený způsob řeči v malém společenském setkání. Zjistí, že perfektní pronunciation nestačí, pokud nerozumí turn-taking, implied meaning nebo účelu situace. Kapitola rozšiřuje její repertoár, ne opravuje její osobnost.
+Eliza přechází od kontrolovaného tréninku k použití řeči v sociálních situacích. S01 otevírá kapitolu pozváním a přípravou; veřejná interakce přichází až později. Její voice-stage je Emerging New Speech: vědomější kontrola, která začíná fungovat mimo pracovnu, nikoli hotový výkon Chapter V. Kapitola rozšiřuje její repertoár, ne opravuje její osobnost.
 
 ### 2. Learning Goals
 
@@ -347,7 +347,7 @@ Small talk v Edwardian social setting může fungovat jako bezpečný rituál, a
 
 ### 7. Decisions – Teacher Notes
 
-- `D08` zkoumá plán prvního testu: pečlivý registr, přepínání podle adresáta nebo spontánní začátek. Uloží `first_test_strategy`.
+- `D08` používá prompt “Where should Eliza begin?” a tři přípravné volby. Stabilní option ID se ukládá pouze do `decisions.D08`; event `ch04_d08_recorded` právě jednou. Volba je non-punitive character choice, žádná není správná ani nesprávná, nemění score/signals a všechny vedou ke stejnému pokračování.
 - `D09` zkoumá social repair po doslovné odpovědi. Všechny varianty jsou legitimní; uloží `recovery_style` a mohou ovlivnit pozdější formulaci.
 
 ### 8. Challenge Key
@@ -364,7 +364,7 @@ Small talk v Edwardian social setting může fungovat jako bezpečný rituál, a
 
 ### 10. Sensitive Framing
 
-Pronunciation není complete communicative competence. Sociální konvence mohou být nespravedlivé nebo nejasné; hra testuje strategii a porozumění, ne hodnotu člověka.
+Pronunciation není complete communicative competence. Cockney není vadný registr ani důkaz nízké inteligence a upper-class speech není morálně lepší. Sociální konvence mohou být nespravedlivé nebo nejasné; hra zkoumá jejich tlak, ne hodnotu člověka. Eliza získává kontrolu, volbu a srozumitelnost, nikoli vymazání identity.
 
 ### 11. Suggested Classroom Use
 
@@ -374,7 +374,7 @@ Práce ve dvojicích s role-play small talku, potom společný replay `LC12`. Or
 
 | Scene ID | Scene title | Decisions | Challenges | Language focus | Audio moments |
 | --- | --- | --- | --- | --- | --- |
-| `ch04_s01` | The Invitation | `D08` | — | greeting register, audience | `AM33–AM34` |
+| `ch04_s01` | The Invitation | `D08` | — | preparation, listening, social transfer | `AM34` |
 | `ch04_s02` | Names and Weather | — | `LC11` | small talk, turn-taking | `AM35–AM36` |
 | `ch04_s03` | The Wrong Answer | `D09` | `LC12` | literal/implied meaning, repair | `AM37–AM38` |
 | `ch04_s04` | After the Laughter | — | — | reflection, feedback | `AM39–AM40` |
@@ -486,7 +486,7 @@ Teacher Mode může spojit accent and identity, employment and opportunity, gend
 ### 7. Decisions – Teacher Notes
 
 - `D12` je explicitní volba směru, nikoli výpočet vítězného skóre. Všechny tři directions zůstávají dostupné.
-- `origin_motivation`, `confirmed_motivation`/`motivation_shift`, practice preference, intonation, first-test strategy, recovery, reception plan a credit response mění formulaci, delivery, vedlejší reakce, vizuál, epilog a Teacher summary.
+- `origin_motivation`, `confirmed_motivation`/`motivation_shift`, practice preference, intonation, the saved D08 preparation choice, recovery, reception plan a credit response mění formulaci, delivery, vedlejší reakce, vizuál, epilog a Teacher summary.
 - Nízký interní development signal nesmí směr zablokovat. Teacher Mode nesmí řadit směry od nejlepšího po nejhorší.
 
 ### 8. Challenge Key

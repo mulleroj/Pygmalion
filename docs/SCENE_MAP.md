@@ -319,26 +319,27 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 
 ## Chapter IV – The First Test
 
-**Dramatic arc:** Eliza poprvé použije nový způsob řeči v malé reálné společenské situaci. Zjistí, že perfektní výslovnost sama nestačí, když registr, obsah a společenská inference nejsou v souladu.
+**Dramatic arc:** Eliza moves from controlled training toward using speech in real social situations. Chapter IV opens with preparation for an invitation, then tests listening, pacing, intelligibility and repair in small steps. Eliza's voice-stage is **Emerging New Speech**: the same canonical voice and Cockney identity, with more conscious control; not polished Chapter V performance. Social expectations are examined, not endorsed.
 
 **Audio profile:** `VOICE` small talk, humor a recovery; `LISTENING` turn-taking a implied meaning; `PRONUNCIATION` stabilní artikulace pod tlakem; `SFX` šálky, místnost a kroky; `AMBIENCE` čajové setkání, chodba a noční cesta.
 
 ### ch04_s01 – The Invitation
 
-- **Lokace:** přípravná místnost před malým sousedským čtením a čajem.
-- **Čas / atmosféra:** podvečer; nervozita, šustění programu, hosté za dveřmi.
-- **Postavy:** Eliza, Higgins, Pickering, Mrs Pearce, hostitelka.
-- **Děj:** Eliza dostane první příležitost krátce pozdravit hosty. Higgins navrhuje naučený projev, Pickering upozorňuje na posluchače a Mrs Pearce na možnost zjednodušit situaci.
-- **Hlavní účel:** připravit volbu mezi kontrolou a spontánností.
-- **Rozhodnutí hráče:** `D08` – zvolit před testem strategii: držet se pečlivého registru, přepínat podle adresáta, nebo začít spontánně a upravovat se podle reakce.
-- **Možné hodnotové změny:** `Pronunciation +1` při vědomé kontrole, `Confidence +1` při spontánním vstupu, `Independence +1` při vlastním plánu přepínání.
-- **Uložení:** `long-term: ano`; uloží se `first_test_strategy`.
-- **Audio momenty:** `AM33 VOICE` Higginsova rehearsal instrukce; `AM34 AMBIENCE` hosté a místnost za dveřmi.
-- **Challenge:** žádná; volba je příprava herní strategie.
-- **Teacher Mode:** greeting registers, audience awareness, code-switching as choice.
-- **Vizuální assety:** Eliza `In Training / prepared`, malý program, dveře společenské místnosti.
-- **Audio assety:** `higgins_ch04_scene01_001.mp3`, `ambience_first-test_room_001.mp3` a přepisy.
-- **Návaznost:** `ch04_s02`.
+- **Lokace:** Higginsova pracovna.
+- **Čas / atmosféra:** podvečer; krátký klid před novou zkušeností, pozvání na sousedské čtení a čaj.
+- **Postavy:** Eliza, Higgins, Pickering. Mrs Pearce není přítomna; hostitelka zůstává mimo scénu.
+- **Děj:** Eliza dostane pozvání, při kterém může později poznat hosty. Zatím nevystupuje před publikem. Higgins to bere jako praktický experiment a chce nacvičit přesný pozdrav; Pickering připomíná, že posluchače je třeba také vnímat. Eliza si uvědomí rozdíl mezi cvičením v pracovně a skutečným rozhovorem.
+- **Hlavní účel:** převést pozornost od kontrolovaného tréninku k blížícímu se sociálnímu použití řeči, aniž se S01 stane hlavním testem.
+- **Rozhodnutí hráče:** `D08`, prompt “Where should Eliza begin?”: `d08_practise_greeting` — “Practise a simple greeting.”; `d08_plan_message` — “Think about what she wants to say.”; `d08_listen_first` — “Listen first and observe.” Žádná volba není správná či nesprávná; všechny jsou nepunitive a sbíhají se do stejného pokračování S01. Bez branch-specific flavour textu.
+- **Možné hodnotové změny:** žádné. D08 nepřidává ani neodečítá `Pronunciation`, `Confidence` či `Independence`.
+- **Uložení:** zvolený stabilní option ID pouze v existujícím `decisions.D08`; event `ch04_d08_recorded` se aplikuje právě jednou. Rozhodnutí se obnoví po refreshi přes existující persisted decision ledger; žádný nový top-level field.
+- **Audio moment:** `AM34` – volitelné story voice repliky Higginse a Elizy. AM33 je již použit pro tři LC10 ukázky v S06; S01 nemá samostatný audio moment ambience. Žádné audio není vygenerováno.
+- **Challenge:** žádná. `LC11` zůstává v S02.
+- **Teacher Mode:** přenos z lekce do sociálního prostředí; příprava, naslouchání a volba; accent ≠ intelligence.
+- **Vizuální assety:** znovu použít Higginsovu pracovnu a existující postavy. Klasifikace pozvánky: A — žádný vizuální prop není vyžadován; dialog a narace stačí. BOOK FIRST zůstává srozumitelný bez viditelné karty. Eliza zůstává rozpoznatelně stejná; změna se projeví pouze klidnější kompozicí, mírně jistějším držením těla, pokud je podpořeno schváleným assetem, a menším napětím pracovního tréninku.
+- **Audio assety:** plánovat pouze krátké story voice repliky Elizy/Higginse s viditelným textem a přepisy; přesné mapování je v `docs/chapters/ch04/AUDIO_PLAN.md`.
+- **Dokončení:** po explicitním Continue jednou zaznamenat `ch04_s01_complete`; bez signálu či mastery bonusu.
+- **Návaznost:** až po explicitním Continue `ch04_s02 – Names and Weather`; žádný automatický přechod.
 
 ### ch04_s02 – Names and Weather
 
@@ -399,8 +400,8 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 - **Děj:** Eliza si uvědomí, že může zvolit, kdy chce být pečlivá a kdy spontánní. Výsledek testu není „prošla/neprošla“, ale nový datový bod pro její vlastní strategii.
 - **Hlavní účel:** uzavřít první test a připravit veřejnější Chapter V.
 - **Rozhodnutí hráče:** žádné hlavní; volitelná replay reflexe.
-- **Možné hodnotové změny:** podle `first_test_strategy` se uloží `register_flexibility`; hodnoty beze změny.
-- **Uložení:** `long-term: ano` jako strategie, nikoli známka.
+- **Možné hodnotové změny:** uložená volba `decisions.D08` může zabarvit pozdější Elizinu reflexi; žádný signal increment.
+- **Uložení:** používá se stávající decision ledger `decisions.D08`; žádné samostatné pole strategie ani známkování.
 - **Audio momenty:** `AM41 VOICE` Elizina krátká sebereflexe; `AM42 AMBIENCE` noční ulice a kroky.
 - **Challenge:** žádná; kapitola vrcholí interpretací zkušenosti.
 - **Teacher Mode:** code-switching as repertoire, not disguise.
@@ -567,7 +568,7 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 | `confirmed_motivation` / `motivation_shift` | Aktuální vlastní pojmenování cíle; při rozdílu vznikne dramatická varianta formulace. | Změna motivace není chyba ani ztráta hodnoty. |
 | `practice_preference` | Ovlivní, jak Eliza popíše cestu učení a jakou podporu přijme. | Nesmí být skrytým testem poslušnosti. |
 | `intonation_strategy` | Určí míru jistoty, otázkovosti a vědomého postoje ve finálním projevu. | Nesmí zaměnit intonaci za morální sebejistotu. |
-| `first_test_strategy` | Přidá variantu registru a přípravy v sociálním prostředí. | Nesmí odstranit spontánní možnost. |
+| `decisions.D08` | Uložená přípravná volba může zabarvit Elizinu reflexi sociální zkušenosti. | Nesmí odstranit žádnou možnost ani změnit signal či hodnotit volbu. |
 | `recovery_style` | Změní reakci na dřívější nesoulad a podobu sebereflexe. | Chyba nesmí snížit lidskou hodnotu Elizy. |
 | `reception_register_plan` | Vybere adresáty a přirozenější code-switching ve finálním statementu. | Nesmí označit jeden registr za jediný správný. |
 | `credit_response` | Ovlivní, zda vedlejší postavy v epilogu uznají Elizinu práci, kolektiv nebo vlastní experiment. | Strategický odklad nesmí být trest. |
