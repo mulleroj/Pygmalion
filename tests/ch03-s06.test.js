@@ -250,7 +250,8 @@ test('S06 UI hides all transcripts initially, uses neutral controls, and Teacher
   assert.equal(finalState.scene, 'ch04_s01');
   assert.equal(finalState.applied_events.filter((event) => event === 'ch03_s06_complete').length, 1);
   assert.match(html, /The Invitation/);
-  assert.equal(FakeAudio.instances.every((audio) => audio.paused), true, 'scene transition cleans up all foreground and ambience audio');
+  assert.equal(FakeAudio.instances.filter((audio) => !audio.src.includes('ch03_higgins_house_lesson_ambient.mp3')).every((audio) => audio.paused), true, 'scene transition cleans up all foreground and one-shot audio');
+  assert.equal(FakeAudio.instances.some((audio) => audio.src.includes('ch03_higgins_house_lesson_ambient.mp3') && !audio.paused), true, 'Chapter IV reuses the Chapter III lesson-room ambience loop');
 });
 
 test('scene entry requires S05 completion and Mrs Pearce remains off-screen and text-only', () => {

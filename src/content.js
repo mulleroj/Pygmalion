@@ -209,7 +209,7 @@ export const AUDIO_FILES = [
 export const VISUAL_FILES = Object.values(VISUALS).map((asset) => asset.src.replace(/^\.\/assets\//, ''));
 
 export function ambienceForScene(sceneId) {
-  if (['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch03_s06'].includes(sceneId)) return 'ch03_lesson_room';
+  if (['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch03_s06', 'ch04_s01'].includes(sceneId)) return 'ch03_lesson_room';
   if (sceneId.startsWith('ch03_')) return null; // Later Chapter III ambience is not specified.
   if (sceneId === 'ch02_s01') return 'higgins_house_morning_entry';
   if (['ch02_s02', 'ch02_s03', 'ch02_s04', 'ch02_s05'].includes(sceneId)) return 'higgins_house_interior';
@@ -220,7 +220,7 @@ export function ambienceForScene(sceneId) {
 export function isContinuousAmbienceTransition(fromSceneId, toSceneId) {
   const rainScenes = new Set(['ch01_s01', 'ch01_s02', 'ch01_s03', 'ch01_s04']);
   const interiorScenes = new Set(['ch02_s02', 'ch02_s03', 'ch02_s04', 'ch02_s05']);
-  const lessonScenes = new Set(['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch03_s06']);
+  const lessonScenes = new Set(['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch03_s06', 'ch04_s01']);
   return (rainScenes.has(fromSceneId) && rainScenes.has(toSceneId))
     || (interiorScenes.has(fromSceneId) && interiorScenes.has(toSceneId))
     || (lessonScenes.has(fromSceneId) && lessonScenes.has(toSceneId));

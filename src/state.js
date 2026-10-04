@@ -1,4 +1,5 @@
 import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05, CH03_SCENE_06 } from './ch03-content.js';
+import { CH04_SCENE_01 } from './ch04-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -109,6 +110,12 @@ export function recordOpeningTone(state, tone) {
 }
 
 export function applyDecision(state, decisionId, optionId) {
+  if (decisionId === 'D08') {
+    const allowed = CH04_SCENE_01.decision.choices.some(({ id }) => id === optionId);
+    const eventId = 'ch04_d08_recorded';
+    if (state.scene !== CH04_SCENE_01.id || !state.applied_events.includes('ch03_s06_complete') || !allowed || state.decisions.D08 || state.applied_events.includes(eventId)) return state;
+    return { ...state, decisions: { ...state.decisions, D08: optionId }, applied_events: [...state.applied_events, eventId] };
+  }
   if (decisionId === 'D07') {
     const allowed = CH03_SCENE_04.decision.choices.some(({ id }) => id === optionId);
     const eventId = 'ch03_d07_practice_strategy';
@@ -298,6 +305,7 @@ export function isChallengeComplete(state, challengeId) {
 }
 
 export function getSceneAdvanceBlock(state, scene) {
+  if (scene.id === CH04_SCENE_01.id && !state.applied_events.includes('ch03_s06_complete')) return 'Complete Chapter III Scene 06 before opening The Invitation.';
   if (scene.id === 'ch03_s02' && !state.ch03_s01_complete) return 'Complete Chapter III Scene 01 before opening The Listening Room.';
   if (scene.id === 'ch03_s03' && !state.applied_events.includes('ch03_s02_complete')) return 'Complete Chapter III Scene 02 before opening Finding the Main Stress.';
   if (scene.id === 'ch03_s04' && !state.applied_events.includes('ch03_s03_complete')) return 'Complete Chapter III Scene 03 before opening A Sentence Has Shape.';
@@ -382,6 +390,11 @@ export function completeScene(state, scene) {
   if (scene.id === 'ch03_s06') {
     const eventId = 'ch03_s06_complete';
     if (!state.challenges.lc10.completed || state.applied_events.includes(eventId)) return state;
+    return { ...state, applied_events: [...state.applied_events, eventId] };
+  }
+  if (scene.id === CH04_SCENE_01.id) {
+    const eventId = 'ch04_s01_complete';
+    if (!state.decisions.D08 || state.applied_events.includes(eventId)) return state;
     return { ...state, applied_events: [...state.applied_events, eventId] };
   }
   return state;
