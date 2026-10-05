@@ -27,6 +27,43 @@ const expectedKeys = [
   ['lc13_peer_colleague', 'lc13_practical_request', 'lc13_informal_familiar']
 ];
 
+function inspectMp3(bytes) {
+  const mpeg1Layer3 = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320];
+  const mpeg2Layer3 = [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160];
+  let offset = 0;
+  if (bytes.toString('ascii', 0, 3) === 'ID3') {
+    const size = ((bytes[6] & 0x7f) << 21) | ((bytes[7] & 0x7f) << 14) | ((bytes[8] & 0x7f) << 7) | (bytes[9] & 0x7f);
+    offset = 10 + size + ((bytes[5] & 0x10) ? 10 : 0);
+  }
+  let frameCount = 0, sampleRate = null, durationSeconds = 0;
+  const rates = [44100, 48000, 32000];
+  while (offset + 4 <= bytes.length) {
+    if (bytes.toString('ascii', offset, offset + 3) === 'TAG' && bytes.length - offset === 128) break;
+    assert.equal(bytes[offset], 0xff, `bad MPEG frame sync at byte ${offset}`);
+    assert.equal(bytes[offset + 1] & 0xe0, 0xe0, `bad MPEG frame sync at byte ${offset}`);
+    const header = bytes.readUInt32BE(offset);
+    const version = (header >>> 19) & 3, layer = (header >>> 17) & 3;
+    const bitrateIndex = (header >>> 12) & 15, rateIndex = (header >>> 10) & 3, padding = (header >>> 9) & 1;
+    assert.notEqual(version, 1, 'MPEG version is not reserved');
+    assert.equal(layer, 1, 'expected MPEG Layer III');
+    assert.ok(bitrateIndex > 0 && bitrateIndex < 15, 'valid Layer III bitrate');
+    assert.ok(rateIndex < 3, 'valid MPEG sample rate');
+    const actualRate = rates[rateIndex] / (version === 3 ? 1 : version === 2 ? 2 : 4);
+    if (sampleRate === null) sampleRate = actualRate;
+    assert.equal(actualRate, sampleRate, 'consistent sample rate across frames');
+    const bitrate = (version === 3 ? mpeg1Layer3 : mpeg2Layer3)[bitrateIndex] * 1000;
+    const frameLength = Math.floor((version === 3 ? 144 : 72) * bitrate / actualRate) + padding;
+    assert.ok(offset + frameLength <= bytes.length, `complete MPEG frame at byte ${offset}`);
+    offset += frameLength;
+    frameCount++;
+    durationSeconds += (version === 3 ? 1152 : 576) / actualRate;
+  }
+  if (bytes.length - offset === 128) assert.equal(bytes.toString('ascii', offset, offset + 3), 'TAG');
+  else assert.equal(offset, bytes.length, 'MP3 ends on a complete MPEG frame');
+  assert.ok(frameCount > 0, 'MP3 contains frames');
+  return { frameCount, sampleRate, durationSeconds };
+}
+
 test('S02 is registered with canonical identity, Chapter V setting and shared hall background', () => {
   assert.deepEqual([CH05_SCENE_02.id, CH05_SCENE_02.number, CH05_SCENE_02.title, CH05_SCENE_02.chapter, CH05_SCENE_02.chapterTitle], [
     'ch05_s02', 2, 'Listening Under Pressure', 'V', 'The Reception'
@@ -75,10 +112,23 @@ test('LC13 has three canonical text-first samples and the exact relationship, pu
     ['lc13_patron', 'A remarkable display. Which of these varieties are grown locally?'],
     ['lc13_colleague', 'Eliza, have you seen the labels for our table?']
   ]);
+  const expectedAudio = [
+    ['./assets/audio/listening/ch05_lc13_sample_01.mp3', 'JhY1BQPVinsEFM2fiC16', 'h22q8i8YFxqLA7VQEeWI', 'Cass', 'ITRml9f5K7moz24wRnmV'],
+    ['./assets/audio/listening/ch05_lc13_sample_02.mp3', 'Az8yexdf4ShuuXlfK6Sf', 'do8fZE9x9HFvwTtqOmhV', 'Ruby Fawcett', 'Q6HPFg7bazU61NeyrvBp'],
+    ['./assets/audio/listening/ch05_lc13_sample_03.mp3', 'tiPnYGA7SWDK0h9RTrw6', '0lpUjbOMjBkwLmdY7htB', 'Hugo', 'WAppqUXeqDqXjNTaQxG9']
+  ];
   challenge.samples.forEach((sample, index) => {
     assert.deepEqual(Object.values(sample.answer), expectedKeys[index]);
     for (const dimension of challenge.dimensions) assert.ok(dimension.options.some(({ id }) => id === sample.answer[dimension.id]));
-    assert.equal(sample.src, undefined, 'unproduced LC13 audio has no runtime URL');
+    assert.deepEqual([sample.src, sample.generationId, sample.assetId, sample.voice, sample.voiceId], expectedAudio[index]);
+    assert.equal(sample.humanApproved, true);
+    assert.equal(sample.transcriptVerified, 'PASS');
+    const file = fs.readFileSync(path.join(root, sample.src.slice(2)));
+    assert.ok(file.length > 0, `${sample.id} audio exists`);
+    assert.equal(file.toString('ascii', 0, 3), 'ID3', `${sample.id} is an MP3 with ID3 metadata`);
+    const metadata = inspectMp3(file);
+    assert.ok([11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000].includes(metadata.sampleRate));
+    assert.ok(metadata.durationSeconds > 1 && metadata.durationSeconds < 8, `${sample.id} duration is plausible`);
   });
   assert.deepEqual(ambienceForScene('ch05_s01'), ambienceForScene('ch05_s02'));
   assert.equal(ambienceForScene('ch05_s02'), 'ch05_exhibition_hall');
@@ -86,6 +136,17 @@ test('LC13 has three canonical text-first samples and the exact relationship, pu
   assert.equal(AMBIENCE_FILES.ch05_exhibition_hall, './assets/audio/ambience/ch05_borough_exhibition_ambient.mp3');
   assert.equal(CH05_SCENE_02.voice.length, 0);
   assert.equal(fs.statSync(path.join(root, AMBIENCE_FILES.ch05_exhibition_hall.slice(2))).size > 0, true);
+});
+
+test('LC13 renders accessible user-triggered replay controls and retains text support', () => {
+  assert.match(appSource, /renderAudioControl\(\{ \.\.\.item, label: `Play \$\{item\.speaker\} exchange`, ariaLabel: `Play \$\{item\.speaker\} exchange` \}, 'challenge'\)/);
+  assert.match(appSource, /data-action="\$\{action\}" data-src="\$\{escapeHtml\(item\.src\)\}"/);
+  assert.match(appSource, /if \(action === 'play-challenge'\) await audioManager\.playChallenge\(target\.dataset\.src\)/);
+  assert.match(appSource, /const supportButton = !supported && !attempted && !review[\s\S]*?open-lc13-support/);
+  const renderer = appSource.match(/function renderLc13\(scene\) \{[\s\S]*?(?=function renderCh05FirstResponse)/)?.[0] || '';
+  assert.ok(renderer);
+  assert.doesNotMatch(renderer, /autoplay/);
+  assert.doesNotMatch(renderer, /There is no audio recording yet/);
 });
 
 test('LC13 support is explicit and retryable answers restore from existing shared state without rewards', () => {

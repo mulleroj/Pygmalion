@@ -91,13 +91,13 @@ export const CH05_SCENE_02 = {
       { id: 'formality', label: 'What register fits this exchange?', options: lc13FormalityOptions }
     ],
     samples: [
-      { id: 'lc13_organiser', speaker: 'Organiser', transcript: 'Miss Doolittle, could you introduce the growers when the chairman arrives?', answer: {
+      { id: 'lc13_organiser', speaker: 'Organiser', transcript: 'Miss Doolittle, could you introduce the growers when the chairman arrives?', src: './assets/audio/listening/ch05_lc13_sample_01.mp3', generationId: 'JhY1BQPVinsEFM2fiC16', assetId: 'h22q8i8YFxqLA7VQEeWI', voice: 'Cass', voiceId: 'ITRml9f5K7moz24wRnmV', humanApproved: true, transcriptVerified: 'PASS', answer: {
         relationship: 'lc13_professional_organiser_to_participant', purpose: 'lc13_coordination_request', formality: 'lc13_polite_professional'
       }, context: 'A professional organiser is coordinating a future introduction with a participant in the programme.' },
-      { id: 'lc13_patron', speaker: 'Patron / guest', transcript: 'A remarkable display. Which of these varieties are grown locally?', answer: {
+      { id: 'lc13_patron', speaker: 'Patron / guest', transcript: 'A remarkable display. Which of these varieties are grown locally?', src: './assets/audio/listening/ch05_lc13_sample_02.mp3', generationId: 'Az8yexdf4ShuuXlfK6Sf', assetId: 'do8fZE9x9HFvwTtqOmhV', voice: 'Ruby Fawcett', voiceId: 'Q6HPFg7bazU61NeyrvBp', humanApproved: true, transcriptVerified: 'PASS', answer: {
         relationship: 'lc13_distant_guest_to_eliza', purpose: 'lc13_compliment_and_information_request', formality: 'lc13_polite_relatively_formal'
       }, context: 'A socially distant guest compliments the display and asks Eliza for local information.' },
-      { id: 'lc13_colleague', speaker: 'Flower-worker colleague', transcript: 'Eliza, have you seen the labels for our table?', answer: {
+      { id: 'lc13_colleague', speaker: 'Flower-worker colleague', transcript: 'Eliza, have you seen the labels for our table?', src: './assets/audio/listening/ch05_lc13_sample_03.mp3', generationId: 'tiPnYGA7SWDK0h9RTrw6', assetId: '0lpUjbOMjBkwLmdY7htB', voice: 'Hugo', voiceId: 'WAppqUXeqDqXjNTaQxG9', humanApproved: true, transcriptVerified: 'PASS', answer: {
         relationship: 'lc13_peer_colleague', purpose: 'lc13_practical_request', formality: 'lc13_informal_familiar'
       }, context: 'A fellow flower worker asks Eliza a practical question about their table labels.' }
     ],

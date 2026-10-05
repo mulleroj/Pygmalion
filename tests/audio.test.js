@@ -7,6 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CH03_SCENE_03, CH03_SCENE_04 } from '../src/ch03-content.js';
 import { CH04_SCENE_01 } from '../src/ch04-content.js';
+import { CH05_SCENE_02 } from '../src/ch05-content.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -866,6 +867,45 @@ test('S02 continues the same lesson room loop and applies the approved LC06 duck
   assert.equal(manager.mix, CH02_AUDIO_MIX);
   assert.equal(ambienceForScene('ch03_s03'), 'ch03_lesson_room');
   assert.ok(elements.every(e => !/rain|gramophone|gong/.test(e.src)));
+});
+
+test('CH05 S02 LC13 replay owns one foreground sample, ducks AM44, and Sound Off stops speech only', async t => {
+  assert.equal(ambienceForScene('ch05_s01'), 'ch05_exhibition_hall');
+  assert.equal(ambienceForScene('ch05_s02'), 'ch05_exhibition_hall');
+  assert.deepEqual(CH05_SCENE_02.challenge.samples.map(({ src }) => src), [
+    './assets/audio/listening/ch05_lc13_sample_01.mp3',
+    './assets/audio/listening/ch05_lc13_sample_02.mp3',
+    './assets/audio/listening/ch05_lc13_sample_03.mp3'
+  ]);
+  const { manager, elements } = audioHarness(t);
+  await manager.ensureAmbience('ch05_s01');
+  assert.equal(elements.length, 0, 'scene entry does not autoplay ambience or a sample');
+  manager.unlock(); await manager.ensureAmbience('ch05_s01');
+  const loop = manager.ambience;
+  assert.equal(loop.src, AMBIENCE_FILES.ch05_exhibition_hall);
+  await manager.ensureAmbience('ch05_s02');
+  assert.equal(manager.ambience, loop, 'S01 to S02 keeps the same AM44 loop');
+  assert.equal(loop.playCalls, 1, 'the continuous hall loop is not duplicated');
+  assert.equal(manager.mix, CH02_AUDIO_MIX);
+  const first = await manager.playChallenge(CH05_SCENE_02.challenge.samples[0].src);
+  assert.equal(loop.volume, CH02_AUDIO_MIX.ambience * CH02_AUDIO_MIX.challengeDuck);
+  const second = await manager.playChallenge(CH05_SCENE_02.challenge.samples[1].src);
+  assert.equal(first.paused, true, 'starting another sample stops the prior foreground clip');
+  assert.equal(elements.filter((audio) => audio !== loop && !audio.paused).length, 1);
+  const replay = await manager.playChallenge(CH05_SCENE_02.challenge.samples[1].src);
+  assert.equal(second.paused, true, 'replay replaces the previous instance of the sample');
+  assert.equal(elements.filter((audio) => audio !== loop && !audio.paused).length, 1);
+  replay.emit('ended');
+  assert.equal(loop.volume, CH02_AUDIO_MIX.ambience, 'AM44 restores after playback ends');
+  const colleague = await manager.playChallenge(CH05_SCENE_02.challenge.samples[2].src);
+  await manager.setEnabled(false);
+  assert.equal(colleague.paused, true);
+  assert.equal(loop.paused, true);
+  assert.equal(manager.foreground, null);
+  await manager.setEnabled(true);
+  assert.equal(loop.paused, false, 'Sound On resumes the existing ambience');
+  assert.equal(manager.foreground, null, 'Sound On does not resume an interrupted sample');
+  assert.equal(loop.playCalls, 2, 'Sound On resumes the same loop rather than creating a duplicate');
 });
 
 test('S01 story voice duck/replay ownership restores the same interior and Sound On resumes only ambience', async t => {

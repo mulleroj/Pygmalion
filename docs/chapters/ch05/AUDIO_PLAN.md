@@ -35,11 +35,11 @@ Low indoor crowd murmur, restrained footsteps and occasional movement among disp
 
 Three separately replayable listening samples. Visible text is available as the challenge transcript/support after the first attempt or by an explicit accessible-support request.
 
-| Sample | Speaker role | Exact transcript | Planned file |
-| --- | --- | --- | --- |
-| lc13_organiser | Organiser | “Miss Doolittle, could you introduce the growers when the chairman arrives?” | assets/audio/listening/ch05_lc13_sample_01.mp3 |
-| lc13_patron | Patron / guest | “A remarkable display. Which of these varieties are grown locally?” | assets/audio/listening/ch05_lc13_sample_02.mp3 |
-| lc13_colleague | Flower-worker colleague | “Eliza, have you seen the labels for our table?” | assets/audio/listening/ch05_lc13_sample_03.mp3 |
+| Sample | Speaker role | Exact transcript | Runtime file | Generation ID | Asset ID | Voice / ID | Human approved | Transcript verified |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| lc13_organiser | Organiser | “Miss Doolittle, could you introduce the growers when the chairman arrives?” | assets/audio/listening/ch05_lc13_sample_01.mp3 | `JhY1BQPVinsEFM2fiC16` | `h22q8i8YFxqLA7VQEeWI` | Cass / `ITRml9f5K7moz24wRnmV` | yes | PASS |
+| lc13_patron | Patron / guest | “A remarkable display. Which of these varieties are grown locally?” | assets/audio/listening/ch05_lc13_sample_02.mp3 | `Az8yexdf4ShuuXlfK6Sf` | `do8fZE9x9HFvwTtqOmhV` | Ruby Fawcett / `Q6HPFg7bazU61NeyrvBp` | yes | PASS |
+| lc13_colleague | Flower-worker colleague | “Eliza, have you seen the labels for our table?” | assets/audio/listening/ch05_lc13_sample_03.mp3 | `tiPnYGA7SWDK0h9RTrw6` | `0lpUjbOMjBkwLmdY7htB` | Hugo / `WAppqUXeqDqXjNTaQxG9` | yes | PASS |
 
 Use distinct, natural speakers to distinguish conversational roles, not intelligence or social worth. Keep each sample brief and cleanly intelligible. Replay does not count as an attempt.
 
