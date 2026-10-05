@@ -1,5 +1,6 @@
 import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05, CH03_SCENE_06 } from './ch03-content.js';
 import { CH04_SCENE_01, CH04_SCENE_02, CH04_SCENE_03, CH04_SCENE_04, CH04_SCENE_05 } from './ch04-content.js';
+import { CH05_SCENE_01 } from './ch05-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -128,6 +129,12 @@ export function recordOpeningTone(state, tone) {
 }
 
 export function applyDecision(state, decisionId, optionId) {
+  if (decisionId === 'D10') {
+    const allowed = CH05_SCENE_01.decision.choices.some(({ id }) => id === optionId);
+    const eventId = 'ch05_d10_recorded';
+    if (state.scene !== CH05_SCENE_01.id || !state.applied_events.includes('ch04_s05_complete') || !allowed || state.reception_register_plan || state.applied_events.includes(eventId)) return state;
+    return { ...state, reception_register_plan: optionId, applied_events: [...state.applied_events, eventId] };
+  }
   if (decisionId === 'D09') {
     const allowed = CH04_SCENE_03.decision.choices.some(({ id }) => id === optionId);
     const eventId = 'ch04_d09_recorded';
@@ -341,6 +348,8 @@ export function isChallengeComplete(state, challengeId) {
 }
 
 export function getSceneAdvanceBlock(state, scene) {
+  if (scene.id === CH05_SCENE_01.id && !state.applied_events.includes('ch04_s05_complete')) return 'Complete Chapter IV Scene 05 before opening The Borough Exhibition Evening.';
+  if (scene.id === CH05_SCENE_01.id && !state.reception_register_plan) return 'Choose a register plan before continuing.';
   if (scene.id === CH04_SCENE_01.id && !state.applied_events.includes('ch03_s06_complete')) return 'Complete Chapter III Scene 06 before opening The Invitation.';
   if (scene.id === CH04_SCENE_02.id && !state.challenges.lc11.completed) return 'Complete all three LC11 samples before continuing.';
   if (scene.id === CH04_SCENE_03.id && !state.applied_events.includes('ch04_s02_complete')) return 'Complete Chapter IV Scene 02 before opening The Wrong Answer.';
@@ -355,7 +364,7 @@ export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === 'ch03_s05' && !state.applied_events.includes('ch03_s04_complete')) return 'Complete Chapter III Scene 04 before opening The Bad Day.';
   if (scene.id === 'ch03_s06' && !state.applied_events.includes('ch03_s05_complete')) return 'Complete Chapter III Scene 05 before opening A Small Victory.';
   if (scene.id === 'ch01_s01' && !state.opening_tone) return 'Choose a first response before continuing.';
-  if (scene.decision && !state.decisions[scene.decision.id]) return 'Choose a response to continue.';
+  if (scene.decision && !(scene.decision.id === 'D10' ? state.reception_register_plan : state.decisions[scene.decision.id])) return 'Choose a response to continue.';
   if (scene.id === 'ch02_s01') return state.ch02_lc03_completed ? '' : 'Complete the reading challenge to continue.';
   if (scene.id === 'ch02_s02') return state.ch02_lc04_completed ? '' : 'Complete the language challenge to continue.';
   if (scene.challenge && !isChallengeComplete(state, scene.challenge.id)) return 'Complete the listening challenge to continue.';
@@ -526,6 +535,11 @@ export function completeScene(state, scene) {
   if (scene.id === CH04_SCENE_05.id) {
     const eventId = 'ch04_s05_complete';
     if (!state.applied_events.includes('ch04_s04_complete') || state.applied_events.includes(eventId)) return state;
+    return { ...state, applied_events: [...state.applied_events, eventId] };
+  }
+  if (scene.id === CH05_SCENE_01.id) {
+    const eventId = 'ch05_s01_complete';
+    if (!state.reception_register_plan || !state.applied_events.includes('ch05_d10_recorded') || state.applied_events.includes(eventId)) return state;
     return { ...state, applied_events: [...state.applied_events, eventId] };
   }
   return state;

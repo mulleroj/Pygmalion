@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CH04_SCENE_03, CH04_SCENE_04, CH04_SCENE_05, CH04_S05_TEACHER_SECTIONS } from '../src/ch04-content.js';
+import { CH05_SCENE_01 } from '../src/ch05-content.js';
 import { ambienceForScene, isContinuousAmbienceTransition } from '../src/content.js';
 import { AudioManager, CH04_CORRIDOR_CROSSFADE_MS } from '../src/audio.js';
 import { canAdvanceScene, completeScene, createInitialState, getSceneAdvanceBlock, setScene } from '../src/state.js';
@@ -164,13 +165,14 @@ test('evening walk ambience crossfades from the running corridor without restart
   assert.equal(elements.filter(({ src }) => src.endsWith('ch04_evening_walk_ambient.mp3')).length, 1);
 });
 
-test('S05 runtime boundary, read-only Teacher Mode and no-autoplay are wired without Chapter V implementation', () => {
+test('S05 completion remains the guarded entry boundary for Chapter V S01', () => {
   const app = fs.readFileSync(path.join(root, 'src/app.js'), 'utf8');
   assert.match(app, /\[CH04_SCENE_05\.id\]: CH04_SCENE_05/);
+  assert.equal(getSceneAdvanceBlock(setScene(createInitialState(), CH05_SCENE_01.id), CH05_SCENE_01), 'Complete Chapter IV Scene 05 before opening The Borough Exhibition Evening.');
   assert.match(app, /hashScene === 'ch05_s01'[\s\S]*?ch04_s05_complete/);
-  assert.match(app, /The Walk Home is complete\. Chapter V is the next story boundary/);
+  assert.match(app, /The Borough Exhibition Evening is complete\. The next Chapter V scene is not implemented/);
   assert.match(app, /scene\?\.id === 'ch04_s05' \? CH04_S05_TEACHER_SECTIONS/);
   assert.match(app, /scene\.id === 'ch04_s05' && !scenePreview/);
-  assert.doesNotMatch(app, /CH05_SCENE|CH05_TEACHER/);
+  assert.match(app, /CH05_SCENE_01/);
   assert.ok(CH04_S05_TEACHER_SECTIONS.some(([title, text]) => title === 'Teacher Preview Contract' && /no autoplay, state writes, completion or progression/i.test(text)));
 });
