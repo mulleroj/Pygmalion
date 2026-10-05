@@ -116,7 +116,7 @@ test('Teacher content keeps preview read-only and states the pragmatic and equit
 
 test('runtime registers S03 actions, preserves tea-room continuity, and hands S04 to its corridor scene', () => {
   const app = fs.readFileSync(path.join(root, 'src/app.js'), 'utf8');
-  assert.match(app, /if \(scene\.id !== 'ch04_s03' && scene\.id !== 'ch05_s01'\) body \+= renderDecision\(scene\);/, 'S03 decision and the inline D10 marker are rendered in their canonical story positions');
+  assert.match(app, /if \(scene\.id !== 'ch04_s03' && scene\.id !== 'ch05_s01' && scene\.id !== 'ch05_s03'\) body \+= renderDecision\(scene\);/, 'scene-specific decisions stay in their canonical story positions');
   assert.match(app, /\[CH04_SCENE_03\.id\]: CH04_SCENE_03/);
   assert.match(app, /data-action="answer-lc12"/);
   assert.match(app, /data-action="open-lc12-support"/);

@@ -107,6 +107,45 @@ export const CH05_SCENE_02 = {
   nextScene: 'ch05_s03'
 };
 
+export const CH05_SCENE_03 = {
+  id: 'ch05_s03', number: 3, chapter: 'V', chapterTitle: 'The Reception', sceneCount: 5,
+  title: 'The Display and the Question', kicker: 'Chapter V · The Reception',
+  location: 'Lambeth Public Rooms — main flower display', visualStage: 'her_own_voice', voiceStage: 'Her Own Voice',
+  composition: 'ch05-exhibition-hall', visualFallback: false,
+  background: { src: './assets/images/locations/ch05/ch05_exhibition_hall.webp', alt: 'Flower exhibition in Lambeth Public Rooms.' },
+  plate: { src: './assets/images/locations/ch05/ch05_exhibition_hall.webp', alt: 'Flower exhibition in Lambeth Public Rooms.' },
+  eliza: { src: '', alt: '' }, supporting: [], props: [], voice: [],
+  storyBeats: [
+    { type: 'narration', text: 'The guests have enjoyed the exhibition. One visitor turns to Higgins and Pickering while Eliza stands beside the growers’ work.' },
+    { type: 'dialogue', speaker: 'Patron / guest', text: 'Professor Higgins, Colonel Pickering — you must be proud. What a transformation.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'The result speaks for the method.' },
+    { type: 'dialogue', speaker: 'Pickering', text: 'Eliza has worked very hard.' },
+    { type: 'dialogue', speaker: 'Patron / guest', text: 'It was a remarkable evening for you both.' },
+    { type: 'narration', text: 'Pickering gives Eliza credit for her work, but the conversation continues to focus on the two men. Eliza knows what she contributed and decides how she wants to answer.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'I know what I contributed.' }
+  ],
+  decision: {
+    id: 'D11', prompt: 'How would Eliza like to respond?',
+    neutralChoice: true, hideResult: true, pressedState: true,
+    choices: [
+      { id: 'd11_accept_for_now', title: 'Accept for now', text: 'Thank you. I would rather speak about the flowers tonight.' },
+      { id: 'd11_redirect_publicly', title: 'Redirect publicly', text: 'I learned a great deal, but this evening belongs to the growers — and I made my own choices too.' },
+      { id: 'd11_private_conversation', title: 'Speak privately later', text: 'Thank you. I would like to speak about that later, in private.' }
+    ]
+  },
+  nextScene: 'ch05_s04'
+};
+
+export const CH05_S04_COMPANION_BY_CREDIT_RESPONSE = Object.freeze({
+  d11_private_conversation: 'Pickering',
+  d11_accept_for_now: 'Mrs Pearce',
+  d11_redirect_publicly: 'Mrs Pearce'
+});
+
+export function ch05S04CompanionFor(creditResponse) {
+  return CH05_S04_COMPANION_BY_CREDIT_RESPONSE[creditResponse] || null;
+}
+
 export const CH05_S01_TEACHER_SECTIONS = [
   ['Scene focus', 'Register is a deliberate communication choice. Different contexts may call for different language, and code-switching is part of a communicative repertoire.'],
   ['Sensitive framing', 'Register is not personal worth. Accent is not intelligence. Do not describe one voice as inherently better or more correct.'],
@@ -128,4 +167,12 @@ export const CH05_S02_TEACHER_SECTIONS = [
   ['Sensitive framing', 'Accent ≠ intelligence. Register ≠ personal worth. Do not label formal speech as smarter or familiar speech as worse. The challenge evaluates inference in context, not a person or identity.'],
   ['Teacher preview contract', 'Read-only. Preview does not open support, write LC13 answers, change the local response, award signals, complete the challenge or advance the scene.'],
   ['Scene navigation', 'Listening Under Pressure · LC13 social inference · temporary first-responder choice · explicit Continue to the not-yet-implemented S03 boundary.']
+];
+
+export const CH05_S03_TEACHER_SECTIONS = [
+  ['Scene focus', 'The scene asks who receives credit when Eliza’s work is described in public. The guest directs praise toward the two men; Higgins accepts the result as evidence for his method; Pickering partly corrects the framing by recognising Eliza’s hard work.'],
+  ['Credit and authorship', 'Receiving help, teaching or support does not mean losing ownership of one’s work. Social framing can assign credit to the person with the most status, even when another person did the work.'],
+  ['D11 — Credit Response', 'Eliza may postpone the conversation, redirect credit publicly, or ask to speak privately later. Each is a legitimate strategy. D11 has no single morally correct answer; public response is not inherently braver, privacy is not weakness, and postponement is not failure.'],
+  ['Sensitive framing', 'Higgins remains self-assured and focused on method, not a villain. Pickering’s respectful correction is partial and does not resolve the question for Eliza.'],
+  ['Teacher preview contract', 'Read-only. Preview does not select D11, write credit_response, change development signals, record completion, play audio or advance the scene.']
 ];

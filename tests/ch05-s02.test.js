@@ -76,7 +76,8 @@ test('S02 is registered with canonical identity, Chapter V setting and shared ha
   assert.equal(image.toString('ascii', 8, 12), 'WEBP');
   assert.match(appSource, /\[CH05_SCENE_02\.id\]: CH05_SCENE_02/);
   assert.equal(CH05_SCENE_02.nextScene, 'ch05_s03');
-  assert.doesNotMatch(appSource, /\[CH05_SCENE_03\.id\]/);
+  assert.match(appSource, /\[CH05_SCENE_03\.id\]: CH05_SCENE_03/);
+  assert.doesNotMatch(appSource, /\[CH05_SCENE_04\.id\]/);
 });
 
 test('S02 requires ch05_s01_complete and direct answer/support writes are guarded', () => {
@@ -173,7 +174,7 @@ test('LC13 support is explicit and retryable answers restore from existing share
   assert.equal(state.applied_events.includes('ch05_lc13_completed'), false);
 });
 
-test('all nine LC13 answers complete once; explicit Continue saves S02 once and keeps S03 as a boundary', () => {
+test('all nine LC13 answers complete once; explicit Continue saves S02 once and routes into guarded S03', () => {
   let state = setupS02();
   for (const [index, sample] of CH05_SCENE_02.challenge.samples.entries()) {
     for (const [dimensionIndex, dimension] of CH05_SCENE_02.challenge.dimensions.entries()) {
@@ -200,8 +201,9 @@ test('all nine LC13 answers complete once; explicit Continue saves S02 once and 
   assert.equal(completeScene(navigated, CH05_SCENE_02), navigated, 'revisiting and continuing cannot duplicate the event');
   navigated = setScene(navigated, CH05_SCENE_02.nextScene); // browser Forward restores the S03 boundary
   assert.equal(navigated.applied_events.filter((event) => event === 'ch05_s02_complete').length, 1);
-  assert.match(appSource, /hashScene === 'ch05_s03' && state\.applied_events\.includes\('ch05_s02_complete'\)/);
-  assert.match(appSource, /Listening Under Pressure is complete\. The next Chapter V scene is not implemented/);
+  assert.match(appSource, /hashScene === 'ch05_s03' && !state\.applied_events\.includes\('ch05_s02_complete'\)/);
+  assert.match(appSource, /\[CH05_SCENE_03\.id\]: CH05_SCENE_03/);
+  assert.match(appSource, /Listening Under Pressure is complete and saved\. Chapter V, The Display and the Question\./);
 });
 
 test('S02 Continue is explicit and Teacher preview remains read-only with scene-specific guidance', () => {

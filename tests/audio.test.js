@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CH03_SCENE_03, CH03_SCENE_04 } from '../src/ch03-content.js';
 import { CH04_SCENE_01 } from '../src/ch04-content.js';
-import { CH05_SCENE_02 } from '../src/ch05-content.js';
+import { CH05_SCENE_02, CH05_SCENE_03 } from '../src/ch05-content.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -906,6 +906,20 @@ test('CH05 S02 LC13 replay owns one foreground sample, ducks AM44, and Sound Off
   assert.equal(loop.paused, false, 'Sound On resumes the existing ambience');
   assert.equal(manager.foreground, null, 'Sound On does not resume an interrupted sample');
   assert.equal(loop.playCalls, 2, 'Sound On resumes the same loop rather than creating a duplicate');
+});
+
+test('CH05 S02 to S03 keeps the single AM44 loop and the Chapter V mix', async t => {
+  assert.equal(ambienceForScene(CH05_SCENE_03.id), 'ch05_exhibition_hall');
+  const { manager, elements } = audioHarness(t);
+  await manager.ensureAmbience(CH05_SCENE_02.id);
+  manager.unlock(); await manager.ensureAmbience(CH05_SCENE_02.id);
+  const loop = manager.ambience;
+  assert.equal(loop.src, AMBIENCE_FILES.ch05_exhibition_hall);
+  await manager.ensureAmbience(CH05_SCENE_03.id);
+  assert.equal(manager.ambience, loop);
+  assert.equal(loop.playCalls, 1, 'the shared exhibition loop is not restarted or duplicated');
+  assert.equal(manager.mix, CH02_AUDIO_MIX);
+  assert.equal(elements.filter((audio) => audio.src === AMBIENCE_FILES.ch05_exhibition_hall).length, 1);
 });
 
 test('S01 story voice duck/replay ownership restores the same interior and Sound On resumes only ambience', async t => {
