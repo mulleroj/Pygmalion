@@ -410,42 +410,48 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 
 ## Chapter V – The Reception
 
+**Status:** Chapter V content lock is in docs/chapters/ch05/. This map remains the chapter-spine summary; the chapter documents define exact dialogue, state, audio, visuals and Teacher Mode. Documentation only; no Chapter V runtime or assets are implemented.
+
 **Dramatic arc:** Eliza vstupuje do vlastní, nově vytvořené společenské události. Pod tlakem poslouchá, přepíná registr a zjišťuje, že Higgins a Pickering začínají její úspěch vyprávět jako svůj experimentální výsledek.
 
-**Audio profile:** `VOICE` organizátorka, hosté, Eliza, Higgins a Pickering; `LISTENING` social inference under pressure; `PRONUNCIATION` srozumitelnost v ruchu a code-switching; `SFX` public rooms, schody a městská doprava; `AMBIENCE` vlastní veřejná výstava a noční odchod.
+**Core principle:** Chapter V is not a class-imitation test. Language learning is not identity replacement; accent is not intelligence. Code-switching is repertoire and agency. D10, D11, future_question_style and next_contact are open choices without moral ranking.
+
+**Audio profile:** `VOICE` organizer, guests, Eliza, Higgins and Pickering; `LISTENING` LC13 social inference and LC14 questioning for purpose; `AMBIENCE` one exhibition hall bed S01–S03, quiet side room S04 and exterior steps S05; `SFX` one optional restrained departure cue. No modern PA/electronic sound or modern traffic.
+
+Chapter-level scene, state, audio, visual and Teacher Mode contracts: docs/chapters/ch05/.
 
 ### ch05_s01 – The Borough Exhibition Evening
 
-- **Lokace:** Lambeth Public Rooms; vlastní veřejná večerní událost s výstavou květinářů, krátkými představeními a občanským programem.
+- **Lokace:** main exhibition hall at Lambeth Public Rooms; the same environment is reused in S02–S03.
 - **Čas / atmosféra:** podvečer; světla, program, více skupin posluchačů a tlak veřejnosti.
 - **Postavy:** Eliza, Higgins, Pickering, Mrs Pearce, organizátorka, květináři, hosté.
-- **Děj:** Eliza není vystavena jako Higginsův experiment; má uvést část programu a představit práci květinářů. Událost není ples ani mechanická kopie známé muzikálové scény.
+- **Děj:** Eliza is introduced through her own role and the growers' work, not as Higgins's experiment. The event is not a ball or a recreation of a known musical scene.
 - **Hlavní účel:** připravit veřejnou zkoušku s více adresáty a legitimními registry.
 - **Rozhodnutí hráče:** `D10` – zvolit plán code-switchingu pro organizátorku, patrona a kolegyni z květinářství.
-- **Možné hodnotové změny:** `Pronunciation +1` za vědomou artikulaci, `Confidence +1` za vstup do skupiny, `Independence +1` za vlastní pořadí a obsah.
-- **Uložení:** `long-term: ano`; uloží se `reception_register_plan`.
+- **Možné hodnotové změny:** žádné za výběr D10.
+- **Uložení:** D10 zapisuje pouze `reception_register_plan`; event `ch05_d10_recorded`. Explicit Continue zapisuje `ch05_s01_complete`.
 - **Audio momenty:** `AM43 VOICE` organizátorka vysvětluje program; `AM44 AMBIENCE` public rooms, květiny a více překrývajících se hlasů.
 - **Challenge:** žádná; hráč nastavuje strategii pro následující poslech.
 - **Teacher Mode:** formal register, audience, switching without erasing identity.
-- **Vizuální assety:** Eliza `Her Own Voice / prepared` jako již dosažená vizuální fáze, nikoli hotový osobní vývoj; vlastní public rooms, květinová výstava.
-- **Audio assety:** `organizer_ch05_scene01_001.mp3`, `ambience_borough-exhibition_001.mp3` a přepisy.
+- **Vizuální assety:** Eliza at the `Her Own Voice` visual stage, without implying her personal development is finished; own public rooms and flower exhibition. Stage artwork is a future production dependency noted in the visual plan.
+- **Audio assety:** `organizer_ch05_scene01_001.mp3`, `ch05_borough_exhibition_ambient.mp3` a přepisy.
 - **Návaznost:** `ch05_s02`.
 
 ### ch05_s02 – Listening Under Pressure
 
 - **Lokace:** hlavní sál a okraj výstavy.
-- **Čas / atmosféra:** událost vrcholí; několik současných rozhovorů, hudba pouze jako vzdálený neidentifikující podkres.
+- **Čas / atmosféra:** událost vrcholí; několik současných rozhovorů; AM44 remains restrained indoor crowd/footstep ambience without added music.
 - **Postavy:** Eliza, patron, květinářka, organizátorka, Pickering.
 - **Děj:** Eliza musí z krátkých hlasových signálů vyčíst vztah, účel a míru formálnosti. Poslech probíhá pod tlakem, ale kritická informace je vždy dostupná i textově.
 - **Hlavní účel:** spojit listening, social inference a code-switching v reálném tempu.
 - **Rozhodnutí hráče:** žádné hlavní; hráč volí, koho osloví jako prvního.
-- **Možné hodnotové změny:** `Confidence +1` při vhodném vstupu; `Pronunciation +1` při udržení srozumitelnosti v ruchu.
-- **Uložení:** `long-term: ne`.
+- **Možné hodnotové změny:** žádné za LC13 ani lokální první odpověď.
+- **Uložení:** odpovědi pouze v `challenges.lc13`; první odpověď je dočasná a bez zápisu.
 - **Audio momenty:** `AM45 LISTENING` tři překrývající se krátké sociální signály; `AM46 VOICE` Eliza přepne registr podle adresáta.
 - **Challenge:** `LC13` – social inference: určit vztah, účel a vhodný vstup z hlasu, textu a kontextu.
 - **Teacher Mode:** inference is probabilistic; politeness, status and uncertainty.
 - **Vizuální assety:** několik skupin hostů, textové štítky vztahů, Eliza `Her Own Voice / attentive`.
-- **Audio assety:** `host_ch05_scene02_001.mp3`, `eliza_ch05_scene02_001.mp3`, `listening_reception_mix_001.mp3` a přepisy.
+- **Audio assety:** tři `ch05_lc13_sample_0*.mp3`, `eliza_ch05_scene02_001.mp3` a přepisy.
 - **Návaznost:** `ch05_s03`.
 
 ### ch05_s03 – The Display and the Question
@@ -453,11 +459,11 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 - **Lokace:** u hlavní květinové expozice.
 - **Čas / atmosféra:** pozdější večer; hosté reagují pozitivně, ale Higgins a Pickering shrnují výsledek před ostatními.
 - **Postavy:** Eliza, Higgins, Pickering, organizátorka, hosté.
-- **Děj:** Higgins a Pickering začnou Elizin úspěch popisovat především jako potvrzení svého experimentu. Eliza slyší rozdíl mezi tím, co dokázala, a tím, jak je její výkon přivlastňován.
+- **Děj:** A guest credits the two men. Higgins accepts the framing; Pickering partially corrects it by acknowledging Eliza's work without fully challenging the social frame. Eliza hears the difference between her work and others' account of it.
 - **Hlavní účel:** otevřít otázku, kdo smí definovat význam jejího úspěchu.
-- **Rozhodnutí hráče:** `D11` – přijmout jejich framing jako dočasnou strategii, veřejně přesměrovat uznání k vlastní práci a kolegům, nebo si vyžádat soukromý rozhovor.
-- **Možné hodnotové změny:** `Independence +1` při přesměrování, `Confidence +1` při veřejném vstupu, žádná penalizace při strategickém odkladu.
-- **Uložení:** `long-term: ano`; uloží se `credit_response`.
+- **Rozhodnutí hráče:** `D11` – strategic postponement, public redirection or a private conversation. All are valid and unrated.
+- **Možné hodnotové změny:** žádné za volbu D11.
+- **Uložení:** D11 zapisuje pouze `credit_response`; event `ch05_d11_recorded`. Explicit Continue zapisuje `ch05_s03_complete`.
 - **Audio momenty:** `AM47 VOICE` Higgins a Pickering mluví o výsledku; `AM48 VOICE` Eliza formuluje vlastní nárok na úspěch.
 - **Challenge:** žádná samostatná; rozhodnutí je sociální a jazykové.
 - **Teacher Mode:** passive vs active voice, claiming credit, collective achievement.
@@ -467,37 +473,39 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 
 ### ch05_s04 – What Happens to Me Now?
 
-- **Lokace:** tichý balkon nebo boční místnost Lambeth Public Rooms.
+- **Lokace:** one quiet side room off the exhibition hall; no balcony variant. The exhibition remains faintly audible outside.
 - **Čas / atmosféra:** noc; zvuk události je za dveřmi, otázka se poprvé vysloví naplno.
-- **Postavy:** Eliza, Pickering nebo Mrs Pearce podle předchozí volby.
+- **Postavy:** Eliza plus Pickering after `d11_private_conversation`; otherwise Mrs Pearce.
 - **Děj:** Eliza se ptá: `What happens to me now?` Nejde o žádost o záchranu, ale o otázku vlastnictví budoucnosti. Druhá postava může nabídnout cestu, ne odpověď místo ní.
 - **Hlavní účel:** převést veřejný úspěch do osobní a dlouhodobé otázky.
-- **Rozhodnutí hráče:** žádné hlavní; hráč volí, zda otázku položí přímo, nepřímo, nebo ji rozšíří o konkrétní plán.
-- **Možné hodnotové změny:** `Confidence +1` při přímé otázce; `Independence +1` při pojmenování vlastního plánu.
-- **Uložení:** `long-term: ano` jako `future_question_style`.
-- **Audio momenty:** `AM49 VOICE` Elizina otázka; `AM50 AMBIENCE` utlumená sálová ozvěna a ticho po ní.
-- **Challenge:** `LC14` – formulate a difficult question using directness, politeness and implied meaning podle adresáta.
+- **Rozhodnutí hráče:** personal expression choice `future_question_style`: direct, indirect or plan-focused. It is not scored.
+- **Možné hodnotové změny:** žádné za question style ani LC14.
+- **Uložení:** `future_question_style` plus challenge state in `challenges.lc14`; events `ch05_future_question_style_recorded`, `ch05_lc14_completed`. Explicit Continue writes `ch05_s04_complete`.
+- **Audio momenty:** `AM49 VOICE / LC14 LISTENING` branch dialogue and contextual sample; `AM50 AMBIENCE` quiet side room.
+- **Challenge:** `LC14` – choose a question fitting the companion's stated information need. The key is contextual, not a hierarchy of directness or formality.
 - **Teacher Mode:** future questions, agency language, asking for options rather than permission.
-- **Vizuální assety:** balkon, město v noci, Eliza `Her Own Voice / uncertain but upright`.
-- **Audio assety:** `eliza_ch05_scene04_001.mp3`, `ambience_civic-room_night_001.mp3` a přepis.
+- **Vizuální assety:** shared side room; Eliza `Her Own Voice / thoughtful`; companion chosen from D11.
+- **Audio assety:** branch dialogue and LC14 transcripts; `ch05_lambeth_side_room_ambient.mp3`.
 - **Návaznost:** `ch05_s05`.
 
 ### ch05_s05 – Leaving the Hall
 
 - **Lokace:** schody před Lambeth Public Rooms.
 - **Čas / atmosféra:** pozdní noc; hosté odcházejí, město se zklidňuje.
-- **Postavy:** Eliza, Higgins, Pickering, Mrs Pearce podle větvení.
+- **Postavy:** Eliza; Higgins may ask whether she is coming, but she does not automatically follow him. Contact intention is a separate local choice.
 - **Děj:** Eliza odchází z události s úspěchem, který není konečnou odpovědí. Původní motivace z Chapter I se střetne s novou možností volby.
 - **Hlavní účel:** připravit poslední kapitolu a zachovat několik legitimních cest vpřed.
 - **Rozhodnutí hráče:** žádné hlavní; závěrečná lokální volba, komu Eliza napíše, koho navštíví nebo s kým naváže kontakt jako první.
-- **Možné hodnotové změny:** uloží se `next_contact`; hodnoty beze změny.
+- **Možné hodnotové změny:** explicit S05 completion grants Independence +1 once, unconditionally. Choice of `next_contact` grants nothing.
 - **Uložení:** `long-term: ano` jako vstup do Chapter VI.
-- **Audio momenty:** `AM51 VOICE` krátké rozloučení; `AM52 SFX` schody, kočár nebo městská doprava bez melodické citace.
+- **Audio momenty:** `AM51 VOICE` Eliza's open closing statement; `AM52 AMBIENCE + SFX` restrained night loop and optional one-shot. No modern vehicles or traffic bed.
 - **Challenge:** žádná; kapitola vrcholí otevřenou otázkou.
 - **Teacher Mode:** reflecting on success, options and uncertainty.
 - **Vizuální assety:** schody Lambeth Public Rooms, Eliza `Her Own Voice / composed`, městská noc.
-- **Audio assety:** `eliza_ch05_scene05_001.mp3`, `sfx_lambeth-public-rooms_exit_001.mp3` a přepisy.
-- **Návaznost:** `ch06_s01`; načte `origin_motivation`, `reception_register_plan` a `credit_response`.
+- **Audio assety:** `eliza_ch05_scene05_001.mp3`, `ch05_lambeth_steps_night_ambient.mp3`, optional `sfx_lambeth_public_rooms_exit_001.mp3` and transcripts.
+- **Návaznost:** explicit Continue after `next_contact` writes `ch05_s05_complete` and moves to `ch06_s01`. Chapter VI may read `origin_motivation`, `reception_register_plan`, `credit_response`, `future_question_style` and `next_contact`. No value makes an ending unavailable.
+
+Exact scene text, options, answer keys and asset contracts are in docs/chapters/ch05/.
 
 ## Chapter VI – Her Own Voice
 
@@ -509,11 +517,12 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 
 - **Lokace:** Elizin pokoj nebo květinářská dílna.
 - **Čas / atmosféra:** ráno po recepci; klid po veřejném tlaku, dopisy a nabídky na stole.
-- **Postavy:** Eliza, Mrs Pearce nebo kolegyně z květinářství podle uložených voleb.
+- **Postavy:** Eliza; Higgins, Pickering or Mrs Pearce may be the first contact according to `next_contact`. Other offers may remain written options.
 - **Děj:** Eliza čte různé možnosti: společenské pozvání, placenou práci s jazykem, nebo příležitost spojit výuku s květinářskou komunitou. Žádná možnost není automaticky nejlepší.
 - **Hlavní účel:** zviditelnit důsledky všech tří hodnot a původní motivace.
 - **Rozhodnutí hráče:** žádné hlavní; hráč si prohlédne nabídky v libovolném pořadí.
 - **Možné hodnotové změny:** žádné; načtou se `Pronunciation`, `Confidence`, `Independence` a `origin_motivation`.
+- **Další handoff context:** `reception_register_plan`, `credit_response`, `future_question_style` and `next_contact` may shape entry wording/support only. Missing values do not gate or remove endings.
 - **Uložení:** `long-term: ne`.
 - **Audio momenty:** `AM53 VOICE` čtení krátkých nabídek; `AM54 AMBIENCE` ranní ulice a dílna.
 - **Challenge:** žádná; scéna rekapituluje uložené důsledky.
@@ -571,6 +580,8 @@ Chapter V může používat `Her Own Voice` jako již dosaženou vizuální fáz
 | `decisions.D09` | Uložená recovery preference může později zabarvit formulaci reflexe. | Žádný styl opravy není lepší; volba nesmí snižovat lidskou hodnotu Elizy. |
 | `reception_register_plan` | Vybere adresáty a přirozenější code-switching ve finálním statementu. | Nesmí označit jeden registr za jediný správný. |
 | `credit_response` | Ovlivní, zda vedlejší postavy v epilogu uznají Elizinu práci, kolektiv nebo vlastní experiment. | Strategický odklad nesmí být trest. |
+| `future_question_style` | May inform how Eliza recalls asking about her future. | Must not rank directness, indirectness or planning as the best identity. |
+| `next_contact` | May shape Chapter VI entry/context and who she contacts first. | Must not remove an ending or punish the learner. |
 | `Pronunciation` | Dodá míru artikulační jistoty a dostupné varianty formulace. | Číselný stav nesmí sám blokovat směr. |
 | `Confidence` | Dodá míru přímého vstupu, pauzy a podpory od vedlejších postav. | Vyšší počet příležitostí nesmí vytvořit vítězný ending. |
 | `Independence` | Dodá míru vlastního rámování budoucnosti a přesměrování uznání. | Nízký stav nesmí uzamknout agency. |

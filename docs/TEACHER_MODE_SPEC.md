@@ -410,6 +410,8 @@ S05 is narrative closure, not pass/fail, a grade, or a verdict about intelligenc
 
 ## 8. Chapter V – The Reception
 
+Status: chapter-specific content, state, audio, visual and Teacher Mode details are locked in docs/chapters/ch05/. The scene map is a spine summary; it is not the Chapter V script.
+
 ### 1. Chapter Overview
 
 Eliza vystoupí na vlastní veřejné události v `Lambeth Public Rooms`, kde se potkají květináři, organizátorka, patroni a více skupin posluchačů. Dramatickým účelem je tlak veřejnosti, code-switching a otázka, kdo si přivlastní její úspěch.
@@ -444,13 +446,16 @@ Událost je vlastní fiktivní adaptace, nikoli mechanická obdoba plesu z `My F
 
 ### 7. Decisions – Teacher Notes
 
-- `D10` zkoumá plán registru pro organizátorku, patrona a kolegyni. Uloží `reception_register_plan`.
-- `D11` zkoumá reakci na Higginsovo a Pickeringovo přivlastnění kreditu. Uloží `credit_response`; strategický odklad není špatná volba.
+- `D10` stores `reception_register_plan`: tailor by role, listen then adjust, or keep a core voice with pragmatic changes. All are valid; no signal/reward.
+- `D11` stores `credit_response`: accept for now, redirect publicly, or ask for a private conversation. Delay is not submission; no choice is scored.
+- `future_question_style` and `next_contact` are open choices without a moral key. The temporary S02 first-responder choice is not persisted.
+- Only explicit S05 Continue grants Independence +1, once and regardless of previous choices. LC13/LC14 and personal choices grant no signal.
 
 ### 8. Challenge Key
 
-- `LC13`: správně určit vztah, účel a vhodný vstup z hlasu, textu a situace. Běžná chyba je zaměnit hlasovou autoritu za pravdivost nebo inteligenci.
-- `LC14`: objektivní část ověřuje, zda otázka obsahuje jasný účel a vhodnou míru zdvořilosti; konkrétní přímá/nepřímá formulace je otevřená.
+- `LC13`: answer key matches relationship, purpose and formality for the organiser, patron/guest and flower-worker colleague. Context and intention matter; accent or authority does not prove intelligence or truth.
+- `LC14`: branch-specific answer key selects a question fitting the listener and information need. Many real-world phrasings can work; the contextual key is not a universal hierarchy of directness/formality.
+- Full samples, stable item/answer IDs, contextual branches, retry/support and transcripts are in docs/chapters/ch05/STATE_AND_BRANCHING.md and AUDIO_PLAN.md.
 
 ### 9. Discussion Questions
 
@@ -461,7 +466,7 @@ Událost je vlastní fiktivní adaptace, nikoli mechanická obdoba plesu z `My F
 
 ### 10. Sensitive Framing
 
-Formální registr není vyšší lidská hodnota. Elizin veřejný úspěch nesmí být vyprávěn pouze jako Higginsův experiment. Společenské předsudky jsou předmět kritické diskuse, ne hidden morality systému.
+Formální registr není vyšší lidská hodnota. Elizin veřejný úspěch nesmí být vyprávěn pouze jako Higginsův experiment. Pickering offers a partial correction and remains respectful but imperfect. D10, D11, future_question_style and next_contact have no morally correct answer. Společenské předsudky jsou předmět kritické diskuse, ne hidden morality systému.
 
 ### 11. Suggested Classroom Use
 
@@ -514,7 +519,7 @@ Teacher Mode může spojit accent and identity, employment and opportunity, gend
 ### 7. Decisions – Teacher Notes
 
 - `D12` je explicitní volba směru, nikoli výpočet vítězného skóre. Všechny tři directions zůstávají dostupné.
-- `origin_motivation`, `confirmed_motivation`/`motivation_shift`, practice preference, intonation, the saved D08 preparation choice, recovery, reception plan a credit response mění formulaci, delivery, vedlejší reakce, vizuál, epilog a Teacher summary.
+- `origin_motivation`, `confirmed_motivation`/`motivation_shift`, practice preference, intonation, D08, D09, `reception_register_plan`, `credit_response`, `future_question_style` and `next_contact` may shape wording, delivery, secondary reactions, visuals, epilogue and Teacher summary. They provide context only; no Chapter V choice removes an ending.
 - Nízký interní development signal nesmí směr zablokovat. Teacher Mode nesmí řadit směry od nejlepšího po nejhorší.
 
 ### 8. Challenge Key
