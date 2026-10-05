@@ -20,7 +20,7 @@ const readyS03 = () => ({
   applied_events: ['ch04_s05_complete', 'ch05_s01_complete', 'ch05_s02_complete']
 });
 
-test('S03 has canonical scene identity, original credit dialogue, hall visual and no unproduced voice requests', () => {
+test('S03 keeps canonical scene identity, credit dialogue, hall visual and D11 text-only', () => {
   assert.deepEqual([CH05_SCENE_03.id, CH05_SCENE_03.number, CH05_SCENE_03.title, CH05_SCENE_03.chapter, CH05_SCENE_03.chapterTitle], [
     'ch05_s03', 3, 'The Display and the Question', 'V', 'The Reception'
   ]);
@@ -36,7 +36,23 @@ test('S03 has canonical scene identity, original credit dialogue, hall visual an
   assert.equal(CH05_SCENE_03.background.src, CH05_SCENE_02.background.src);
   assert.equal(CH05_SCENE_03.plate.src, CH05_SCENE_03.background.src);
   assert.equal(CH05_SCENE_03.visualFallback, false);
-  assert.equal(CH05_SCENE_03.voice.length, 0);
+  assert.deepEqual(CH05_SCENE_03.voice.map(({ speaker, transcript, src, inline, generationId, assetId, voiceId, transcriptVerified, humanApproved }) => ({
+    speaker, transcript, src, inline, generationId, assetId, voiceId, transcriptVerified, humanApproved
+  })), [
+    { speaker: 'Patron / guest', transcript: 'Professor Higgins, Colonel Pickering — you must be proud. What a transformation.', src: './assets/audio/characters/supporting/guest_ch05_scene03_001.mp3', inline: true, generationId: 'hSPlHv3PVWSIERvfWefM', assetId: 'ADJhxP7zMtg5vj6jPHCn', voiceId: 'Q6HPFg7bazU61NeyrvBp', transcriptVerified: 'PASS', humanApproved: true },
+    { speaker: 'Higgins', transcript: 'The result speaks for the method.', src: './assets/audio/characters/higgins/higgins_ch05_scene03_001.mp3', inline: true, generationId: 'TvXuEHqKk5tSv3lGKOAB', assetId: 'w0SsT6e6zYt48rD5cluh', voiceId: 'JlptfLxaUpd8pZcw9dKd', transcriptVerified: 'PASS', humanApproved: true },
+    { speaker: 'Pickering', transcript: 'Eliza has worked very hard.', src: './assets/audio/characters/pickering/pickering_ch05_scene03_001.mp3', inline: true, generationId: 'QNDE4DW5FWZ4Pim19QOc', assetId: 'KfaMb6yBtOo1umTgbICr', voiceId: 'JBFqnCBsd6RMkjVDRZzb', transcriptVerified: 'PASS', humanApproved: true }
+  ]);
+  assert.equal(CH05_SCENE_03.voice.some(({ transcript }) => transcript === 'I know what I contributed.'), false, 'AM48 stays unproduced');
+  assert.ok(CH05_SCENE_03.decision.choices.every(({ text }) => !CH05_SCENE_03.voice.some(({ transcript }) => transcript === text)), 'D11 choices remain text-only');
+  assert.deepEqual(CH05_SCENE_03.storyBeats.filter(({ type }) => type === 'dialogue').filter(({ speaker }) => ['Patron / guest', 'Higgins', 'Pickering'].includes(speaker)).slice(0, 3).map(({ text }) => text), CH05_SCENE_03.voice.map(({ transcript }) => transcript), 'each AM47 voice maps only to its exact canonical line');
+  for (const voice of CH05_SCENE_03.voice) {
+    const file = path.join(root, voice.src.slice(2));
+    assert.ok(fs.statSync(file).size > 0, `${voice.src} exists and is non-empty`);
+  }
+  assert.match(appSource, /scene\.voice\.filter\(\(voice\) => voice\.inline && voice\.transcript === beat\.text\)\.map\(\(voice\) => renderAudioControl\(voice\)\)/, 'each inline replay control is bound to its exact dialogue line');
+  const audioPlan = fs.readFileSync(path.join(root, 'docs/chapters/ch05/AUDIO_PLAN.md'), 'utf8');
+  for (const provenance of ['Generation ID | Asset ID', 'hSPlHv3PVWSIERvfWefM', 'ADJhxP7zMtg5vj6jPHCn', 'TvXuEHqKk5tSv3lGKOAB', 'w0SsT6e6zYt48rD5cluh', 'QNDE4DW5FWZ4Pim19QOc', 'KfaMb6yBtOo1umTgbICr', 'Production status:** Optional; not generated.']) assert.ok(audioPlan.includes(provenance));
   const image = fs.readFileSync(path.join(root, CH05_SCENE_03.background.src.slice(2)));
   assert.equal(image.toString('ascii', 0, 4), 'RIFF');
   assert.equal(image.toString('ascii', 8, 12), 'WEBP');
@@ -108,12 +124,12 @@ test('D11 requires explicit Continue, completes once, preserves state through Ba
   assert.match(appSource, /The Display and the Question is complete\. The next Chapter V scene is not implemented in this runtime\./);
 });
 
-test('S03 reuses AM44 continuously and contains no S03 voice player, while Teacher Mode remains read-only', () => {
+test('S03 reuses AM44 continuously and Teacher Mode remains read-only', () => {
   assert.equal(ambienceForScene('ch05_s01'), 'ch05_exhibition_hall');
   assert.equal(ambienceForScene('ch05_s02'), 'ch05_exhibition_hall');
   assert.equal(ambienceForScene('ch05_s03'), 'ch05_exhibition_hall');
   assert.equal(isContinuousAmbienceTransition('ch05_s02', 'ch05_s03'), true);
-  assert.equal(CH05_SCENE_03.voice.length, 0);
+  assert.equal(CH05_SCENE_03.voice.length, 3);
   const teacher = CH05_S03_TEACHER_SECTIONS.flat().join(' ');
   for (const phrase of ['credit and authorship', 'Receiving help', 'Social framing', 'postpone', 'publicly', 'privately', 'no single morally correct answer', 'privacy is not weakness', 'postponement is not failure']) {
     assert.match(teacher, new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'));

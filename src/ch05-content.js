@@ -114,7 +114,35 @@ export const CH05_SCENE_03 = {
   composition: 'ch05-exhibition-hall', visualFallback: false,
   background: { src: './assets/images/locations/ch05/ch05_exhibition_hall.webp', alt: 'Flower exhibition in Lambeth Public Rooms.' },
   plate: { src: './assets/images/locations/ch05/ch05_exhibition_hall.webp', alt: 'Flower exhibition in Lambeth Public Rooms.' },
-  eliza: { src: '', alt: '' }, supporting: [], props: [], voice: [],
+  eliza: { src: '', alt: '' }, supporting: [], props: [], voice: [
+    {
+      id: 'AM47', speaker: 'Patron / guest',
+      src: './assets/audio/characters/supporting/guest_ch05_scene03_001.mp3',
+      transcript: 'Professor Higgins, Colonel Pickering — you must be proud. What a transformation.',
+      inline: true, label: 'Replay Patron / guest',
+      generationId: 'hSPlHv3PVWSIERvfWefM', assetId: 'ADJhxP7zMtg5vj6jPHCn',
+      voice: 'Ruby Fawcett', voiceId: 'Q6HPFg7bazU61NeyrvBp',
+      transcriptVerified: 'PASS', humanApproved: true
+    },
+    {
+      id: 'AM47', speaker: 'Higgins',
+      src: './assets/audio/characters/higgins/higgins_ch05_scene03_001.mp3',
+      transcript: 'The result speaks for the method.',
+      inline: true, label: 'Replay Higgins',
+      generationId: 'TvXuEHqKk5tSv3lGKOAB', assetId: 'w0SsT6e6zYt48rD5cluh',
+      voice: 'Kelvin', voiceId: 'JlptfLxaUpd8pZcw9dKd',
+      transcriptVerified: 'PASS', humanApproved: true
+    },
+    {
+      id: 'AM47', speaker: 'Pickering',
+      src: './assets/audio/characters/pickering/pickering_ch05_scene03_001.mp3',
+      transcript: 'Eliza has worked very hard.',
+      inline: true, label: 'Replay Pickering',
+      generationId: 'QNDE4DW5FWZ4Pim19QOc', assetId: 'KfaMb6yBtOo1umTgbICr',
+      voice: 'George', voiceId: 'JBFqnCBsd6RMkjVDRZzb',
+      transcriptVerified: 'PASS', humanApproved: true
+    }
+  ],
   storyBeats: [
     { type: 'narration', text: 'The guests have enjoyed the exhibition. One visitor turns to Higgins and Pickering while Eliza stands beside the growers’ work.' },
     { type: 'dialogue', speaker: 'Patron / guest', text: 'Professor Higgins, Colonel Pickering — you must be proud. What a transformation.' },

@@ -922,6 +922,56 @@ test('CH05 S02 to S03 keeps the single AM44 loop and the Chapter V mix', async t
   assert.equal(elements.filter((audio) => audio.src === AMBIENCE_FILES.ch05_exhibition_hall).length, 1);
 });
 
+test('three approved CH05 AM47 files have complete MPEG-1 Layer III frames at 44.1 kHz and plausible durations', () => {
+  const assets = [
+    { ...CH05_SCENE_03.voice[0], expectedSeconds: 4.80 },
+    { ...CH05_SCENE_03.voice[1], expectedSeconds: 2.08 },
+    { ...CH05_SCENE_03.voice[2], expectedSeconds: 2.16 }
+  ];
+  for (const asset of assets) {
+    const bytes = fs.readFileSync(path.join(root, asset.src.slice(2)));
+    assert.ok(bytes.length > 0, `${asset.src} is non-empty`);
+    const seconds = mp3Mpeg1Layer3Duration(bytes);
+    assert.ok(Math.abs(seconds - asset.expectedSeconds) < 0.15,
+      `${asset.speaker} duration ${seconds.toFixed(3)}s is plausible against ${asset.expectedSeconds}s`);
+  }
+});
+
+test('CH05 S03 AM47 controls replay the exact lines, replace foreground voices and preserve AM44 mute/duck behavior', async t => {
+  const { manager, elements } = audioHarness(t);
+  await manager.ensureAmbience(CH05_SCENE_02.id);
+  assert.equal(elements.length, 0, 'scene entry does not autoplay voice or ambience');
+  manager.unlock();
+  await manager.ensureAmbience(CH05_SCENE_02.id);
+  const loop = manager.ambience;
+  await manager.ensureAmbience(CH05_SCENE_03.id);
+  assert.equal(manager.ambience, loop, 'S02 to S03 preserves the same AM44 instance');
+  assert.equal(loop.playCalls, 1, 'AM44 is not restarted or duplicated');
+  let previousVoice = null;
+  for (const voice of CH05_SCENE_03.voice) {
+    const playback = await manager.playVoice(voice.src);
+    assert.equal(playback.src, voice.src);
+    assert.equal(loop.volume, CH02_AUDIO_MIX.ambience * CH02_AUDIO_MIX.storyDuck, `${voice.speaker} ducks AM44`);
+    const otherPlayingVoices = elements.filter((audio) => audio !== loop && !audio.paused);
+    assert.deepEqual(otherPlayingVoices, [playback], 'only one foreground clip is active');
+    if (previousVoice) assert.equal(previousVoice.paused, true, 'replaying another speaker stops the prior foreground clip');
+    previousVoice = playback;
+    playback.emit('ended');
+    assert.equal(loop.volume, CH02_AUDIO_MIX.ambience, `${voice.speaker} restores AM44 after playback`);
+  }
+  const interrupted = await manager.playVoice(CH05_SCENE_03.voice[0].src);
+  await manager.setEnabled(false);
+  assert.equal(interrupted.paused, true, 'Sound Off stops the active AM47 voice');
+  assert.equal(loop.paused, true, 'Sound Off stops AM44');
+  assert.equal(manager.foreground, null);
+  await manager.setEnabled(true);
+  assert.equal(loop.paused, false, 'Sound On resumes the same ambience');
+  assert.equal(manager.foreground, null, 'Sound On does not replay interrupted AM47 audio');
+  assert.equal(interrupted.playCalls, 1);
+  assert.equal(loop.playCalls, 2);
+  assert.equal(elements.filter((audio) => audio.src === AMBIENCE_FILES.ch05_exhibition_hall).length, 1);
+});
+
 test('S01 story voice duck/replay ownership restores the same interior and Sound On resumes only ambience', async t => {
   const { manager } = audioHarness(t); manager.unlock(); await manager.ensureAmbience('ch03_s01');
   const loop=manager.ambience;

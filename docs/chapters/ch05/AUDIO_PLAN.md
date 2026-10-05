@@ -55,11 +55,11 @@ Use the canonical Eliza voice ID from docs/audio/ELIZA_VOICE_ARC.md. Chapter V d
 
 Optional story-voice exchange; keep visible text and transcript identical.
 
-| Speaker | Exact transcript | Planned file |
-| --- | --- | --- |
-| Patron / guest | “Professor Higgins, Colonel Pickering — you must be proud. What a transformation.” | assets/audio/characters/supporting/guest_ch05_scene03_001.mp3 |
-| Higgins | “The result speaks for the method.” | assets/audio/characters/higgins/higgins_ch05_scene03_001.mp3 |
-| Pickering | “Eliza has worked very hard.” | assets/audio/characters/pickering/pickering_ch05_scene03_001.mp3 |
+| Speaker | Exact transcript | Runtime file | Generation ID | Asset ID | Voice / ID | Human approved | Transcript verified |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Patron / guest | “Professor Higgins, Colonel Pickering — you must be proud. What a transformation.” | assets/audio/characters/supporting/guest_ch05_scene03_001.mp3 | `hSPlHv3PVWSIERvfWefM` | `ADJhxP7zMtg5vj6jPHCn` | Ruby Fawcett / `Q6HPFg7bazU61NeyrvBp` | yes | PASS |
+| Higgins | “The result speaks for the method.” | assets/audio/characters/higgins/higgins_ch05_scene03_001.mp3 | `TvXuEHqKk5tSv3lGKOAB` | `w0SsT6e6zYt48rD5cluh` | Kelvin / `JlptfLxaUpd8pZcw9dKd` | yes | PASS |
+| Pickering | “Eliza has worked very hard.” | assets/audio/characters/pickering/pickering_ch05_scene03_001.mp3 | `QNDE4DW5FWZ4Pim19QOc` | `KfaMb6yBtOo1umTgbICr` | George / `JBFqnCBsd6RMkjVDRZzb` | yes | PASS |
 
 The guest's next visible sentence, “It was a remarkable evening for you both,” maintains the social framing; it may remain text-only. Pickering's line is a partial, respectful correction, not a sudden change into a possessive character.
 
@@ -68,6 +68,8 @@ The guest's next visible sentence, “It was a remarkable evening for you both,�
 **Text / transcript:** “I know what I contributed.”
 
 **Planned file:** assets/audio/characters/eliza/eliza_ch05_scene03_001.mp3
+
+**Production status:** Optional; not generated.
 
 D11 response options are text-only. Do not voice all three variants.
 
