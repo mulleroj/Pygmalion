@@ -544,7 +544,7 @@ function renderScene(scene) {
   const sfxMarkup = scene.sfx ? renderSfxControl(scene.sfx) : '';
   let body = '';
   if (scene.id === 'ch01_s01') body += renderOpeningTone(scene);
-  body += renderDecision(scene);
+  if (scene.id !== 'ch04_s03') body += renderDecision(scene);
   if (scene.id === 'ch02_s01' && decisionSelected) body += renderLc03(scene);
   if (scene.id === 'ch03_s01') {
     body = `<section class="learning-reference" aria-label="Mouth-position reference"><h2>A sound and a movement</h2><p>${escapeHtml(scene.explanation)}</p></section>` + body;
