@@ -141,6 +141,7 @@ test('evening walk ambience crossfades from the running corridor without restart
   assert.equal(manager.ambienceTransition.from, corridor);
   assert.equal(manager.ambienceTransition.to, evening);
   assert.equal(manager.ambienceId, 'ch04_evening_walk');
+  assert.equal(evening.loop, true, 'S05 evening-walk ambience loops continuously');
   assert.equal(corridor.currentTime, 8.25);
   assert.equal(corridor.playCalls, 1);
   assert.equal(CH04_CORRIDOR_CROSSFADE_MS, 1500);

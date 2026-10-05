@@ -1,6 +1,6 @@
 # Chapter IV Audio Plan
 
-Status: S01 AM34 and S02 AM35/AM36, Teacher Mode cultural-reference audio and canonical ambience are integrated and approved as documented below. S03 AM37/AM38 are integrated as documented. S04 AM39 and side-corridor ambience production contracts are canonically locked; S04 voice and corridor ambience assets remain unproduced.
+Status: S01 AM34 and S02 AM35/AM36, Teacher Mode cultural-reference audio and canonical ambience are integrated and approved as documented below. S03 AM37/AM38 are integrated as documented. S04 AM39 and side-corridor ambience production contracts are canonically locked; S04 voice and corridor ambience assets remain unproduced. S05 AM42's user-approved ambience source is installed and technically verified; final runtime playback remains pending.
 
 ## Shared rules
 
@@ -132,3 +132,5 @@ Logical ambience ID: `ch04_evening_walk`. Planned asset: `assets/audio/ambience/
 Do not automatically reuse `covent-garden-evening-001.mp3`; it has not been approved for S05. At S05 entry, crossfade `ch04_side_corridor → ch04_evening_walk` over approximately 1.5 seconds. Do not stop corridor ambience first, create silence or restart it. Once outdoor ambience takes over, release corridor according to existing AudioManager lifecycle; add no audio subsystem.
 
 AM42 supersedes the earlier scene-map description “night street and footsteps” as a continuous ambience. Do not create a separate footsteps one-shot solely for that old outline. Footsteps, if present, belong only as subtle texture inside AM42.
+
+Approved AM42 provenance: ElevenLabs Generation ID `EJiHFA4AFNtglCxMnkUF`; Asset Library ID `2r4b3Ol2DkDjRk64LNXb`; library filename `pygmalion_ch04_s05_evening_walk_ambient_final.mp3`. The user approved the source recording after listening. Its supplied download URL returned HTTP 200 and `audio/mpeg`; the downloaded bytes are installed as-is at `assets/audio/ambience/ch04_evening_walk_ambient.mp3`. Technical validation: 353,219 bytes, MPEG-1 Layer III, 44.1 kHz, 845 complete frames, decoded duration 22.073 s, no truncated or trailing partial frame; source loop setting is true. SHA-256: `CF72B414460D046F73AC6EEFBFA8EB7D10553B65763FA75430FE711BBAF98A53`. Asset Library metadata reports 370,345 bytes, 17,126 bytes more than the supplied preview/download response; the runtime copy matches that supplied response byte-for-byte. No S05-specific base-gain setting exists, so the shared Chapter II/IV ambience base of `0.10` remains unchanged. The existing 1.5 s corridor-to-walk crossfade and voice duck/restore are unchanged; verify final runtime playback separately.
