@@ -165,7 +165,7 @@ export const CH04_SCENE_03 = {
     { type: 'narration', text: 'A brief pause follows. A few polite chuckles and an uncertain murmur pass around the room.' }
   ],
   voice: [
-    { id: 'AM37-GUEST', src: './assets/audio/characters/guest/guest_ch04_scene03_001.mp3', transcript: 'London seems to have decided we needed more rain.', label: 'Replay Guest', inline: true, generationId: 'iEswFQkkdCbnARcsyJrf', assetId: 'OdeUIsIvTWblA2JJxino', voiceId: 'zp695rEBCwfZ3GYNJOHx' },
+    { id: 'AM37-GUEST', src: './assets/audio/characters/guest/guest_ch04_scene03_001.mp3', transcript: 'London seems to have decided we needed more rain.', label: 'Replay Guest', inline: true, generationId: 'YHt4dBWN4fYiTe75qQ1S', assetId: 'ZDChgbYTwdQ4EaN9TcFn', voiceId: 'zp695rEBCwfZ3GYNJOHx' },
     { id: 'AM37-ELIZA', src: './assets/audio/characters/eliza/eliza_ch04_scene03_001.mp3', transcript: "I don't think London can decide anything. It is a city, not a person.", label: 'Replay Eliza', inline: true, generationId: 'TiXtDJwsylxMdRYK2hbJ', assetId: 'UMu4qIp9n8yLJwPmGQcQ', voiceId: '124kaYCknTDsnwUFdWl9' }
   ],
   reaction: { id: 'AM38', src: './assets/audio/listening/ch04_lc12_reaction_001.mp3', label: 'Replay the room reaction', description: 'There is a short pause, followed by restrained polite chuckles and an uncertain murmur.', generationId: 'cQoJZhP5BeIge3rFK0FH', assetId: '11fEHELi8y1QyyfpzgyI' },
@@ -221,13 +221,13 @@ export const CH04_SCENE_04 = {
     { type: 'dialogue', speaker: 'Eliza', text: 'Then I should have a say in what the test is for.' }
   ],
   voice: [
-    { id: 'AM39-PICKERING', src: './assets/audio/characters/pickering/pickering_ch04_scene04_001.mp3', transcript: 'You spoke clearly, Eliza. The difficulty was not the words.', label: 'Replay Pickering', inline: true, generationId: 'ZNsgEsjAmdm9TmOJR4OR', assetId: 'JfV4RseG9a5GZAZ034iY', voiceId: 'JBFqnCBsd6RMkjVDRZzb' },
-    { id: 'AM39-MRS-PEARCE', src: './assets/audio/characters/mrs-pearce/mrs-pearce_ch04_scene04_001.mp3', transcript: 'People often say one thing and mean something more. That takes time to learn.', label: 'Replay Mrs Pearce', inline: true, generationId: '0LuiuJqkbexw11VzmhZD', assetId: 'sAYmTLMdBlDm7ivz9ZVk', voiceId: 'kBag1HOZlaVBH7ICPE8x' },
-    { id: 'AM39-ELIZA-01', src: './assets/audio/characters/eliza/eliza_ch04_scene04_001.mp3', transcript: 'Then I must learn the people as well as the language.', label: 'Replay Eliza', inline: true, generationId: '4R37vYV1NwpvO5V7diXs', assetId: 'OmOEpEuboSezj5Vlgttm', voiceId: '124kaYCknTDsnwUFdWl9' },
-    { id: 'AM39-HIGGINS-01', src: './assets/audio/characters/higgins/higgins_ch04_scene04_001.mp3', transcript: 'Exactly. Tonight is useful because it shows us what still needs work.', label: 'Replay Higgins', inline: true, generationId: 'Iqxe4dpiQuDh0ZsebHct', assetId: '3T3mfCVqEkYbnuIeliXJ', voiceId: 'JlptfLxaUpd8pZcw9dKd' },
-    { id: 'AM39-ELIZA-02', src: './assets/audio/characters/eliza/eliza_ch04_scene04_002.mp3', transcript: 'It shows you what still needs work.', label: 'Replay Eliza', inline: true, generationId: 'fOe45TP0PgR3Z2yuGI3J', assetId: '0DiNCvJrha1ZNtpWaH5Y', voiceId: '124kaYCknTDsnwUFdWl9' },
-    { id: 'AM39-HIGGINS-02', src: './assets/audio/characters/higgins/higgins_ch04_scene04_002.mp3', transcript: 'It is a test, Eliza.', label: 'Replay Higgins', inline: true, generationId: 'MEeL5AyD5tMNidQLXTTk', assetId: 'skLkAddQhQ0U4cdeq1PN', voiceId: 'JlptfLxaUpd8pZcw9dKd' },
-    { id: 'AM39-ELIZA-03', src: './assets/audio/characters/eliza/eliza_ch04_scene04_003.mp3', transcript: 'Then I should have a say in what the test is for.', label: 'Replay Eliza', inline: true, generationId: 'DFjggg9jDr1aJGh5vIq2', assetId: '75T0W0JVAdd5y3ef8C5p', voiceId: '124kaYCknTDsnwUFdWl9' }
+    { id: 'AM39-PICKERING', src: './assets/audio/characters/pickering/pickering_ch04_scene04_001.mp3', transcript: 'You spoke clearly, Eliza. The difficulty was not the words.', label: 'Replay Pickering', inline: true, generationId: 'NofB5eBMpGss0bMVeVvX', assetId: 'ArBs5EKl9tzFuHXypIF6', voiceId: 'JBFqnCBsd6RMkjVDRZzb' },
+    { id: 'AM39-MRS-PEARCE', src: './assets/audio/characters/mrs-pearce/mrs-pearce_ch04_scene04_001.mp3', transcript: 'People often say one thing and mean something more. That takes time to learn.', label: 'Replay Mrs Pearce', inline: true, generationId: 'zseinCqRQ0NZGSfMY7vE', assetId: 'R5oJ5H7g7GPGKSfMYbtu', voiceId: 'kBag1HOZlaVBH7ICPE8x' },
+    { id: 'AM39-ELIZA-01', src: './assets/audio/characters/eliza/eliza_ch04_scene04_001.mp3', transcript: 'Then I must learn the people as well as the language.', label: 'Replay Eliza', inline: true, generationId: 'O8bHX0DauH16MaEKOCUy', assetId: 'QMaQ8OGWLSQILvmmqSGh', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM39-HIGGINS-01', src: './assets/audio/characters/higgins/higgins_ch04_scene04_001.mp3', transcript: 'Exactly. Tonight is useful because it shows us what still needs work.', label: 'Replay Higgins', inline: true, generationId: 'PKM3uGSV9QvDQ4YrxYf7', assetId: 'v6QLqqFmWystm1mRspJs', voiceId: 'JlptfLxaUpd8pZcw9dKd' },
+    { id: 'AM39-ELIZA-02', src: './assets/audio/characters/eliza/eliza_ch04_scene04_002.mp3', transcript: 'It shows you what still needs work.', label: 'Replay Eliza', inline: true, generationId: 'v9nTSF0nlmatORVu496N', assetId: 'USOUmFinP4JiFcFRT8gp', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM39-HIGGINS-02', src: './assets/audio/characters/higgins/higgins_ch04_scene04_002.mp3', transcript: 'It is a test, Eliza.', label: 'Replay Higgins', inline: true, generationId: 'HhIROAnFyHOGMhBWMbri', assetId: 'xPmBwqAr0hSbytx8OhV0', voiceId: 'JlptfLxaUpd8pZcw9dKd' },
+    { id: 'AM39-ELIZA-03', src: './assets/audio/characters/eliza/eliza_ch04_scene04_003.mp3', transcript: 'Then I should have a say in what the test is for.', label: 'Replay Eliza', inline: true, generationId: 'I8UBaR6Y7hxtYGj71Tjj', assetId: 'zoU7RrKUyS1UiNctZroK', voiceId: '124kaYCknTDsnwUFdWl9' }
   ],
   reflection: {
     prompt: 'What should Eliza carry forward from this moment?',
@@ -274,11 +274,11 @@ export const CH04_SCENE_05 = {
   ],
   voice: [
     { id: 'AM41-ELIZA-01', src: './assets/audio/characters/eliza/eliza_ch04_scene05_001.mp3', transcript: 'I can speak carefully when I need to.', label: 'Replay Eliza', inline: true, generationId: 'JzVdYPWbMuofm2uzcAg4', assetId: 'cwkmV8lRLLRUrsgHn56U', voiceId: '124kaYCknTDsnwUFdWl9' },
-    { id: 'AM41-ELIZA-02', src: './assets/audio/characters/eliza/eliza_ch04_scene05_002.mp3', transcript: 'And I can speak more freely when I choose.', label: 'Replay Eliza', inline: true, generationId: 'e9kcroAtcknt99UsPPqQ', assetId: 'xHXc4d4wB3hARD352RtR', voiceId: '124kaYCknTDsnwUFdWl9' },
-    { id: 'AM41-ELIZA-03', src: './assets/audio/characters/eliza/eliza_ch04_scene05_003.mp3', transcript: 'That is not pretending. It is knowing what I can do.', label: 'Replay Eliza', inline: true, generationId: 'Dcmnf7pmWvt0oM9A3mll', assetId: '0lopqu17BfOMOJ4Wjk4b', voiceId: '124kaYCknTDsnwUFdWl9' },
-    { id: 'AM41-ELIZA-04', src: './assets/audio/characters/eliza/eliza_ch04_scene05_004.mp3', transcript: 'Tonight was not a pass or fail.', label: 'Replay Eliza', inline: true, generationId: 'Jq5D008RCkfZOJ2VcESF', assetId: 'bNP16PPRix4kt5wy4tU9', voiceId: '124kaYCknTDsnwUFdWl9' },
-    { id: 'AM41-ELIZA-05', src: './assets/audio/characters/eliza/eliza_ch04_scene05_005.mp3', transcript: 'It showed me what I can practise — and what I can choose.', label: 'Replay Eliza', inline: true, generationId: 'FRSONWFUcBifjwlZ5tQw', assetId: 'TGE9jhRVGVXCUhiteuqQ', voiceId: '124kaYCknTDsnwUFdWl9' },
-    { id: 'AM41-ELIZA-06', src: './assets/audio/characters/eliza/eliza_ch04_scene05_006.mp3', transcript: 'The choice is mine.', label: 'Replay Eliza', inline: true, generationId: 'gkOM3bdUr3hFFUdd0Bmg', assetId: 'Hwrpm5M8mWBZV73J2bHc', voiceId: '124kaYCknTDsnwUFdWl9' }
+    { id: 'AM41-ELIZA-02', src: './assets/audio/characters/eliza/eliza_ch04_scene05_002.mp3', transcript: 'And I can speak more freely when I choose.', label: 'Replay Eliza', inline: true, generationId: 'ySuauVLG2ahSBKU7hoJb', assetId: 'V4PnXdcJpLBa7Q6YaWgS', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM41-ELIZA-03', src: './assets/audio/characters/eliza/eliza_ch04_scene05_003.mp3', transcript: 'That is not pretending. It is knowing what I can do.', label: 'Replay Eliza', inline: true, generationId: '5MqaYvC8271hjGqW2eW1', assetId: '2GlFLIXJUe22PAEUufGl', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM41-ELIZA-04', src: './assets/audio/characters/eliza/eliza_ch04_scene05_004.mp3', transcript: 'Tonight was not a pass or fail.', label: 'Replay Eliza', inline: true, generationId: 'fpWZcCwH3l780d60v7AV', assetId: 'uZUeKCO8UyXIxbfIvehI', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM41-ELIZA-05', src: './assets/audio/characters/eliza/eliza_ch04_scene05_005.mp3', transcript: 'It showed me what I can practise — and what I can choose.', label: 'Replay Eliza', inline: true, generationId: '7M8JXeT8JFQzjzuKUpyr', assetId: 'EqU3EA2t1KfCTFLz2gBN', voiceId: '124kaYCknTDsnwUFdWl9' },
+    { id: 'AM41-ELIZA-06', src: './assets/audio/characters/eliza/eliza_ch04_scene05_006.mp3', transcript: 'The choice is mine.', label: 'Replay Eliza', inline: true, generationId: '7b76Rzd9SLzxL2tf7IS7', assetId: 'MbUcsgibVnM1TMqxiJG9', voiceId: '124kaYCknTDsnwUFdWl9' }
   ],
   nextScene: 'ch05_s01'
 };

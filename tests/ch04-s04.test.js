@@ -51,10 +51,10 @@ test('S04 is registered with locked story lines, visible transcripts, canonical 
   ]);
   assert.deepEqual(CH04_SCENE_04.voice.map(({ transcript }) => transcript), CH04_SCENE_04.storyBeats.filter(({ speaker }) => speaker).map(({ text }) => text));
   assert.deepEqual(CH04_SCENE_04.voice.map(({ generationId, assetId }) => [generationId, assetId]), [
-    ['ZNsgEsjAmdm9TmOJR4OR','JfV4RseG9a5GZAZ034iY'], ['0LuiuJqkbexw11VzmhZD','sAYmTLMdBlDm7ivz9ZVk'],
-    ['4R37vYV1NwpvO5V7diXs','OmOEpEuboSezj5Vlgttm'], ['Iqxe4dpiQuDh0ZsebHct','3T3mfCVqEkYbnuIeliXJ'],
-    ['fOe45TP0PgR3Z2yuGI3J','0DiNCvJrha1ZNtpWaH5Y'], ['MEeL5AyD5tMNidQLXTTk','skLkAddQhQ0U4cdeq1PN'],
-    ['DFjggg9jDr1aJGh5vIq2','75T0W0JVAdd5y3ef8C5p']
+    ['NofB5eBMpGss0bMVeVvX','ArBs5EKl9tzFuHXypIF6'], ['zseinCqRQ0NZGSfMY7vE','R5oJ5H7g7GPGKSfMYbtu'],
+    ['O8bHX0DauH16MaEKOCUy','QMaQ8OGWLSQILvmmqSGh'], ['PKM3uGSV9QvDQ4YrxYf7','v6QLqqFmWystm1mRspJs'],
+    ['v9nTSF0nlmatORVu496N','USOUmFinP4JiFcFRT8gp'], ['HhIROAnFyHOGMhBWMbri','xPmBwqAr0hSbytx8OhV0'],
+    ['I8UBaR6Y7hxtYGj71Tjj','zoU7RrKUyS1UiNctZroK']
   ]);
   assert.deepEqual(CH04_SCENE_04.voice.map(({ voiceId }) => voiceId), ['JBFqnCBsd6RMkjVDRZzb','kBag1HOZlaVBH7ICPE8x','124kaYCknTDsnwUFdWl9','JlptfLxaUpd8pZcw9dKd','124kaYCknTDsnwUFdWl9','JlptfLxaUpd8pZcw9dKd','124kaYCknTDsnwUFdWl9']);
   assert.equal(CH04_SCENE_03.nextScene, 'ch04_s04');
@@ -96,7 +96,7 @@ test('approved corridor art and all eight audio files are local, complete and de
   const audio = [...CH04_SCENE_04.voice.map(({ src }) => src), './assets/audio/ambience/ch04_side_corridor_ambient.mp3'];
   assert.equal(audio.length, 8);
   const metadata = audio.map((src) => inspectMp3(path.join(root, src.replace(/^\.\//,''))));
-  const expectedDurations = [7.36,5.84,9.36,8.32,2.08,1.60,2.56,18.0];
+  const expectedDurations = [3.68,7.44,2.40,4.32,1.76,1.60,2.08,18.0];
   metadata.forEach(({ duration }, index) => assert.ok(Math.abs(duration - expectedDurations[index]) <= 0.12, `${audio[index]} duration ${duration.toFixed(3)}s`));
   for (const asset of CH04_SCENE_04.voice) assert.ok(asset.transcript && asset.src.includes('/characters/'));
 });

@@ -64,9 +64,9 @@ test('S05 registration, canonical title, visual composition, exact story order, 
   ]);
   assert.deepEqual(CH04_SCENE_05.voice.map(({ transcript }) => transcript), dialogue.map(({ text }) => text));
   assert.deepEqual(CH04_SCENE_05.voice.map(({ generationId, assetId }) => [generationId, assetId]), [
-    ['JzVdYPWbMuofm2uzcAg4','cwkmV8lRLLRUrsgHn56U'], ['e9kcroAtcknt99UsPPqQ','xHXc4d4wB3hARD352RtR'],
-    ['Dcmnf7pmWvt0oM9A3mll','0lopqu17BfOMOJ4Wjk4b'], ['Jq5D008RCkfZOJ2VcESF','bNP16PPRix4kt5wy4tU9'],
-    ['FRSONWFUcBifjwlZ5tQw','TGE9jhRVGVXCUhiteuqQ'], ['gkOM3bdUr3hFFUdd0Bmg','Hwrpm5M8mWBZV73J2bHc']
+    ['JzVdYPWbMuofm2uzcAg4','cwkmV8lRLLRUrsgHn56U'], ['ySuauVLG2ahSBKU7hoJb','V4PnXdcJpLBa7Q6YaWgS'],
+    ['5MqaYvC8271hjGqW2eW1','2GlFLIXJUe22PAEUufGl'], ['fpWZcCwH3l780d60v7AV','uZUeKCO8UyXIxbfIvehI'],
+    ['7M8JXeT8JFQzjzuKUpyr','EqU3EA2t1KfCTFLz2gBN'], ['7b76Rzd9SLzxL2tf7IS7','MbUcsgibVnM1TMqxiJG9']
   ]);
   assert.ok(CH04_SCENE_05.voice.every(({ inline, voiceId }) => inline && voiceId === '124kaYCknTDsnwUFdWl9'));
   assert.ok(CH04_SCENE_05.voice.every(({ generationId }) => generationId !== 'BO32BXMObvpJz5BtUekn'));
@@ -112,7 +112,7 @@ test('approved S05 background and all seven downloaded audio assets are present 
     ...CH04_SCENE_05.voice.map(({ src }) => src),
     './assets/audio/ambience/ch04_evening_walk_ambient.mp3'
   ];
-  const expected = [1.92,2.24,3.68,1.92,8.16,4.96,22.0];
+  const expected = [1.92,2.16,2.96,1.92,3.28,1.12,22.0];
   const actual = files.map((file, index) => {
     const result = inspectMp3(path.join(root, file.replace(/^\.\//, '')));
     assert.ok(Math.abs(result.duration - expected[index]) <= 0.12, `${file}: ${result.duration.toFixed(3)}s`);
