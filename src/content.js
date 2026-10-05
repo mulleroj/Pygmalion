@@ -209,7 +209,8 @@ export const AUDIO_FILES = [
 export const VISUAL_FILES = Object.values(VISUALS).map((asset) => asset.src.replace(/^\.\/assets\//, ''));
 
 export function ambienceForScene(sceneId) {
-  if (sceneId?.startsWith('ch05_')) return null; // Chapter V audio is not yet produced; never reuse Chapter I rain.
+  if (sceneId === 'ch05_s01') return 'ch05_exhibition_hall';
+  if (sceneId?.startsWith('ch05_')) return null; // Later Chapter V audio is not yet produced; never reuse Chapter I rain.
   if (sceneId === 'ch04_s05') return 'ch04_evening_walk';
   if (sceneId === 'ch04_s04') return 'ch04_side_corridor';
   if (['ch04_s02', 'ch04_s03'].includes(sceneId)) return 'ch04_social_tea_room';

@@ -1,6 +1,6 @@
 # Chapter V Audio Plan — The Reception
 
-Status: content and audio-purpose plan locked; no audio generated. AM43–AM52 numbering follows SCENE_MAP.md. All voice/listening audio is optional or challenge-scoped and has visible story text or a transcript. Core cast uses canonical voice IDs; supporting-role casting remains to be assigned before production. No selected personal-choice line needs a separate TTS variant.
+Status: content and audio-purpose plan locked; AM43 and AM44 approved sources are integrated for S01. AM43–AM52 numbering follows SCENE_MAP.md. All voice/listening audio is optional or challenge-scoped and has visible story text or a transcript. Core cast uses canonical voice IDs; supporting-role casting remains to be assigned before production. No selected personal-choice line needs a separate TTS variant.
 
 ## Shared production rules
 
@@ -17,6 +17,8 @@ Status: content and audio-purpose plan locked; no audio generated. AM43–AM52 n
 
 **Planned file:** assets/audio/characters/supporting/organizer_ch05_scene01_001.mp3
 
+**Production provenance:** ElevenLabs Generation ID `wBtfcWtx0WTT4DxtPnKR`; Asset Library ID `30yI9UQNQKzklOXBU7OC`; voice Cass — Warm and Energetic British Woman (Voice ID `ITRml9f5K7moz24wRnmV`). Transcript verified: PASS. Human approved: yes. Asset Library filename: `pygmalion_ch05_s01_organiser_am43_clean.mp3`. Runtime uses the planned file above unchanged from the supplied preview download.
+
 This begins the public event. Eliza's role and the growers' work remain explicit in visible text.
 
 ## AM44 — Exhibition hall ambience
@@ -24,6 +26,8 @@ This begins the public event. Eliza's role and the growers' work remain explicit
 **Category:** continuous ambience for S01–S03.
 
 **Planned file:** assets/audio/ambience/ch05_borough_exhibition_ambient.mp3
+
+**Production provenance:** ElevenLabs Generation ID `fzwkpWhCMP5dH2NfNmHu`; Asset Library ID `jC6RVeriDcd3ed2pan3j`. Duration: 24 s; loop: true; human approved: yes. Asset Library filename: `pygmalion_ch05_s01_exhibition_hall_ambience_am44.mp3`. Runtime uses the planned file above unchanged from the supplied preview download.
 
 Low indoor crowd murmur, restrained footsteps and occasional movement among displays. No identifiable speech, modern PA, electronic sounds or music. Crossfade gently from Chapter IV's evening-walk ambience; one loop carries across S01–S03 without restarting. Keep below voice level; duck during story voice and more strongly during LC13.
 

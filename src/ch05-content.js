@@ -11,7 +11,15 @@ export const CH05_SCENE_01 = {
   supporting: [
     cutout('./assets/images/characters/higgins/runtime/higgins_master_cutout.png', 'Henry Higgins stands among the guests.', 'higgins'),
     cutout('./assets/images/characters/pickering/runtime/pickering_master_cutout.png', 'Colonel Pickering stands near the flower display.', 'pickering')
-  ], props: [], voice: [],
+  ], props: [], voice: [{
+    id: 'AM43', speaker: 'Organiser',
+    src: './assets/audio/characters/supporting/organizer_ch05_scene01_001.mp3',
+    transcript: 'Miss Doolittle, the growers are ready. Would you like to begin?',
+    inline: true, label: 'Replay organiser',
+    generationId: 'wBtfcWtx0WTT4DxtPnKR', assetId: '30yI9UQNQKzklOXBU7OC',
+    voice: 'Cass — Warm and Energetic British Woman', voiceId: 'ITRml9f5K7moz24wRnmV',
+    transcriptVerified: 'PASS', humanApproved: true
+  }],
   storyBeats: [
     { type: 'narration', text: 'Warm lamps light the exhibition hall. Flower growers stand beside their displays. Eliza has a place in the programme, and the organiser comes to speak with her.' },
     { type: 'dialogue', speaker: 'Organiser', text: 'Miss Doolittle, the growers are ready. Would you like to begin?' },
