@@ -4,19 +4,33 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CH05_SCENE_04, CH05_S04_TEACHER_SECTIONS } from '../src/ch05-content.js';
+import { ambienceForScene } from '../src/content.js';
 import { applyDecision, completeScene, createInitialState, getSceneAdvanceBlock, loadState, markLc14SupportUsed, recordLc14Answer, saveState, setScene } from '../src/state.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const app = fs.readFileSync(path.join(root, 'src/app.js'), 'utf8');
 const enterS04 = (credit) => setScene({ ...createInitialState(), credit_response: credit, applied_events: ['ch05_s03_complete'] }, 'ch05_s04');
 
-test('S04 has canonical Chapter V identity, guard and pending visual/audio fallbacks', () => {
+test('S04 has canonical identity, guard, approved side-room visual and pending audio', () => {
   assert.deepEqual([CH05_SCENE_04.id, CH05_SCENE_04.number, CH05_SCENE_04.title, CH05_SCENE_04.chapter], ['ch05_s04', 4, 'What Happens to Me Now?', 'V']);
   assert.equal(CH05_SCENE_04.location, 'Quiet side room off the exhibition hall');
-  assert.equal(CH05_SCENE_04.visualFallback, true);
-  assert.deepEqual(CH05_SCENE_04.background, { src: '', alt: '' });
+  assert.equal(CH05_SCENE_04.visualFallback, false);
+  assert.equal(CH05_SCENE_04.background.src, './assets/images/locations/ch05/ch05_lambeth_public_rooms_side_room.webp');
+  assert.deepEqual(CH05_SCENE_04.plate, CH05_SCENE_04.background);
+  assert.equal(CH05_SCENE_04.composition, 'ch05-side-room');
+  const imagePath = path.join(root, CH05_SCENE_04.background.src.slice(2));
+  const image = fs.readFileSync(imagePath);
+  assert.equal(image.toString('ascii', 0, 4), 'RIFF');
+  assert.equal(image.toString('ascii', 8, 12), 'WEBP');
+  assert.equal(image.toString('ascii', 12, 16), 'VP8L');
+  const width = 1 + image[21] + ((image[22] & 0x3f) << 8);
+  const height = 1 + ((image[24] & 0x0f) << 10) + (image[23] << 2) + ((image[22] & 0xc0) << 6);
+  assert.deepEqual([width, height], [1672, 941]);
+  assert.equal(width / height, 1672 / 941);
   assert.equal(CH05_SCENE_04.audioPending, true);
   assert.deepEqual(CH05_SCENE_04.voice, []);
+  assert.equal(ambienceForScene('ch05_s04'), null);
+  assert.match(app, /scene\.eliza\?\.src \? `<div class="art-layer art-eliza">/);
   assert.match(app, /\[CH05_SCENE_04\.id\]: CH05_SCENE_04/);
   assert.match(app, /hashScene === 'ch05_s04' && !state\.applied_events\.includes\('ch05_s03_complete'\)/);
   assert.equal(getSceneAdvanceBlock(setScene(createInitialState(), 'ch05_s04'), CH05_SCENE_04), 'Complete Chapter V Scene 03 before opening What Happens to Me Now?');

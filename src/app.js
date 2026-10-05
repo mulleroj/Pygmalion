@@ -189,7 +189,7 @@ function renderArt(scene) {
     <div class="art-background"><img src="${scene.background.src}" alt="${escapeHtml(scene.background.alt)}"></div>
     ${plate}
     <div class="art-layer art-support">${support}</div>
-    <div class="art-layer art-eliza"><img src="${scene.eliza.src}" alt="${escapeHtml(scene.eliza.alt)}" loading="lazy"></div>
+    ${scene.eliza?.src ? `<div class="art-layer art-eliza"><img src="${scene.eliza.src}" alt="${escapeHtml(scene.eliza.alt)}" loading="lazy"></div>` : ''}
     <div class="art-layer art-props">${props}</div>
     <figcaption>Chapter ${chapterLabel(scene)} · ${escapeHtml(scene.title)}</figcaption>
   </figure>`;

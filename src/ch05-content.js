@@ -168,8 +168,9 @@ export const CH05_SCENE_04 = {
   id: 'ch05_s04', number: 4, chapter: 'V', chapterTitle: 'The Reception', sceneCount: 5,
   title: 'What Happens to Me Now?', kicker: 'Chapter V · The Reception',
   location: 'Quiet side room off the exhibition hall', visualStage: 'her_own_voice', voiceStage: 'Her Own Voice',
-  composition: 'ch05-side-room-pending', visualFallback: true,
-  background: { src: '', alt: '' }, plate: { src: '', alt: '' }, eliza: { src: '', alt: '' },
+  composition: 'ch05-side-room', visualFallback: false,
+  background: { src: './assets/images/locations/ch05/ch05_lambeth_public_rooms_side_room.webp', alt: 'A quiet side room opening onto the flower exhibition hall.' },
+  plate: { src: './assets/images/locations/ch05/ch05_lambeth_public_rooms_side_room.webp', alt: 'A quiet side room opening onto the flower exhibition hall.' }, eliza: { src: '', alt: '' },
   supporting: [], props: [], voice: [], audioPending: true,
   nextScene: 'ch05_s05',
   branches: {
