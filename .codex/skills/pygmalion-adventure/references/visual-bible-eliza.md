@@ -61,6 +61,14 @@ Budoucí generování Elizy musí zachovat stejný obličej, stejné vlasy, stej
 - stále jasně tatáž Eliza;
 - žádná pohádková princezna.
 
+Her Own Voice thoughtful canonical visual: APPROVED / LOCKED
+
+- Master: `assets/images/characters/eliza/eliza_her-own-voice_thoughtful.webp`.
+- Source PNG: `assets/images/characters/eliza/source/eliza_her-own-voice_thoughtful.png`.
+- Runtime cutout: `assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png`.
+- This is the same Eliza as the approved Flower Girl master, with a composed, reflective expression, elegant blue-grey Edwardian dress and both boots visible.
+- S04 uses this cutout. Preserve the full body and transparent silhouette; do not crop either boot or treat this later stage as a new face.
+
 Možné finální směry: `Social Success`, `Independent Voice`, `Integrated Identity`. Všechny zachovávají stejnou Elizu; případná vnitřní konfliktnost je vlastnost cesty, ne samostatný trestný ending.
 
 ## Význam proměny

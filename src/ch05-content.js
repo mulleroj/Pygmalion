@@ -170,12 +170,14 @@ export const CH05_SCENE_04 = {
   location: 'Quiet side room off the exhibition hall', visualStage: 'her_own_voice', voiceStage: 'Her Own Voice',
   composition: 'ch05-side-room', visualFallback: false,
   background: { src: './assets/images/locations/ch05/ch05_lambeth_public_rooms_side_room.webp', alt: 'A quiet side room opening onto the flower exhibition hall.' },
-  plate: { src: './assets/images/locations/ch05/ch05_lambeth_public_rooms_side_room.webp', alt: 'A quiet side room opening onto the flower exhibition hall.' }, eliza: { src: '', alt: '' },
+  plate: { src: './assets/images/locations/ch05/ch05_lambeth_public_rooms_side_room.webp', alt: 'A quiet side room opening onto the flower exhibition hall.' },
+  eliza: { src: './assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png', alt: 'Eliza, thoughtful and composed in her own voice.' },
   supporting: [], props: [], voice: [], audioPending: true,
   nextScene: 'ch05_s05',
   branches: {
     d11_private_conversation: {
       companion: 'Pickering',
+      supporting: [cutout('./assets/images/characters/pickering/runtime/pickering_full-body_master_cutout.png', 'Colonel Pickering stands opposite Eliza in the side room.', 'pickering')],
       storyBeats: [
         { type: 'dialogue', speaker: 'Pickering', text: 'You wanted to speak privately.' },
         { type: 'dialogue', speaker: 'Eliza', text: "Yes. I know what I can do now. I don't know what happens to me next." },
@@ -191,6 +193,7 @@ export const CH05_SCENE_04 = {
     },
     d11_accept_for_now: {
       companion: 'Mrs Pearce',
+      supporting: [cutout('./assets/images/characters/mrs-pearce/runtime/mrs-pearce_practical-questioning_cutout.png', 'Mrs Pearce stands opposite Eliza in the side room.', 'mrs-pearce')],
       storyBeats: [
         { type: 'dialogue', speaker: 'Mrs Pearce', text: "You've gone quiet." },
         { type: 'dialogue', speaker: 'Eliza', text: 'I am thinking about tomorrow.' },

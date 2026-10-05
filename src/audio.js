@@ -10,7 +10,8 @@ const AMBIENCE_FILES = {
   gramophone_distant: './assets/audio/ambience/gramophone_distant.mp3',
   ch04_side_corridor: './assets/audio/ambience/ch04_side_corridor_ambient.mp3',
   ch04_evening_walk: './assets/audio/ambience/ch04_evening_walk_ambient.mp3',
-  ch05_exhibition_hall: './assets/audio/ambience/ch05_borough_exhibition_ambient.mp3'
+  ch05_exhibition_hall: './assets/audio/ambience/ch05_borough_exhibition_ambient.mp3',
+  ch05_side_room: './assets/audio/ambience/ch05_lambeth_side_room_ambient.mp3'
 };
 export const CH04_CORRIDOR_CROSSFADE_MS = 1500;
 export const CH04_TEA_ROOM_VARIANTS = Object.freeze([
@@ -579,7 +580,7 @@ export class AudioManager {
     this.sceneId = sceneId;
     this.contextualSpec = contextual;
     // S01 begins from approved interior levels; Chapter III human mix QA is pending.
-    this.mix = sceneId?.startsWith('ch02_') || ['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch04_s01', 'ch04_s02', 'ch04_s03', 'ch04_s04', 'ch04_s05', 'ch05_s01', 'ch05_s02', 'ch05_s03'].includes(sceneId) ? CH02_AUDIO_MIX : CH01_AUDIO_MIX;
+    this.mix = sceneId?.startsWith('ch02_') || ['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch04_s01', 'ch04_s02', 'ch04_s03', 'ch04_s04', 'ch04_s05', 'ch05_s01', 'ch05_s02', 'ch05_s03', 'ch05_s04'].includes(sceneId) ? CH02_AUDIO_MIX : CH01_AUDIO_MIX;
     this.ambienceVolume = this.mix.ambience;
     this.contextualVolume = this.mix.contextual;
     const id = sceneId ? ambienceForScene(sceneId) : null;

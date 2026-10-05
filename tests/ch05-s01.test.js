@@ -146,7 +146,8 @@ test('S01 AM43 is the sole inline Organiser replay with approved provenance and 
 test('S01 AM43 and AM44 MP3s are complete MPEG-1 Layer III streams at 44.1 kHz', () => {
   const assets = [
     { src: CH05_SCENE_01.voice[0].src, duration: 3.76, tolerance: 0.12 },
-    { src: AMBIENCE_FILES.ch05_exhibition_hall, duration: 24, tolerance: 0.12 }
+    { src: AMBIENCE_FILES.ch05_exhibition_hall, duration: 24, tolerance: 0.12 },
+    { src: AMBIENCE_FILES.ch05_side_room, duration: 24, tolerance: 0.12 }
   ];
   for (const asset of assets) {
     const bytes = fs.readFileSync(path.join(root, asset.src.slice(2)));
@@ -171,7 +172,8 @@ test('S01 AM43 and AM44 MP3s are complete MPEG-1 Layer III streams at 44.1 kHz',
   const plan = fs.readFileSync(path.join(root, 'docs/chapters/ch05/AUDIO_PLAN.md'), 'utf8');
   for (const provenance of [
     'Generation ID `wBtfcWtx0WTT4DxtPnKR`', 'Asset Library ID `30yI9UQNQKzklOXBU7OC`', 'Transcript verified: PASS',
-    'Generation ID `fzwkpWhCMP5dH2NfNmHu`', 'Asset Library ID `jC6RVeriDcd3ed2pan3j`', 'Duration: 24 s; loop: true; human approved: yes'
+    'Generation ID `fzwkpWhCMP5dH2NfNmHu`', 'Asset Library ID `jC6RVeriDcd3ed2pan3j`', 'Duration: 24 s; loop: true; human approved: yes',
+    'Derived locally from approved AM44', '1.8 kHz low-pass filter', '9 dB attenuation', 'Human listening approval: pending'
   ]) assert.ok(plan.includes(provenance), `AUDIO_PLAN includes ${provenance}`);
 });
 
@@ -183,9 +185,10 @@ test('S01 uses one AM44 loop after gesture; Sound Off/On and AM43 duck/restore f
   assert.equal(ambienceForScene('ch05_s01'), 'ch05_exhibition_hall');
   assert.equal(ambienceForScene('ch05_s02'), 'ch05_exhibition_hall');
   assert.equal(ambienceForScene('ch05_s03'), 'ch05_exhibition_hall');
-  assert.equal(ambienceForScene('ch05_s04'), null);
+  assert.equal(ambienceForScene('ch05_s04'), 'ch05_side_room');
   assert.equal(ambienceForScene('ch05_s05'), null);
   assert.equal(AMBIENCE_FILES.ch05_exhibition_hall, './assets/audio/ambience/ch05_borough_exhibition_ambient.mp3');
+  assert.equal(AMBIENCE_FILES.ch05_side_room, './assets/audio/ambience/ch05_lambeth_side_room_ambient.mp3');
   assert.equal(ambienceForScene('ch01_s01'), 'covent_garden_rain_market');
   assert.equal(ambienceForScene('ch04_s05'), 'ch04_evening_walk');
   await manager.ensureAmbience('ch05_s01');
@@ -225,5 +228,16 @@ test('S01 entry retires Chapter IV evening-walk loop and starts only the Chapter
   await manager.ensureAmbience('ch05_s01');
   assert.equal(eveningWalk.paused, true);
   assert.equal(manager.ambience.src, AMBIENCE_FILES.ch05_exhibition_hall);
+  assert.equal(elements.filter((audio) => !audio.paused && audio.loop).length, 1);
+  const hall = manager.ambience;
+  await manager.ensureAmbience('ch05_s04');
+  assert.equal(ambienceForScene('ch05_s01'), 'ch05_exhibition_hall');
+  assert.equal(ambienceForScene('ch05_s02'), 'ch05_exhibition_hall');
+  assert.equal(ambienceForScene('ch05_s03'), 'ch05_exhibition_hall');
+  assert.equal(manager.ambience.src, AMBIENCE_FILES.ch05_side_room);
+  assert.equal(manager.ambience.loop, true);
+  assert.equal(manager.ambience.volume, CH02_AUDIO_MIX.ambience);
+  assert.equal(manager.mix, CH02_AUDIO_MIX);
+  assert.notEqual(manager.ambience, hall);
   assert.equal(elements.filter((audio) => !audio.paused && audio.loop).length, 1);
 });

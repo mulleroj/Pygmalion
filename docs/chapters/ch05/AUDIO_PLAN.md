@@ -102,6 +102,10 @@ Attach LC14's answer options and feedback to the visible challenge text. Audio n
 
 **Planned file:** assets/audio/ambience/ch05_lambeth_side_room_ambient.mp3
 
+**Production provenance:** Derived locally from approved AM44 `assets/audio/ambience/ch05_borough_exhibition_ambient.mp3` with a 1.8 kHz low-pass filter, 9 dB attenuation and 128 kb/s MP3 encoding. Source and output decode to 24.00 s at 44.1 kHz mono. The decoded output loop-boundary delta is lower than AM44; runtime loops it continuously. No external generation was used. Human listening approval: pending.
+
+**Technical check:** Decoded RMS is 9.67 dB below AM44. The absolute last-to-first sample delta fell from 0.000820 to 0.000363 (normalized float amplitude); the derived seam is below the source's 99th-percentile adjacent-sample step.
+
 Low room tone with the exhibition muffled beyond a closed or partly closed door and sparse distant movement. No intelligible voices or music. Crossfade gently from AM44; duck during story voice and LC14, then restore without restarting the scene loop.
 
 ## AM51 — Eliza, optional story voice
