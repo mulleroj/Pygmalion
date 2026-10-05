@@ -4,8 +4,9 @@ export const CH05_SCENE_01 = {
   id: 'ch05_s01', number: 1, chapter: 'V', chapterTitle: 'The Reception', sceneCount: 5,
   title: 'The Borough Exhibition Evening', kicker: 'Chapter V · The Reception',
   location: 'Lambeth Public Rooms — main exhibition hall', visualStage: 'her_own_voice', voiceStage: 'Her Own Voice',
-  composition: 'ch05-exhibition-hall', visualFallback: true,
-  background: { src: '', alt: '' }, plate: { src: '', alt: '' },
+  composition: 'ch05-exhibition-hall', visualFallback: false,
+  background: { src: './assets/images/locations/ch05/ch05_exhibition_hall.webp', alt: 'Flower exhibition in Lambeth Public Rooms.' },
+  plate: { src: './assets/images/locations/ch05/ch05_exhibition_hall.webp', alt: 'Flower exhibition in Lambeth Public Rooms.' },
   eliza: { src: '', alt: '' },
   supporting: [
     cutout('./assets/images/characters/higgins/runtime/higgins_master_cutout.png', 'Henry Higgins stands among the guests.', 'higgins'),

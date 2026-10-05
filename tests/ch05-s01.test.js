@@ -1,11 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { CH05_SCENE_01, CH05_S01_TEACHER_SECTIONS } from '../src/ch05-content.js';
 import { ambienceForScene } from '../src/content.js';
 import { applyDecision, completeScene, createInitialState, getSceneAdvanceBlock, loadState, saveState, setScene } from '../src/state.js';
 
 const ids = ['d10_tailor_by_role', 'd10_listen_then_adjust', 'd10_keep_core_voice'];
 const ready = () => ({ ...setScene(createInitialState(), CH05_SCENE_01.id), applied_events: ['ch04_s05_complete'] });
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 test('S01 has locked identity, setting and canonical script beats', () => {
   assert.deepEqual([CH05_SCENE_01.id, CH05_SCENE_01.title, CH05_SCENE_01.chapter, CH05_SCENE_01.chapterTitle, CH05_SCENE_01.location], [
@@ -65,13 +69,25 @@ test('explicit S01 completion is write-once and routes only to the unimplemented
   assert.equal(done.independence, selected.independence);
 });
 
-test('S01 Teacher Mode explains open register choice and remains read-only; visual/audio media are absent safely', () => {
+test('S01 uses the canonical exhibition background and its runtime image is valid', () => {
+  const expected = './assets/images/locations/ch05/ch05_exhibition_hall.webp';
+  assert.equal(CH05_SCENE_01.background.src, expected);
+  assert.equal(CH05_SCENE_01.plate.src, expected);
+  assert.match(CH05_SCENE_01.background.alt, /flower exhibition in lambeth public rooms/i);
+  const image = fs.readFileSync(path.join(root, expected.slice(2)));
+  assert.equal(image.toString('ascii', 0, 4), 'RIFF');
+  assert.equal(image.toString('ascii', 8, 12), 'WEBP');
+  assert.ok(image.length > 1000);
+});
+
+test('S01 Teacher Mode explains open register choice and remains read-only; visual fallback is inactive and audio absent', () => {
   assert.match(CH05_S01_TEACHER_SECTIONS.flat().join(' '), /code-switching/i);
   assert.match(CH05_S01_TEACHER_SECTIONS.flat().join(' '), /Accent is not intelligence/);
   assert.match(CH05_S01_TEACHER_SECTIONS.flat().join(' '), /no single correct answer/i);
   assert.equal(CH05_SCENE_01.voice.length, 0);
   assert.equal(ambienceForScene('ch05_s01'), null);
-  assert.equal(CH05_SCENE_01.visualFallback, true);
-  assert.equal(CH05_SCENE_01.background.src, '');
+  assert.equal(CH05_SCENE_01.visualFallback, false);
+  assert.equal(CH05_SCENE_01.voice.length, 0);
+  assert.equal(CH05_SCENE_01.background.src.endsWith('ch05_exhibition_hall.webp'), true);
   assert.equal(CH05_SCENE_01.eliza.src, '');
 });
