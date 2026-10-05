@@ -157,7 +157,7 @@ test('S01 uses one AM44 loop after gesture; Sound Off/On and AM43 duck/restore f
     createAudio: (src) => { const audio = new FakeAudio(src); elements.push(audio); return audio; } });
   t.after(() => manager.dispose());
   assert.equal(ambienceForScene('ch05_s01'), 'ch05_exhibition_hall');
-  assert.equal(ambienceForScene('ch05_s02'), null);
+  assert.equal(ambienceForScene('ch05_s02'), 'ch05_exhibition_hall');
   assert.equal(ambienceForScene('ch05_s03'), null);
   assert.equal(ambienceForScene('ch05_s04'), null);
   assert.equal(ambienceForScene('ch05_s05'), null);

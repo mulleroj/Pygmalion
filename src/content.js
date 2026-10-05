@@ -209,7 +209,7 @@ export const AUDIO_FILES = [
 export const VISUAL_FILES = Object.values(VISUALS).map((asset) => asset.src.replace(/^\.\/assets\//, ''));
 
 export function ambienceForScene(sceneId) {
-  if (sceneId === 'ch05_s01') return 'ch05_exhibition_hall';
+  if (['ch05_s01', 'ch05_s02'].includes(sceneId)) return 'ch05_exhibition_hall';
   if (sceneId?.startsWith('ch05_')) return null; // Later Chapter V audio is not yet produced; never reuse Chapter I rain.
   if (sceneId === 'ch04_s05') return 'ch04_evening_walk';
   if (sceneId === 'ch04_s04') return 'ch04_side_corridor';
@@ -227,8 +227,10 @@ export function isContinuousAmbienceTransition(fromSceneId, toSceneId) {
   const interiorScenes = new Set(['ch02_s02', 'ch02_s03', 'ch02_s04', 'ch02_s05']);
   const lessonScenes = new Set(['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch03_s06', 'ch04_s01']);
   const teaRoomScenes = new Set(['ch04_s02', 'ch04_s03']);
+  const exhibitionHallScenes = new Set(['ch05_s01', 'ch05_s02']);
   return (rainScenes.has(fromSceneId) && rainScenes.has(toSceneId))
     || (interiorScenes.has(fromSceneId) && interiorScenes.has(toSceneId))
     || (lessonScenes.has(fromSceneId) && lessonScenes.has(toSceneId))
-    || (teaRoomScenes.has(fromSceneId) && teaRoomScenes.has(toSceneId));
+    || (teaRoomScenes.has(fromSceneId) && teaRoomScenes.has(toSceneId))
+    || (exhibitionHallScenes.has(fromSceneId) && exhibitionHallScenes.has(toSceneId));
 }

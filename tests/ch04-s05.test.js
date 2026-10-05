@@ -170,7 +170,8 @@ test('S05 completion remains the guarded entry boundary for Chapter V S01', () =
   assert.match(app, /\[CH04_SCENE_05\.id\]: CH04_SCENE_05/);
   assert.equal(getSceneAdvanceBlock(setScene(createInitialState(), CH05_SCENE_01.id), CH05_SCENE_01), 'Complete Chapter IV Scene 05 before opening The Borough Exhibition Evening.');
   assert.match(app, /hashScene === 'ch05_s01'[\s\S]*?ch04_s05_complete/);
-  assert.match(app, /The Borough Exhibition Evening is complete\. The next Chapter V scene is not implemented/);
+  assert.match(app, /hashScene === 'ch05_s01' && state\.applied_events\.includes\('ch04_s05_complete'\)/);
+  assert.match(app, /CH05_SCENE_01\.nextScene/);
   assert.match(app, /scene\?\.id === 'ch04_s05' \? CH04_S05_TEACHER_SECTIONS/);
   assert.match(app, /scene\.id === 'ch04_s05' && !scenePreview/);
   assert.match(app, /CH05_SCENE_01/);
