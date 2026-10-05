@@ -77,7 +77,7 @@ test('S02 is registered with canonical identity, Chapter V setting and shared ha
   assert.match(appSource, /\[CH05_SCENE_02\.id\]: CH05_SCENE_02/);
   assert.equal(CH05_SCENE_02.nextScene, 'ch05_s03');
   assert.match(appSource, /\[CH05_SCENE_03\.id\]: CH05_SCENE_03/);
-  assert.doesNotMatch(appSource, /\[CH05_SCENE_04\.id\]/);
+  assert.match(appSource, /\[CH05_SCENE_04\.id\]: CH05_SCENE_04/);
 });
 
 test('S02 requires ch05_s01_complete and direct answer/support writes are guarded', () => {

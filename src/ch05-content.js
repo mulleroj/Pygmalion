@@ -164,6 +164,72 @@ export const CH05_SCENE_03 = {
   nextScene: 'ch05_s04'
 };
 
+export const CH05_SCENE_04 = {
+  id: 'ch05_s04', number: 4, chapter: 'V', chapterTitle: 'The Reception', sceneCount: 5,
+  title: 'What Happens to Me Now?', kicker: 'Chapter V · The Reception',
+  location: 'Quiet side room off the exhibition hall', visualStage: 'her_own_voice', voiceStage: 'Her Own Voice',
+  composition: 'ch05-side-room-pending', visualFallback: true,
+  background: { src: '', alt: '' }, plate: { src: '', alt: '' }, eliza: { src: '', alt: '' },
+  supporting: [], props: [], voice: [], audioPending: true,
+  nextScene: 'ch05_s05',
+  branches: {
+    d11_private_conversation: {
+      companion: 'Pickering',
+      storyBeats: [
+        { type: 'dialogue', speaker: 'Pickering', text: 'You wanted to speak privately.' },
+        { type: 'dialogue', speaker: 'Eliza', text: "Yes. I know what I can do now. I don't know what happens to me next." },
+        { type: 'dialogue', speaker: 'Pickering', text: 'That should not be decided without you. I have sometimes spoken about your work instead of asking what you wanted.' },
+        { type: 'dialogue', speaker: 'Eliza', text: 'I need to decide what I want to ask.' },
+        { type: 'dialogue', speaker: 'Pickering', text: 'There are several possibilities. Some will depend on money and introductions.' }
+      ], context: 'There are several possibilities. Some will depend on money and introductions.',
+      itemId: 'lc14_pickering_question_fit', options: [
+        { id: 'lc14_pickering_clarify_introductions', text: 'Could you tell me which introductions would actually help?' },
+        { id: 'lc14_pickering_ask_programme', text: 'Could you remind me what happened in the programme tonight?' },
+        { id: 'lc14_pickering_ask_speech_opinion', text: 'What did you think of the way I spoke this evening?' }
+      ], answer: 'lc14_pickering_clarify_introductions'
+    },
+    d11_accept_for_now: {
+      companion: 'Mrs Pearce',
+      storyBeats: [
+        { type: 'dialogue', speaker: 'Mrs Pearce', text: "You've gone quiet." },
+        { type: 'dialogue', speaker: 'Eliza', text: 'I am thinking about tomorrow.' },
+        { type: 'dialogue', speaker: 'Mrs Pearce', text: 'Then tomorrow is worth planning. Start with what you want, not with what they expect.' },
+        { type: 'dialogue', speaker: 'Eliza', text: 'I need a little time to put it in order.' },
+        { type: 'dialogue', speaker: 'Mrs Pearce', text: "Work is one matter. Where you'll live is another." }
+      ], context: "Work is one matter. Where you'll live is another.",
+      itemId: 'lc14_mrs_pearce_question_fit', options: [
+        { id: 'lc14_pearce_prioritise', text: 'Which should I sort out first, and what can I do myself?' },
+        { id: 'lc14_pearce_ask_flowers', text: 'Which flowers did the guests like best?' },
+        { id: 'lc14_pearce_ask_general_expectation', text: 'What do people usually expect someone like me to do?' }
+      ], answer: 'lc14_pearce_prioritise'
+    },
+    d11_redirect_publicly: null
+  },
+  questionStyle: { prompt: 'How would Eliza like to put her question?', choices: [
+    { id: 'direct', text: 'What happens to me when this is over?' },
+    { id: 'indirect', text: 'Have you thought about what I might do when this is over?' },
+    { id: 'plan_focused', text: 'If I want work of my own after this, what should I arrange first?' }
+  ] }
+};
+CH05_SCENE_04.branches.d11_redirect_publicly = CH05_SCENE_04.branches.d11_accept_for_now;
+
+export const CH05_S04_TEACHER_SECTIONS = [
+  ['Chapter overview', 'At the flower-growers’ exhibition, Eliza uses language skills she has developed while deciding how to use them. This scene asks what happens next without testing whether she can imitate a class.'],
+  ['Learning goals', 'Ask for practical information about a future choice; recognise more than one legitimate next step; keep ownership of the decision with Eliza.'],
+  ['Language focus', 'LC14 practises future questions and pragmatic fit. Directness and indirectness are communicative resources, not measures of intelligence or worth.'],
+  ['Listening focus', 'LC14 asks for a question that fits a particular information need and listener. Many real phrasings may work; the authored key is contextual rather than a universal ranking.'],
+  ['Key vocabulary', 'future · possibility · introduction · work · arrange · question · decide'],
+  ['Cultural / literary context', 'This quiet side room is an original element of the adaptation. Discuss work, gender and class expectations without suggesting that a prestigious variety is more intelligent or morally superior.'],
+  ['Decisions — Teacher notes', 'The companion is derived from D11: private conversation leads to Pickering; accepting for now or redirecting publicly leads to Mrs Pearce. future_question_style (direct, indirect or plan-focused) remains Eliza’s personal, ungraded choice.'],
+  ['Challenge key · LC14', 'Pickering: “Could you tell me which introductions would actually help?” fits his point about money and introductions. Mrs Pearce: “Which should I sort out first, and what can I do myself?” fits the two practical matters she names. Other options ask about a different topic.'],
+  ['Support and retry', 'The context transcript can be revealed on request. Incorrect responses can be retried without penalty. LC14 changes no Confidence or Pronunciation and the future style gives no signal or reward.'],
+  ['Discussion questions', 'What practical information might help Eliza decide? Who should own that decision? How can a question be direct, indirect or plan-focused without defining the speaker?'],
+  ['Sensitive framing', 'Accent ≠ intelligence. Direct is not rude or inferior; indirect is not automatically better or more educated; plan-focused is not objectively best. The companion can frame a question but cannot decide Eliza’s future.'],
+  ['Suggested classroom use', 'Compare the Pickering and Mrs Pearce contexts. Identify the immediate information need, then discuss several ways to ask without ranking personal expression styles.'],
+  ['Scene navigation', 'ch05_s04 — What Happens to Me Now? · future_question_style · branch-specific LC14 · explicit Continue to the not-yet-implemented ch05_s05 boundary.'],
+  ['Teacher preview contract', 'Read-only. Preview uses no learner answer, future question style, completion, reward, progression or audio autoplay.']
+];
+
 export const CH05_S04_COMPANION_BY_CREDIT_RESPONSE = Object.freeze({
   d11_private_conversation: 'Pickering',
   d11_accept_for_now: 'Mrs Pearce',

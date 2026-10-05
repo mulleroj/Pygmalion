@@ -57,7 +57,7 @@ test('S03 keeps canonical scene identity, credit dialogue, hall visual and D11 t
   assert.equal(image.toString('ascii', 0, 4), 'RIFF');
   assert.equal(image.toString('ascii', 8, 12), 'WEBP');
   assert.match(appSource, /\[CH05_SCENE_03\.id\]: CH05_SCENE_03/);
-  assert.doesNotMatch(appSource, /CH05_SCENE_04/);
+  assert.match(appSource, /\[CH05_SCENE_04\.id\]: CH05_SCENE_04/);
 });
 
 test('S03 route and D11 writes require the completed S02 event', () => {
@@ -120,8 +120,8 @@ test('D11 requires explicit Continue, completes once, preserves state through Ba
   assert.equal(forward.scene, 'ch05_s04');
   assert.match(appSource, /scene\.id === 'ch05_s03'[\s\S]*?data-action="next-scene"/);
   assert.match(appSource, /setScene\(next, CH05_SCENE_03\.nextScene\); save\(\); setLocation\(CH05_SCENE_03\.nextScene\); render\(\)/);
-  assert.match(appSource, /hashScene === 'ch05_s04' && state\.applied_events\.includes\('ch05_s03_complete'\)/);
-  assert.match(appSource, /The Display and the Question is complete\. The next Chapter V scene is not implemented in this runtime\./);
+  assert.match(appSource, /hashScene === 'ch05_s04' && !state\.applied_events\.includes\('ch05_s03_complete'\)/);
+  assert.match(appSource, /setScene\(next, CH05_SCENE_03\.nextScene\); save\(\); setLocation\(CH05_SCENE_03\.nextScene\); render\(\)/);
 });
 
 test('S03 reuses AM44 continuously and Teacher Mode remains read-only', () => {
