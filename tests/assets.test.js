@@ -15,6 +15,7 @@ const DERIVED_RUNTIME_VISUALS = [
   'images/characters/freddy/runtime/freddy_master_cutout.png',
   'images/characters/higgins/runtime/higgins_master_cutout.png',
   'images/characters/pickering/runtime/pickering_master_cutout.png',
+  'images/characters/pickering/runtime/pickering_full-body_master_cutout.png',
   'images/props/ch01/runtime/fallen-flowers-wet_cutout.png'
 ];
 

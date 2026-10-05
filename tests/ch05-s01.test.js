@@ -90,6 +90,30 @@ test('S01 uses the canonical exhibition background and its runtime image is vali
   assert.ok(image.length > 1000);
 });
 
+test('S01 layers full-body Higgins left and full-body Pickering right in the exhibition composition', () => {
+  assert.equal(CH05_SCENE_01.composition, 'ch05-exhibition-hall-opening');
+  assert.deepEqual(CH05_SCENE_01.supporting.map(({ src, placement }) => ({ src, placement })), [
+    { src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', placement: 'higgins' },
+    { src: './assets/images/characters/pickering/runtime/pickering_full-body_master_cutout.png', placement: 'pickering' }
+  ]);
+  for (const asset of [
+    'assets/images/characters/pickering/pickering_full-body_master.webp',
+    'assets/images/characters/pickering/source/pickering_full-body_master.png',
+    'assets/images/characters/pickering/runtime/pickering_full-body_master_cutout.png'
+  ]) assert.ok(fs.statSync(path.join(root, asset)).size > 0, `${asset} exists and is non-empty`);
+
+  const runtime = fs.readFileSync(path.join(root, 'assets/images/characters/pickering/runtime/pickering_full-body_master_cutout.png'));
+  assert.equal(runtime.toString('ascii', 1, 4), 'PNG');
+  assert.equal(runtime.readUInt32BE(16), 1086);
+  assert.equal(runtime.readUInt32BE(20), 1448);
+  assert.equal(runtime[25], 6, 'runtime cutout keeps its RGBA alpha channel');
+
+  const css = fs.readFileSync(path.join(root, 'styles.css'), 'utf8');
+  assert.match(css, /\.ch05-exhibition-hall-opening \.support-higgins\s*\{\s*left:\s*20%;\s*bottom:\s*8%;\s*height:\s*50%;/);
+  assert.match(css, /\.ch05-exhibition-hall-opening \.support-pickering\s*\{\s*left:\s*80%;\s*bottom:\s*8%;\s*height:\s*52%;/);
+  assert.match(css, /\.ch05-exhibition-hall-opening \.supporting-character\s*\{[^}]*object-fit:\s*contain/);
+});
+
 test('S01 Teacher Mode explains open register choice and remains read-only; visual fallback is inactive', () => {
   assert.match(CH05_S01_TEACHER_SECTIONS.flat().join(' '), /code-switching/i);
   assert.match(CH05_S01_TEACHER_SECTIONS.flat().join(' '), /Accent is not intelligence/);
