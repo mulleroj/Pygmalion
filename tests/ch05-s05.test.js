@@ -49,6 +49,7 @@ test('S05 uses the approved location and canonical Chapter V character cutouts w
   assert.notEqual(CH05_SCENE_05.background.src, CH05_SCENE_04.background.src, 'S05 must not fall back to the S04 side room');
   assert.match(styles, /\.ch05-front-steps \.art-eliza img \{ left: 29%; height: 64%; z-index: 2; \}/);
   assert.match(styles, /\.ch05-front-steps \.supporting-character \{ left: 71%; height: 51%; z-index: 1;/);
+  assert.match(styles, /@media \(max-width: 599px\)\s*\{\s*\.ch05-front-steps\.storybook-art \{ width: 100%; min-width: 0; aspect-ratio: 1\.35; \}/, 'S05 art fits the available mobile spread width instead of clipping a character');
   assert.deepEqual(
     [CH05_SCENE_01, CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04].map(({ background: image }) => image.src),
     [
