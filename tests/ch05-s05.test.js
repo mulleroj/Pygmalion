@@ -1,8 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ambienceForScene } from '../src/content.js';
+import { AMBIENCE_FILES, AudioManager, CH02_AUDIO_MIX, CH04_CORRIDOR_CROSSFADE_MS } from '../src/audio.js';
 import { CH05_SCENE_01, CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04, CH05_SCENE_05, CH05_S05_TEACHER_SECTIONS } from '../src/ch05-content.js';
 import { applyDecision, completeScene, createInitialState, getSceneAdvanceBlock, loadState, saveState, setScene } from '../src/state.js';
 
@@ -19,6 +22,15 @@ const ready = (state = createInitialState()) => setScene({
   future_question_style: 'plan_focused',
   independence: 2
 }, CH05_SCENE_05.id);
+
+class FakeAudio {
+  constructor(src) { this.src = src; this.volume = 1; this.paused = true; this.muted = false; this.loop = false; this.listeners = new Map(); this.currentTime = 0; this.duration = 30; this.playCalls = 0; }
+  async play() { this.playCalls++; this.paused = false; }
+  pause() { this.paused = true; }
+  addEventListener(type, fn) { if (!this.listeners.has(type)) this.listeners.set(type, new Set()); this.listeners.get(type).add(fn); }
+  removeEventListener(type, fn) { this.listeners.get(type)?.delete(fn); }
+  emit(type) { if (type === 'ended' || type === 'error') this.paused = true; for (const fn of [...(this.listeners.get(type) || [])]) fn(); }
+}
 
 test('S05 uses the approved location and canonical Chapter V character cutouts without changing S01–S04', () => {
   const background = './assets/images/locations/ch05/ch05_lambeth_public_rooms_front_steps_night.webp';
@@ -70,6 +82,83 @@ test('S05 content follows the locked scene text, uses the S04 guard and canonica
   assert.match(getSceneAdvanceBlock(setScene(createInitialState(), CH05_SCENE_05.id), CH05_SCENE_05), /Complete Chapter V Scene 04/);
   assert.match(app, /hashScene === 'ch05_s05' && !state\.applied_events\.includes\('ch05_s04_complete'\)/);
   assert.doesNotMatch(CH05_SCENE_05.storyBeats.map(({ text }) => text).join(' '), /not implemented/i);
+});
+
+test('S05 maps directly to the existing AM42 asset and intentionally omits optional AM52 SFX', () => {
+  const source = AMBIENCE_FILES.ch04_evening_walk;
+  const plan = fs.readFileSync(path.join(root, 'docs/chapters/ch05/AUDIO_PLAN.md'), 'utf8');
+  const sha256 = (relativePath) => createHash('sha256').update(fs.readFileSync(path.join(root, relativePath))).digest('hex').toUpperCase();
+
+  assert.equal(ambienceForScene('ch05_s01'), 'ch05_exhibition_hall');
+  assert.equal(ambienceForScene('ch05_s02'), 'ch05_exhibition_hall');
+  assert.equal(ambienceForScene('ch05_s03'), 'ch05_exhibition_hall');
+  assert.equal(ambienceForScene('ch05_s04'), 'ch05_side_room');
+  assert.equal(ambienceForScene('ch05_s05'), 'ch04_evening_walk');
+  assert.equal(source, './assets/audio/ambience/ch04_evening_walk_ambient.mp3');
+  assert.ok(fs.statSync(path.join(root, source.slice(2))).size > 0, 'the directly reused AM42 file exists');
+  assert.equal(fs.existsSync(path.join(root, 'assets/audio/ambience/ch05_lambeth_steps_night_ambient.mp3')), false, 'no Chapter V duplicate ambience is required');
+  assert.equal(CH05_SCENE_05.sfx, undefined, 'S05 does not map an optional physical exit cue');
+  assert.doesNotMatch(plan, /assets\/audio\/sfx\/sfx_lambeth_public_rooms_exit_001\.mp3/);
+  assert.match(plan, /AM52 optional one-shot intentionally omitted because no canonical physical departure event is specified/i);
+  assert.match(plan, /no runtime file, Generation ID or Asset ID exists or is expected/i);
+  assert.equal(sha256('assets/audio/ambience/ch04_evening_walk_ambient.mp3'), 'CF72B414460D046F73AC6EEFBFA8EB7D10553B65763FA75430FE711BBAF98A53');
+  assert.equal(sha256('assets/audio/ambience/ch05_lambeth_side_room_ambient.mp3'), '0404A23F34E5CA90EC1C8A9A705418B62316DE5B1EA6E01FCAB0CA25F9417A81');
+  assert.equal(sha256('assets/audio/characters/eliza/eliza_ch05_scene05_001.mp3'), 'F8978A101CEE737CD238E269699A322B1873E23C5E9F84646681806F1F9C303D');
+  assert.equal(ambienceForScene('ch04_s04'), 'ch04_side_corridor');
+  assert.equal(ambienceForScene('ch04_s05'), 'ch04_evening_walk');
+  assert.match(app, /Chapter VI, Her Own Voice, is not yet implemented in this runtime/);
+});
+
+test('S04 AM50 equal-power crossfades to S05 AM42; AM51 ducks/restores it and Sound On does not replay interrupted speech', async (t) => {
+  const elements = [];
+  const manager = new AudioManager({ fadeMs: 0, duckFadeMs: 0, soundFadeMs: 0,
+    createAudio: (src) => { const audio = new FakeAudio(src); elements.push(audio); return audio; } });
+  t.after(() => manager.dispose());
+
+  await manager.ensureAmbience('ch05_s04');
+  assert.equal(elements.length, 0, 'rendering S04 does not autoplay ambience');
+  manager.unlock();
+  await manager.ensureAmbience('ch05_s04');
+  const am50 = manager.ambience;
+  assert.equal(am50.src, AMBIENCE_FILES.ch05_side_room);
+  assert.equal(am50.loop, true);
+
+  await manager.ensureAmbience('ch05_s05');
+  const am42 = manager.ambience;
+  assert.equal(am42.src, AMBIENCE_FILES.ch04_evening_walk);
+  assert.equal(am42.loop, true, 'AM42 loops continuously in S05');
+  assert.equal(manager.mix, CH02_AUDIO_MIX);
+  assert.equal(manager.ambienceVolume, 0.10, 'the quiet Chapter II–V ambience convention applies');
+  assert.equal(manager.ambienceTransition.from, am50);
+  assert.equal(manager.ambienceTransition.to, am42);
+  assert.equal(manager.ambienceTransition.durationMs, CH04_CORRIDOR_CROSSFADE_MS);
+  assert.equal(CH04_CORRIDOR_CROSSFADE_MS, 1500);
+  assert.equal(am50.paused, false);
+  assert.equal(am42.paused, false);
+  assert.equal(elements.filter(({ loop, paused }) => loop && !paused).length, 2, 'only the outgoing AM50 and incoming AM42 overlap during the crossfade');
+  assert.equal(elements.some(({ src }) => src === CH05_SCENE_05.voice[0].src), false, 'AM51 is not created or played by scene render');
+
+  const firstVoice = await manager.playVoice(CH05_SCENE_05.voice[0].src);
+  assert.equal(firstVoice.playCalls, 1, 'AM51 starts only after its explicit replay action');
+  assert.equal(manager.getAmbienceDuckAmount(), CH02_AUDIO_MIX.storyDuck);
+  firstVoice.emit('ended');
+  assert.equal(manager.getAmbienceDuckAmount(), 1, 'S05 ambience restores after AM51 ends');
+  assert.equal(manager.ambienceTransition.from, am50);
+  assert.equal(manager.ambienceTransition.to, am42);
+
+  const interruptedVoice = await manager.playVoice(CH05_SCENE_05.voice[0].src);
+  await manager.setEnabled(false);
+  assert.equal(interruptedVoice.paused, true, 'Sound Off stops interrupted AM51');
+  assert.equal(am50.paused, true, 'Sound Off stops the outgoing loop');
+  assert.equal(am42.paused, true, 'Sound Off stops the incoming loop');
+  await manager.setEnabled(true);
+  assert.equal(interruptedVoice.playCalls, 1, 'Sound On does not replay AM51');
+  assert.equal(interruptedVoice.paused, true);
+  await new Promise((resolve) => setTimeout(resolve, CH04_CORRIDOR_CROSSFADE_MS + 80));
+  assert.equal(manager.ambienceTransition, null);
+  assert.equal(am50.paused, true, 'AM50 is retired after the crossfade and does not remain under S05');
+  assert.equal(am42.paused, false);
+  assert.equal(elements.filter(({ loop, paused }) => loop && !paused).length, 1);
 });
 
 test('next_contact is single-write, persists through reload and carries earlier Chapter V fields unchanged', () => {

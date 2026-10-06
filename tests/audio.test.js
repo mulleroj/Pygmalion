@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ambienceForScene, isContinuousAmbienceTransition } from '../src/content.js';
-import { AudioManager, isOneShotAvailable, shouldRestartAmbience, SFX_MIX, STORY_VOICE_AMBIENCE_DUCK, CH02_AUDIO_MIX, AMBIENCE_FILES, GRAMOPHONE_CUE_TIMING } from '../src/audio.js';
+import { AudioManager, isOneShotAvailable, shouldRestartAmbience, SFX_MIX, STORY_VOICE_AMBIENCE_DUCK, CH02_AUDIO_MIX, AMBIENCE_FILES, CH04_CORRIDOR_CROSSFADE_MS, GRAMOPHONE_CUE_TIMING } from '../src/audio.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -987,7 +987,7 @@ test('CH05 S05 AM51 is the approved Eliza clip, follows the S04 audio boundary, 
   assert.match(app, /scene\.voice\.some\(\(voice\) => voice\.inline && voice\.transcript === beat\.text\)/);
   assert.match(app, /audioManager\.playVoice\(target\.dataset\.src/);
   assert.equal(ambienceForScene(CH05_SCENE_04.id), 'ch05_side_room');
-  assert.equal(ambienceForScene(CH05_SCENE_05.id), null, 'S05 has no AM52 dependency');
+  assert.equal(ambienceForScene(CH05_SCENE_05.id), 'ch04_evening_walk', 'S05 directly reuses the approved AM42 ambience');
   assert.equal(isContinuousAmbienceTransition(CH05_SCENE_04.id, CH05_SCENE_05.id), false);
 
   const { manager, elements } = audioHarness(t);
@@ -1000,20 +1000,31 @@ test('CH05 S05 AM51 is the approved Eliza clip, follows the S04 audio boundary, 
   const precedingVoice = await manager.playVoice(CH05_SCENE_04.branches.d11_private_conversation.voice[0].src);
   await manager.ensureAmbience(CH05_SCENE_05.id);
   assert.equal(precedingVoice.paused, true, 'entering S05 stops the prior scene voice');
-  assert.equal(am50.paused, true, 'entering the exterior retires S04 AM50');
-  assert.equal(manager.ambience, null, 'S05 does not continue the side-room bed');
+  const am42 = manager.ambience;
+  assert.equal(am42.src, AMBIENCE_FILES.ch04_evening_walk, 'S05 directly reuses AM42');
+  assert.equal(manager.ambienceTransition.from, am50, 'the existing crossfade starts from S04 AM50');
+  assert.equal(manager.ambienceTransition.to, am42);
+  assert.equal(am42.loop, true);
   const elementCountAtS05Entry = elements.length;
-  assert.equal(elementCountAtS05Entry, 2, 'S05 entry starts no AM51 or AM52 audio');
+  assert.equal(elementCountAtS05Entry, 3, 'S05 starts only AM42; it does not autoplay AM51 or an optional AM52 SFX');
+  assert.equal(elements.some(({ src }) => src === voice.src), false, 'S05 entry does not autoplay AM51');
+  assert.equal(elements.filter(({ loop, paused }) => loop && !paused).length, 2, 'AM50 and AM42 overlap during the crossfade');
+  await new Promise(resolve => setTimeout(resolve, CH04_CORRIDOR_CROSSFADE_MS + 80));
+  assert.equal(manager.ambienceTransition, null);
+  assert.equal(am50.paused, true, 'AM50 is retired after the transition');
+  assert.equal(am42.paused, false, 'AM42 remains active in S05');
 
   const playback = await manager.playVoice(voice.src);
   assert.equal(playback.src, voice.src);
-  assert.deepEqual(elements.filter((audio) => !audio.paused), [playback], 'AM51 is the only active audio after an explicit replay');
+  assert.deepEqual(elements.filter((audio) => !audio.paused), [am42, playback], 'AM51 plays over the active AM42 ambience only after explicit replay');
+  assert.equal(am42.volume, CH02_AUDIO_MIX.ambience * CH02_AUDIO_MIX.storyDuck);
   playback.emit('ended');
   assert.equal(manager.foreground, null, 'AM51 releases foreground ownership when it ends');
+  assert.equal(am42.volume, CH02_AUDIO_MIX.ambience, 'AM42 restores after AM51 ends');
   const replay = await manager.playVoice(voice.src);
   assert.equal(replay.src, voice.src, 'the same approved file supports replay');
-  assert.equal(elements.length, 4, 'replay creates one playback instance for the same approved asset');
-  assert.deepEqual(elements.filter((audio) => !audio.paused), [replay], 'replay replaces the ended instance');
+  assert.equal(elements.length, 5, 'replay creates one playback instance for the same approved asset');
+  assert.deepEqual(elements.filter((audio) => !audio.paused), [am42, replay], 'replay replaces the ended instance without restarting ambience');
 });
 
 test('CH05 S04 AM49 replays both isolated branches over AM50 with duck/restore and Sound Off/On', async t => {

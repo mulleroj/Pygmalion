@@ -211,6 +211,7 @@ export const VISUAL_FILES = Object.values(VISUALS).map((asset) => asset.src.repl
 export function ambienceForScene(sceneId) {
   if (['ch05_s01', 'ch05_s02', 'ch05_s03'].includes(sceneId)) return 'ch05_exhibition_hall';
   if (sceneId === 'ch05_s04') return 'ch05_side_room';
+  if (sceneId === 'ch05_s05') return 'ch04_evening_walk'; // S05 directly reuses the approved AM42 exterior bed.
   if (sceneId?.startsWith('ch05_')) return null; // Later Chapter V audio is not yet produced; never reuse Chapter I rain.
   if (sceneId === 'ch04_s05') return 'ch04_evening_walk';
   if (sceneId === 'ch04_s04') return 'ch04_side_corridor';

@@ -580,7 +580,7 @@ export class AudioManager {
     this.sceneId = sceneId;
     this.contextualSpec = contextual;
     // S01 begins from approved interior levels; Chapter III human mix QA is pending.
-    this.mix = sceneId?.startsWith('ch02_') || ['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch04_s01', 'ch04_s02', 'ch04_s03', 'ch04_s04', 'ch04_s05', 'ch05_s01', 'ch05_s02', 'ch05_s03', 'ch05_s04'].includes(sceneId) ? CH02_AUDIO_MIX : CH01_AUDIO_MIX;
+    this.mix = sceneId?.startsWith('ch02_') || ['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch04_s01', 'ch04_s02', 'ch04_s03', 'ch04_s04', 'ch04_s05', 'ch05_s01', 'ch05_s02', 'ch05_s03', 'ch05_s04', 'ch05_s05'].includes(sceneId) ? CH02_AUDIO_MIX : CH01_AUDIO_MIX;
     this.ambienceVolume = this.mix.ambience;
     this.contextualVolume = this.mix.contextual;
     const id = sceneId ? ambienceForScene(sceneId) : null;
@@ -666,6 +666,8 @@ export class AudioManager {
   async ensureEveningWalkAmbience() {
     const id = 'ch04_evening_walk';
     const src = AMBIENCE_FILES[id];
+    const targetSceneId = this.sceneId;
+    const sourceAmbienceId = targetSceneId === 'ch05_s05' ? 'ch05_side_room' : 'ch04_side_corridor';
     if (!this.enabled || !this.unlocked) return { id, restarted: false, blocked: false };
     if (this.ambienceTransition && this.ambienceId === id) {
       const fade = this.ambienceTransition;
@@ -699,13 +701,13 @@ export class AudioManager {
       }
       await new Promise((resolve) => {
         const wait = globalThis.setInterval(() => {
-          if (!this.ambienceTransition || !this.enabled || this.sceneId !== 'ch04_s05') { globalThis.clearInterval(wait); resolve(); }
+          if (!this.ambienceTransition || !this.enabled || this.sceneId !== targetSceneId) { globalThis.clearInterval(wait); resolve(); }
         }, 20);
       });
-      if (!this.enabled || this.sceneId !== 'ch04_s05') { this.ambienceTransitionRequested = false; return { id, restarted: false, blocked: false }; }
+      if (!this.enabled || this.sceneId !== targetSceneId) { this.ambienceTransitionRequested = false; return { id, restarted: false, blocked: false }; }
     }
     const from = this.ambience;
-    if (this.ambienceId !== 'ch04_side_corridor' || !from || from.paused) {
+    if (this.ambienceId !== sourceAmbienceId || !from || from.paused) {
       this.ambienceTransitionRequested = false;
       return this.ensureLoop('ambience', id, src);
     }
@@ -713,7 +715,7 @@ export class AudioManager {
     if (!to) { this.ambienceTransitionRequested = false; return { id, restarted: false, blocked: true }; }
     to.loop = true; to.volume = 0;
     const played = await this.startLoop(to, 'ambience');
-    if (!played || !this.enabled || this.sceneId !== 'ch04_s05') { to.pause(); this.ambienceTransitionRequested = false; return { id, restarted: false, blocked: !played }; }
+    if (!played || !this.enabled || this.sceneId !== targetSceneId) { to.pause(); this.ambienceTransitionRequested = false; return { id, restarted: false, blocked: !played }; }
     this.cancelFade(from); this.cancelFade(to);
     this.ambience = to; this.ambienceId = id; this.ambienceSource = src;
     const fade = { from, to, durationMs: CH04_CORRIDOR_CROSSFADE_MS, startedAt: Date.now(), pausedProgress: 0, timer: null };

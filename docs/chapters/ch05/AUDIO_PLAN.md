@@ -119,13 +119,10 @@ This is a restrained, open ending, not a triumphant finish. The next-contact cho
 
 **Production provenance:** ElevenLabs Generation ID `hYtu6jZth0CXAH3YmJhM`; Asset Library ID `hdwLPWNMazpba2THUuHI` (`pygmalion_ch05_s05_am51_eliza.mp3`, `audio/mpeg`, 53,950 bytes); speaker Eliza; canonical voice `Eliza - young_cockney` (Voice ID `124kaYCknTDsnwUFdWl9`); model `eleven_v3`; duration approximately 2.24 s. Scribe transcript: PASS, “I know enough now to ask what comes next.” Human approved: yes. Runtime file: `assets/audio/characters/eliza/eliza_ch05_scene05_001.mp3`.
 
-## AM52 — Exterior night ambience and one-shot
+## AM52 — Exterior night ambience; optional departure SFX omitted
 
-**Category:** continuous ambience plus optional SFX; retain the existing moment number AM52.
+**Category:** continuous ambience plus an optional one-shot; retain the existing moment number AM52.
 
-**Planned files:**
+**Ambience runtime source:** direct reuse of the human-approved AM42 file `assets/audio/ambience/ch04_evening_walk_ambient.mp3`. S05 references the existing AM42 logical ambience and source directly. No Chapter V duplicate or derivative binary is created; there is no new Generation ID, Asset ID or generation cost. The approved approximately 22-second, 44.1 kHz mono, 128 kb/s exterior loop is used continuously at the established Chapter II ambience level, below speech, with story-voice duck/restore. On the S04 → S05 transition, AM50 fades out while AM42 fades in using the existing equal-power 1.5-second ambience crossfade. The source asset is unchanged.
 
-- assets/audio/ambience/ch05_lambeth_steps_night_ambient.mp3
-- assets/audio/sfx/sfx_lambeth_public_rooms_exit_001.mp3
-
-Use quiet night air, sparse footsteps and, only if useful, distant horse/carriage presence. No automobiles, engines, tyres, continuous road rumble, modern traffic beds, horns, trains, trams, sirens, electronic sounds or music. No strong repeating transient at a loop seam. AM52 SFX is a single discreet departure cue, never played on render/replay. Crossfade from AM50; keep ambience well below speech and duck/restore through the existing audio system.
+**Optional AM52 one-shot:** AM52 optional one-shot intentionally omitted because no canonical physical departure event is specified. It is not produced and is not required for runtime completion. SCRIPT.md and this plan specify only “a single discreet departure cue.” Do not invent a door, footsteps, carriage, latch, crowd departure or other sound. No runtime file, Generation ID or Asset ID exists or is expected for this optional cue. Its absence is an intentional production decision, not a missing dependency.

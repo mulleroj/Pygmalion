@@ -186,9 +186,10 @@ test('S01 uses one AM44 loop after gesture; Sound Off/On and AM43 duck/restore f
   assert.equal(ambienceForScene('ch05_s02'), 'ch05_exhibition_hall');
   assert.equal(ambienceForScene('ch05_s03'), 'ch05_exhibition_hall');
   assert.equal(ambienceForScene('ch05_s04'), 'ch05_side_room');
-  assert.equal(ambienceForScene('ch05_s05'), null);
+  assert.equal(ambienceForScene('ch05_s05'), 'ch04_evening_walk');
   assert.equal(AMBIENCE_FILES.ch05_exhibition_hall, './assets/audio/ambience/ch05_borough_exhibition_ambient.mp3');
   assert.equal(AMBIENCE_FILES.ch05_side_room, './assets/audio/ambience/ch05_lambeth_side_room_ambient.mp3');
+  assert.equal(AMBIENCE_FILES.ch04_evening_walk, './assets/audio/ambience/ch04_evening_walk_ambient.mp3');
   assert.equal(ambienceForScene('ch01_s01'), 'covent_garden_rain_market');
   assert.equal(ambienceForScene('ch04_s05'), 'ch04_evening_walk');
   await manager.ensureAmbience('ch05_s01');
