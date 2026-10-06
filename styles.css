@@ -76,6 +76,13 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch05-side-room .supporting-character { left: 75%; }
 .ch05-side-room .art-eliza::before { left: 9%; bottom: 6%; width: 34%; height: 5%; }
 .ch05-side-room .supporting-character { filter: saturate(.9) contrast(.98) drop-shadow(0 9px 9px rgba(42, 31, 37, .25)); }
+.ch05-front-steps { min-height: 20rem; }
+.ch05-front-steps .art-support, .ch05-front-steps .art-eliza { display: block; padding: 0; opacity: 1; }
+.ch05-front-steps .art-background img { object-position: center; }
+.ch05-front-steps .art-eliza img, .ch05-front-steps .supporting-character { position: absolute; bottom: 6%; width: auto; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); }
+.ch05-front-steps .art-eliza img { left: 29%; height: 64%; z-index: 2; }
+.ch05-front-steps .supporting-character { left: 71%; height: 51%; z-index: 1; filter: saturate(.9) contrast(.98) drop-shadow(0 9px 9px rgba(42, 31, 37, .25)); }
+.ch05-front-steps .art-eliza::before { left: 12%; bottom: 4%; width: 34%; height: 4%; }
 .art-background img, .art-plate img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .art-background { z-index: 0; filter: saturate(.82) contrast(1.02) brightness(.96); }
 .art-plate { z-index: 1; opacity: .58; mix-blend-mode: multiply; filter: saturate(.76) contrast(.96); }
@@ -536,6 +543,10 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch03-small-victory-spread { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 599px) {
+  .ch05-front-steps.storybook-art { aspect-ratio: 1.35; }
+  .ch05-front-steps .art-background img { object-position: center; }
+  .ch05-front-steps .art-eliza img { left: 27%; height: 60%; }
+  .ch05-front-steps .supporting-character { left: 73%; height: 48%; }
   .ch04-social-tea-room.storybook-art { aspect-ratio: 1.35; }
   .ch04-social-tea-room .art-background img { object-fit: cover; object-position: center; }
   .ch04-side-corridor.storybook-art { aspect-ratio: 1.35; }

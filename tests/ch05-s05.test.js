@@ -3,11 +3,12 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { CH05_SCENE_05, CH05_S05_TEACHER_SECTIONS } from '../src/ch05-content.js';
+import { CH05_SCENE_01, CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04, CH05_SCENE_05, CH05_S05_TEACHER_SECTIONS } from '../src/ch05-content.js';
 import { applyDecision, completeScene, createInitialState, getSceneAdvanceBlock, loadState, saveState, setScene } from '../src/state.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const app = fs.readFileSync(path.join(root, 'src/app.js'), 'utf8');
+const styles = fs.readFileSync(path.join(root, 'styles.css'), 'utf8');
 const contacts = ['higgins_directly', 'pickering_first', 'mrs_pearce_first'];
 const ready = (state = createInitialState()) => setScene({
   ...state,
@@ -18,6 +19,35 @@ const ready = (state = createInitialState()) => setScene({
   future_question_style: 'plan_focused',
   independence: 2
 }, CH05_SCENE_05.id);
+
+test('S05 uses the approved location and canonical Chapter V character cutouts without changing S01–S04', () => {
+  const background = './assets/images/locations/ch05/ch05_lambeth_public_rooms_front_steps_night.webp';
+  const eliza = './assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png';
+  const higgins = './assets/images/characters/higgins/runtime/higgins_master_cutout.png';
+  const assetExists = (src) => fs.existsSync(path.join(root, src.replace(/^\.\//, '')));
+
+  assert.ok(assetExists(background), 'canonical front-steps background exists');
+  assert.ok(assetExists(eliza), 'canonical Her Own Voice Eliza cutout exists');
+  assert.ok(assetExists(higgins), 'canonical Higgins cutout exists');
+  assert.equal(CH05_SCENE_05.background.src, background);
+  assert.equal(CH05_SCENE_05.plate.src, background);
+  assert.equal(CH05_SCENE_05.composition, 'ch05-front-steps');
+  assert.equal(CH05_SCENE_05.eliza.src, eliza);
+  assert.deepEqual(CH05_SCENE_05.supporting.map(({ src }) => src), [higgins]);
+  assert.notEqual(CH05_SCENE_05.background.src, CH05_SCENE_04.background.src, 'S05 must not fall back to the S04 side room');
+  assert.match(styles, /\.ch05-front-steps \.art-eliza img \{ left: 29%; height: 64%; z-index: 2; \}/);
+  assert.match(styles, /\.ch05-front-steps \.supporting-character \{ left: 71%; height: 51%; z-index: 1;/);
+  assert.deepEqual(
+    [CH05_SCENE_01, CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04].map(({ background: image }) => image.src),
+    [
+      './assets/images/locations/ch05/ch05_exhibition_hall.webp',
+      './assets/images/locations/ch05/ch05_exhibition_hall.webp',
+      './assets/images/locations/ch05/ch05_exhibition_hall.webp',
+      './assets/images/locations/ch05/ch05_lambeth_public_rooms_side_room.webp'
+    ],
+    'S01–S04 canonical backgrounds remain unchanged'
+  );
+});
 
 test('S05 content follows the locked scene text, uses the S04 guard and canonical contact choices', () => {
   assert.deepEqual([CH05_SCENE_05.id, CH05_SCENE_05.title, CH05_SCENE_05.location, CH05_SCENE_05.nextScene], ['ch05_s05', 'Leaving the Hall', 'Front steps of Lambeth Public Rooms at night', 'ch06_s01']);
