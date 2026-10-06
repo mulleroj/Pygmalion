@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { CH05_SCENE_04, CH05_S04_TEACHER_SECTIONS } from '../src/ch05-content.js';
+import { CH05_SCENE_04, CH05_SCENE_05, CH05_S04_TEACHER_SECTIONS } from '../src/ch05-content.js';
 import { ambienceForScene } from '../src/content.js';
 import { AMBIENCE_FILES } from '../src/audio.js';
 import { applyDecision, completeScene, createInitialState, getSceneAdvanceBlock, loadState, markLc14SupportUsed, recordLc14Answer, saveState, setScene } from '../src/state.js';
@@ -208,12 +208,13 @@ test('LC14 support and retry persist without rewards; Continue completes once on
   assert.equal(state.confidence, 0); assert.equal(state.pronunciation, 0); assert.equal(state.independence, 0);
 });
 
-test('Teacher preview is read-only and S05 remains a boundary', () => {
+test('Teacher preview is read-only and S05 is the next implemented Chapter V scene', () => {
   const teacher = CH05_S04_TEACHER_SECTIONS.flat().join(' ');
   assert.match(teacher, /read-only/i);
   assert.match(teacher, /direct, indirect or plan-focused/i);
   assert.match(app, /scene\?\.id === 'ch05_s04' \? CH05_S04_TEACHER_SECTIONS/);
   assert.match(app, /Teacher preview · read-only\. No LC14, future question style or progression changes\./);
-  assert.match(app, /Leaving the Hall is not implemented in this runtime\./);
+  assert.equal(CH05_SCENE_04.nextScene, CH05_SCENE_05.id);
+  assert.match(app, /Leaving the Hall is complete and your progress is saved locally\./);
   assert.match(app, /scene\.id === 'ch05_s04'[\s\S]*?data-action="next-scene"/);
 });

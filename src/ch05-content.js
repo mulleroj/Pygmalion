@@ -231,6 +231,34 @@ export const CH05_SCENE_04 = {
 };
 CH05_SCENE_04.branches.d11_redirect_publicly = CH05_SCENE_04.branches.d11_accept_for_now;
 
+export const CH05_SCENE_05 = {
+  id: 'ch05_s05', number: 5, chapter: 'V', chapterTitle: 'The Reception', sceneCount: 5,
+  title: 'Leaving the Hall', kicker: 'Chapter V · The Reception',
+  location: 'Front steps of Lambeth Public Rooms at night', visualStage: 'her_own_voice', voiceStage: 'Her Own Voice',
+  composition: 'ch05-front-steps', visualFallback: false,
+  background: { src: './assets/images/locations/ch05/ch05_lambeth_public_rooms_front_steps_night.webp', alt: 'The front steps of Lambeth Public Rooms at night.' },
+  plate: { src: './assets/images/locations/ch05/ch05_lambeth_public_rooms_front_steps_night.webp', alt: 'The front steps of Lambeth Public Rooms at night.' },
+  eliza: { src: './assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png', alt: 'Eliza, thoughtful and composed in her own voice.' },
+  supporting: [cutout('./assets/images/characters/higgins/runtime/higgins_master_cutout.png', 'Henry Higgins stands at the open doorway.', 'higgins')], props: [], voice: [],
+  storyBeats: [
+    { type: 'narration', text: 'The hall becomes quieter behind Eliza. The evening has gone well, but it has not decided what she should do next.' },
+    { type: 'dialogue', speaker: 'Higgins', text: 'Well, Eliza? Are you coming?' },
+    { type: 'narration', text: 'Eliza does not automatically follow him.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'I know enough now to ask what comes next.' }
+  ],
+  decision: {
+    id: 'NEXT_CONTACT', prompt: 'Whom would Eliza like to contact first after tonight?', labelOnly: true,
+    neutralChoice: true, hideResult: true, pressedState: true,
+    choices: [
+      { id: 'higgins_directly', title: 'I want to speak with Higgins directly.' },
+      { id: 'pickering_first', title: 'I want to speak with Pickering first.' },
+      { id: 'mrs_pearce_first', title: 'I want to ask Mrs Pearce for practical support first.' }
+    ]
+  },
+  transition: 'After you choose a contact, Continue will complete Chapter V. Chapter VI is not yet available in this runtime.',
+  nextScene: 'ch06_s01'
+};
+
 export const CH05_S04_TEACHER_SECTIONS = [
   ['Chapter overview', 'At the flower-growers’ exhibition, Eliza uses language skills she has developed while deciding how to use them. This scene asks what happens next without testing whether she can imitate a class.'],
   ['Learning goals', 'Ask for practical information about a future choice; recognise more than one legitimate next step; keep ownership of the decision with Eliza.'],
@@ -253,6 +281,18 @@ export const CH05_S04_COMPANION_BY_CREDIT_RESPONSE = Object.freeze({
   d11_accept_for_now: 'Mrs Pearce',
   d11_redirect_publicly: 'Mrs Pearce'
 });
+
+export const CH05_S05_TEACHER_SECTIONS = [
+  ['Scene focus', 'Eliza leaves Lambeth Public Rooms with the evening behind her. She decides who she wants to contact first; the scene does not decide her future.'],
+  ['Learning goals', 'Recognise that several practical next steps can be legitimate and that Eliza owns the choice.'],
+  ['Language focus', 'The contact options express three different approaches. None is a measure of intelligence, courage or personal worth.'],
+  ['Discussion questions', 'What information might Eliza need next? How could each contact help in a different way?'],
+  ['Sensitive framing', 'Accent ≠ intelligence. Speaking to Higgins directly is not punished; choosing Pickering or Mrs Pearce is not automatically superior. All three options leave every Chapter VI direction available.'],
+  ['State handoff', 'Chapter VI may later read origin_motivation, reception_register_plan, credit_response, future_question_style and next_contact as context. They are not combined into a score or ending value.'],
+  ['Completion', 'Only explicit Continue after the contact choice completes Chapter V and adds Independence +1 once. Revisiting, reload and replay do not repeat the increment.'],
+  ['Teacher preview contract', 'Read-only. Preview does not select a contact, write learner state, change signals, complete Chapter V, play audio or advance the scene.'],
+  ['Scene navigation', 'ch05_s05 — Leaving the Hall · next_contact · explicit Continue completes Chapter V. Chapter VI runtime is not implemented.']
+];
 
 export function ch05S04CompanionFor(creditResponse) {
   return CH05_S04_COMPANION_BY_CREDIT_RESPONSE[creditResponse] || null;
