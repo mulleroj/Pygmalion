@@ -172,12 +172,19 @@ export const CH05_SCENE_04 = {
   background: { src: './assets/images/locations/ch05/ch05_lambeth_public_rooms_side_room.webp', alt: 'A quiet side room opening onto the flower exhibition hall.' },
   plate: { src: './assets/images/locations/ch05/ch05_lambeth_public_rooms_side_room.webp', alt: 'A quiet side room opening onto the flower exhibition hall.' },
   eliza: { src: './assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png', alt: 'Eliza, thoughtful and composed in her own voice.' },
-  supporting: [], props: [], voice: [], audioPending: true,
+  supporting: [], props: [], voice: [],
   nextScene: 'ch05_s05',
   branches: {
     d11_private_conversation: {
       companion: 'Pickering',
       supporting: [cutout('./assets/images/characters/pickering/runtime/pickering_full-body_master_cutout.png', 'Colonel Pickering stands opposite Eliza in the side room.', 'pickering')],
+      voice: [
+        { id: 'AM49', speaker: 'Pickering', src: './assets/audio/characters/pickering/pickering_ch05_scene04_pickering_001.mp3', transcript: 'You wanted to speak privately.', inline: true, label: 'Replay Pickering', generationId: 'foRUcXu2Pow0Di90CnMW', assetId: '3QqV3bDmMDnb0QVvVHVi', voice: 'George — Warm, Captivating Storyteller', voiceId: 'JBFqnCBsd6RMkjVDRZzb', transcriptVerified: 'PASS', humanApproved: true },
+        { id: 'AM49', speaker: 'Eliza', src: './assets/audio/characters/eliza/eliza_ch05_scene04_pickering_001.mp3', transcript: "Yes. I know what I can do now. I don't know what happens to me next.", inline: true, label: 'Replay Eliza', generationId: '6KyoTbyyWfFmCSMWgAaZ', assetId: 'pBkXHZHfDiXuws8DFSsq', voice: 'Eliza - young_cockney', voiceId: '124kaYCknTDsnwUFdWl9', transcriptVerified: 'PASS', humanApproved: true },
+        { id: 'AM49', speaker: 'Pickering', src: './assets/audio/characters/pickering/pickering_ch05_scene04_001.mp3', transcript: 'That should not be decided without you. I have sometimes spoken about your work instead of asking what you wanted.', inline: true, label: 'Replay Pickering', generationId: 'DpagLQ84tlf8c5SEUdlU', assetId: 'AZAODqekAGLZnzAo00H6', voice: 'George — Warm, Captivating Storyteller', voiceId: 'JBFqnCBsd6RMkjVDRZzb', transcriptVerified: 'PASS', humanApproved: true },
+        { id: 'AM49', speaker: 'Eliza', src: './assets/audio/characters/eliza/eliza_ch05_scene04_001.mp3', transcript: 'I need to decide what I want to ask.', inline: true, label: 'Replay Eliza', generationId: 'XrIS9FoGBavEkKbA0LeZ', assetId: 'hMWBLNdwhiofcyIRV1If', voice: 'Eliza - young_cockney', voiceId: '124kaYCknTDsnwUFdWl9', transcriptVerified: 'PASS', humanApproved: true },
+        { id: 'AM49', speaker: 'Pickering · LC14', src: './assets/audio/characters/pickering/pickering_ch05_scene04_lc14_001.mp3', transcript: 'There are several possibilities. Some will depend on money and introductions.', inline: true, label: 'Replay Pickering’s LC14 context', generationId: 'ENtLCogsmkzhoNv0oiZU', assetId: 'V15G15pgNM09YoHcRmey', voice: 'George — Warm, Captivating Storyteller', voiceId: 'JBFqnCBsd6RMkjVDRZzb', transcriptVerified: 'PASS', humanApproved: true }
+      ],
       storyBeats: [
         { type: 'dialogue', speaker: 'Pickering', text: 'You wanted to speak privately.' },
         { type: 'dialogue', speaker: 'Eliza', text: "Yes. I know what I can do now. I don't know what happens to me next." },
@@ -194,6 +201,13 @@ export const CH05_SCENE_04 = {
     d11_accept_for_now: {
       companion: 'Mrs Pearce',
       supporting: [cutout('./assets/images/characters/mrs-pearce/runtime/mrs-pearce_practical-questioning_cutout.png', 'Mrs Pearce stands opposite Eliza in the side room.', 'mrs-pearce')],
+      voice: [
+        { id: 'AM49', speaker: 'Mrs Pearce', src: './assets/audio/characters/mrs-pearce/mrs-pearce_ch05_scene04_001.mp3', transcript: "You've gone quiet.", inline: true, label: 'Replay Mrs Pearce', generationId: 'CHRaX2IjO77856ZOTw20', assetId: 'vPMhgp2ef3J0J8l2IHuN', voice: 'Sally Ford', voiceId: 'kBag1HOZlaVBH7ICPE8x', transcriptVerified: 'PASS', humanApproved: true },
+        { id: 'AM49', speaker: 'Eliza', src: './assets/audio/characters/eliza/eliza_ch05_scene04_002.mp3', transcript: 'I am thinking about tomorrow.', inline: true, label: 'Replay Eliza', generationId: 'ttlurPbdJhRieRfMK1sB', assetId: 'lDyUARm5j8jxH57EV8xi', voice: 'Eliza - young_cockney', voiceId: '124kaYCknTDsnwUFdWl9', transcriptVerified: 'PASS', humanApproved: true },
+        { id: 'AM49', speaker: 'Mrs Pearce', src: './assets/audio/characters/mrs-pearce/mrs-pearce_ch05_scene04_002.mp3', transcript: 'Then tomorrow is worth planning. Start with what you want, not with what they expect.', inline: true, label: 'Replay Mrs Pearce', generationId: 'tLifN1JsPDXJRTT6YStj', assetId: 'FUmAu3ajCx3xoS8ptd7d', voice: 'Sally Ford', voiceId: 'kBag1HOZlaVBH7ICPE8x', transcriptVerified: 'PASS', humanApproved: true },
+        { id: 'AM49', speaker: 'Eliza', src: './assets/audio/characters/eliza/eliza_ch05_scene04_mrs-pearce_ordering_001.mp3', transcript: 'I need a little time to put it in order.', inline: true, label: 'Replay Eliza', generationId: 'rlkxV3kgUSqF6msPDyul', assetId: 'BzvUZKI8z0sAiGOgjoff', voice: 'Eliza - young_cockney', voiceId: '124kaYCknTDsnwUFdWl9', transcriptVerified: 'PASS', humanApproved: true },
+        { id: 'AM49', speaker: 'Mrs Pearce · LC14', src: './assets/audio/characters/mrs-pearce/mrs-pearce_ch05_scene04_lc14_001.mp3', transcript: "Work is one matter. Where you'll live is another.", inline: true, label: 'Replay Mrs Pearce’s LC14 context', generationId: '17a2SZKSGR5kFeaoIOdV', assetId: 'ZOwuQXjV9qSze912vZKN', voice: 'Sally Ford', voiceId: 'kBag1HOZlaVBH7ICPE8x', transcriptVerified: 'PASS', humanApproved: true }
+      ],
       storyBeats: [
         { type: 'dialogue', speaker: 'Mrs Pearce', text: "You've gone quiet." },
         { type: 'dialogue', speaker: 'Eliza', text: 'I am thinking about tomorrow.' },

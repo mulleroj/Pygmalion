@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CH03_SCENE_03, CH03_SCENE_04 } from '../src/ch03-content.js';
 import { CH04_SCENE_01 } from '../src/ch04-content.js';
-import { CH05_SCENE_02, CH05_SCENE_03 } from '../src/ch05-content.js';
+import { CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04 } from '../src/ch05-content.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -970,6 +970,43 @@ test('CH05 S03 AM47 controls replay the exact lines, replace foreground voices a
   assert.equal(interrupted.playCalls, 1);
   assert.equal(loop.playCalls, 2);
   assert.equal(elements.filter((audio) => audio.src === AMBIENCE_FILES.ch05_exhibition_hall).length, 1);
+});
+
+test('CH05 S04 AM49 replays both isolated branches over AM50 with duck/restore and Sound Off/On', async t => {
+  assert.equal(ambienceForScene('ch05_s04'), 'ch05_side_room');
+  assert.equal(AMBIENCE_FILES.ch05_side_room, './assets/audio/ambience/ch05_lambeth_side_room_ambient.mp3');
+  const { manager, elements } = audioHarness(t);
+  await manager.ensureAmbience('ch05_s04');
+  assert.equal(elements.length, 0, 'entering S04 does not autoplay voice or ambience');
+  manager.unlock();
+  await manager.ensureAmbience('ch05_s04');
+  const loop = manager.ambience;
+  assert.equal(loop.src, AMBIENCE_FILES.ch05_side_room, 'S04 uses approved AM50');
+  const branches = [
+    CH05_SCENE_04.branches.d11_private_conversation,
+    CH05_SCENE_04.branches.d11_accept_for_now
+  ];
+  let previousVoice = null;
+  for (const voice of branches.flatMap(({ voice }) => voice)) {
+    const playback = await manager.playVoice(voice.src);
+    assert.equal(playback.src, voice.src);
+    assert.equal(loop.volume, CH02_AUDIO_MIX.ambience * CH02_AUDIO_MIX.storyDuck, `${voice.speaker} ducks AM50`);
+    assert.deepEqual(elements.filter((audio) => audio !== loop && !audio.paused), [playback], 'only one foreground voice plays');
+    if (previousVoice) assert.equal(previousVoice.paused, true, 'new clip stops the previous foreground voice');
+    previousVoice = playback;
+    playback.emit('ended');
+    assert.equal(loop.volume, CH02_AUDIO_MIX.ambience, `${voice.speaker} restores AM50 after playback`);
+  }
+  const interrupted = await manager.playVoice(branches[1].voice[0].src);
+  await manager.setEnabled(false);
+  assert.equal(interrupted.paused, true, 'Sound Off stops the active AM49 clip');
+  assert.equal(loop.paused, true, 'Sound Off stops AM50');
+  assert.equal(manager.foreground, null);
+  await manager.setEnabled(true);
+  assert.equal(loop.paused, false, 'Sound On resumes AM50');
+  assert.equal(manager.foreground, null, 'Sound On does not restart interrupted dialogue');
+  assert.equal(interrupted.playCalls, 1);
+  assert.equal(elements.filter((audio) => audio.src === AMBIENCE_FILES.ch05_side_room).length, 1, 'AM50 is not duplicated');
 });
 
 test('S01 story voice duck/replay ownership restores the same interior and Sound On resumes only ambience', async t => {

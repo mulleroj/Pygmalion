@@ -173,7 +173,7 @@ test('S01 AM43 and AM44 MP3s are complete MPEG-1 Layer III streams at 44.1 kHz',
   for (const provenance of [
     'Generation ID `wBtfcWtx0WTT4DxtPnKR`', 'Asset Library ID `30yI9UQNQKzklOXBU7OC`', 'Transcript verified: PASS',
     'Generation ID `fzwkpWhCMP5dH2NfNmHu`', 'Asset Library ID `jC6RVeriDcd3ed2pan3j`', 'Duration: 24 s; loop: true; human approved: yes',
-    'Derived locally from approved AM44', '1.8 kHz low-pass filter', '9 dB attenuation', 'Human listening approval: pending'
+    'Derived locally from approved AM44', '1.8 kHz low-pass filter', '9 dB attenuation', 'Human listening approval: yes'
   ]) assert.ok(plan.includes(provenance), `AUDIO_PLAN includes ${provenance}`);
 });
 

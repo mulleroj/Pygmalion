@@ -75,19 +75,20 @@ D11 response options are text-only. Do not voice all three variants.
 
 ## AM49 — S04 companion dialogue and LC14
 
-One common Eliza take and branch-specific companion/dialogue clips, all with exact visible text and transcript. D11 selects the companion; future_question_style remains visible text and is not separately voiced.
+Ten branch-specific dialogue/context clips follow the exact wording and order in SCRIPT.md. D11 selects the companion; `I need to decide what I want to ask.` belongs only to Pickering's branch. `I need a little time to put it in order.` belongs only to Mrs Pearce's branch. There is no shared Eliza AM49 line. `future_question_style` remains visible text and is not separately voiced.
 
-| Branch / speaker | Exact transcript | Planned file |
-| --- | --- | --- |
-| Common · Eliza | “I need to decide what I want to ask.” | assets/audio/characters/eliza/eliza_ch05_scene04_001.mp3 |
-| Pickering | “You wanted to speak privately.” | assets/audio/characters/pickering/pickering_ch05_scene04_pickering_001.mp3 |
-| Eliza | “Yes. I know what I can do now. I don't know what happens to me next.” | assets/audio/characters/eliza/eliza_ch05_scene04_pickering_001.mp3 |
-| Pickering | “That should not be decided without you. I have sometimes spoken about your work instead of asking what you wanted.” | assets/audio/characters/pickering/pickering_ch05_scene04_001.mp3 |
-| Pickering · LC14 context | “There are several possibilities. Some will depend on money and introductions.” | assets/audio/characters/pickering/pickering_ch05_scene04_lc14_001.mp3 |
-| Mrs Pearce | “You've gone quiet.” | assets/audio/characters/mrs-pearce/mrs-pearce_ch05_scene04_001.mp3 |
-| Eliza | “I am thinking about tomorrow.” | assets/audio/characters/eliza/eliza_ch05_scene04_002.mp3 |
-| Mrs Pearce | “Then tomorrow is worth planning. Start with what you want, not with what they expect.” | assets/audio/characters/mrs-pearce/mrs-pearce_ch05_scene04_002.mp3 |
-| Mrs Pearce · LC14 context | “Work is one matter. Where you'll live is another.” | assets/audio/characters/mrs-pearce/mrs-pearce_ch05_scene04_lc14_001.mp3 |
+| Branch / speaker | Exact transcript | Voice / Voice ID | Generation ID | Asset ID | Runtime file | Transcript | Human approved |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Pickering · Pickering | “You wanted to speak privately.” | George — Warm, Captivating Storyteller / `JBFqnCBsd6RMkjVDRZzb` | `foRUcXu2Pow0Di90CnMW` | `3QqV3bDmMDnb0QVvVHVi` | assets/audio/characters/pickering/pickering_ch05_scene04_pickering_001.mp3 | PASS | yes |
+| Pickering · Eliza | “Yes. I know what I can do now. I don't know what happens to me next.” | Eliza - young_cockney / `124kaYCknTDsnwUFdWl9` | `6KyoTbyyWfFmCSMWgAaZ` | `pBkXHZHfDiXuws8DFSsq` | assets/audio/characters/eliza/eliza_ch05_scene04_pickering_001.mp3 | PASS | yes |
+| Pickering · Pickering | “That should not be decided without you. I have sometimes spoken about your work instead of asking what you wanted.” | George — Warm, Captivating Storyteller / `JBFqnCBsd6RMkjVDRZzb` | `DpagLQ84tlf8c5SEUdlU` | `AZAODqekAGLZnzAo00H6` | assets/audio/characters/pickering/pickering_ch05_scene04_001.mp3 | PASS | yes |
+| Pickering · Eliza | “I need to decide what I want to ask.” | Eliza - young_cockney / `124kaYCknTDsnwUFdWl9` | `XrIS9FoGBavEkKbA0LeZ` | `hMWBLNdwhiofcyIRV1If` | assets/audio/characters/eliza/eliza_ch05_scene04_001.mp3 | PASS | yes |
+| Pickering · LC14 / Pickering | “There are several possibilities. Some will depend on money and introductions.” | George — Warm, Captivating Storyteller / `JBFqnCBsd6RMkjVDRZzb` | `ENtLCogsmkzhoNv0oiZU` | `V15G15pgNM09YoHcRmey` | assets/audio/characters/pickering/pickering_ch05_scene04_lc14_001.mp3 | PASS | yes |
+| Mrs Pearce · Mrs Pearce | “You've gone quiet.” | Sally Ford / `kBag1HOZlaVBH7ICPE8x` | `CHRaX2IjO77856ZOTw20` | `vPMhgp2ef3J0J8l2IHuN` | assets/audio/characters/mrs-pearce/mrs-pearce_ch05_scene04_001.mp3 | PASS | yes |
+| Mrs Pearce · Eliza | “I am thinking about tomorrow.” | Eliza - young_cockney / `124kaYCknTDsnwUFdWl9` | `ttlurPbdJhRieRfMK1sB` | `lDyUARm5j8jxH57EV8xi` | assets/audio/characters/eliza/eliza_ch05_scene04_002.mp3 | PASS | yes |
+| Mrs Pearce · Mrs Pearce | “Then tomorrow is worth planning. Start with what you want, not with what they expect.” | Sally Ford / `kBag1HOZlaVBH7ICPE8x` | `tLifN1JsPDXJRTT6YStj` | `FUmAu3ajCx3xoS8ptd7d` | assets/audio/characters/mrs-pearce/mrs-pearce_ch05_scene04_002.mp3 | PASS | yes |
+| Mrs Pearce · Eliza | “I need a little time to put it in order.” | Eliza - young_cockney / `124kaYCknTDsnwUFdWl9` | `rlkxV3kgUSqF6msPDyul` | `BzvUZKI8z0sAiGOgjoff` | assets/audio/characters/eliza/eliza_ch05_scene04_mrs-pearce_ordering_001.mp3 | PASS | yes |
+| Mrs Pearce · LC14 / Mrs Pearce | “Work is one matter. Where you'll live is another.” | Sally Ford / `kBag1HOZlaVBH7ICPE8x` | `17a2SZKSGR5kFeaoIOdV` | `ZOwuQXjV9qSze912vZKN` | assets/audio/characters/mrs-pearce/mrs-pearce_ch05_scene04_lc14_001.mp3 | PASS | yes |
 
 The LC14 branch context is the listening material for the challenge and uses the same clips/transcripts above:
 
@@ -102,7 +103,7 @@ Attach LC14's answer options and feedback to the visible challenge text. Audio n
 
 **Planned file:** assets/audio/ambience/ch05_lambeth_side_room_ambient.mp3
 
-**Production provenance:** Derived locally from approved AM44 `assets/audio/ambience/ch05_borough_exhibition_ambient.mp3` with a 1.8 kHz low-pass filter, 9 dB attenuation and 128 kb/s MP3 encoding. Source and output decode to 24.00 s at 44.1 kHz mono. The decoded output loop-boundary delta is lower than AM44; runtime loops it continuously. No external generation was used. Human listening approval: pending.
+**Production provenance:** Derived locally from approved AM44 `assets/audio/ambience/ch05_borough_exhibition_ambient.mp3` with a 1.8 kHz low-pass filter, -9 dB attenuation and 128 kb/s MP3 encoding. Source and output decode to 24.00 s at 44.1 kHz mono. The decoded output loop-boundary delta is lower than AM44; runtime loops it continuously. It was not generated in ElevenLabs and has no ElevenLabs Generation ID or Asset Library ID. Human listening approval: yes. This is the canonical S04 ambience runtime file.
 
 **Technical check:** Decoded RMS is 9.67 dB below AM44. The absolute last-to-first sample delta fell from 0.000820 to 0.000363 (normalized float amplitude); the derived seam is below the source's 99th-percentile adjacent-sample step.
 
