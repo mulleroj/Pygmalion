@@ -698,6 +698,7 @@ function renderScene(scene) {
 
 function render() {
   let hashScene = window.location.hash.replace(/^#/, '');
+  if (!hashScene && state.started && window.history.state?.scene !== null) hashScene = state.scene;
   if (hashScene === CH03_SCENE_06.nextScene && !state.applied_events.includes('ch03_s06_complete')) {
     audioManager.leaveScene();
     app.innerHTML = '<main class="story-page runtime-boundary" id="story-root" tabindex="-1"><p class="eyebrow">Chapter IV</p><h1>The Invitation</h1><p class="end-note">Complete Chapter III before continuing to this scene.</p></main>';
