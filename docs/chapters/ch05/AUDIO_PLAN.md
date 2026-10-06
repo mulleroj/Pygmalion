@@ -113,9 +113,11 @@ Low room tone with the exhibition muffled beyond a closed or partly closed door 
 
 **Text / transcript:** “I know enough now to ask what comes next.”
 
-**Planned file:** assets/audio/characters/eliza/eliza_ch05_scene05_001.mp3
+**Runtime file:** assets/audio/characters/eliza/eliza_ch05_scene05_001.mp3
 
 This is a restrained, open ending, not a triumphant finish. The next-contact choices remain text-only.
+
+**Production provenance:** ElevenLabs Generation ID `hYtu6jZth0CXAH3YmJhM`; Asset Library ID `hdwLPWNMazpba2THUuHI` (`pygmalion_ch05_s05_am51_eliza.mp3`, `audio/mpeg`, 53,950 bytes); speaker Eliza; canonical voice `Eliza - young_cockney` (Voice ID `124kaYCknTDsnwUFdWl9`); model `eleven_v3`; duration approximately 2.24 s. Scribe transcript: PASS, “I know enough now to ask what comes next.” Human approved: yes. Runtime file: `assets/audio/characters/eliza/eliza_ch05_scene05_001.mp3`.
 
 ## AM52 — Exterior night ambience and one-shot
 

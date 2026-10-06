@@ -61,7 +61,12 @@ test('S05 content follows the locked scene text, uses the S04 guard and canonica
   assert.deepEqual(CH05_SCENE_05.decision.choices.map(({ title }) => title), [
     'I want to speak with Higgins directly.', 'I want to speak with Pickering first.', 'I want to ask Mrs Pearce for practical support first.'
   ]);
-  assert.equal(CH05_SCENE_05.voice.length, 0);
+  assert.deepEqual(CH05_SCENE_05.voice.map(({ id, speaker, transcript, generationId, voiceId, model, duration, transcriptVerified, humanApproved }) => [id, speaker, transcript, generationId, voiceId, model, duration, transcriptVerified, humanApproved]), [[
+    'AM51', 'Eliza', 'I know enough now to ask what comes next.', 'hYtu6jZth0CXAH3YmJhM', '124kaYCknTDsnwUFdWl9', 'eleven_v3', 2.24, 'PASS', true
+  ]]);
+  assert.equal(CH05_SCENE_05.voice[0].src, './assets/audio/characters/eliza/eliza_ch05_scene05_001.mp3');
+  assert.ok(fs.statSync(path.join(root, CH05_SCENE_05.voice[0].src.slice(2))).size > 0);
+  assert.ok(CH05_SCENE_05.voice[0].inline);
   assert.match(getSceneAdvanceBlock(setScene(createInitialState(), CH05_SCENE_05.id), CH05_SCENE_05), /Complete Chapter V Scene 04/);
   assert.match(app, /hashScene === 'ch05_s05' && !state\.applied_events\.includes\('ch05_s04_complete'\)/);
   assert.doesNotMatch(CH05_SCENE_05.storyBeats.map(({ text }) => text).join(' '), /not implemented/i);

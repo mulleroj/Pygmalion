@@ -239,7 +239,12 @@ export const CH05_SCENE_05 = {
   background: { src: './assets/images/locations/ch05/ch05_lambeth_public_rooms_front_steps_night.webp', alt: 'The front steps of Lambeth Public Rooms at night.' },
   plate: { src: './assets/images/locations/ch05/ch05_lambeth_public_rooms_front_steps_night.webp', alt: 'The front steps of Lambeth Public Rooms at night.' },
   eliza: { src: './assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png', alt: 'Eliza, thoughtful and composed in her own voice.' },
-  supporting: [cutout('./assets/images/characters/higgins/runtime/higgins_master_cutout.png', 'Henry Higgins stands at the open doorway.', 'higgins')], props: [], voice: [],
+  supporting: [cutout('./assets/images/characters/higgins/runtime/higgins_master_cutout.png', 'Henry Higgins stands at the open doorway.', 'higgins')], props: [], voice: [{
+    id: 'AM51', speaker: 'Eliza', src: './assets/audio/characters/eliza/eliza_ch05_scene05_001.mp3',
+    transcript: 'I know enough now to ask what comes next.', inline: true, label: 'Replay Eliza',
+    generationId: 'hYtu6jZth0CXAH3YmJhM', voice: 'Eliza - young_cockney', voiceId: '124kaYCknTDsnwUFdWl9',
+    model: 'eleven_v3', duration: 2.24, transcriptVerified: 'PASS', humanApproved: true
+  }],
   storyBeats: [
     { type: 'narration', text: 'The hall becomes quieter behind Eliza. The evening has gone well, but it has not decided what she should do next.' },
     { type: 'dialogue', speaker: 'Higgins', text: 'Well, Eliza? Are you coming?' },

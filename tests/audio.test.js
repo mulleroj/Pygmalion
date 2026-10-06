@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CH03_SCENE_03, CH03_SCENE_04 } from '../src/ch03-content.js';
 import { CH04_SCENE_01 } from '../src/ch04-content.js';
-import { CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04 } from '../src/ch05-content.js';
+import { CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04, CH05_SCENE_05 } from '../src/ch05-content.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -970,6 +970,50 @@ test('CH05 S03 AM47 controls replay the exact lines, replace foreground voices a
   assert.equal(interrupted.playCalls, 1);
   assert.equal(loop.playCalls, 2);
   assert.equal(elements.filter((audio) => audio.src === AMBIENCE_FILES.ch05_exhibition_hall).length, 1);
+});
+
+test('CH05 S05 AM51 is the approved Eliza clip, follows the S04 audio boundary, and replays through AudioManager', async t => {
+  const voice = CH05_SCENE_05.voice[0];
+  const app = fs.readFileSync(path.join(root, 'src/app.js'), 'utf8');
+  const bytes = fs.readFileSync(path.join(root, voice.src.slice(2)));
+  assert.equal(voice.id, 'AM51');
+  assert.equal(voice.speaker, 'Eliza');
+  assert.equal(voice.transcript, 'I know enough now to ask what comes next.');
+  assert.equal(voice.generationId, 'hYtu6jZth0CXAH3YmJhM');
+  assert.equal(voice.voiceId, '124kaYCknTDsnwUFdWl9');
+  assert.equal(voice.model, 'eleven_v3');
+  assert.equal(voice.humanApproved, true);
+  assert.ok(Math.abs(mp3Mpeg1Layer3Duration(bytes) - 2.24) < 0.07, 'MP3 frame duration is within one frame of the reported 2.24 seconds');
+  assert.match(app, /scene\.voice\.some\(\(voice\) => voice\.inline && voice\.transcript === beat\.text\)/);
+  assert.match(app, /audioManager\.playVoice\(target\.dataset\.src/);
+  assert.equal(ambienceForScene(CH05_SCENE_04.id), 'ch05_side_room');
+  assert.equal(ambienceForScene(CH05_SCENE_05.id), null, 'S05 has no AM52 dependency');
+  assert.equal(isContinuousAmbienceTransition(CH05_SCENE_04.id, CH05_SCENE_05.id), false);
+
+  const { manager, elements } = audioHarness(t);
+  await manager.ensureAmbience(CH05_SCENE_04.id);
+  assert.equal(elements.length, 0, 'locked audio does not autoplay on S04 entry');
+  manager.unlock();
+  await manager.ensureAmbience(CH05_SCENE_04.id);
+  const am50 = manager.ambience;
+  assert.equal(am50.src, AMBIENCE_FILES.ch05_side_room);
+  const precedingVoice = await manager.playVoice(CH05_SCENE_04.branches.d11_private_conversation.voice[0].src);
+  await manager.ensureAmbience(CH05_SCENE_05.id);
+  assert.equal(precedingVoice.paused, true, 'entering S05 stops the prior scene voice');
+  assert.equal(am50.paused, true, 'entering the exterior retires S04 AM50');
+  assert.equal(manager.ambience, null, 'S05 does not continue the side-room bed');
+  const elementCountAtS05Entry = elements.length;
+  assert.equal(elementCountAtS05Entry, 2, 'S05 entry starts no AM51 or AM52 audio');
+
+  const playback = await manager.playVoice(voice.src);
+  assert.equal(playback.src, voice.src);
+  assert.deepEqual(elements.filter((audio) => !audio.paused), [playback], 'AM51 is the only active audio after an explicit replay');
+  playback.emit('ended');
+  assert.equal(manager.foreground, null, 'AM51 releases foreground ownership when it ends');
+  const replay = await manager.playVoice(voice.src);
+  assert.equal(replay.src, voice.src, 'the same approved file supports replay');
+  assert.equal(elements.length, 4, 'replay creates one playback instance for the same approved asset');
+  assert.deepEqual(elements.filter((audio) => !audio.paused), [replay], 'replay replaces the ended instance');
 });
 
 test('CH05 S04 AM49 replays both isolated branches over AM50 with duck/restore and Sound Off/On', async t => {
