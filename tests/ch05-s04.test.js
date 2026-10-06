@@ -208,13 +208,14 @@ test('LC14 support and retry persist without rewards; Continue completes once on
   assert.equal(state.confidence, 0); assert.equal(state.pronunciation, 0); assert.equal(state.independence, 0);
 });
 
-test('Teacher preview is read-only and S05 is the next implemented Chapter V scene', () => {
+test('Teacher preview is read-only and S05 completes at the Chapter VI opening', () => {
   const teacher = CH05_S04_TEACHER_SECTIONS.flat().join(' ');
   assert.match(teacher, /read-only/i);
   assert.match(teacher, /direct, indirect or plan-focused/i);
   assert.match(app, /scene\?\.id === 'ch05_s04' \? CH05_S04_TEACHER_SECTIONS/);
   assert.match(app, /Teacher preview · read-only\. No LC14, future question style or progression changes\./);
   assert.equal(CH05_SCENE_04.nextScene, CH05_SCENE_05.id);
-  assert.match(app, /Leaving the Hall is complete and your progress is saved locally\./);
+  assert.match(app, /Chapter V is complete and saved\. Independence increased once\./);
+  assert.match(app, /CH06_SCENE_01/);
   assert.match(app, /scene\.id === 'ch05_s04'[\s\S]*?data-action="next-scene"/);
 });

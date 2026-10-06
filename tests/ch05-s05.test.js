@@ -107,7 +107,9 @@ test('S05 maps directly to the existing AM42 asset and intentionally omits optio
   assert.equal(sha256('assets/audio/characters/eliza/eliza_ch05_scene05_001.mp3'), 'F8978A101CEE737CD238E269699A322B1873E23C5E9F84646681806F1F9C303D');
   assert.equal(ambienceForScene('ch04_s04'), 'ch04_side_corridor');
   assert.equal(ambienceForScene('ch04_s05'), 'ch04_evening_walk');
-  assert.match(app, /Chapter VI, Her Own Voice, is not yet implemented in this runtime/);
+  assert.match(app, /The Question in the Mirror is not available yet/);
+  assert.match(app, /The Morning After is complete and saved/);
+  assert.match(app, /review-ch06-s01/);
 });
 
 test('S04 AM50 equal-power crossfades to S05 AM42; AM51 ducks/restores it and Sound On does not replay interrupted speech', async (t) => {
@@ -207,12 +209,12 @@ test('explicit Continue completes Chapter V and grants Independence +1 exactly o
   assert.equal(Object.hasOwn(backForwardReplay, 'ending'), false);
 });
 
-test('S05 Teacher Mode is registered as read-only and the Chapter VI boundary is explicit', () => {
+test('S05 Teacher Mode remains read-only and now hands off to the Chapter VI opening', () => {
   const teacher = CH05_S05_TEACHER_SECTIONS.map(([, text]) => text).join(' ');
   assert.match(teacher, /Read-only/i);
   assert.match(teacher, /does not select a contact/i);
   assert.match(app, /scene\?\.id === 'ch05_s05' \? CH05_S05_TEACHER_SECTIONS/);
   assert.match(app, /Chapter V complete/);
-  assert.match(app, /Chapter VI, Her Own Voice, is not yet implemented in this runtime/);
+  assert.match(app, /CH06_SCENE_01/);
   assert.match(app, /target\.dataset\.decision === 'NEXT_CONTACT' && \(currentScene\(\)\.id !== 'ch05_s05' \|\| studentReadOnly\(\)\)/);
 });

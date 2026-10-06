@@ -1,6 +1,7 @@
 import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05, CH03_SCENE_06 } from './ch03-content.js';
 import { CH04_SCENE_01, CH04_SCENE_02, CH04_SCENE_03, CH04_SCENE_04, CH04_SCENE_05 } from './ch04-content.js';
 import { CH05_SCENE_01, CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04, CH05_SCENE_05 } from './ch05-content.js';
+import { CH06_SCENE_01 } from './ch06-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -583,6 +584,11 @@ export function recordLc05Answer(state, sampleId, answerId) {
 
 export function completeScene(state, scene) {
   if (state.scene !== scene.id || getSceneAdvanceBlock(state, scene)) return state;
+  if (scene.id === CH06_SCENE_01.id) {
+    const eventId = 'ch06_s01_complete';
+    if (!state.ch05_complete || state.applied_events.includes(eventId)) return state;
+    return { ...state, applied_events: [...state.applied_events, eventId] };
+  }
   if (scene.id === 'ch03_s01') {
     if (!state.ch03_lc05_completed || state.ch03_s01_complete || state.applied_events.includes('ch03_s01_complete')) return state;
     return { ...state, ch03_s01_complete: true, applied_events: [...state.applied_events, 'ch03_s01_complete'] };
