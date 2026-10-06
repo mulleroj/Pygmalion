@@ -477,13 +477,13 @@ export const CH03_SCENE_06 = {
     incorrectFeedback: 'Not quite. Listen for what Eliza changes, then try again or open Supported Practice.',
     supportedPracticePrompt: 'Listen once more. What does Eliza mean to say?',
     samples: [
-      { id: 'lc10_sample_01', transcript: 'Free books—no, three books, please.', src: './assets/audio/challenges/ch03/lc10_three_books.mp3', generationId: 'v2gdewakrrLYUO3Psmcx', voiceId: '124kaYCknTDsnwUFdWl9', answer: 'lc10_01_three', options: [
+      { id: 'lc10_sample_01', transcript: 'Free books—no, three books, please.', accessiblePrompt: "Mrs Pearce has set aside one book for each of the lesson's three sections. Eliza is asking for the set, not asking that it cost nothing.", src: './assets/audio/challenges/ch03/lc10_three_books.mp3', generationId: 'v2gdewakrrLYUO3Psmcx', voiceId: '124kaYCknTDsnwUFdWl9', answer: 'lc10_01_three', options: [
         { id: 'lc10_01_three', label: 'She wants three books.' }, { id: 'lc10_01_free', label: 'She wants books at no cost.' }, { id: 'lc10_01_flowers', label: 'She wants three flowers.' }
       ], support: 'She means three books, not free books.' },
-      { id: 'lc10_sample_02', transcript: 'The blue book—no, the green one, please.', src: './assets/audio/challenges/ch03/lc10_green_book.mp3', generationId: 'WIWxgxtTfjK0d2b23h6f', voiceId: '124kaYCknTDsnwUFdWl9', answer: 'lc10_02_green', options: [
+      { id: 'lc10_sample_02', transcript: 'The blue book—no, the green one, please.', accessiblePrompt: 'Higgins offers two books. Eliza wants the one whose cover matches fresh leaves, not both books.', src: './assets/audio/challenges/ch03/lc10_green_book.mp3', generationId: 'WIWxgxtTfjK0d2b23h6f', voiceId: '124kaYCknTDsnwUFdWl9', answer: 'lc10_02_green', options: [
         { id: 'lc10_02_green', label: 'She wants the green book.' }, { id: 'lc10_02_blue', label: 'She wants the blue book.' }, { id: 'lc10_02_either', label: 'She would like either book.' }
       ], support: 'She means the green book, not the blue one.' },
-      { id: 'lc10_sample_03', transcript: 'Leave it by the door—no, after the lesson, please leave the parcel by the door.', src: './assets/audio/challenges/ch03/lc10_after_lesson.mp3', generationId: '6a8SiHtyM6HZzOZ9f9sk', voiceId: '124kaYCknTDsnwUFdWl9', answer: 'lc10_03_after_door', options: [
+      { id: 'lc10_sample_03', transcript: 'Leave it by the door—no, after the lesson, please leave the parcel by the door.', accessiblePrompt: 'Mrs Pearce asks about the parcel. Eliza wants it left at the entrance, once the lesson has ended.', src: './assets/audio/challenges/ch03/lc10_after_lesson.mp3', generationId: '6a8SiHtyM6HZzOZ9f9sk', voiceId: '124kaYCknTDsnwUFdWl9', answer: 'lc10_03_after_door', options: [
         { id: 'lc10_03_after_door', label: 'Leave the parcel by the door after the lesson.' }, { id: 'lc10_03_before_door', label: 'Leave the parcel by the door before the lesson.' }, { id: 'lc10_03_during_table', label: 'Leave the parcel on the table during the lesson.' }
       ], support: 'She wants the parcel left by the door after the lesson.' }
     ]

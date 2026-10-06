@@ -31,6 +31,7 @@ import {
   recordLc09Answer,
   markLc09SupportUsed,
   recordLc10Answer,
+  recordLc10NoAudio,
   markLc10SupportUsed,
   recordLc13Answer,
   markLc13SupportUsed,
@@ -466,8 +467,13 @@ function renderLc10(scene) {
       ? `<p class="lc10-support-prompt">${escapeHtml(scene.challenge.supportedPracticePrompt)}</p><button class="text-button" type="button" data-action="open-lc10-support" data-sample="${sample.id}" ${studentReadOnly() ? 'disabled' : ''}>Open Supported Practice</button>` : '';
     const revealed = supportOpen
       ? `<div class="lc10-support-note" role="status"><p>Spoken text: “${escapeHtml(sample.transcript)}”</p><p>${escapeHtml(sample.support)}</p></div>` : '';
+    const noAudio = challenge.noAudioSamples.includes(sample.id);
+    const accessibleAlternative = noAudio
+      ? `<div class="lc10-accessible-alternative" role="status"><p><strong>Text alternative:</strong> ${escapeHtml(sample.accessiblePrompt)}</p><p>No answer has been selected for you. Choose the message that fits.</p></div>` : '';
+    const noAudioButton = !saved && !noAudio
+      ? `<button class="text-button" type="button" data-action="lc10-cannot-hear" data-sample="${sample.id}" ${studentReadOnly() ? 'disabled' : ''}>I cannot hear this recording — use the text alternative</button>` : '';
     const replay = renderAudioControl({ ...sample, label: `Replay sample ${index + 1}`, ariaLabel: `Replay sample ${index + 1}`, buttonClass: 'lc10-replay' }, 'challenge');
-    return `<article class="lc10-sample" aria-labelledby="${sample.id}-title"><div class="lc10-sample-heading"><h3 id="${sample.id}-title">Sample ${index + 1}</h3>${replay}</div><div class="lc10-options" role="group" aria-label="Sample ${index + 1} answer choices">${options}</div>${feedback}${support}${revealed}</article>`;
+    return `<article class="lc10-sample" aria-labelledby="${sample.id}-title"><div class="lc10-sample-heading"><h3 id="${sample.id}-title">Sample ${index + 1}</h3>${replay}</div>${noAudioButton}${accessibleAlternative}<div class="lc10-options" role="group" aria-label="Sample ${index + 1} answer choices">${options}</div>${feedback}${support}${revealed}</article>`;
   }).join('');
   const completion = challenge.completed
     ? `${renderStoryBeats({ ...scene, storyBeats: scene.reflection })}<button class="secondary-button next-button" type="button" data-action="next-scene" ${studentReadOnly() ? 'disabled' : ''}>Continue <span aria-hidden="true">→</span></button>` : '';
@@ -1240,6 +1246,14 @@ document.addEventListener('click', async (event) => {
       const savedAnswer = state.challenges.lc10.answers[sample];
       announce(state.challenges.lc10.completed ? 'LC10 complete.' : savedAnswer?.correct ? 'Response recorded.' : CH03_SCENE_06.challenge.incorrectFeedback);
       document.querySelector(`[data-action="answer-lc10"][data-sample="${sample}"]:not(:disabled)`)?.focus();
+    }
+  }
+  if (action === 'lc10-cannot-hear' && currentScene().id === 'ch03_s06' && !studentReadOnly()) {
+    const next = recordLc10NoAudio(state, target.dataset.sample);
+    if (next !== state) {
+      state = next; save(); render();
+      document.querySelector(`[data-action="answer-lc10"][data-sample="${target.dataset.sample}"]:not(:disabled)`)?.focus();
+      announce('No answer was recorded. The text alternative is open; choose the message that fits. Supported completion has no reward or penalty.');
     }
   }
   if (action === 'open-lc10-support' && currentScene().id === 'ch03_s06' && !studentReadOnly()) {

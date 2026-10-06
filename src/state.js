@@ -50,7 +50,7 @@ export function createInitialState() {
       lc07: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false },
       lc08: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false },
       lc09: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [] },
-      lc10: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [] },
+      lc10: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [], noAudioSamples: [] },
       lc11: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [], applicationChoice: null },
       lc12: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportItems: [] },
       lc13: { answers: {}, completed: false, attempts: 0, firstAttempt: false, supportUsed: false, supportSamples: [] },
@@ -803,6 +803,24 @@ export function recordLc10Answer(state, sampleId, answerId) {
     pronunciation: state.pronunciation + (firstCompletion && !challenge.supportUsed ? 1 : 0),
     applied_events: firstCompletion ? [...state.applied_events, eventId] : state.applied_events,
     challenges: { ...state.challenges, lc10: { ...challenge, answers, completed, attempts: (challenge.attempts || 0) + 1, firstAttempt: true } }
+  };
+}
+
+export function recordLc10NoAudio(state, sampleId) {
+  const sample = CH03_SCENE_06.challenge.samples.find(({ id }) => id === sampleId);
+  const challenge = state.challenges.lc10;
+  if (state.scene !== 'ch03_s06' || !state.applied_events.includes('ch03_s05_complete') || !sample ||
+      challenge.completed || challenge.answers[sampleId]?.correct || challenge.answers[sampleId]?.answer !== undefined ||
+      challenge.noAudioSamples.includes(sampleId)) return state;
+  return {
+    ...state,
+    challenges: { ...state.challenges, lc10: {
+      ...challenge,
+      attempts: (challenge.attempts || 0) + 1,
+      firstAttempt: true,
+      supportUsed: true,
+      noAudioSamples: [...challenge.noAudioSamples, sampleId]
+    } }
   };
 }
 

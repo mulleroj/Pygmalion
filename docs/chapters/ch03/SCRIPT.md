@@ -310,6 +310,12 @@ Instruction: “Listen to Eliza's first try and her repair. Choose the message s
 
 Before response, no transcript, punctuation or visual styling may disclose the repaired message. Normal replay is read-only. After an incorrect response, offer target-neutral Supported Practice; an explicitly opened target-revealing explanation may show the transcript and intended message. Support never blocks completion or penalizes the learner. Exact stable IDs, copy and reward contract are in `STATE_AND_BRANCHING.md`.
 
+For a learner who cannot hear the recording, the explicit no-audio control records an unresolved attempt and opens a text alternative before any answer is selected. Show only the corresponding scenario prompt below (never the raw transcript or keyed explanation); keep the same message choices and require the learner to choose. This route is supported, persistent, and carries no reward or penalty:
+
+- Sample 1: “Mrs Pearce has set aside one book for each of the lesson's three sections. Eliza is asking for the set, not asking that it cost nothing.”
+- Sample 2: “Higgins offers two books. Eliza wants the one whose cover matches fresh leaves, not both books.”
+- Sample 3: “Mrs Pearce asks about the parcel. Eliza wants it left at the entrance, once the lesson has ended.”
+
 ### Ending and transition
 
 After LC10, show Eliza’s short reflection and narration above. No D-numbered decision exists in S06. Only explicit student **Continue** after LC10 records `ch03_s06_complete` once and advances to canonical Chapter IV scene `ch04_s01 – The Invitation`; Continue adds no signal. Do not create a Chapter III mastery bonus or imply the lessons have finished.

@@ -4,7 +4,8 @@ import fs from 'node:fs';
 import { CH03_SCENE_06, CH03_S06_TEACHER_SECTIONS } from '../src/ch03-content.js';
 import { ambienceForScene, isContinuousAmbienceTransition } from '../src/content.js';
 import {
-  completeScene, createInitialState, getSceneAdvanceBlock, markLc10SupportUsed, recordLc10Answer, setScene
+  completeScene, createInitialState, getSceneAdvanceBlock, loadState, markLc10SupportUsed, recordLc10Answer,
+  recordLc10NoAudio, saveState, setScene
 } from '../src/state.js';
 
 const ready = () => ({
@@ -61,6 +62,11 @@ test('LC10 uses exact instruction, three sample IDs, options, answer mapping, an
   assert.equal(challenge.intro, "Listen to Eliza's first try and her repair. Choose the message she settles on.");
   assert.equal(challenge.incorrectFeedback, 'Not quite. Listen for what Eliza changes, then try again or open Supported Practice.');
   assert.equal(challenge.supportedPracticePrompt, 'Listen once more. What does Eliza mean to say?');
+  assert.deepEqual(challenge.samples.map(({ accessiblePrompt }) => accessiblePrompt), [
+    "Mrs Pearce has set aside one book for each of the lesson's three sections. Eliza is asking for the set, not asking that it cost nothing.",
+    'Higgins offers two books. Eliza wants the one whose cover matches fresh leaves, not both books.',
+    'Mrs Pearce asks about the parcel. Eliza wants it left at the entrance, once the lesson has ended.'
+  ]);
   assert.deepEqual(challenge.samples.map(({ id, transcript, answer, options, support, src, generationId, voiceId }) => ({ id, transcript, answer, options, support, src, generationId, voiceId })), [
     { id: 'lc10_sample_01', transcript: 'Free books—no, three books, please.', answer: 'lc10_01_three', options: [
       { id: 'lc10_01_three', label: 'She wants three books.' }, { id: 'lc10_01_free', label: 'She wants books at no cost.' }, { id: 'lc10_01_flowers', label: 'She wants three flowers.' }
@@ -124,6 +130,33 @@ test('opening LC10 support after an incorrect answer reveals only its sample and
   assert.equal(state.applied_events.filter((event) => event === 'ch03_lc10_completed').length, 1);
 });
 
+test('LC10 no-audio alternative records an unresolved supported attempt and completes with identical state semantics', () => {
+  let state = ready();
+  const baseline = [state.pronunciation, state.confidence, state.independence];
+  const storage = new Map();
+  for (const [index, sample] of CH03_SCENE_06.challenge.samples.entries()) {
+    const before = state;
+    state = recordLc10NoAudio(state, sample.id);
+    assert.notEqual(state, before, `${sample.id} opens the no-audio route`);
+    assert.equal(state.challenges.lc10.answers[sample.id], undefined, 'no answer or correctness is fabricated');
+    assert.equal(state.challenges.lc10.attempts, index * 2 + 1);
+    assert.equal(state.challenges.lc10.firstAttempt, true);
+    assert.equal(state.challenges.lc10.supportUsed, true);
+    assert.deepEqual(state.challenges.lc10.noAudioSamples, CH03_SCENE_06.challenge.samples.slice(0, index + 1).map(({ id }) => id));
+    assert.equal(recordLc10NoAudio(state, sample.id), state, 'the unresolved attempt cannot be repeated to farm state');
+    saveState(state, { getItem: (key) => storage.get(key), setItem: (key, value) => storage.set(key, value) });
+    state = loadState({ getItem: (key) => storage.get(key) });
+    state = answer(state, index, correctIds[index]);
+  }
+  assert.equal(state.challenges.lc10.completed, true);
+  assert.equal(state.applied_events.filter((event) => event === 'ch03_lc10_completed').length, 1);
+  assert.deepEqual([state.pronunciation, state.confidence, state.independence], baseline, 'supported route has no reward or penalty');
+  assert.equal(getSceneAdvanceBlock(state, CH03_SCENE_06), '');
+  const continued = completeScene(state, CH03_SCENE_06);
+  assert.equal(continued.applied_events.filter((event) => event === 'ch03_s06_complete').length, 1);
+  assert.equal(recordLc10NoAudio(continued, 'lc10_sample_01'), continued);
+});
+
 test('S06 audio metadata matches approved assets and all five files exist', () => {
   const story = [
     ['AM31', 'That came too quickly. Let me try again.', './assets/audio/characters/eliza/eliza_ch03_scene06_001.mp3', 'QqV9Q0ILukD0XTk9tsj6', '124kaYCknTDsnwUFdWl9'],
@@ -178,6 +211,8 @@ test('S06 UI hides all transcripts initially, uses neutral controls, and Teacher
   assert.doesNotMatch(html, /class="answer-button lc10-answer selected"|aria-pressed="true"/);
   assert.equal((html.match(/aria-label="Replay sample \d"/g) || []).length, 3);
   assert.equal((html.match(/data-action="play-challenge"/g) || []).length, 3);
+  assert.equal((html.match(/data-action="lc10-cannot-hear"/g) || []).length, 3, 'no-audio alternative is discoverable for every unresolved item');
+  assert.doesNotMatch(html, /Text alternative:|Mrs Pearce has set aside one book/);
   assert.doesNotMatch(html, /Mrs Pearce (?:is )?counting three books|Mrs Pearce counts three books/i, 'learner UI must not show sample-1 situation text');
   assert.doesNotMatch(html, /Free books—no, three books, please\.|The blue book—no, the green one, please\.|Leave it by the door—no, after the lesson/);
   assert.doesNotMatch(html, /I can hear it myself\.|The lesson is over\. The learning is not\./);
@@ -203,6 +238,16 @@ test('S06 UI hides all transcripts initially, uses neutral controls, and Teacher
   const soundOffPlayCount = FakeAudio.played.length;
   await click('play-challenge', { sample: 'lc10_sample_02', src: CH03_SCENE_06.challenge.samples[1].src });
   assert.equal(FakeAudio.played.length, soundOffPlayCount, 'Sound Off prevents foreground playback');
+  await click('lc10-cannot-hear', { sample: 'lc10_sample_02' });
+  html = node('#app').innerHTML;
+  assert.match(html, /Text alternative:<\/strong> Higgins offers two books/);
+  assert.equal((html.match(/data-action="lc10-cannot-hear"/g) || []).length, 2, 'only the used sample hides its no-audio trigger');
+  assert.doesNotMatch(html, /The blue book—no, the green one, please\.|She means the green book, not the blue one\./, 'accessible input does not disclose the recording transcript or answer explanation');
+  assert.doesNotMatch(html, /aria-pressed="true"/);
+  let afterNoAudio = JSON.parse(saved);
+  assert.equal(afterNoAudio.challenges.lc10.answers.lc10_sample_02, undefined, 'no-audio route records no fabricated answer');
+  assert.deepEqual(afterNoAudio.challenges.lc10.noAudioSamples, ['lc10_sample_02']);
+  assert.equal(afterNoAudio.challenges.lc10.supportUsed, true);
   await click('toggle-sound');
   await click('play-voice', { src: CH03_SCENE_06.voice[0].src });
   assert.ok(FakeAudio.played.includes(CH03_SCENE_06.voice[0].src), 'Sound On restores story playback');
