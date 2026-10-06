@@ -7,7 +7,37 @@ export const CH06_SCENE_01 = {
   title: 'The Morning After',
   kicker: 'Chapter VI · Her Own Voice',
   location: 'Wimpole Street morning room',
-  visualFallback: true,
+  visualFallback: false,
+  composition: 'ch06-morning-after',
+  background: {
+    src: './assets/images/locations/ch06/ch06_morning_after_room.webp',
+    alt: 'A quiet Edwardian morning room with letters on a table and an open doorway into the adjoining workroom.'
+  },
+  plate: {
+    src: './assets/images/locations/ch06/ch06_morning_after_room.webp',
+    alt: 'A quiet Edwardian morning room with letters on a table and an open doorway into the adjoining workroom.'
+  },
+  eliza: {
+    src: './assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png',
+    alt: 'Eliza, thoughtful and composed in her own voice.'
+  },
+  supporting: [],
+  props: [],
+  visualRoutes: {
+    higgins_directly: {
+      compositionVariant: 'ch06-morning-after-higgins',
+      supporting: [{ src: './assets/images/characters/higgins/runtime/higgins_master_cutout.png', alt: 'Henry Higgins stands to the left, listening to Eliza.', placement: 'higgins' }]
+    },
+    pickering_first: {
+      compositionVariant: 'ch06-morning-after-pickering',
+      supporting: [{ src: './assets/images/characters/pickering/runtime/pickering_full-body_master_cutout.png', alt: 'Colonel Pickering stands to the left, listening to Eliza.', placement: 'pickering' }]
+    },
+    mrs_pearce_first: {
+      compositionVariant: 'ch06-morning-after-mrs-pearce',
+      supporting: [{ src: './assets/images/characters/mrs-pearce/runtime/mrs-pearce_practical-questioning_cutout.png', alt: 'Mrs Pearce stands to the left, speaking practically with Eliza.', placement: 'mrs-pearce' }]
+    },
+    neutral: { compositionVariant: 'ch06-morning-after-neutral', supporting: [] }
+  },
   voice: [],
   storyBeats: [
     { type: 'narration', text: 'Morning light reaches the papers on the table. One letter asks Eliza to speak at a public meeting. Another offers paid work. A note asks whether she might help a group of flower growers plan a small evening class. Eliza sets the letters side by side.' },

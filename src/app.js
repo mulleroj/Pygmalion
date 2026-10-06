@@ -186,6 +186,17 @@ function chapterVSafeScene() {
           : CH05_SCENE_01.id;
 }
 
+function sceneCompositionClasses(scene, suffix = '') {
+  return [scene.composition, scene.compositionVariant].filter(Boolean)
+    .map((name) => suffix ? `${name}-${suffix}` : name).join(' ');
+}
+
+function chapterSixSceneVisual(scene) {
+  if (scene.id !== CH06_SCENE_01.id) return scene;
+  const route = CH06_SCENE_01.visualRoutes[state.next_contact] || CH06_SCENE_01.visualRoutes.neutral;
+  return { ...scene, ...route };
+}
+
 function renderSfxControl(item) {
   return `<div class="audio-cue sfx-cue"><button class="audio-button" type="button" data-action="play-sfx" data-src="${escapeHtml(item.src)}" aria-label="${escapeHtml(item.label)}"><span aria-hidden="true">▶</span> Replay the fallen flowers sound</button><span class="sfx-note">SFX · one short basket-and-flowers sound</span></div>`;
 }
@@ -195,7 +206,7 @@ function renderArt(scene) {
   const support = (scene.supporting || []).map((asset) => `<img class="supporting-character${asset.placement ? ` support-${escapeHtml(asset.placement)}` : ''}" src="${asset.src}" alt="${escapeHtml(asset.alt)}" loading="lazy">`).join('');
   const props = (scene.props || []).map((asset) => `<img class="scene-prop" src="${asset.src}" alt="${escapeHtml(asset.alt)}" loading="lazy">`).join('');
   const plate = scene.plate.src === scene.background.src ? '' : `<div class="art-plate"><img src="${scene.plate.src}" alt="${escapeHtml(scene.plate.alt)}" loading="lazy"></div>`;
-  return `<figure class="storybook-art ${scene.id === 'ch02_s01' ? 'ch02-exterior' : ''} ${scene.composition || ''}">
+  return `<figure class="storybook-art ${scene.id === 'ch02_s01' ? 'ch02-exterior' : ''} ${sceneCompositionClasses(scene)}">
     <div class="art-background"><img src="${scene.background.src}" alt="${escapeHtml(scene.background.alt)}"></div>
     ${plate}
     <div class="art-layer art-support">${support}</div>
@@ -700,7 +711,7 @@ function renderScene(scene) {
 
   return `<main class="story-page ${chapterTwo ? 'ch02-story' : ''}" id="story-root" tabindex="-1" aria-labelledby="scene-title">
     <div class="story-progress"><span>Chapter ${scene.chapter ? `${scene.chapter} · ${scene.chapterTitle}` : chapterTwo ? 'II · The Bargain' : 'I · The Flower Girl'}</span><span>Scene ${sceneIndex} of ${scene.sceneCount || 5}</span></div>
-    <div class="storybook-spread ${scene.composition ? `${scene.composition}-spread` : ''}">
+    <div class="storybook-spread ${sceneCompositionClasses(scene, 'spread')} ${sceneCompositionClasses(scene)}">
       ${renderArt(scene)}
       <article class="story-copy">
         <p class="eyebrow">${escapeHtml(scene.kicker)}</p>
@@ -839,7 +850,7 @@ function render() {
     const baseScene = RUNTIME_SCENES[hashScene] || currentScene();
     const scene = baseScene.id === 'ch05_s04'
       ? { ...baseScene, ...baseScene.branches[state.credit_response], challenge: { id: 'LC14', title: 'Questioning for Purpose' } }
-      : baseScene;
+      : chapterSixSceneVisual(baseScene);
     if (previousScene !== scene.id && scene.id === 'ch03_s02') audioManager.leaveScene();
     if (previousScene !== scene.id) { lastS03Response = null; ch05S02FirstResponder = null; s04AudioPreview = false; s05Preview = false; scenePreview = false; }
     if (state.scene !== scene.id) {

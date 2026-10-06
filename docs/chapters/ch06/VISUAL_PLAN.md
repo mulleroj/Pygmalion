@@ -1,6 +1,15 @@
 # Chapter VI Visual Plan
 
-Status: design only. No images generated. Preserve canonical Eliza identity and approved stage `Her Own Voice`; use approved Higgins, Pickering and Mrs Pearce art where needed. Do not create unnecessary character variants. Chapter VI's visual change is agency, framing and environment, not a makeover or a new “proper” identity.
+Status: S01 visual approved and integrated; S02–S05 remain planned. Preserve canonical Eliza identity and approved stage `Her Own Voice`; use approved Higgins, Pickering and Mrs Pearce art where needed. Do not create unnecessary character variants. Chapter VI's visual change is agency, framing and environment, not a makeover or a new “proper” identity.
+
+## S01 — The Morning After (approved visual)
+
+- Approved background: Candidate B, generated as `exec-496f8c96-01f6-42d8-806b-f6bad7e6b096` (1672 × 941 px).
+- Canonical runtime asset: `assets/images/locations/ch06/ch06_morning_after_room.webp`, converted from the approved PNG to WebP at quality 92 with dimensions unchanged.
+- Preserve the cool morning window light, table and letters, adjoining workroom doorway and visible floor. The scene uses the same background in every route; the generated plate contains no people.
+- Reuse Eliza `assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png`; Higgins `assets/images/characters/higgins/runtime/higgins_master_cutout.png`; Pickering `assets/images/characters/pickering/runtime/pickering_full-body_master_cutout.png`; and Mrs Pearce `assets/images/characters/mrs-pearce/runtime/mrs-pearce_practical-questioning_cutout.png`. Character binaries are referenced in place, not duplicated.
+- `next_contact` selects only the first-contact composition: Eliza at the right with Higgins, Pickering or Mrs Pearce at the left. Eliza uses the larger scale; Higgins remains secondary. Missing or unknown `next_contact` uses the same plate with Eliza alone at left-of-centre; it adds no companion and does not change story state.
+- The art panel stays at 1672:941 on wide layouts. At widths up to 1023 px the story spread stacks; up to 599 px the room uses a 1.35 crop biased slightly toward the adjoining workroom, with companions moved inward and both figures scaled to fit. The neutral route remains a deliberate solo composition. Verify future art or crop changes against the letters, doorway, full-body feet and dialogue controls.
 
 | Scene | Composition / environment | Character and prop needs |
 |---|---|---|

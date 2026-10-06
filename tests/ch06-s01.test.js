@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { createInitialState, STORAGE_KEY } from '../src/state.js';
 import { CH06_SCENE_01 } from '../src/ch06-content.js';
 import { AudioManager } from '../src/audio.js';
@@ -43,20 +43,58 @@ test('S01 content matches locked script and routes only the first conversation',
   assert.equal(Object.keys(CH06_SCENE_01.contactRoutes).length, 3);
 });
 
-test('valid S01 restore renders all contact routes with shared convergence and no progress mutation', async (t) => {
-  for (const [route, speaker] of [['higgins_directly', 'Higgins'], ['pickering_first', 'Pickering'], ['mrs_pearce_first', 'Mrs Pearce'], [null, null]]) {
+test('approved S01 background and existing character assets use the canonical visual references', async () => {
+  const background = 'assets/images/locations/ch06/ch06_morning_after_room.webp';
+  const assets = [background,
+    'assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png',
+    'assets/images/characters/higgins/runtime/higgins_master_cutout.png',
+    'assets/images/characters/pickering/runtime/pickering_full-body_master_cutout.png',
+    'assets/images/characters/mrs-pearce/runtime/mrs-pearce_practical-questioning_cutout.png'];
+  for (const asset of assets) assert.ok((await stat(new URL(`../${asset}`, import.meta.url))).size > 0, `${asset} exists`);
+  assert.equal(CH06_SCENE_01.background.src, `./${background}`);
+  assert.equal(CH06_SCENE_01.plate.src, CH06_SCENE_01.background.src);
+  assert.equal(CH06_SCENE_01.eliza.src, `./${assets[1]}`);
+  assert.equal(CH06_SCENE_01.visualRoutes.higgins_directly.supporting[0].src, `./${assets[2]}`);
+  assert.equal(CH06_SCENE_01.visualRoutes.pickering_first.supporting[0].src, `./${assets[3]}`);
+  assert.equal(CH06_SCENE_01.visualRoutes.mrs_pearce_first.supporting[0].src, `./${assets[4]}`);
+  assert.deepEqual(CH06_SCENE_01.visualRoutes.neutral.supporting, []);
+  assert.equal(CH06_SCENE_01.visualFallback, false);
+});
+
+test('valid S01 restore renders all visual routes with shared story convergence and no progress mutation', async (t) => {
+  const routes = [
+    ['higgins_directly', 'Higgins', 'higgins'],
+    ['pickering_first', 'Pickering', 'pickering'],
+    ['mrs_pearce_first', 'Mrs Pearce', 'mrs-pearce'],
+    [null, null, null]
+  ];
+  for (const [route, speaker, companion] of routes) {
     const before = eligible({ next_contact: route });
     const mounted = await mount(t, before, '#ch06_s01');
     const html = mounted.node('#app').innerHTML;
     assert.match(html, /The Morning After/);
     assert.match(html, /The first conversation ends without choosing for Eliza/);
     assert.match(html, /I know what is possible\. I need to decide what I want\./);
+    assert.match(html, new RegExp(`ch06-morning-after-${companion || 'neutral'}`));
+    assert.match(html, /ch06_morning_after_room\.webp/);
+    assert.match(html, /eliza_her-own-voice_thoughtful_cutout\.png/);
+    if (companion) assert.match(html, new RegExp(`${companion.replace('-', '\\-')}_.*cutout\\.png`));
     if (speaker) assert.match(html, new RegExp(`class="dialogue-line ${speaker.toLowerCase().replace(' ', '-')}"`));
     else assert.doesNotMatch(html, /class="dialogue-line (higgins|pickering|mrs-pearce)"/);
+    if (!companion) assert.doesNotMatch(html, /(?:higgins_master|pickering_full-body|mrs-pearce_practical-questioning)_cutout\.png/);
     assert.match(html, /type="button" data-action="next-scene"/);
     assert.doesNotMatch(html, /data-src=|<audio|Play audio/);
     assert.deepEqual(mounted.state(), before);
   }
+});
+
+test('S01 visual CSS defines scene-specific tablet/mobile layout without changing global overflow protection', async () => {
+  const css = await readFile(new URL('../styles.css', import.meta.url), 'utf8');
+  assert.match(css, /\.ch06-morning-after-spread \{ grid-template-columns: minmax\(0, 1\.04fr\) minmax\(0, \.96fr\)/);
+  assert.match(css, /@media \(max-width: 1023px\)[\s\S]*?\.ch06-morning-after-spread \{ grid-template-columns: minmax\(0, 1fr\); \}/);
+  assert.match(css, /@media \(max-width: 599px\)[\s\S]*?\.ch06-morning-after\.storybook-art \{ min-height: 0; height: auto; aspect-ratio: 1\.35; \}/);
+  assert.match(css, /\.ch06-morning-after-neutral \.art-eliza img \{ left: 40%;/);
+  assert.match(css, /overflow: hidden/);
 });
 
 test('legacy save without next_contact or optional history stays eligible and uses the neutral opening', async (t) => {
