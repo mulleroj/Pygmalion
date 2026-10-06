@@ -486,7 +486,7 @@ Společný poslech jedné skupiny hostů, práce ve trojicích s různými adres
 
 ### 1. Chapter Overview
 
-Eliza po veřejné zkoušce řeší, kdo bude rozhodovat o její další podobě. Chapter VI syntetizuje historii hry a nabídne tři legitimní směry: `Social Success`, `Independent Voice`, `Integrated Identity`. Dramatickým výsledkem je agency a identita, ne známka z výslovnosti.
+Eliza po veřejné zkoušce řeší, kdo bude rozhodovat o její další podobě. Chapter VI syntetizuje historii hry popisně a nabídne tři legitimní směry: `Public Participation` (interní `social_success`), `Independent Voice` a `Integrated Identity`. Public Participation neznamená vyšší status ani nejlepší ending. Dramatickým výsledkem je agency a identita, ne známka z výslovnosti.
 
 ### 2. Learning Goals
 
@@ -524,7 +524,11 @@ Teacher Mode může spojit accent and identity, employment and opportunity, gend
 
 ### 8. Challenge Key
 
-- `LC15` je integrovaná register/identity choice. Objektivně lze ověřit, zda žák zvolil vhodný adresát, účel a srozumitelný obsah; neexistuje jediný správný osobní registr ani answer key pro identitu.
+- `LC15` je objective pragmatic/context challenge with three samples. Jeho answer key určuje pravděpodobný kontext, adresáta a účel podle situace; nehodnotí identitu, přízvuk ani prestiž registru. No-audio alternativu lze použít bez penalizace.
+- `D12` je osobní volba mezi třemi stejně legitimními směry; nemá answer key.
+- `final_statement_shape` (`declaration`, `reflection`, `commitment`) je rétorická preference; nemá answer key a nemění `chapter6_direction`.
+- Vykreslení složeného statementu v S04 reward nepřidává. Až explicitní potvrzení/doručení statementu zapíše `ch06_final_statement_delivered` a udělí `Confidence +1` právě jednou, bez ohledu na `final_statement_shape`. Replay, reload, Teacher Mode, Back/Forward a změna viewportu reward nespouští. Chapter VI completion nepřidává žádný signal.
+- S05 ukládá pouze `ch06_complete` po explicitním Finish a vede na finální book-complete screen. Nepoužívat `ending_direction` ani aggregate `final_state`.
 
 ### 9. Discussion Questions
 
@@ -547,9 +551,9 @@ Samostatná nebo skupinová rekapitulace: žáci porovnají různé ending direc
 | --- | --- | --- | --- | --- | --- |
 | `ch06_s01` | The Morning After | — | — | reading offers, agency | `AM53–AM54` |
 | `ch06_s02` | The Question in the Mirror | — | — | reflection, register repertoire | `AM55–AM56` |
-| `ch06_s03` | Three Ways Forward | `D12` | `LC15` | integrated register, identity | `AM57–AM58` |
-| `ch06_s04` | Her Own Statement | — | — | self-presentation, audience | `AM59–AM60` |
-| `ch06_s05` | The Voice She Chooses | — | — | summary and replay | replay of `AM59–AM60` |
+| `ch06_s03` | Three Ways Forward | `D12` | `LC15` | pragmatic context, addressee and purpose | `AM57–AM58` |
+| `ch06_s04` | Her Own Statement | statement shape (no answer key) | — | rhetorical purpose, self-definition | — |
+| `ch06_s05` | The Voice She Chooses | — | — | descriptive summary and read-only replay | `AM59–AM60` |
 
 ## 5. Future implementation checklist
 

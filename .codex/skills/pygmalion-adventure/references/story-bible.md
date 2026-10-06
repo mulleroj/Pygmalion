@@ -45,10 +45,10 @@ Pravidla eventů, replay a budoucího balance auditu jsou canonical v `game-desi
 
 ## Finální větve
 
-- `Social Success`
+- `social_success` (learner-facing label: `Public Participation`)
 - `Independent Voice`
 - `Integrated Identity`
 
-Scene map dále specifikuje tři kvalitativní finální směry: `Social Success`, `Independent Voice` a `Integrated Identity`. Případná vnitřní konfliktnost je dramatická vlastnost cesty, ne trest za „špatné“ volby.
+Scene map dále specifikuje tři kvalitativní finální směry: `Public Participation` (interní `social_success`), `Independent Voice` a `Integrated Identity`. Veřejná/profesní/komunitní účast neznamená vyšší status, „správnou dámu“, společenskou nadřazenost ani nejlepší ending. Případná vnitřní konfliktnost je dramatická vlastnost cesty, ne trest za „špatné“ volby.
 
 Výsledek nesmí redukovat Elizu na to, zda přijala „správný“ přízvuk. Hlavní otázkou je, zda a jak si volí vlastní hlas.

@@ -20,7 +20,7 @@ Scénově specifické Teacher Mode poznámky zůstávají u jednotlivých scén.
 - Každý state-changing event má stabilní event ID a může přidat změnu nejvýše jednou. Replay, opakování challenge ani opakované načtení scény nesmí stejný increment farmit.
 - Chyba v language challenge nesnižuje morální hodnotu Elizy ani hráče.
 - Rozdílný počet příležitostí pro jednotlivé hodnoty nesmí sám o sobě odemknout nebo zablokovat ending.
-- Thresholdy pro „výhru“ ani minimální skóre pro ending zatím neexistují; Chapter VI používá Ending Synthesis Matrix níže.
+- Thresholdy pro „výhru“ ani minimální skóre pro ending neexistují; Chapter VI ukládá výhradně explicitní `chapter6_direction` a shrnuje ostatní historii popisně.
 
 ## Visual continuity across Chapters V–VI
 
@@ -509,123 +509,66 @@ Exact scene text, options, answer keys and asset contracts are in docs/chapters/
 
 ## Chapter VI – Her Own Voice
 
-**Dramatic arc:** Eliza musí rozhodnout, kdo bude určovat její další podobu. Tři výsledné směry nejsou známky ani tresty; jsou to kvalitativně odlišné způsoby, jak spojit dovednost, sebejistotu, původní motivaci a vlastní agency.
+**Dramatic arc:** Chapter VI uzavírá Elizinu agency arc. Naučené jazykové nástroje rozšiřují její repertoár a nenahrazují identitu. Cockney není méněcenné já, kultivovaná řeč není nadřazené já a registr je volba. Všechny tři směry jsou stejně legitimní; žádná historie ani signál je neuzamyká nebo neřadí.
 
-**Audio profile:** `VOICE` Elizina vlastní statement a větevní nabídky; `LISTENING` replay BEFORE/DURING/AFTER a volba adresáta; `PRONUNCIATION` vědomá práce s finálním registrem; `SFX` zrcadlo, dopisy a pracovní prostor; `AMBIENCE` ráno, veřejný prostor a závěrečný klid.
+**Audio profile:** `AM53–AM60` cover optional companion/story voice, quiet ambience, reused reflective clips, three objective `LC15` samples and one shared final Eliza take reused across all directions. Audio does not replace text; no challenge is graded for accent. Details and asset status are in `docs/chapters/ch06/AUDIO_PLAN.md`.
 
 ### ch06_s01 – The Morning After
 
-- **Lokace:** Elizin pokoj nebo květinářská dílna.
-- **Čas / atmosféra:** ráno po recepci; klid po veřejném tlaku, dopisy a nabídky na stole.
-- **Postavy:** Eliza; Higgins, Pickering or Mrs Pearce may be the first contact according to `next_contact`. Other offers may remain written options.
-- **Děj:** Eliza čte různé možnosti: společenské pozvání, placenou práci s jazykem, nebo příležitost spojit výuku s květinářskou komunitou. Žádná možnost není automaticky nejlepší.
-- **Hlavní účel:** zviditelnit důsledky všech tří hodnot a původní motivace.
-- **Rozhodnutí hráče:** žádné hlavní; hráč si prohlédne nabídky v libovolném pořadí.
-- **Možné hodnotové změny:** žádné; načtou se `Pronunciation`, `Confidence`, `Independence` a `origin_motivation`.
-- **Další handoff context:** `reception_register_plan`, `credit_response`, `future_question_style` and `next_contact` may shape entry wording/support only. Missing values do not gate or remove endings.
-- **Uložení:** `long-term: ne`.
-- **Audio momenty:** `AM53 VOICE` čtení krátkých nabídek; `AM54 AMBIENCE` ranní ulice a dílna.
-- **Challenge:** žádná; scéna rekapituluje uložené důsledky.
-- **Teacher Mode:** reading offers, comparing tone and agency in written language.
-- **Vizuální assety:** Eliza `Her Own Voice / reflective`, dopisy, nástroje květinářství, ranní světlo.
-- **Audio assety:** `narrator_ch06_scene01_001.mp3`, `ambience_morning_workroom_001.mp3` a přepisy nabídek.
-- **Návaznost:** `ch06_s02`.
+- **Lokace:** jedna ranní místnost přilehlá k Higginsově pracovně ve Wimpole Street.
+- **Čas / atmosféra:** ráno po recepci; klidný interiér, dopisy, poznámky a pozvání na stole.
+- **Postavy:** Eliza; první kontakt Higgins, Pickering nebo Mrs Pearce podle `next_contact`.
+- **Děj:** Eliza prohlíží veřejnou/společenskou příležitost, placenou práci a možnost společné práce s pěstiteli. Není na Higginsově rozhodnutí závislá. Postavy reagují charakterově, všechny trasy se sbíhají a nenabízejí lepší informaci ani odměnu.
+- **Rozhodnutí / challenge:** žádné.
+- **Hodnoty a uložení:** žádné změny; historické hodnoty pouze lehce barví formulaci. Chybějící historie neblokuje scénu.
+- **Audio / vizuál:** `AM53` optional kontakt/story voice; `AM54` optional ranní ambience. Jedna ranní místnost, Eliza `Her Own Voice`, dopisy a poznámky.
+- **Teacher Mode:** agency po vzdělávání; příležitost versus závislost; kdo definuje úspěch.
+- **Návaznost:** explicit Continue → `ch06_s02`.
 
 ### ch06_s02 – The Question in the Mirror
 
-- **Lokace:** pokoj s jednoduchým zrcadlem a pracovním stolem.
-- **Čas / atmosféra:** dopoledne; soukromý prostor pro přímou otázku.
-- **Postavy:** Eliza, její odraz, případně krátká vzpomínková hlasová stopa Higgins/Pickering.
-- **Děj:** Eliza si položí hlavní otázku hry: `Who gets to decide who Eliza becomes?` Přehraje si vlastní starší registry a rozhodne, které si ponechá jako nástroje.
-- **Hlavní účel:** připravit volbu jako vědomé rozhodnutí, ne jako výpočet správného ending score.
-- **Rozhodnutí hráče:** žádné nové hlavní; hráč porovná dřívější `register` stopy a zvolí, co chce ještě slyšet.
-- **Možné hodnotové změny:** žádné; replay podporuje interpretaci vlastního vývoje.
-- **Uložení:** `long-term: ne`.
-- **Audio momenty:** `AM55 LISTENING` krátké replay stopy BEFORE/DURING/AFTER; `AM56 VOICE` Eliza vlastní otázku formuluje v klidném tempu.
-- **Challenge:** žádná; přístupnost vyžaduje textový přepis každé replay stopy.
-- **Teacher Mode:** identity, register repertoire, reflection without self-erasure.
-- **Vizuální assety:** zrcadlo, tři jemné expression varianty stejné Elizy, dopisy z předchozí scény.
-- **Audio assety:** `eliza_ch06_scene02_001.mp3`, replay odkazy na schválené Eliza BEFORE/DURING/AFTER stopy a přepisy.
-- **Návaznost:** `ch06_s03`.
+- **Lokace:** klidná soukromá místnost s jednoduchým zrcadlem.
+- **Děj:** Eliza reflektuje několik smysluplných ozvěn své cesty, nikoli celý save recap. Dochází k tomu, že další způsob řeči první nesmazal. Volitelný replay je read-only.
+- **Rozhodnutí / challenge / hodnoty:** žádné; žádná změna stavu.
+- **Audio / vizuál:** `AM55` reuse schválených dřívějších Eliza clips; `AM56` optional jedna reflexivní replika. Zrcadlo slouží sebepoznání, ne kráse či „stávání se dámou“.
+- **Teacher Mode:** code-switching, register, identita, předsudky k přízvuku, jazykový repertoár.
+- **Návaznost:** explicit Continue → `ch06_s03`.
 
 ### ch06_s03 – Three Ways Forward
 
-- **Lokace:** pracovní stůl a otevřené dveře do ulice.
-- **Čas / atmosféra:** pozdní dopoledne; rozhodnutí je klidné, konkrétní a bez soudcovského komentáře.
-- **Postavy:** Eliza; v jednotlivých variantách se mohou objevit Higgins, Pickering, Mrs Pearce nebo kolegyně.
-- **Děj:** Hráč učiní finální volbu ve světle uložených hodnot a původní motivace. Systém nabídne tři kvalitativní směry: `Social Success`, `Independent Voice`, `Integrated Identity`. Žádný není good/neutral/bad.
-- **Hlavní účel:** vyřešit otázku agency a převést dlouhodobé důsledky do odlišné budoucnosti.
-- **Rozhodnutí hráče:** `D12` – zvolit cestu, která nejlépe odpovídá Elizině vlastnímu záměru; hodnoty pouze obohacují kontext a dostupné formulace.
-- **Možné hodnotové změny:** žádné bodové vítězství; uloží se `ending_direction` a finální snapshot všech tří hodnot.
-- **Uložení:** `long-term: ano`.
-- **Výstupní směry:** `Social Success` – Eliza vstoupí do veřejného světa a používá registry strategicky, aniž by přijala cizí vlastnictví svého úspěchu; `Independent Voice` – vybuduje vlastní práci a rozhoduje, kdy a proč registr mění; `Integrated Identity` – propojí květinářskou komunitu, výuku a společenské dovednosti do vlastní cesty.
-- **Audio momenty:** `AM57 VOICE` tři krátké varianty nabídky budoucnosti; `AM58 LISTENING` rozdílné registry každé větve, všechny se stejnou Elizinou hlasovou identitou.
-- **Challenge:** `LC15` – integrated register challenge: vybrat způsob projevu pro tři adresáty a vysvětlit vlastní volbu.
-- **Teacher Mode:** code-switching, identity and agency; žádná větev není odměna za „správný“ přízvuk.
-- **Vizuální assety:** Eliza `Her Own Voice` ve třech výrazových/outfitových variantách respektujících visual bible; tři pracovní prostředí.
-- **Audio assety:** `eliza_ch06_scene03_social-success_001.mp3`, `eliza_ch06_scene03_independent-voice_001.mp3`, `eliza_ch06_scene03_integrated-identity_001.mp3` a přepisy.
-- **Návaznost:** všechny větve vedou do `ch06_s04` s parametrem `ending_direction`.
-
-### Ending Synthesis Matrix
-
-`D12` nikdy nepoužívá jediný práh ani mechanické pořadí dobrý/špatný. Všechny tři směry zůstávají dostupné; uložená historie pouze mění formulaci, delivery, vedlejší reakce, vizuální variantu, epilog a Teacher Mode summary.
-
-| Historie / stav | Použití při syntéze | Co nesmí způsobit |
-| --- | --- | --- |
-| `origin_motivation` | Historický výchozí důvod; zabarví jazyk nabídky a vzpomínkovou formulaci. | Nesmí předurčit ending ani zablokovat změnu. |
-| `confirmed_motivation` / `motivation_shift` | Aktuální vlastní pojmenování cíle; při rozdílu vznikne dramatická varianta formulace. | Změna motivace není chyba ani ztráta hodnoty. |
-| `practice_preference` | Ovlivní, jak Eliza popíše cestu učení a jakou podporu přijme. | Nesmí být skrytým testem poslušnosti. |
-| `intonation_strategy` | Určí míru jistoty, otázkovosti a vědomého postoje ve finálním projevu. | Nesmí zaměnit intonaci za morální sebejistotu. |
-| `decisions.D08` | Uložená přípravná volba může zabarvit Elizinu reflexi sociální zkušenosti. | Nesmí odstranit žádnou možnost ani změnit signal či hodnotit volbu. |
-| `decisions.D09` | Uložená recovery preference může později zabarvit formulaci reflexe. | Žádný styl opravy není lepší; volba nesmí snižovat lidskou hodnotu Elizy. |
-| `reception_register_plan` | Vybere adresáty a přirozenější code-switching ve finálním statementu. | Nesmí označit jeden registr za jediný správný. |
-| `credit_response` | Ovlivní, zda vedlejší postavy v epilogu uznají Elizinu práci, kolektiv nebo vlastní experiment. | Strategický odklad nesmí být trest. |
-| `future_question_style` | May inform how Eliza recalls asking about her future. | Must not rank directness, indirectness or planning as the best identity. |
-| `next_contact` | May shape Chapter VI entry/context and who she contacts first. | Must not remove an ending or punish the learner. |
-| `Pronunciation` | Dodá míru artikulační jistoty a dostupné varianty formulace. | Číselný stav nesmí sám blokovat směr. |
-| `Confidence` | Dodá míru přímého vstupu, pauzy a podpory od vedlejších postav. | Vyšší počet příležitostí nesmí vytvořit vítězný ending. |
-| `Independence` | Dodá míru vlastního rámování budoucnosti a přesměrování uznání. | Nízký stav nesmí uzamknout agency. |
-| `ending_direction` | Explicitní finální volba `Social Success`, `Independent Voice` nebo `Integrated Identity`. | Nesmí být přejmenována na good/neutral/bad. |
-
-| Směr | Formulace a delivery | Vedlejší postavy / vizuál | Epilog a Teacher Mode |
-| --- | --- | --- | --- |
-| `Social Success` | Eliza volí sebejistý veřejný registr, ale může ponechat vlastní spontánní obrat. | Publikum a organizátorka reagují na její autorství; `Her Own Voice` je veřejně otevřená, ne „hotová“. | Epilog sleduje veřejnou práci, přepis zdůrazní strategickou volbu registru. |
-| `Independent Voice` | Eliza používá přímější, vlastním cílem řízený projev a sama volí míru formálnosti. | Higgins/Pickering ustupují z centra; vizuál zdůrazní vlastní pracovní prostor a hranice. | Epilog sleduje vlastní projekt; Teacher Mode zdůrazní agency a requests/boundaries. |
-| `Integrated Identity` | Eliza vědomě kombinuje registry podle vztahu a situace bez rozštěpení na „starou“ a „novou“ osobu. | Květinářská komunita a učební svět se propojí; vizuál ukáže stejnou Elizu v několika prostředích. | Epilog sleduje sdílenou práci a repertoár; Teacher Mode shrne code-switching bez hierarchie přízvuků. |
+- **Lokace:** ranní místnost a stůl s nabídkami.
+- **Děj:** D12 nabídne tři osobní směry bez hodnocení; historie žádný směr nepředvybere. LC15 ověří pragmatický kontext, nikoli správnou identitu nebo registr.
+- **D12:** přesné texty a stabilní ID jsou v `docs/chapters/ch06/SCRIPT.md`; hodnoty `social_success`, `independent_voice`, `integrated_identity` se ukládají do `chapter6_direction`.
+- **LC15:** přesně tři vzorky; žák určí pravděpodobného adresáta a účel z kontextových vodítek. Objektivní klíč vychází z oslovení, záměru a situace; prestiž není vodítko. Odpovědi mají stabilní ID a opakovatelné pokusy bez penalizace. No-audio textová alternativa zachová vodítka bez raw transcriptu, který by prozradil odpověď. LC15 nepřidává `Pronunciation`.
+- **Hodnoty / uložení:** jediné nové směrové rozhodnutí D12; žádný score, ending threshold ani snapshot. D12 se po zápisu tiše nepřepisuje.
+- **Audio / vizuál:** `AM57–AM58`; tři LC15 sample takes, textové opory, jeden stůl se třemi stejně neutrálními pozvánkami.
+- **Teacher Mode:** D12 nemá answer key; LC15 má objektivní kontextový klíč.
+- **Návaznost:** po uloženém D12, dokončení LC15 a explicit Continue → `ch06_s04`.
 
 ### ch06_s04 – Her Own Statement
 
-- **Lokace:** veřejný nebo komunitní prostor podle finální větve.
-- **Čas / atmosféra:** pozdější den; Eliza mluví k vybranému publiku z vlastní pozice.
-- **Postavy:** Eliza, adresáti z finální větve, případně Higgins/Pickering pouze jako posluchači.
-- **Děj:** Eliza vytvoří krátké vlastní představení své práce a záměru. Nejde o závěrečnou zkoušku z přízvuku, ale o situaci, kde volí obsah, registr i míru sdílení.
-- **Hlavní účel:** ukázat agency v praxi a uzavřít jazykový oblouk bez vymazání původu.
-- **Rozhodnutí hráče:** žádné nové hlavní; hráč zvolí, zda začne cílem, zkušeností, nebo nabídkou pro publikum.
-- **Možné hodnotové změny:** `Confidence +1` jako lokální uzavření; finální hodnoty zůstávají interpretací cesty.
-- **Uložení:** `long-term: ano` jako `final_statement_shape`.
-- **Audio momenty:** `AM59 VOICE` finální Elizin vlastní statement; `AM60 AMBIENCE` reakce publika podle větve bez hodnotícího komentáře.
-- **Challenge:** žádná nová; `LC15` se projeví v dokončené větě.
-- **Teacher Mode:** audience, register choice, self-presentation and ownership.
-- **Vizuální assety:** větevní prostředí, Eliza `Her Own Voice / assured`, posluchači.
-- **Audio assety:** tři varianty `eliza_ch06_scene04_*.mp3`, `ambience_final-audience_*.mp3` a přepisy.
-- **Návaznost:** `ch06_s05`.
+- **Lokace:** jeden jednoduchý prostor vybraný směrem z D12.
+- **Děj:** Eliza volí rétorický tvar svého výroku: `declaration`, `reflection` nebo `commitment`. Tvar nemění `chapter6_direction`; text se skládá z opakovaně použitelných textových částí.
+- **Hodnoty / uložení:** uložit `final_statement_shape`; vykreslení složeného statementu reward nepřidává. Po explicitním potvrzení/doručení zapsat `ch06_final_statement_delivered` a udělit `Confidence +1` jednou a bezpodmínečně. Tvar volby reward nemění.
+- **Audio / vizuál:** žádný nový take pro composed statement; sdílená závěrečná věta patří do S05.
+- **Teacher Mode:** účel rétoriky a sebepojmenování; tvar nemá answer key.
+- **Návaznost:** explicit Continue → `ch06_s05`.
 
 ### ch06_s05 – The Voice She Chooses
 
-- **Lokace:** závěrečné místo zvolené větví.
-- **Čas / atmosféra:** klid po statementu; prostor pro krátkou doznívající epizodu.
-- **Postavy:** Eliza, jedna blízká postava nebo kolektiv podle větve.
-- **Děj:** Hra zobrazí, že Eliza má více registrů a může je používat vědomě. Závěr potvrzuje její vlastní agency, ne definitivní „dokonalost“.
-- **Hlavní účel:** uzavřít příběh a připravit progress summary pro hráče a Teacher Mode.
-- **Rozhodnutí hráče:** žádné; možnost replay vybraných scén a otevření summary.
-- **Možné hodnotové změny:** žádné další; uloží se final state.
-- **Uložení:** `long-term: ano`; `final_state` obsahuje motivaci, tři hodnoty, rozhodnutí a ending direction.
-- **Audio momenty:** replay posledního `AM59` a volitelná tichá `AM60` ambience podle větve.
-- **Challenge:** žádná.
-- **Teacher Mode:** shrnutí jazykových strategií a kulturního kontextu bez morálního žebříčku.
-- **Vizuální assety:** finální canonical Eliza `Her Own Voice`, větevní pozadí a jednoduchý progress summary.
-- **Audio assety:** finální branch ambience, replay odkazy, přepisy a accessibility labels.
-- **Návaznost:** konec hry; `replay` může otevřít mapu scén bez změny uloženého finálního stavu.
+- **Lokace / větve:** public/community prostor pro PUBLIC PARTICIPATION (`social_success`); skromné pracoviště s květinami, ledgerem, klíči a dopisem pro `independent_voice`; propojený komunitní prostor pro `integrated_identity`. Žádná větev není „nejlepší“; chudoba se neromantizuje a kultivovaná řeč není falešná.
+- **Děj:** reflexivní uzavření a popisné shrnutí z nezávisle uložené historie; žádný numeric grade, ending rank ani další rozhodnutí.
+- **Závěrečná věta:** společná pro všechny směry: “I have more ways to speak, and the choice is mine.”
+- **Konvergence:** všechny tři branch presentation se sbíhají na stejné závěrečné větě a poté následuje popisné shrnutí.
+- **Hodnoty / uložení:** Finish po explicitní akci uloží `ch06_complete` a idempotentní completion event/guard `ch06_completion_recorded`; nepřidává žádný signal.
+- **Replay:** read-only vybrané momenty motivace, učení/recovery, Chapter V recepce/kreditu a S04 statementu.
+- **Audio / vizuál:** `AM59` jeden sdílený Eliza take pro všechny tři směry a `AM60` reuse nebo jedna sdílená tichá ambience; existující Eliza master, větví se především prostředí a rekvizity.
+- **Teacher Mode:** popisné shrnutí, agency, ekonomická nezávislost, pragmatická kompetence bez pořadí.
+- **Návaznost:** explicit Finish → finální book-complete screen; žádný Chapter VII.
+
+### Chapter VI history use
+
+`origin_motivation`, `confirmed_motivation`, `motivation_shift`, `practice_preference`, `decisions.D08`, `decisions.D09`, `Pronunciation`, `Confidence`, `Independence`, `reception_register_plan`, `credit_response`, `future_question_style` and `next_contact` are optional read-only context. They may shape concise reflective wording and summary clauses. Missing values are omitted or described neutrally. No historical field selects a direction, changes its availability or ranks it. Detailed event and save contract is in `docs/chapters/ch06/STATE_AND_BRANCHING.md`.
 
 ## Implementační souhrn
 
@@ -635,7 +578,7 @@ Exact scene text, options, answer keys and asset contracts are in docs/chapters/
 - **Language challenges:** 15 (`LC01`–`LC15`).
 - **Plánované audio moments:** 60 (`AM01`–`AM60`), vždy s kategorií `VOICE`, `LISTENING`, `PRONUNCIATION`, `SFX` nebo `AMBIENCE`.
 - **Canonical visual stages:** 3 (`Flower Girl`, `In Training`, `Her Own Voice`).
-- **Ukládané dlouhodobé osy:** `origin_motivation`, `confirmed_motivation`, případný `motivation_shift` / `motivation_nuance`, významné strategie a rozhodnutí, tři hodnoty a `ending_direction`.
+- **Ukládané dlouhodobé osy:** `origin_motivation`, `confirmed_motivation`, případný `motivation_shift` / `motivation_nuance`, významné strategie a rozhodnutí, tři development signals, `chapter6_direction`, `final_statement_shape` a `ch06_complete` podle vlastních kontraktů. Nepersistuje se aggregate `final_state`.
 
 ## Scope guard
 

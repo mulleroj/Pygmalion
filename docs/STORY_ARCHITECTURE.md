@@ -36,7 +36,7 @@ Hra sleduje tři propojené hodnoty:
 
 Nejde o jednoduché good/bad statistiky. Jejich kombinace vytvářejí různé legitimní podoby Elizina vývoje a nemají redukovat její příběh na „opravu“ přízvuku.
 
-Pravidla pro interní development signals, jednorázové eventy, replay a budoucí balance audit jsou canonical v [`game-design-rules.md`](../.codex/skills/pygmalion-adventure/references/game-design-rules.md). Detailní Ending Synthesis Matrix je v `SCENE_MAP.md`.
+Pravidla pro interní development signals, jednorázové eventy, replay a budoucí balance audit jsou canonical v [`game-design-rules.md`](../.codex/skills/pygmalion-adventure/references/game-design-rules.md). Chapter VI ukládá explicitní směr a shrnuje historii popisně; nepoužívá Ending Synthesis Matrix ani aggregate finální stav. Podrobný kontrakt je v `docs/chapters/ch06/STATE_AND_BRANCHING.md`.
 
 ## Kapitoly
 
@@ -45,9 +45,9 @@ Pravidla pro interní development signals, jednorázové eventy, replay a budouc
 3. **The Lessons** – proces učení, opakování a chyb; rozdíl mezi technickou dovedností, společenským očekáváním a Eliziným vlastním rozhodnutím.
 4. **The First Test** – první veřejná zkouška registru a poslechu, kde výsledek závisí na kombinaci dovednosti, sebejistoty a volby strategie.
 5. **The Reception** – společenské prostředí, ve kterém je úspěch zvenčí lákavý, ale zároveň vzniká otázka, kdo Elizu definuje.
-6. **Her Own Voice** – vyústění, v němž Eliza vědomě volí, jak bude mluvit a žít; možné legitimní směry jsou `Social Success`, `Independent Voice` a `Integrated Identity`.
+6. **Her Own Voice** – vyústění, v němž Eliza vědomě volí, jak bude mluvit a žít; možné legitimní směry jsou `Public Participation` (interní `social_success`), `Independent Voice` a `Integrated Identity`.
 
-Podrobná mapa používá pro Chapter VI tři kvalitativní směry: `Social Success`, `Independent Voice` a `Integrated Identity`. Nejde o good/neutral/bad pořadí; všechny větve zachovávají Elizinu agency.
+Podrobná mapa používá pro Chapter VI tři kvalitativní směry: `social_success`, `independent_voice` a `integrated_identity`, uložené pod `chapter6_direction`. Nejde o good/neutral/bad pořadí; všechny větve zachovávají Elizinu agency a žádná minulá volba ani development signal je nezamyká. Chapter VI používá pragmatickou LC15 (adresát a účel v kontextu), rétorickou `final_statement_shape` a popisné uzavření bez aggregate `final_state` či numeric ending score. Přesné kontrakty jsou v `docs/chapters/ch06/`.
 
 ## Chapter I – schválený směr
 
