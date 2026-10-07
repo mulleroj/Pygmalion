@@ -19,7 +19,7 @@ async function mount(t, savedState) {
   globalThis.document = { querySelector: node, addEventListener(name, handler) { handlers[name] = handler; } };
   globalThis.window = { location: { hash: '#ch06_s03', pathname: '/' }, history: { state: null, pushState(value, _title, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(value, _title, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; } }, setTimeout(handler) { handler(); }, addEventListener(name, handler) { handlers[name] = handler; } };
   globalThis.localStorage = { getItem(key) { assert.equal(key, STORAGE_KEY); return saved; }, setItem(key, value) { assert.equal(key, STORAGE_KEY); saved = value; } };
-  const methods = ['ensureAmbience', 'setEnabled', 'leaveScene', 'setSceneAudioReadOnly', 'playVoice'];
+  const methods = ['ensureAmbience', 'setEnabled', 'leaveScene', 'setSceneAudioReadOnly', 'playVoice', 'playChallenge'];
   const originalsAudio = Object.fromEntries(methods.map((name) => [name, AudioManager.prototype[name]]));
   for (const name of methods) AudioManager.prototype[name] = name === 'ensureAmbience' ? () => Promise.resolve() : () => {};
   t.after(() => { for (const [name, method] of Object.entries(originalsAudio)) if (method) AudioManager.prototype[name] = method; });
@@ -29,7 +29,7 @@ async function mount(t, savedState) {
 
 const ready = () => ({ ...createInitialState(), started: true, ch05_complete: true, scene: 'ch06_s03', chapter6_direction: undefined, applied_events: ['ch05_s05_complete', 'ch06_s01_complete', 'ch06_s02_complete'] });
 
-test('S03 D12 and LC15 match the locked script exactly and introduce no audio paths', async () => {
+test('S03 D12 and LC15 match the locked script and map each approved audio path exactly', async () => {
   const script = await readFile(new URL('../docs/chapters/ch06/SCRIPT.md', import.meta.url), 'utf8');
   assert.equal(CH06_SCENE_03.decision.prompt, 'Which possibility would you like Eliza to follow?');
   for (const choice of CH06_SCENE_03.decision.choices) assert.ok(script.includes(choice.text));
@@ -39,7 +39,33 @@ test('S03 D12 and LC15 match the locked script exactly and introduce no audio pa
     assert.ok(script.includes(sample.accessiblePrompt));
   }
   assert.deepEqual(CH06_SCENE_03.voice, []);
-  assert.equal(JSON.stringify(CH06_SCENE_03).includes('assets/audio'), false);
+  assert.deepEqual(CH06_SCENE_03.challenge.samples.map(({ id, src }) => [id, src]), [
+    ['lc15_sample_public', './assets/audio/listening/ch06_lc15_sample_01.mp3'],
+    ['lc15_sample_colleague', './assets/audio/listening/ch06_lc15_sample_02.mp3'],
+    ['lc15_sample_private', './assets/audio/listening/ch06_lc15_sample_03.mp3']
+  ]);
+  for (const { src } of CH06_SCENE_03.challenge.samples) assert.ok((await stat(new URL(`../${src.slice(2)}`, import.meta.url))).size > 0);
+});
+
+test('LC15 replay is explicit, replaces foreground audio, and does not change learner state', async (t) => {
+  const before = { ...ready(), chapter6_direction: 'integrated_identity', applied_events: ['ch05_s05_complete', 'ch06_s01_complete', 'ch06_s02_complete', 'ch06_d12_recorded'] };
+  const mounted = await mount(t, before);
+  const html = mounted.node('#app').innerHTML;
+  assert.equal((html.match(/data-action="play-challenge"/g) || []).length, 3);
+  assert.doesNotMatch(html, /\bautoplay\b/);
+  assert.match(html, /Read the situation clues instead/);
+  assert.doesNotMatch(html, /Chair, may I explain how our growers could organise the market list\?/);
+  const played = [];
+  const original = AudioManager.prototype.playChallenge;
+  AudioManager.prototype.playChallenge = function (src) { played.push(src); };
+  try {
+    for (const sample of CH06_SCENE_03.challenge.samples) {
+      const target = { dataset: { action: 'play-challenge', src: sample.src }, closest() { return this; } };
+      await mounted.handlers.click({ target, isTrusted: false, preventDefault() {} });
+    }
+  } finally { AudioManager.prototype.playChallenge = original; }
+  assert.deepEqual(played, CH06_SCENE_03.challenge.samples.map(({ src }) => src));
+  assert.deepEqual(mounted.state(), before, 'playback cannot alter answers, direction, signals, events, or completion');
 });
 
 test('D12 requires S02, commits once, and keeps each direction equally available without signal effects', () => {
@@ -125,6 +151,15 @@ test('S03 Teacher preview keeps the approved visual read-only and renders LC15 c
   assert.match(html, /ch06_three_ways_forward_room\.webp/);
   assert.match(html, /id="lc15-title"/);
   assert.match(html, /data-action="answer-lc15"[^>]*disabled/);
+  let teacherPlayback = false;
+  const originalPlay = AudioManager.prototype.playChallenge;
+  AudioManager.prototype.playChallenge = function () { teacherPlayback = true; };
+  try {
+    const sample = CH06_SCENE_03.challenge.samples[0];
+    const target = { dataset: { action: 'play-challenge', src: sample.src }, closest() { return this; }, focus() {} };
+    await mounted.handlers.click({ target, isTrusted: false, preventDefault() {} });
+  } finally { AudioManager.prototype.playChallenge = originalPlay; }
+  assert.equal(teacherPlayback, false, 'Teacher preview cannot play LC15 audio');
   mounted.app.moveNext();
   assert.deepEqual(mounted.state(), before, 'Teacher preview cannot commit D12, LC15 or progression');
 });

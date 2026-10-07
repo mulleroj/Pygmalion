@@ -609,11 +609,12 @@ function renderCh06S03() {
     const alternativeButton = !saved && !noAudio ? `<button class="text-button" type="button" data-action="lc15-cannot-hear" data-item="${sample.id}" ${studentReadOnly() ? 'disabled' : ''}>Read the situation clues instead</button>` : '';
     const feedback = saved ? `<p class="answer-feedback ${saved.correct ? 'success' : 'retry'}" role="status">${saved.correct ? escapeHtml(CH06_SCENE_03.challenge.options.find(({ id }) => id === sample.answer).label) : escapeHtml(sample.incorrectFeedback)}</p>` : '';
     const transcript = saved?.correct ? `<details class="transcript"><summary>Read Eliza’s message</summary><p>“${escapeHtml(sample.transcript)}”</p></details>` : '';
-    return `<article class="lc15-sample" aria-labelledby="${sample.id}-title"><h3 id="${sample.id}-title">Message ${index + 1} of 3</h3>${alternativeButton}${alternative}<div class="answer-stack" role="group" aria-label="Message ${index + 1} context choices">${options}</div>${feedback}${transcript}</article>`;
+    const replay = `<button class="audio-button" type="button" data-action="play-challenge" data-src="${escapeHtml(sample.src)}" aria-label="Replay message ${index + 1}" ${studentReadOnly() ? 'disabled' : ''}>▶ Replay message</button>`;
+    return `<article class="lc15-sample" aria-labelledby="${sample.id}-title"><h3 id="${sample.id}-title">Message ${index + 1} of 3</h3>${replay}${alternativeButton}${alternative}<div class="answer-stack" role="group" aria-label="Message ${index + 1} context choices">${options}</div>${feedback}${transcript}</article>`;
   }).join('');
   const directionReflection = savedDirection && CH06_SCENE_03.storyBeats[1] ? renderStoryBeats({ ...CH06_SCENE_03, storyBeats: [CH06_SCENE_03.storyBeats[1]] }) : '';
   const completion = challenge.completed ? `<p class="challenge-complete" role="status">LC15 complete. No development signal changed.</p><button class="secondary-button next-button" type="button" data-action="next-scene" ${studentReadOnly() ? 'disabled' : ''}>Continue <span aria-hidden="true">→</span></button>` : '';
-  return `${renderStoryBeats({ ...CH06_SCENE_03, storyBeats: [CH06_SCENE_03.storyBeats[0]] })}${decisionMarkup}${directionReflection}<section class="challenge-block lc15-block" aria-labelledby="lc15-title"><p class="eyebrow">Pragmatic fit · LC15</p><h2 id="lc15-title">${escapeHtml(CH06_SCENE_03.challenge.title)}</h2><p>${escapeHtml(CH06_SCENE_03.challenge.intro)}</p><p class="read-only-note">No recording is required in this slice. Read the situation clues for any message, then choose the context that fits.</p><div class="lc15-samples">${sampleCards}</div>${completion}</section>${scenePreview ? '<p class="read-only-note" role="status">Teacher preview · read-only. D12, LC15 answers, support and progression are inactive.</p><button class="secondary-button" type="button" data-action="return-student">Return to student scene</button>' : ''}`;
+  return `${renderStoryBeats({ ...CH06_SCENE_03, storyBeats: [CH06_SCENE_03.storyBeats[0]] })}${decisionMarkup}${directionReflection}<section class="challenge-block lc15-block" aria-labelledby="lc15-title"><p class="eyebrow">Pragmatic fit · LC15</p><h2 id="lc15-title">${escapeHtml(CH06_SCENE_03.challenge.title)}</h2><p>${escapeHtml(CH06_SCENE_03.challenge.intro)}</p><p class="read-only-note">Audio is optional. Replay each message or read the situation clues instead.</p><div class="lc15-samples">${sampleCards}</div>${completion}</section>${scenePreview ? '<p class="read-only-note" role="status">Teacher preview · read-only. D12, LC15 answers, support and progression are inactive.</p><button class="secondary-button" type="button" data-action="return-student">Return to student scene</button>' : ''}`;
 }
 
 function renderCh06S02() {
@@ -1187,6 +1188,9 @@ document.addEventListener('click', async (event) => {
   if (currentScene().id === 'ch05_s04' && studentReadOnly() &&
       ['toggle-sound', 'next-scene', 'answer-lc14', 'open-lc14-support', 'choose-future-style', 'play-voice', 'play-challenge'].includes(action)) {
     announce('Teacher preview is read-only. Return to the student scene to change progress.'); return;
+  }
+  if (currentScene().id === 'ch06_s03' && studentReadOnly() && action === 'play-challenge' && CH06_SCENE_03.challenge.samples.some(({ src }) => src === target.dataset.src)) {
+    announce('Teacher preview is read-only. Return to the student scene to play audio.'); return;
   }
   const audioGesture = event.isTrusted && AUDIO_UNLOCK_ACTIONS.has(action);
   if (audioGesture) audioManager.unlock();

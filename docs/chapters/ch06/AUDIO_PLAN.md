@@ -1,6 +1,6 @@
 # Chapter VI Audio Plan
 
-Status: S01 reuses one already human-approved ambience; S02 audio audit is complete with one approved historical voice replay reused and all other S02 moments text-only. No new audio generated. S03–S05 remain design only. Chapter VI story canon is locked. The plan uses the existing range `AM53–AM60`; every spoken asset requires an accessible text counterpart. Story text remains complete with sound off. Do not create nine recordings for three directions by three rhetorical shapes.
+Status: S01 reuses one already human-approved ambience; S02 audio audit is complete with one approved historical voice replay reused and all other S02 moments text-only. S03 AM57 is integrated from three human-approved recordings; S04 remains unimplemented and S05 remains design only. Chapter VI story canon is locked. The plan uses the existing range `AM53–AM60`; every spoken asset requires an accessible text counterpart. Story text remains complete with sound off. Do not create nine recordings for three directions by three rhetorical shapes.
 
 | ID | Scene / moment | Plan | Status | Notes |
 |---|---|---|---|---|
@@ -8,7 +8,7 @@ Status: S01 reuses one already human-approved ambience; S02 audio audit is compl
 | `AM54` | S01 morning room | Quiet morning/workroom ambience | OPTIONAL | Low-level, loopable, easy mute; no letter contents or plot clue conveyed only by sound. |
 | `AM55` | S02 memory echoes | Reuse approved earlier Eliza story-voice clips | REUSE | Select at most three available BEFORE / DURING / AFTER moments with transcript. Never copy a clip into a new misleading context. |
 | `AM56` | S02 reflection | One short original Eliza reflection, “I learned another way to speak. I did not lose the first.” | OPTIONAL | Same canonical Eliza voice identity and a natural Chapter VI delivery, more at ease than Chapter V rather than simply more formal. |
-| `AM57` | S03 LC15 samples | Three original Eliza samples: public meeting, familiar colleague, private adviser | REQUIRED | These are the only challenge-critical recordings. Keep the underlying intention aligned; contextual clues audible and visible in the equivalent no-audio panels. Individual transcripts are stored for use after solving/support. |
+| `AM57` | S03 LC15 samples | Three original Eliza samples: public meeting, familiar colleague, private adviser | HUMAN APPROVED / INTEGRATED | These are the only challenge-critical recordings. Keep the underlying intention aligned; contextual clues audible and visible in the equivalent no-audio panels. Individual transcripts are stored for use after solving/support. |
 | `AM58` | S03 response/feedback | No bespoke voice required; optional shared short neutral support cue | OPTIONAL | No audio-only correctness signal. Feedback text names contextual evidence. Do not voice answer labels as a hint before response. |
 | `AM59` | S05 shared final Eliza line after branch convergence | One original Eliza recording: “I have more ways to speak, and the choice is mine.” Reuse the same take across all three directions and all statement shapes | REQUIRED | One required reusable take serves all three directions. Direction-specific story text remains on screen. Do not create three direction-specific closing takes unless a later implementation review proves them dramaturgically necessary. |
 | `AM60` | S05 ending space | Reuse appropriate approved, non-identifying ambience if possible; otherwise one quiet shared bed | REUSE | Avoid three bespoke ambience tracks unless later production shows a clear need. Never encode quality or reward in ambience. |
@@ -67,7 +67,19 @@ S01 companion exchanges are optional story voice. If recorded, record only the c
 
 ## LC15 transcript and accessibility contract
 
-Each LC15 sample needs a verified transcript, replay control, keyboard-accessible answer selection, and the equivalent contextual text alternative defined in `SCRIPT.md`. The paraphrase alternative must preserve the same difficulty and evidence without revealing the answer. Raw transcript is not the pre-answer fallback. No audio or support use carries a penalty. Verify transcript against final recording before asset approval.
+Each LC15 sample has a verified transcript, a user-triggered replay control, keyboard-accessible answer selection, and the equivalent contextual text alternative defined in `SCRIPT.md`. The paraphrase alternative preserves the same difficulty and evidence without revealing the answer. Raw transcript is not shown before solving. No audio or support use carries a penalty. All three approved recordings use the same Eliza voice; their differences are pragmatic and contextual only. No accent or register prestige hierarchy is intended or scored.
+
+### AM57 — LC15 approved production record
+
+All three clips are the human-approved final takes. Asset Library IDs are unavailable. Files are used directly from their canonical paths without duplicates. Durations below are local MPEG frame durations, rounded to two decimals.
+
+| AM / LC15 item | Canonical text | Context | Speaker / voice | Voice ID / model | Generation ID | Asset Library ID | Runtime path | Approval / credits | Duration / SHA-256 |
+|---|---|---|---|---|---|---|---|---|---|
+| `AM57-1` / `lc15_sample_public` | “Chair, may I explain how our growers could organise the market list?” | Public meeting; asks the chair for permission to present a proposal to the group. | Eliza / young_cockney | `124kaYCknTDsnwUFdWl9` / `eleven_v3` | `hy8VEq6DUcw6BkPM2my9` | unavailable | `assets/audio/listening/ch06_lc15_sample_01.mp3` | APPROVED / 67.9932 | 3.50 s / `403e559c6aa953c302fdac9584677f614a571ebafda465214aebb750a9665fae` |
+| `AM57-2` / `lc15_sample_colleague` | “Mina, could we sort the market list together after lunch?” | Familiar colleague; arranges a shared practical task. | Eliza / young_cockney | `124kaYCknTDsnwUFdWl9` / `eleven_v3` | `iDtOvwzFqSWiPGRaelDQ` | unavailable | `assets/audio/listening/ch06_lc15_sample_02.mp3` | APPROVED / 56.9943 | 3.11 s / `2f5296fbac0fb9b820948ea2111fc03b5fd07c18590958bd898832fb2ae95761` |
+| `AM57-3` / `lc15_sample_private` | “Mrs Pearce, could I speak with you alone about the growers’ market plan and how I might begin?” | Private adviser; asks for guidance on how to begin. | Eliza / young_cockney | `124kaYCknTDsnwUFdWl9` / `eleven_v3` | `gLBsiLeCbx9JlhMtMdpY` | unavailable | `assets/audio/listening/ch06_lc15_sample_03.mp3` | APPROVED / 93.9906 | 5.17 s / `bedb97ea6657200c5c832c0e5f663ee6e9faee7da87e6899a19d1f5b59f13213` |
+
+Playback is explicit and uses the shared foreground `AudioManager`; a new message replaces the previous one. Sound Off stops active speech, while Sound On restores only eligible ambience and never restarts speech. Replay changes no answer, direction, signal, reward, completion or event. The contextual text alternative remains available for unanswered items and LC15 is solvable with Sound Off. The alternative reveals contextual clues only, never the raw transcript or a selected answer. Teacher preview describes the contextual key but cannot play audio or mutate learner state. AM57 is independent of D12 and its three equally legitimate directions. No failed-generation history is part of this runtime mapping.
 
 ## Ambience
 

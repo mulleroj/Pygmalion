@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { CH03_SCENE_03, CH03_SCENE_04 } from '../src/ch03-content.js';
 import { CH04_SCENE_01 } from '../src/ch04-content.js';
 import { CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04, CH05_SCENE_05 } from '../src/ch05-content.js';
+import { CH06_SCENE_03 } from '../src/ch06-content.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -800,6 +801,27 @@ test('S04 story and LC08 takes share foreground ownership, conservative challeng
   await manager.ensureAmbience('ch03_s03');
   assert.equal(manager.foreground, null, 'leaving S04 leaves no foreground voice/sample');
   manager.leaveScene();
+});
+
+test('CH06 LC15 samples replace foreground speech and Sound Off consumes playback without Sound On replay', async t => {
+  const { manager, elements } = audioHarness(t);
+  manager.unlock();
+  await manager.ensureAmbience('ch06_s03');
+  const [publicSample, colleagueSample] = CH06_SCENE_03.challenge.samples;
+  const first = await manager.playChallenge(publicSample.src);
+  assert.equal(first.src, publicSample.src);
+  const second = await manager.playChallenge(colleagueSample.src);
+  assert.equal(first.paused, true, 'the second LC15 message replaces the first foreground sample');
+  assert.equal(second.src, colleagueSample.src);
+  const playCount = elements.length;
+  await manager.setEnabled(false);
+  assert.equal(second.paused, true, 'Sound Off immediately stops the active foreground message');
+  assert.equal(manager.foreground, null);
+  await manager.setEnabled(true);
+  assert.equal(elements.length, playCount, 'Sound On does not restart interrupted speech');
+  assert.equal(manager.foreground, null);
+  const replay = await manager.playChallenge(colleagueSample.src);
+  assert.equal(replay.src, colleagueSample.src, 'only explicit Replay starts the message again');
 });
 
 test('all eight approved S03 MP3 assets match their integrated paths, byte sizes and MPEG frame durations', () => {
