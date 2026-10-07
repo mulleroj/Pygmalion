@@ -124,7 +124,41 @@ export const CH06_S02_TEACHER_SECTIONS = [
   ['Teacher preview contract', 'Teacher Mode is read-only and non-scoring. Replays do not change saved choices, signals or completion. No register is presented as more authentic, and no identity is ranked.']
 ];
 
-export const CH06_S03_BOUNDARY = {
+export const CH06_SCENE_03 = {
   id: 'ch06_s03', number: 3, chapter: 'VI', chapterTitle: 'Her Own Voice', sceneCount: 5,
-  title: 'Three Ways Forward', kicker: 'Chapter VI · Her Own Voice', voice: []
+  title: 'Three Ways Forward', kicker: 'Chapter VI · Her Own Voice',
+  location: 'Wimpole Street morning room', voice: [],
+  storyBeats: [
+    { type: 'dialogue', speaker: 'Eliza', text: 'I could take my place in public work. I could build a life with work and decisions of my own. Or I could carry what I have learned between the people and places that matter to me.' }
+  ],
+  decision: {
+    id: 'D12', prompt: 'Which possibility would you like Eliza to follow?',
+    choices: [
+      { id: 'd12_social_success', value: 'social_success', label: 'PUBLIC PARTICIPATION', text: 'I want to take an active place in public life and use my new skills on my own terms.' },
+      { id: 'd12_independent_voice', value: 'independent_voice', label: 'INDEPENDENT VOICE', text: 'I want to build a life with work, money and decisions that are my own.' },
+      { id: 'd12_integrated_identity', value: 'integrated_identity', label: 'INTEGRATED IDENTITY', text: 'I want to keep more than one way of speaking and move between the worlds I choose.' }
+    ]
+  },
+  challenge: {
+    id: 'LC15', title: 'Pragmatic fit: same intention, three contexts',
+    intro: 'Listen to each short message. Who is Eliza speaking to, and what does she want to do?',
+    options: [
+      { id: 'lc15_public_organiser', label: 'A meeting organiser; she wants permission to present a proposal to the group.' },
+      { id: 'lc15_familiar_colleague', label: 'A colleague she knows; she wants to arrange a shared practical task.' },
+      { id: 'lc15_private_adviser', label: 'A trusted adviser; she wants private advice on how to begin.' }
+    ],
+    samples: [
+      { id: 'lc15_sample_public', answer: 'lc15_public_organiser', transcript: 'Chair, may I explain how our growers could organise the market list?', accessiblePrompt: 'The chair has opened the floor. Eliza is standing where the group can hear her and refers to an idea she could explain.', incorrectFeedback: 'Notice the direct address to the chair and the proposal for the group.' },
+      { id: 'lc15_sample_colleague', answer: 'lc15_familiar_colleague', transcript: 'Mina, could we sort the market list together after lunch?', accessiblePrompt: "Eliza and another person are sorting the growers' papers. She uses the person's first name, speaks about doing it together and mentions a time.", incorrectFeedback: 'Notice the first name, the shared “we” and the proposed time.' },
+      { id: 'lc15_sample_private', answer: 'lc15_private_adviser', transcript: 'Mrs Pearce, could I speak with you alone about the growers’ market plan and how I might begin?', accessiblePrompt: 'The room is quiet and only Eliza and Mrs Pearce are present. Eliza asks for a private moment and says she would like guidance on a first step.', incorrectFeedback: 'Notice the private request for advice about the growers’ plan.' }
+    ]
+  }, nextScene: 'ch06_s04'
 };
+
+export const CH06_S03_BOUNDARY = CH06_SCENE_03;
+
+export const CH06_S03_TEACHER_SECTIONS = [
+  ['Scene focus', 'D12 is a personal direction with no answer key. The three choices are equally legitimate and have no reward, rank, prerequisite or signal effect. LC15 checks likely addressee and communicative purpose from contextual evidence; accent and prestige are not evidence.'],
+  ['LC15 contextual key', 'Public meeting: lc15_sample_public → lc15_public_organiser, a meeting organiser and permission to present a proposal. Familiar colleague: lc15_sample_colleague → lc15_familiar_colleague, arrange a shared practical task. Private conversation: lc15_sample_private → lc15_private_adviser, private advice on how to begin.'],
+  ['Teacher preview contract', 'Teacher Mode is read-only. It does not record D12, LC15 answers, support use, completion, signals or progression.']
+];

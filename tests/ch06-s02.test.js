@@ -153,7 +153,7 @@ test('S02 replay is user-triggered, read-only, and exposes transcript text besid
   assert.deepEqual(mounted.state(), before);
 });
 
-test('explicit Continue records S02 once, leaves signals alone, and stops at S03 boundary', async (t) => {
+test('explicit Continue records S02 once, leaves signals alone, and opens playable S03', async (t) => {
   const before = ready({ confidence: 2, pronunciation: 4, independence: 1, soundEnabled: false });
   const mounted = await mount(t, before);
   mounted.app.moveNext();
@@ -161,8 +161,10 @@ test('explicit Continue records S02 once, leaves signals alone, and stops at S03
   assert.equal(after.applied_events.filter((event) => event === 'ch06_s02_complete').length, 1);
   assert.deepEqual([after.confidence, after.pronunciation, after.independence], [2, 4, 1]);
   assert.equal(after.scene, 'ch06_s03');
-  assert.match(mounted.node('#app').innerHTML, /Three Ways Forward is not available yet/);
-  assert.doesNotMatch(JSON.stringify(after), /chapter6_direction|final_statement_shape|ch06_final_statement_delivered|ch06_complete|ch06_lc15_completed|ch06_d12_recorded/);
+  assert.match(mounted.node('#app').innerHTML, /Three Ways Forward/);
+  assert.match(mounted.node('#app').innerHTML, /Which possibility would you like Eliza to follow\?/);
+  assert.equal(after.chapter6_direction, undefined);
+  assert.doesNotMatch(JSON.stringify(after), /final_statement_shape|ch06_final_statement_delivered|ch06_complete|ch06_lc15_completed|ch06_d12_recorded/);
   mounted.location.hash = '#ch06_s02';
   mounted.handlers.hashchange();
   mounted.app.moveNext();

@@ -1,7 +1,7 @@
 import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05, CH03_SCENE_06 } from './ch03-content.js';
 import { CH04_SCENE_01, CH04_SCENE_02, CH04_SCENE_03, CH04_SCENE_04, CH04_SCENE_05 } from './ch04-content.js';
 import { CH05_SCENE_01, CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04, CH05_SCENE_05 } from './ch05-content.js';
-import { CH06_SCENE_01, CH06_SCENE_02 } from './ch06-content.js';
+import { CH06_SCENE_01, CH06_SCENE_02, CH06_SCENE_03 } from './ch06-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -68,12 +68,15 @@ function mergeState(raw) {
   const rawLc12 = raw.challenges?.lc12;
   const rawLc13 = raw.challenges?.lc13;
   const rawLc14 = raw.challenges?.lc14;
+  const rawLc15 = raw.challenges?.lc15;
   const rawReflections = raw.reflections;
+  const rawDirection = raw.chapter6_direction;
+  const { chapter6_direction: _untrustedDirection, ...rawWithoutDirection } = raw;
   const allowedCreditResponses = CH05_SCENE_03.decision.choices.map(({ id }) => id);
   const allowedNextContacts = CH05_SCENE_05.decision.choices.map(({ id }) => id);
   return {
     ...initial,
-    ...raw,
+    ...rawWithoutDirection,
     applied_events: Array.isArray(raw.applied_events) ? raw.applied_events : [],
     credit_response: allowedCreditResponses.includes(raw.credit_response) ? raw.credit_response : null,
     future_question_style: CH05_SCENE_04.questionStyle.choices.some(({ id }) => id === raw.future_question_style) ? raw.future_question_style : null,
@@ -104,8 +107,10 @@ function mergeState(raw) {
       },
       lc12: { ...initial.challenges.lc12, ...(rawLc12 || {}), answers: rawLc12?.answers && typeof rawLc12.answers === 'object' ? rawLc12.answers : {}, supportItems: Array.isArray(rawLc12?.supportItems) ? rawLc12.supportItems : [] },
       lc13: { ...initial.challenges.lc13, ...(rawLc13 || {}), answers: rawLc13?.answers && typeof rawLc13.answers === 'object' ? rawLc13.answers : {}, supportSamples: Array.isArray(rawLc13?.supportSamples) ? rawLc13.supportSamples : [] },
-      lc14: { ...initial.challenges.lc14, ...(rawLc14 || {}), answers: rawLc14?.answers && typeof rawLc14.answers === 'object' ? rawLc14.answers : {}, supportItems: Array.isArray(rawLc14?.supportItems) ? rawLc14.supportItems : [] }
-    }
+      lc14: { ...initial.challenges.lc14, ...(rawLc14 || {}), answers: rawLc14?.answers && typeof rawLc14.answers === 'object' ? rawLc14.answers : {}, supportItems: Array.isArray(rawLc14?.supportItems) ? rawLc14.supportItems : [] },
+      ...(rawLc15 ? { lc15: { answers: {}, completed: false, attempts: 0, firstAttempt: false, noAudioItems: [], ...rawLc15, answers: rawLc15.answers && typeof rawLc15.answers === 'object' ? rawLc15.answers : {}, noAudioItems: Array.isArray(rawLc15.noAudioItems) ? rawLc15.noAudioItems : [] } } : {})
+    },
+    ...(CH06_SCENE_03.decision.choices.some(({ value }) => value === rawDirection) ? { chapter6_direction: rawDirection } : {})
   };
 }
 
@@ -145,6 +150,12 @@ export function recordOpeningTone(state, tone) {
 }
 
 export function applyDecision(state, decisionId, optionId) {
+  if (decisionId === 'D12') {
+    const choice = CH06_SCENE_03.decision.choices.find(({ id }) => id === optionId);
+    const eventId = 'ch06_d12_recorded';
+    if (state.scene !== CH06_SCENE_03.id || !state.applied_events.includes('ch06_s02_complete') || !choice || state.chapter6_direction || state.applied_events.includes(eventId)) return state;
+    return { ...state, chapter6_direction: choice.value, applied_events: [...state.applied_events, eventId] };
+  }
   if (decisionId === 'NEXT_CONTACT') {
     const allowed = CH05_SCENE_05.decision.choices.some(({ id }) => id === optionId);
     const eventId = 'ch05_next_contact_recorded';
@@ -383,6 +394,9 @@ export function isChallengeComplete(state, challengeId) {
 
 export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === CH06_SCENE_02.id && !state.applied_events.includes('ch06_s01_complete')) return 'Complete Chapter VI Scene 01 before opening The Question in the Mirror.';
+  if (scene.id === CH06_SCENE_03.id && !state.applied_events.includes('ch06_s02_complete')) return 'Complete Chapter VI Scene 02 before opening Three Ways Forward.';
+  if (scene.id === CH06_SCENE_03.id && !state.chapter6_direction) return 'Choose a direction before continuing.';
+  if (scene.id === CH06_SCENE_03.id && !state.challenges.lc15?.completed) return 'Complete all three LC15 samples before continuing.';
   if (scene.id === CH05_SCENE_01.id && !state.applied_events.includes('ch04_s05_complete')) return 'Complete Chapter IV Scene 05 before opening The Borough Exhibition Evening.';
   if (scene.id === CH05_SCENE_01.id && !state.reception_register_plan) return 'Choose a register plan before continuing.';
   if (scene.id === CH05_SCENE_02.id && !state.applied_events.includes('ch05_s01_complete')) return 'Complete Chapter V Scene 01 before opening Listening Under Pressure.';
@@ -406,7 +420,7 @@ export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === 'ch03_s05' && !state.applied_events.includes('ch03_s04_complete')) return 'Complete Chapter III Scene 04 before opening The Bad Day.';
   if (scene.id === 'ch03_s06' && !state.applied_events.includes('ch03_s05_complete')) return 'Complete Chapter III Scene 05 before opening A Small Victory.';
   if (scene.id === 'ch01_s01' && !state.opening_tone) return 'Choose a first response before continuing.';
-  if (scene.decision && !(scene.decision.id === 'D10' ? state.reception_register_plan : scene.decision.id === 'D11' ? state.credit_response : scene.decision.id === 'NEXT_CONTACT' ? state.next_contact : state.decisions[scene.decision.id])) return 'Choose a response to continue.';
+  if (scene.decision && !(scene.decision.id === 'D10' ? state.reception_register_plan : scene.decision.id === 'D11' ? state.credit_response : scene.decision.id === 'D12' ? state.chapter6_direction : scene.decision.id === 'NEXT_CONTACT' ? state.next_contact : state.decisions[scene.decision.id])) return 'Choose a response to continue.';
   if (scene.id === 'ch02_s01') return state.ch02_lc03_completed ? '' : 'Complete the reading challenge to continue.';
   if (scene.id === 'ch02_s02') return state.ch02_lc04_completed ? '' : 'Complete the language challenge to continue.';
   if (scene.challenge && !isChallengeComplete(state, scene.challenge.id)) return 'Complete the listening challenge to continue.';
@@ -471,6 +485,28 @@ export function markLc14SupportUsed(state, itemId) {
   const challenge = state.challenges.lc14;
   if (state.scene !== CH05_SCENE_04.id || !state.applied_events.includes('ch05_s03_complete') || !branch || itemId !== branch.itemId || challenge.supportItems.includes(itemId)) return state;
   return { ...state, challenges: { ...state.challenges, lc14: { ...challenge, supportItems: [...challenge.supportItems, itemId], supportUsed: true } } };
+}
+
+export function recordLc15Answer(state, itemId, optionId) {
+  const sample = CH06_SCENE_03.challenge.samples.find(({ id }) => id === itemId);
+  const challenge = state.challenges.lc15 || { answers: {}, completed: false, attempts: 0, firstAttempt: false, noAudioItems: [] };
+  if (state.scene !== CH06_SCENE_03.id || !state.applied_events.includes('ch06_d12_recorded') || !sample ||
+      !CH06_SCENE_03.challenge.options.some(({ id }) => id === optionId) || challenge.answers[itemId]?.correct || challenge.completed) return state;
+  const previous = challenge.answers[itemId];
+  const answers = { ...challenge.answers, [itemId]: { answer: optionId, correct: optionId === sample.answer, attempts: (previous?.attempts || 0) + 1 } };
+  const completed = CH06_SCENE_03.challenge.samples.every(({ id }) => answers[id]?.correct);
+  const eventId = 'ch06_lc15_completed';
+  return { ...state,
+    applied_events: completed && !state.applied_events.includes(eventId) ? [...state.applied_events, eventId] : state.applied_events,
+    challenges: { ...state.challenges, lc15: { ...challenge, answers, completed, attempts: (challenge.attempts || 0) + 1 } }
+  };
+}
+
+export function markLc15NoAudioUsed(state, itemId) {
+  const challenge = state.challenges.lc15 || { answers: {}, completed: false, attempts: 0, firstAttempt: false, noAudioItems: [] };
+  if (state.scene !== CH06_SCENE_03.id || !state.applied_events.includes('ch06_d12_recorded') ||
+      !CH06_SCENE_03.challenge.samples.some(({ id }) => id === itemId) || challenge.answers[itemId] || challenge.noAudioItems.includes(itemId)) return state;
+  return { ...state, challenges: { ...state.challenges, lc15: { ...challenge, noAudioItems: [...challenge.noAudioItems, itemId] } } };
 }
 
 export function canAdvanceScene(state, scene) {
@@ -593,6 +629,11 @@ export function completeScene(state, scene) {
   if (scene.id === CH06_SCENE_02.id) {
     const eventId = 'ch06_s02_complete';
     if (!state.ch05_complete || !state.applied_events.includes('ch06_s01_complete') || state.applied_events.includes(eventId)) return state;
+    return { ...state, applied_events: [...state.applied_events, eventId] };
+  }
+  if (scene.id === CH06_SCENE_03.id) {
+    const eventId = 'ch06_s03_complete';
+    if (!state.applied_events.includes('ch06_s02_complete') || !state.applied_events.includes('ch06_d12_recorded') || !state.challenges.lc15.completed || state.applied_events.includes(eventId)) return state;
     return { ...state, applied_events: [...state.applied_events, eventId] };
   }
   if (scene.id === 'ch03_s01') {
