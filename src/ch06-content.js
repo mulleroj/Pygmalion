@@ -127,7 +127,20 @@ export const CH06_S02_TEACHER_SECTIONS = [
 export const CH06_SCENE_03 = {
   id: 'ch06_s03', number: 3, chapter: 'VI', chapterTitle: 'Her Own Voice', sceneCount: 5,
   title: 'Three Ways Forward', kicker: 'Chapter VI · Her Own Voice',
-  location: 'Wimpole Street morning room', voice: [],
+  location: 'Wimpole Street morning room', composition: 'ch06-three-ways-forward', visualFallback: false, voice: [],
+  background: {
+    src: './assets/images/locations/ch06/ch06_three_ways_forward_room.webp',
+    alt: 'A quiet Edwardian morning room with a table, ordinary London rooftops beyond the window, an open doorway into the workroom and clear floor.'
+  },
+  plate: {
+    src: './assets/images/locations/ch06/ch06_three_ways_forward_room.webp',
+    alt: 'A quiet Edwardian morning room with a table, ordinary London rooftops beyond the window, an open doorway into the workroom and clear floor.'
+  },
+  eliza: {
+    src: './assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png',
+    alt: 'Eliza, thoughtful and composed in her own voice.'
+  },
+  supporting: [], props: [],
   storyBeats: [
     { type: 'dialogue', speaker: 'Eliza', text: 'I could take my place in public work. I could build a life with work and decisions of my own. Or I could carry what I have learned between the people and places that matter to me.' }
   ],

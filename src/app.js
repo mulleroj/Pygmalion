@@ -194,7 +194,7 @@ function sceneCompositionClasses(scene, suffix = '') {
 }
 
 function chapterSixSceneVisual(scene) {
-  if (scene.id === CH06_SCENE_03.id) return { ...CH06_SCENE_01, ...scene, background: CH06_SCENE_01.background, plate: CH06_SCENE_01.plate, eliza: CH06_SCENE_01.eliza, supporting: [], props: [] };
+  if (scene.id === CH06_SCENE_03.id) return { ...CH06_SCENE_01, ...scene, supporting: [], props: [] };
   if (scene.id !== CH06_SCENE_01.id) return scene;
   const route = CH06_SCENE_01.visualRoutes[state.next_contact] || CH06_SCENE_01.visualRoutes.neutral;
   return { ...scene, ...route };
@@ -611,7 +611,7 @@ function renderCh06S03() {
     const transcript = saved?.correct ? `<details class="transcript"><summary>Read Eliza’s message</summary><p>“${escapeHtml(sample.transcript)}”</p></details>` : '';
     return `<article class="lc15-sample" aria-labelledby="${sample.id}-title"><h3 id="${sample.id}-title">Message ${index + 1} of 3</h3>${alternativeButton}${alternative}<div class="answer-stack" role="group" aria-label="Message ${index + 1} context choices">${options}</div>${feedback}${transcript}</article>`;
   }).join('');
-  const directionReflection = savedDirection ? renderStoryBeats({ ...CH06_SCENE_03, storyBeats: [CH06_SCENE_03.storyBeats[1]] }) : '';
+  const directionReflection = savedDirection && CH06_SCENE_03.storyBeats[1] ? renderStoryBeats({ ...CH06_SCENE_03, storyBeats: [CH06_SCENE_03.storyBeats[1]] }) : '';
   const completion = challenge.completed ? `<p class="challenge-complete" role="status">LC15 complete. No development signal changed.</p><button class="secondary-button next-button" type="button" data-action="next-scene" ${studentReadOnly() ? 'disabled' : ''}>Continue <span aria-hidden="true">→</span></button>` : '';
   return `${renderStoryBeats({ ...CH06_SCENE_03, storyBeats: [CH06_SCENE_03.storyBeats[0]] })}${decisionMarkup}${directionReflection}<section class="challenge-block lc15-block" aria-labelledby="lc15-title"><p class="eyebrow">Pragmatic fit · LC15</p><h2 id="lc15-title">${escapeHtml(CH06_SCENE_03.challenge.title)}</h2><p>${escapeHtml(CH06_SCENE_03.challenge.intro)}</p><p class="read-only-note">No recording is required in this slice. Read the situation clues for any message, then choose the context that fits.</p><div class="lc15-samples">${sampleCards}</div>${completion}</section>${scenePreview ? '<p class="read-only-note" role="status">Teacher preview · read-only. D12, LC15 answers, support and progression are inactive.</p><button class="secondary-button" type="button" data-action="return-student">Return to student scene</button>' : ''}`;
 }
