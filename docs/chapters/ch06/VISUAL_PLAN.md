@@ -1,6 +1,6 @@
 # Chapter VI Visual Plan
 
-Status: S01 visual approved and integrated; S02–S05 remain planned. Preserve canonical Eliza identity and approved stage `Her Own Voice`; use approved Higgins, Pickering and Mrs Pearce art where needed. Do not create unnecessary character variants. Chapter VI's visual change is agency, framing and environment, not a makeover or a new “proper” identity.
+Status: S01 and S02 visuals approved and integrated; S03–S05 remain planned. Preserve canonical Eliza identity and approved stage `Her Own Voice`; use approved Higgins, Pickering and Mrs Pearce art where needed. Do not create unnecessary character variants. Chapter VI's visual change is agency, framing and environment, not a makeover or a new “proper” identity.
 
 ## S01 — The Morning After (approved visual)
 
@@ -11,10 +11,18 @@ Status: S01 visual approved and integrated; S02–S05 remain planned. Preserve c
 - `next_contact` selects only the first-contact composition: Eliza at the right with Higgins, Pickering or Mrs Pearce at the left. Eliza uses the larger scale; Higgins remains secondary. Missing or unknown `next_contact` uses the same plate with Eliza alone at left-of-centre; it adds no companion and does not change story state.
 - The art panel stays at 1672:941 on wide layouts. At widths up to 1023 px the story spread stacks; up to 599 px the room uses a 1.35 crop biased slightly toward the adjoining workroom, with companions moved inward and both figures scaled to fit. The neutral route remains a deliberate solo composition. Verify future art or crop changes against the letters, doorway, full-body feet and dialogue controls.
 
+## S02 — The Question in the Mirror (approved visual)
+
+- Approved background: Candidate B, generation `exec-9ee725cf-3161-4082-af45-be320192be59` (1672 × 941 px). Source: `C:/Users/mulle/.codex/generated_images/01a11300-5dc6-70d0-b6c8-a07a03fe2205/exec-9ee725cf-3161-4082-af45-be320192be59.png`.
+- Canonical runtime asset: `assets/images/locations/ch06/ch06_question_in_mirror_room.webp`, converted from the approved PNG to WebP at quality 92 with dimensions unchanged.
+- The approved empty room has a plain wall mirror and small table on the left, a window near centre-left, and open floor on the right. Its reflection contains only the empty room. Preserve the image without cropping at wide sizes.
+- Reuse Eliza `assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png` once. Place her right-of-centre, at approximately 69% of the art width, grounded on the floor and oriented left toward the mirror; CSS flips only the displayed cutout to match that orientation. Keep clear lateral distance from the mirror. Do not add a reflected Eliza, a second figure, a before/after composition or a transformation cue.
+- At widths up to 1023 px the story spread stacks. At widths up to 599 px use the 1.35 art crop with a left bias (`object-position: 25% center`) so the mirror remains visible while Eliza stays on the right. Check both the mirror and Eliza together at mobile widths; replay cards remain in the text column below the art.
+
 | Scene | Composition / environment | Character and prop needs |
 |---|---|---|
 | S01 — The Morning After | One Wimpole Street morning room adjoining the workroom; quiet light and one table | Reuse Eliza `Her Own Voice`, reflective expression; letters, notes, invitations, pencil. First-contact companion art can be reused. |
-| S02 — The Question in the Mirror | Same private room/dressing space; plain mirror at Eliza's eye level, not beauty framing | Reuse the same Eliza master with a thoughtful pose; one small earlier-story object or letter. Avoid multiple “voice identity” portraits. |
+| S02 — The Question in the Mirror | Approved quiet private room; plain wall mirror at left, window near centre-left, open space at right; mirror supports self-recognition, not beauty framing | Reuse the same Eliza thoughtful cutout once at right-of-centre, facing the mirror; no reflected person, duplicate or transformation image. |
 | S03 — Three Ways Forward | Reuse S01 morning room and table; three invitations visible without ranking, color coding or a highlighted “best” card | Same Eliza; optional small contextual portraits only. No icons that imply a progress score. |
 | S04 — Her Own Statement | One composition selected by `chapter6_direction`: modest meeting room, independent work space, or shared community room | Reuse Eliza master; at most three background compositions. Rhetorical shape does not create a new illustration. |
 | S05 PUBLIC PARTICIPATION (`social_success`) | Modest public/professional/community room where Eliza participates and directs a practical exchange | Eliza in existing approved clothing/art where possible; meeting table, notes, flowers or organiser's programme. Higgins must not dominate foreground. |

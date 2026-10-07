@@ -643,3 +643,21 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch06-morning-after .art-eliza::before { left: 56%; bottom: 1%; width: 27%; height: 2%; }
   .ch06-morning-after-neutral .art-eliza::before { left: 28%; width: 24%; }
 }
+
+/* Chapter VI S02: one thoughtful Eliza faces the ordinary mirror from the open side of the room. */
+.ch06-question-mirror-spread { grid-template-columns: minmax(0, 1.04fr) minmax(0, .96fr); align-items: start; }
+.ch06-question-mirror.storybook-art { min-width: 0; min-height: 0; height: auto; aspect-ratio: 1672 / 941; background: #c5c5bd; }
+.ch06-question-mirror .art-background { filter: none; }
+.ch06-question-mirror .art-background img { object-fit: contain; }
+.ch06-question-mirror .art-eliza { display: block; padding: 0; opacity: 1; z-index: 3; }
+.ch06-question-mirror .art-eliza img { position: absolute; left: 69%; bottom: 1%; width: auto; height: 92%; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%) scaleX(-1); filter: drop-shadow(0 4px 4px rgba(34, 27, 24, .25)); }
+.ch06-question-mirror .art-eliza::before { left: 54%; bottom: 1%; width: 31%; height: 2.2%; border-radius: 50%; background: rgba(31, 28, 28, .28); filter: blur(4px); opacity: .65; }
+.ch06-question-mirror figcaption { display: none; }
+@media (max-width: 1023px) {
+  .ch06-question-mirror-spread { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 599px) {
+  .ch06-question-mirror.storybook-art { min-height: 0; height: auto; aspect-ratio: 1.35; }
+  .ch06-question-mirror .art-background img { object-fit: cover; object-position: 25% center; }
+  .ch06-question-mirror .art-eliza img { left: 69%; bottom: 1%; height: 94%; }
+}

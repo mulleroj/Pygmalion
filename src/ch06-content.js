@@ -78,7 +78,20 @@ export const CH06_S01_TEACHER_SECTIONS = [
 export const CH06_SCENE_02 = {
   id: 'ch06_s02', number: 2, chapter: 'VI', chapterTitle: 'Her Own Voice', sceneCount: 5,
   title: 'The Question in the Mirror', kicker: 'Chapter VI · Her Own Voice',
-  location: 'A quiet private dressing space', visualFallback: true, voice: [],
+  location: 'A quiet private dressing space', composition: 'ch06-question-mirror', visualFallback: false,
+  background: {
+    src: './assets/images/locations/ch06/ch06_question_in_mirror_room.webp',
+    alt: 'A quiet Edwardian room with a wall mirror and small table on the left, a window near the centre, and open floor on the right.'
+  },
+  plate: {
+    src: './assets/images/locations/ch06/ch06_question_in_mirror_room.webp',
+    alt: 'A quiet Edwardian room with a wall mirror and small table on the left, a window near the centre, and open floor on the right.'
+  },
+  eliza: {
+    src: './assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png',
+    alt: 'Eliza, thoughtful and composed, standing apart from the mirror.'
+  },
+  supporting: [], props: [], voice: [],
   storyBeats: [
     { type: 'narration', text: 'Eliza stands before the mirror. For a moment she remembers the quick voice she used at the flower stall, the careful phrases she practised, and the voice she chose at the exhibition. Each belonged to a moment in her life.' },
     { type: 'dialogue', speaker: 'Eliza', text: 'I learned another way to speak. I did not lose the first.' },

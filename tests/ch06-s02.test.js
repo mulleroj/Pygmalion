@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { createInitialState, STORAGE_KEY, completeScene, getSceneAdvanceBlock } from '../src/state.js';
 import { CH06_SCENE_02, CH06_S02_REPLAY_MOMENTS, CH06_S02_TEACHER_SECTIONS, CH06_S03_BOUNDARY } from '../src/ch06-content.js';
 import { AudioManager } from '../src/audio.js';
@@ -41,7 +41,7 @@ test('S02 matches locked script, provides text-first reflection and only optiona
   const mounted = await mount(t, before);
   const html = mounted.node('#app').innerHTML;
   assert.match(html, /The Question in the Mirror/);
-  assert.match(html, /A quiet private dressing space/);
+  assert.match(html, /wall mirror and small table on the left/);
   assert.match(html, /I learned another way to speak\. I did not lose the first\./);
   assert.match(html, /A voice can change with the room\. The person choosing it is still me\./);
   assert.equal((html.match(/class="sample-card"/g) || []).length, 3);
@@ -50,6 +50,37 @@ test('S02 matches locked script, provides text-first reflection and only optiona
   assert.deepEqual(mounted.state(), before, 'rendering is state-neutral');
   assert.equal(CH06_SCENE_02.voice.length, 0, 'no required scene speech or challenge audio');
   assert.equal(CH06_S03_BOUNDARY.id, 'ch06_s03');
+});
+
+test('approved S02 room and one existing Eliza cutout render with the dedicated composition', async (t) => {
+  const backgroundPath = 'assets/images/locations/ch06/ch06_question_in_mirror_room.webp';
+  const elizaPath = 'assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png';
+  assert.ok((await stat(new URL(`../${backgroundPath}`, import.meta.url))).size > 0);
+  assert.ok((await stat(new URL(`../${elizaPath}`, import.meta.url))).size > 0);
+  assert.equal(CH06_SCENE_02.background.src, `./${backgroundPath}`);
+  assert.equal(CH06_SCENE_02.plate.src, CH06_SCENE_02.background.src);
+  assert.equal(CH06_SCENE_02.eliza.src, `./${elizaPath}`);
+  assert.equal(CH06_SCENE_02.visualFallback, false);
+  assert.equal(CH06_SCENE_02.composition, 'ch06-question-mirror');
+  assert.deepEqual(CH06_SCENE_02.supporting, []);
+  assert.deepEqual(CH06_SCENE_02.props, []);
+  const before = ready({ origin_motivation: 'respect' });
+  const mounted = await mount(t, before);
+  const html = mounted.node('#app').innerHTML;
+  assert.match(html, /class="storybook-art\s+ch06-question-mirror/);
+  assert.equal((html.match(/eliza_her-own-voice_thoughtful_cutout\.png/g) || []).length, 1, 'one Eliza cutout is rendered');
+  assert.equal((html.match(/ch06_question_in_mirror_room\.webp/g) || []).length, 1, 'the background is rendered once, with no duplicate plate');
+  assert.doesNotMatch(html, /reflected Eliza|second Eliza|before.after/i);
+  assert.deepEqual(mounted.state(), before, 'visual rendering does not change state');
+});
+
+test('S02 responsive composition preserves mirror-side crop and room for Eliza', async () => {
+  const css = await readFile(new URL('../styles.css', import.meta.url), 'utf8');
+  assert.match(css, /\.ch06-question-mirror-spread \{[^}]*grid-template-columns: minmax\(0, 1\.04fr\) minmax\(0, \.96fr\)/);
+  assert.match(css, /@media \(max-width: 1023px\)[\s\S]*?\.ch06-question-mirror-spread \{ grid-template-columns: minmax\(0, 1fr\); \}/);
+  assert.match(css, /\.ch06-question-mirror \.art-eliza img \{[^}]*left: 69%;[^}]*height: 92%;[^}]*scaleX\(-1\)/);
+  assert.match(css, /@media \(max-width: 599px\)[\s\S]*?\.ch06-question-mirror \.art-background img \{ object-fit: cover; object-position: 25% center; \}/);
+  assert.match(css, /\.ch06-question-mirror \.art-eliza img \{ left: 69%; bottom: 1%; height: 94%; \}/);
 });
 
 test('direct S02 request without S01 completion safely falls back and fabricates no progress', async (t) => {
