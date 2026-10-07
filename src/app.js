@@ -879,9 +879,9 @@ function render() {
     const currentSceneId = scene.id;
     audioManager.setSceneAudioReadOnly(scene.id === 'ch02_s04' && (s04AudioPreview || teacherDialog.open));
     audioManager.setEnabled(state.soundEnabled);
-    if (!scene.id.startsWith('ch06_')
+    if (scene.id === 'ch06_s01' || (!scene.id.startsWith('ch06_')
       && !(['ch04_s02', 'ch04_s03', 'ch04_s04', 'ch04_s05'].includes(scene.id) && scenePreview)
-      && !(['ch05_s02', 'ch05_s03'].includes(scene.id) && scenePreview)) ensureSceneAmbience(scene);
+      && !(['ch05_s02', 'ch05_s03'].includes(scene.id) && scenePreview))) ensureSceneAmbience(scene);
     previousScene = currentSceneId;
   }
 }

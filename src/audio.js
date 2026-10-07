@@ -579,8 +579,8 @@ export class AudioManager {
     }
     this.sceneId = sceneId;
     this.contextualSpec = contextual;
-    // S01 begins from approved interior levels; Chapter III human mix QA is pending.
-    this.mix = sceneId?.startsWith('ch02_') || ['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch04_s01', 'ch04_s02', 'ch04_s03', 'ch04_s04', 'ch04_s05', 'ch05_s01', 'ch05_s02', 'ch05_s03', 'ch05_s04', 'ch05_s05'].includes(sceneId) ? CH02_AUDIO_MIX : CH01_AUDIO_MIX;
+    // These scenes use the approved quiet interior mix; Chapter III human mix QA is pending.
+    this.mix = sceneId?.startsWith('ch02_') || ['ch03_s01', 'ch03_s02', 'ch03_s03', 'ch03_s04', 'ch03_s05', 'ch04_s01', 'ch04_s02', 'ch04_s03', 'ch04_s04', 'ch04_s05', 'ch05_s01', 'ch05_s02', 'ch05_s03', 'ch05_s04', 'ch05_s05', 'ch06_s01'].includes(sceneId) ? CH02_AUDIO_MIX : CH01_AUDIO_MIX;
     this.ambienceVolume = this.mix.ambience;
     this.contextualVolume = this.mix.contextual;
     const id = sceneId ? ambienceForScene(sceneId) : null;

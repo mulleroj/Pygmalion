@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { readFile, stat } from 'node:fs/promises';
 import { createInitialState, STORAGE_KEY } from '../src/state.js';
 import { CH06_SCENE_01 } from '../src/ch06-content.js';
-import { AudioManager } from '../src/audio.js';
+import { AMBIENCE_FILES, AudioManager, CH02_AUDIO_MIX } from '../src/audio.js';
+import { ambienceForScene } from '../src/content.js';
 
 async function mount(t, savedState, hash = '') {
   const keys = ['document', 'window', 'localStorage'];
@@ -21,10 +22,13 @@ async function mount(t, savedState, hash = '') {
   globalThis.localStorage = { getItem(key) { assert.equal(key, STORAGE_KEY); return saved; }, setItem(key, value) { assert.equal(key, STORAGE_KEY); saved = value; } };
   const methods = ['ensureAmbience', 'setEnabled', 'leaveScene', 'setSceneAudioReadOnly'];
   const audio = Object.fromEntries(methods.map((name) => [name, AudioManager.prototype[name]]));
-  for (const name of methods) AudioManager.prototype[name] = () => {};
+  const audioCalls = { ambience: [] };
+  for (const name of methods) AudioManager.prototype[name] = name === 'ensureAmbience'
+    ? (sceneId) => { audioCalls.ambience.push(sceneId); return Promise.resolve(); }
+    : () => {};
   t.after(() => { for (const [name, method] of Object.entries(audio)) AudioManager.prototype[name] = method; });
   const app = await import(`../src/app.js?ch06-s01=${Date.now()}-${Math.random()}`);
-  return { app, handlers, node, state: () => JSON.parse(saved), location: window.location };
+  return { app, audioCalls, handlers, node, state: () => JSON.parse(saved), location: window.location };
 }
 
 const eligible = (extra = {}) => ({ ...createInitialState(), started: true, ch05_complete: true, scene: 'ch06_s01', applied_events: ['ch05_s05_complete'], ...extra });
@@ -61,6 +65,56 @@ test('approved S01 background and existing character assets use the canonical vi
   assert.equal(CH06_SCENE_01.visualFallback, false);
 });
 
+test('S01 ambience reuses the approved quiet Wimpole interior, with later scenes left unwired', async () => {
+  const asset = 'assets/audio/ambience/higgins_house_interior.mp3';
+  assert.equal(ambienceForScene('ch06_s01'), 'higgins_house_interior');
+  assert.equal(ambienceForScene('ch06_s02'), null);
+  assert.equal(AMBIENCE_FILES.higgins_house_interior, `./${asset}`);
+  assert.equal(CH02_AUDIO_MIX.ambience, 0.10);
+  assert.ok((await stat(new URL(`../${asset}`, import.meta.url))).size > 0);
+  const plan = await readFile(new URL('../docs/chapters/ch06/AUDIO_PLAN.md', import.meta.url), 'utf8');
+  assert.match(plan, /AM54[\s\S]*?higgins_house_interior\.mp3/);
+  assert.match(plan, /EH1q5BoFNyVXdakm2n9W/);
+});
+
+test('S01 has no foreground voice on any route; ambience waits for a gesture and Sound On restores ambience only', async () => {
+  const routes = ['higgins_directly', 'pickering_first', 'mrs_pearce_first', undefined];
+  for (const next_contact of routes) {
+    const state = eligible(next_contact ? { next_contact } : {});
+    const source = CH06_SCENE_01;
+    assert.deepEqual(source.voice, []);
+    assert.equal(ambienceForScene(source.id), 'higgins_house_interior');
+    assert.equal(state.next_contact ?? undefined, next_contact);
+  }
+
+  const players = [];
+  const audio = new AudioManager({ fadeMs: 0, soundFadeMs: 0, createAudio(src) {
+    const player = { src, loop: false, volume: 1, muted: false, paused: true, playCalls: 0, pauseCalls: 0,
+      async play() { this.playCalls += 1; this.paused = false; },
+      pause() { this.pauseCalls += 1; this.paused = true; },
+      addEventListener() {}, removeEventListener() {} };
+    players.push(player);
+    return player;
+  } });
+  await audio.ensureAmbience('ch06_s01');
+  assert.equal(players.length, 0, 'scene render without an audio gesture does not start ambient playback');
+  audio.unlock();
+  await audio.ensureAmbience('ch06_s01');
+  assert.equal(players.length, 1);
+  const ambience = players[0];
+  assert.equal(ambience.src, AMBIENCE_FILES.higgins_house_interior);
+  assert.equal(ambience.loop, true);
+  assert.equal(ambience.volume, CH02_AUDIO_MIX.ambience);
+  assert.equal(audio.foreground, null, 'S01 has no speech to replay or duck under');
+  await audio.setEnabled(false);
+  assert.equal(ambience.paused, true);
+  await audio.setEnabled(true);
+  assert.equal(players.length, 1, 'Sound On restores the same ambience player without adding speech');
+  assert.equal(ambience.playCalls, 2);
+  assert.equal(audio.foreground, null);
+  await audio.setEnabled(false);
+});
+
 test('valid S01 restore renders all visual routes with shared story convergence and no progress mutation', async (t) => {
   const routes = [
     ['higgins_directly', 'Higgins', 'higgins'],
@@ -84,6 +138,7 @@ test('valid S01 restore renders all visual routes with shared story convergence 
     if (!companion) assert.doesNotMatch(html, /(?:higgins_master|pickering_full-body|mrs-pearce_practical-questioning)_cutout\.png/);
     assert.match(html, /type="button" data-action="next-scene"/);
     assert.doesNotMatch(html, /data-src=|<audio|Play audio/);
+    assert.ok(mounted.audioCalls.ambience.includes('ch06_s01'), 'student S01 runtime requests its selected ambience');
     assert.deepEqual(mounted.state(), before);
   }
 });

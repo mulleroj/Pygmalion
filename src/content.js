@@ -209,6 +209,8 @@ export const AUDIO_FILES = [
 export const VISUAL_FILES = Object.values(VISUALS).map((asset) => asset.src.replace(/^\.\/assets\//, ''));
 
 export function ambienceForScene(sceneId) {
+  if (sceneId === 'ch06_s01') return 'higgins_house_interior'; // AM54 reuses the approved Wimpole Street interior room tone.
+  if (sceneId?.startsWith('ch06_')) return null; // Later Chapter VI scenes are not wired; never inherit Chapter I ambience.
   if (['ch05_s01', 'ch05_s02', 'ch05_s03'].includes(sceneId)) return 'ch05_exhibition_hall';
   if (sceneId === 'ch05_s04') return 'ch05_side_room';
   if (sceneId === 'ch05_s05') return 'ch04_evening_walk'; // S05 directly reuses the approved AM42 exterior bed.

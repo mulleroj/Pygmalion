@@ -1,6 +1,6 @@
 # Chapter VI Audio Plan
 
-Status: design only; Chapter VI story canon locked. No audio generated. Cost-conscious plan uses the existing planned range `AM53–AM60`; every spoken asset requires an accessible text counterpart. Story text remains complete with sound off. Do not create nine recordings for three directions by three rhetorical shapes.
+Status: S01 reuses one already human-approved ambience; no new audio generated. S02–S05 remain design only. Chapter VI story canon is locked. The plan uses the existing range `AM53–AM60`; every spoken asset requires an accessible text counterpart. Story text remains complete with sound off. Do not create nine recordings for three directions by three rhetorical shapes.
 
 | ID | Scene / moment | Plan | Status | Notes |
 |---|---|---|---|---|
@@ -17,6 +17,33 @@ Status: design only; Chapter VI story canon locked. No audio generated. Cost-con
 
 - Three LC15 samples (`AM57`), one per pragmatic context.
 - One shared final Eliza line (`AM59`), reused across all three directions and all `final_statement_shape` values.
+
+## S01 production record — AM53–AM54
+
+### AM53 — optional first-contact companion speech; deliberately text-only
+
+No S01 speech is marked REQUIRED. The script is book-first, and no Eliza line is required for audio. Narration and every Eliza response remain readable text. The three optional companion opening lines below were not generated: they do not add information beyond the visible dialogue, so route-specific voice would add cost without improving comprehension. No exact matching approved Chapter V recording was found.
+
+| Route / speaker | Exact canonical candidate text | Canonical voice | Voice ID | Reuse | Decision / cost estimate |
+|---|---|---|---|---|---|
+| `higgins_directly` · Higgins | “The public invitation would show what the lessons can achieve.” | Kelvin | `JlptfLxaUpd8pZcw9dKd` | No exact approved take found | OPTIONAL; text-only. Estimate-only, one take: 61.99 credits (about $0.0113). No generation, no charge. |
+| `pickering_first` · Pickering | “I thought the public invitation might interest you. But I should ask: what interests you?” | George | `JBFqnCBsd6RMkjVDRZzb` | No exact approved take found | OPTIONAL; text-only. Estimate-only, one take: 88.99 credits (about $0.0162). No generation, no charge. |
+| `mrs_pearce_first` · Mrs Pearce | “Before you answer any invitation, ask about the pay, the hours and where you would stay.” | Sally Ford | `kBag1HOZlaVBH7ICPE8x` | No exact approved take found | OPTIONAL; text-only. Estimate-only, one take: 87.99 credits (about $0.0160). No generation, no charge. |
+
+Neutral/missing `next_contact` has no companion line or invented audio. Since no S01 speech is required, there are no S01 replay buttons, foreground auto-play, or speech duck/restore events. Route isolation is maintained by the existing text-only contact route and empty `voice` list.
+
+### AM54 — quiet Wimpole Street interior ambience; REUSE
+
+| Field | Record |
+|---|---|
+| Role / status | Quiet morning/workroom interior bed; OPTIONAL in the canon, reused because the existing approved room tone fits naturally. |
+| Runtime path | `assets/audio/ambience/higgins_house_interior.mp3` (existing, unchanged; 337,872 bytes, 20 s). |
+| Provenance | Existing human-approved Chapter II ambience; Generation ID `EH1q5BoFNyVXdakm2n9W`. It was already approved as very quiet indoor room tone, with household clock/fireplace/wood-creak texture and no intelligible speech or music. |
+| Asset Library ID | N/A; no ID is recorded in the project manifest, and the current ElevenLabs available-assets search returned no match. |
+| Approval | HUMAN APPROVED in Chapter II; reused unchanged. No new generation and no generation cost. |
+| Runtime behavior | `ch06_s01` maps to the existing interior ambience at the approved `0.10` base level. It waits for the normal conscious audio gesture, loops, stops on Sound Off, and resumes ambience only on Sound On. S02 remains unwired. |
+
+No ambience transcript is required. No transcription or speech-recognition credits were used. S01 continues to work fully with sound off.
 
 ## Optional companion lines
 
