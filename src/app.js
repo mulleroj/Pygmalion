@@ -10,7 +10,7 @@ import {
 import { CH02_SCENE_01, CH02_SCENE_02, CH02_SCENE_03, CH02_TEACHER_SECTIONS, CH02_SCENE_02_TEACHER_SECTIONS, CH02_SCENE_03_TEACHER_SECTIONS, CH02_SCENE_04, CH02_SCENE_04_TEACHER_SECTIONS, CH02_SCENE_05, CH02_SCENE_05_TEACHER_SECTIONS } from './ch02-content.js';
 import { CH04_SCENE_01, CH04_SCENE_02, CH04_SCENE_03, CH04_SCENE_04, CH04_SCENE_05, CH04_S01_TEACHER_SECTIONS, CH04_S02_TEACHER_SECTIONS, CH04_S03_TEACHER_SECTIONS, CH04_S04_TEACHER_SECTIONS, CH04_S05_TEACHER_SECTIONS, CH04_TEACHER_REFERENCE_AUDIO } from './ch04-content.js';
 import { CH05_SCENE_01, CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04, CH05_SCENE_05, CH05_S01_TEACHER_SECTIONS, CH05_S02_TEACHER_SECTIONS, CH05_S03_TEACHER_SECTIONS, CH05_S04_TEACHER_SECTIONS, CH05_S05_TEACHER_SECTIONS } from './ch05-content.js';
-import { CH06_SCENE_01, CH06_SCENE_02, CH06_SCENE_03, CH06_S01_TEACHER_SECTIONS, CH06_S02_TEACHER_SECTIONS, CH06_S03_TEACHER_SECTIONS, CH06_S02_REPLAY_MOMENTS, CH06_S03_BOUNDARY } from './ch06-content.js';
+import { CH06_SCENE_01, CH06_SCENE_02, CH06_SCENE_03, CH06_SCENE_04, CH06_S01_TEACHER_SECTIONS, CH06_S02_TEACHER_SECTIONS, CH06_S03_TEACHER_SECTIONS, CH06_S04_TEACHER_SECTIONS, CH06_S02_REPLAY_MOMENTS, CH06_S03_BOUNDARY } from './ch06-content.js';
 import {
   loadState,
   saveState,
@@ -40,6 +40,8 @@ import {
   markLc14SupportUsed,
   recordLc15Answer,
   markLc15NoAudioUsed,
+  recordCh06FinalStatementShape,
+  deliverCh06FinalStatement,
   recordLc11Answer,
   markLc11SupportUsed,
   recordLc12Answer,
@@ -67,7 +69,7 @@ const liveRegion = document.querySelector('#live-region');
 const teacherDialog = document.querySelector('#teacher-dialog');
 const teacherContent = document.querySelector('#teacher-content');
 const teacherContext = document.querySelector('#teacher-context');
-const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH03_SCENE_01.id]: CH03_SCENE_01, [CH03_SCENE_02.id]: CH03_SCENE_02, [CH03_SCENE_03.id]: CH03_SCENE_03, [CH03_SCENE_04.id]: CH03_SCENE_04, [CH03_SCENE_05.id]: CH03_SCENE_05, [CH03_SCENE_06.id]: CH03_SCENE_06, [CH02_SCENE_01.id]: CH02_SCENE_01, [CH02_SCENE_02.id]: CH02_SCENE_02, [CH02_SCENE_03.id]: CH02_SCENE_03, [CH02_SCENE_04.id]: CH02_SCENE_04, [CH02_SCENE_05.id]: CH02_SCENE_05, [CH04_SCENE_01.id]: CH04_SCENE_01, [CH04_SCENE_02.id]: CH04_SCENE_02, [CH04_SCENE_03.id]: CH04_SCENE_03, [CH04_SCENE_04.id]: CH04_SCENE_04, [CH04_SCENE_05.id]: CH04_SCENE_05, [CH05_SCENE_01.id]: CH05_SCENE_01, [CH05_SCENE_02.id]: CH05_SCENE_02, [CH05_SCENE_03.id]: CH05_SCENE_03, [CH05_SCENE_04.id]: CH05_SCENE_04, [CH05_SCENE_05.id]: CH05_SCENE_05, [CH06_SCENE_01.id]: CH06_SCENE_01, [CH06_SCENE_02.id]: CH06_SCENE_02, [CH06_SCENE_03.id]: CH06_SCENE_03 };
+const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH03_SCENE_01.id]: CH03_SCENE_01, [CH03_SCENE_02.id]: CH03_SCENE_02, [CH03_SCENE_03.id]: CH03_SCENE_03, [CH03_SCENE_04.id]: CH03_SCENE_04, [CH03_SCENE_05.id]: CH03_SCENE_05, [CH03_SCENE_06.id]: CH03_SCENE_06, [CH02_SCENE_01.id]: CH02_SCENE_01, [CH02_SCENE_02.id]: CH02_SCENE_02, [CH02_SCENE_03.id]: CH02_SCENE_03, [CH02_SCENE_04.id]: CH02_SCENE_04, [CH02_SCENE_05.id]: CH02_SCENE_05, [CH04_SCENE_01.id]: CH04_SCENE_01, [CH04_SCENE_02.id]: CH04_SCENE_02, [CH04_SCENE_03.id]: CH04_SCENE_03, [CH04_SCENE_04.id]: CH04_SCENE_04, [CH04_SCENE_05.id]: CH04_SCENE_05, [CH05_SCENE_01.id]: CH05_SCENE_01, [CH05_SCENE_02.id]: CH05_SCENE_02, [CH05_SCENE_03.id]: CH05_SCENE_03, [CH05_SCENE_04.id]: CH05_SCENE_04, [CH05_SCENE_05.id]: CH05_SCENE_05, [CH06_SCENE_01.id]: CH06_SCENE_01, [CH06_SCENE_02.id]: CH06_SCENE_02, [CH06_SCENE_03.id]: CH06_SCENE_03, [CH06_SCENE_04.id]: CH06_SCENE_04 };
 let state = loadState();
 let lastTeacherTrigger = null;
 let previousScene = null;
@@ -114,7 +116,7 @@ function focusLc06Next() {
 }
 
 function currentScene() {
-  return RUNTIME_SCENES[state.scene] || (state.scene === 'ch06_s04' ? { ...CH06_SCENE_03, id: 'ch06_s04', title: 'Her Own Statement' } : state.scene === CH06_S03_BOUNDARY.id ? CH06_S03_BOUNDARY : SCENES[0]);
+  return RUNTIME_SCENES[state.scene] || (state.scene === CH06_S03_BOUNDARY.id ? CH06_S03_BOUNDARY : SCENES[0]);
 }
 
 function updateHeader() {
@@ -195,6 +197,10 @@ function sceneCompositionClasses(scene, suffix = '') {
 
 function chapterSixSceneVisual(scene) {
   if (scene.id === CH06_SCENE_03.id) return { ...CH06_SCENE_01, ...scene, supporting: [], props: [] };
+  if (scene.id === CH06_SCENE_04.id) {
+    const direction = CH06_SCENE_04.statement.directions[state.chapter6_direction];
+    return { ...scene, location: direction?.place || scene.location };
+  }
   if (scene.id !== CH06_SCENE_01.id) return scene;
   const route = CH06_SCENE_01.visualRoutes[state.next_contact] || CH06_SCENE_01.visualRoutes.neutral;
   return { ...scene, ...route };
@@ -617,6 +623,19 @@ function renderCh06S03() {
   return `${renderStoryBeats({ ...CH06_SCENE_03, storyBeats: [CH06_SCENE_03.storyBeats[0]] })}${decisionMarkup}${directionReflection}<section class="challenge-block lc15-block" aria-labelledby="lc15-title"><p class="eyebrow">Pragmatic fit · LC15</p><h2 id="lc15-title">${escapeHtml(CH06_SCENE_03.challenge.title)}</h2><p>${escapeHtml(CH06_SCENE_03.challenge.intro)}</p><p class="read-only-note">Audio is optional. Replay each message or read the situation clues instead.</p><div class="lc15-samples">${sampleCards}</div>${completion}</section>${scenePreview ? '<p class="read-only-note" role="status">Teacher preview · read-only. D12, LC15 answers, support and progression are inactive.</p><button class="secondary-button" type="button" data-action="return-student">Return to student scene</button>' : ''}`;
 }
 
+function renderCh06S04() {
+  const shape = CH06_SCENE_04.statement.shapes.find(({ value }) => value === state.final_statement_shape);
+  const direction = CH06_SCENE_04.statement.directions[state.chapter6_direction];
+  const delivered = state.applied_events.includes('ch06_final_statement_delivered');
+  const choices = CH06_SCENE_04.statement.shapes.map((option) => `<button class="choice-button ${shape?.value === option.value ? 'selected' : ''}" type="button" data-action="choose-ch06-statement-shape" data-option="${option.id}" aria-pressed="${shape?.value === option.value}" ${studentReadOnly() || shape || delivered ? 'disabled' : ''}><strong>${escapeHtml(option.text)}</strong></button>`).join('');
+  const statement = shape && direction ? `<section class="learning-reference ch06-statement-preview" aria-labelledby="ch06-statement-preview-title"><h2 id="ch06-statement-preview-title">Eliza’s statement</h2><p class="statement-lead-in">${escapeHtml(shape.leadIn)}</p><blockquote>${escapeHtml(direction.text)}</blockquote></section>` : '';
+  const deliver = shape && !delivered && !studentReadOnly() ? '<button class="secondary-button" type="button" data-action="deliver-ch06-statement">Deliver this statement</button>' : '';
+  const completion = delivered
+    ? `<p class="challenge-complete" role="status">Eliza’s statement has been delivered.</p><button class="secondary-button next-button" type="button" data-action="next-scene" ${studentReadOnly() ? 'disabled' : ''}>Continue <span aria-hidden="true">→</span></button>`
+    : '';
+  return `${scenePreview ? '<p class="read-only-note" role="status">Teacher preview · read-only. Statement choices, delivery and progression are inactive.</p><button class="secondary-button" type="button" data-action="return-student">Return to student scene</button>' : ''}<section class="choice-block neutral-choice ch06-statement-shapes" aria-labelledby="ch06-statement-shape-title"><h2 id="ch06-statement-shape-title">${escapeHtml(CH06_SCENE_04.statement.prompt)}</h2><p>These are rhetorical preferences, not another ending decision.</p><div class="choice-grid" role="group" aria-label="Choose how Eliza expresses her choice">${choices}</div></section>${statement}${deliver}${completion}`;
+}
+
 function renderCh06S02() {
   const moments = CH06_S02_REPLAY_MOMENTS.filter(({ history }) => history(state)).slice(0, 3);
   const replayShelf = moments.length ? `<section class="learning-reference" aria-labelledby="ch06-s02-replays"><h2 id="ch06-s02-replays">Earlier moments · optional replay</h2><p>These saved moments are here to revisit, not to score or compare.</p>${moments.map((moment) => `<article class="sample-card"><h3>${escapeHtml(moment.category)}</h3><p>${escapeHtml(moment.label)}</p>${moment.src ? `<button class="audio-button" type="button" data-action="play-voice" data-src="${escapeHtml(moment.src)}" aria-label="Replay ${escapeHtml(moment.category)}">▶ Replay this moment</button>` : ''}<details open class="transcript"><summary>Text</summary><p>${escapeHtml(moment.transcript)}</p></details></article>`).join('')}</section>` : '';
@@ -719,6 +738,7 @@ function renderScene(scene) {
   if (scene.id === CH06_SCENE_01.id) body += renderCh06S01();
   if (scene.id === CH06_SCENE_02.id) body += renderCh06S02();
   if (scene.id === CH06_SCENE_03.id) body += renderCh06S03();
+  if (scene.id === CH06_SCENE_04.id) body += renderCh06S04();
   if (scene.id === 'ch01_s02') body += renderLc01(scene);
   if (scene.id === 'ch01_s04') body += renderLc02(scene);
   if (scene.id === 'ch01_s05') body += renderEnd(scene);
@@ -728,7 +748,7 @@ function renderScene(scene) {
   if (scene.id === 'ch02_s03') body += '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the agreement <span aria-hidden="true">→</span></button>';
   if (scene.id === 'ch02_s05' && state.confirmed_motivation) body += `<section class="chapter-end" aria-labelledby="ch02-end-title"><h2 id="ch02-end-title">Chapter II complete</h2>${renderStoryBeats({ ...scene, storyBeats: scene.ending })}<p class="end-note">Your Chapter II progress is saved locally.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button><button class="secondary-button" type="button" data-action="enter-ch03">Continue to Chapter III</button></section>`;
   if (scene.terms) body += `<section class="terms-card" aria-labelledby="terms-title"><h2 id="terms-title">The lesson agreement</h2><ul>${scene.terms.map((term) => `<li>${escapeHtml(term)}</li>`).join('')}</ul></section><p class="transition-line">${escapeHtml(scene.transition)}</p>${state.lesson_terms_understood ? '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to Why I Am Here <span aria-hidden="true">→</span></button>' : '<button class="secondary-button next-button" type="button" data-action="complete-s04">Continue <span aria-hidden="true">→</span></button>'}`;
-  if (!chapterTwo && scene.id !== 'ch01_s05' && scene.id !== 'ch04_s01' && scene.id !== 'ch04_s02' && scene.id !== 'ch04_s03' && scene.id !== 'ch04_s04' && scene.id !== 'ch04_s05' && !scene.challenge && scene.id !== 'ch05_s01' && scene.id !== 'ch05_s03' && scene.id !== 'ch05_s04' && decisionSelected && challengeComplete && scene.id !== 'ch01_s01') {
+  if (!chapterTwo && scene.id !== 'ch01_s05' && scene.id !== 'ch04_s01' && scene.id !== 'ch04_s02' && scene.id !== 'ch04_s03' && scene.id !== 'ch04_s04' && scene.id !== 'ch04_s05' && !scene.challenge && scene.id !== 'ch05_s01' && scene.id !== 'ch05_s03' && scene.id !== 'ch05_s04' && scene.id !== CH06_SCENE_04.id && decisionSelected && challengeComplete && scene.id !== 'ch01_s01') {
     body += `<button class="secondary-button next-button" type="button" data-action="next-scene">Continue the story <span aria-hidden="true">→</span></button>`;
   }
   if (scene.id === 'ch04_s01' && decisionSelected && !scenePreview) body += '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue the story <span aria-hidden="true">→</span></button>';
@@ -826,14 +846,19 @@ function render() {
     setLocation(CH06_SCENE_03.id, true);
     hashScene = CH06_SCENE_03.id;
   }
-  if (hashScene.startsWith('ch06_') && ![CH06_SCENE_01.id, CH06_SCENE_02.id, CH06_SCENE_03.id, 'ch06_s04'].includes(hashScene)) {
+  if (hashScene === CH06_SCENE_04.nextScene && !state.applied_events.includes('ch06_s04_complete')) {
+    const safeScene = state.applied_events.includes('ch06_s03_complete') ? CH06_SCENE_04.id : CH06_SCENE_03.id;
+    setLocation(safeScene, true);
+    hashScene = safeScene;
+  }
+  if (hashScene.startsWith('ch06_') && ![CH06_SCENE_01.id, CH06_SCENE_02.id, CH06_SCENE_03.id, CH06_SCENE_04.id, CH06_SCENE_04.nextScene].includes(hashScene)) {
     setLocation(CH06_SCENE_01.id, true);
     hashScene = CH06_SCENE_01.id;
   }
-  if (hashScene === 'ch06_s04' && state.applied_events.includes('ch06_s03_complete')) {
+  if (hashScene === CH06_SCENE_04.nextScene && state.applied_events.includes('ch06_s04_complete')) {
     audioManager.leaveScene();
-    if (state.scene !== 'ch06_s04') { state = setScene(state, 'ch06_s04'); save(); }
-    app.innerHTML = '<main class="story-page runtime-boundary" id="story-root" tabindex="-1"><p class="eyebrow">Chapter VI · Her Own Voice</p><h1>Her Own Statement</h1><p class="end-note">Three Ways Forward is complete and saved. The next Chapter VI scene is not implemented yet.</p><button class="text-button" type="button" data-action="review-ch06-s01">Review The Morning After</button></main>';
+    if (state.scene !== CH06_SCENE_04.nextScene) { state = setScene(state, CH06_SCENE_04.nextScene); save(); }
+    app.innerHTML = '<main class="story-page runtime-boundary" id="story-root" tabindex="-1"><p class="eyebrow">Chapter VI · Her Own Voice</p><h1>The Voice She Chooses</h1><p class="end-note">Her Own Statement is complete and saved. This next scene is not implemented yet.</p></main>';
     updateHeader(); previousScene = hashScene; return;
   }
   if (hashScene === CH06_SCENE_01.id && state.ch05_complete) {
@@ -956,7 +981,14 @@ function moveNext() {
     if (next === state && !state.applied_events.includes('ch06_s03_complete')) return announce(getSceneAdvanceBlock(state, scene) || 'Complete Three Ways Forward before continuing.');
     state = setScene(next, 'ch06_s04');
     audioManager.leaveScene(); save(); setLocation('ch06_s04'); render();
-    announce('Three Ways Forward is complete and saved. The next Chapter VI scene is not implemented yet.'); return;
+    announce('Three Ways Forward is complete and saved. Her Own Statement is ready.'); return;
+  }
+  if (scene.id === CH06_SCENE_04.id) {
+    const next = completeScene(state, scene);
+    if (next === state) return announce(getSceneAdvanceBlock(state, scene) || 'Deliver Eliza’s statement before continuing.');
+    state = setScene(next, CH06_SCENE_04.nextScene);
+    audioManager.leaveScene(); save(); setLocation(CH06_SCENE_04.nextScene); render();
+    announce('Her Own Statement is complete and saved. The next Chapter VI scene is not implemented yet.'); return;
   }
   if (scene.id === 'ch03_s01') {
     const next = completeScene(state, scene);
@@ -1136,9 +1168,10 @@ function openTeacher(trigger) {
   const chapterTwo = scene?.id?.startsWith('ch02_');
   teacherContext.textContent = scene ? `Chapter ${chapterLabel(scene)} · ${scene.title}${scene.challenge ? ` · ${scene.id === 'ch03_s02' ? `${scene.challenge.id} · ` : ''}${scene.challenge.title}` : ''}${scene.id.startsWith('ch03_') ? ` · previewMode=${scenePreview}` : ''}` : 'Chapter I · Cover';
   const sections = scene?.id === CH06_SCENE_01.id ? CH06_S01_TEACHER_SECTIONS : scene?.id === CH06_SCENE_02.id ? CH06_S02_TEACHER_SECTIONS : scene?.id === CH06_SCENE_03.id ? CH06_S03_TEACHER_SECTIONS : scene?.id === 'ch05_s05' ? CH05_S05_TEACHER_SECTIONS : scene?.id === 'ch05_s04' ? CH05_S04_TEACHER_SECTIONS : scene?.id === 'ch05_s03' ? CH05_S03_TEACHER_SECTIONS : scene?.id === 'ch05_s02' ? CH05_S02_TEACHER_SECTIONS : scene?.id === 'ch05_s01' ? CH05_S01_TEACHER_SECTIONS : scene?.id === 'ch04_s05' ? CH04_S05_TEACHER_SECTIONS : scene?.id === 'ch04_s04' ? CH04_S04_TEACHER_SECTIONS : scene?.id === 'ch04_s03' ? CH04_S03_TEACHER_SECTIONS : scene?.id === 'ch04_s02' ? CH04_S02_TEACHER_SECTIONS : scene?.id === 'ch04_s01' ? CH04_S01_TEACHER_SECTIONS : scene?.id === 'ch03_s06' ? CH03_S06_TEACHER_SECTIONS : scene?.id === 'ch03_s05' ? CH03_S05_TEACHER_SECTIONS : scene?.id === 'ch03_s04' ? CH03_S04_TEACHER_SECTIONS : scene?.id === 'ch03_s03' ? CH03_S03_TEACHER_SECTIONS : scene?.id === 'ch03_s02' ? CH03_S02_TEACHER_SECTIONS : scene?.id === 'ch03_s01' ? CH03_TEACHER_SECTIONS : scene?.id === 'ch02_s05' ? CH02_SCENE_05_TEACHER_SECTIONS : scene?.id === 'ch02_s04' ? CH02_SCENE_04_TEACHER_SECTIONS : scene?.id === 'ch02_s03' ? CH02_SCENE_03_TEACHER_SECTIONS : scene?.id === 'ch02_s02' ? CH02_SCENE_02_TEACHER_SECTIONS : chapterTwo ? CH02_TEACHER_SECTIONS : TEACHER_SECTIONS;
+  const sceneSections = scene?.id === CH06_SCENE_04.id ? CH06_S04_TEACHER_SECTIONS : sections;
   const d08TeacherEcho = scene?.id === 'ch04_s05' && state.decisions.D08 ? `<section class="teacher-section"><h3>Your first plan · read-only</h3><p>${escapeHtml({ d08_practise_greeting: 'Practise the greeting first.', d08_plan_message: 'Plan what you want to say.', d08_listen_first: 'Listen before answering.' }[state.decisions.D08] || '')}</p></section>` : '';
   const referenceAudio = scene?.id === 'ch04_s02' ? `<section class="teacher-section" aria-labelledby="teacher-reference-title"><h3 id="teacher-reference-title">Cultural reference audio</h3><p>Teacher-facing reference from the later musical adaptation <em>My Fair Lady</em>; it is not learner story dialogue.</p><p class="sample-transcript">Transcript: “${escapeHtml(CH04_TEACHER_REFERENCE_AUDIO.transcript)}”</p><button class="audio-button" type="button" data-action="teacher-play-reference" data-src="${escapeHtml(CH04_TEACHER_REFERENCE_AUDIO.src)}" aria-label="Play the spoken My Fair Lady cultural reference">▶ Play spoken reference</button><p class="read-only-note">Explicit click only · speech, no music · no learner progress or scene changes.</p></section>` : '';
-  teacherContent.innerHTML = `${sections.map(([heading, content]) => `<section class="teacher-section"><h3>${escapeHtml(heading)}</h3>${renderTeacherText(content)}</section>`).join('')}
+  teacherContent.innerHTML = `${sceneSections.map(([heading, content]) => `<section class="teacher-section"><h3>${escapeHtml(heading)}</h3>${renderTeacherText(content)}</section>`).join('')}
     ${d08TeacherEcho}
     ${referenceAudio}
     ${scene ? `<button class="secondary-button teacher-preview" type="button" data-action="teacher-preview">Open / replay this scene (read-only preview)</button>` : ''}`;
@@ -1250,6 +1283,14 @@ document.addEventListener('click', async (event) => {
     const beforeChoice = state;
     state = applyDecision(state, 'D12', target.dataset.option);
     if (state !== beforeChoice) { save(); render(); announce('Eliza’s direction is saved.'); }
+  }
+  if (action === 'choose-ch06-statement-shape' && currentScene().id === CH06_SCENE_04.id && !studentReadOnly()) {
+    const next = recordCh06FinalStatementShape(state, target.dataset.option);
+    if (next !== state) { state = next; save(); render(); announce('Eliza’s statement shape is saved. Review the statement before delivering it.'); }
+  }
+  if (action === 'deliver-ch06-statement' && currentScene().id === CH06_SCENE_04.id && !studentReadOnly()) {
+    const next = deliverCh06FinalStatement(state);
+    if (next !== state) { state = next; save(); render(); announce('Eliza’s statement has been delivered. You may continue when ready.'); }
   }
   if (action === 'answer-lc15' && currentScene().id === CH06_SCENE_03.id && !studentReadOnly()) {
     const next = recordLc15Answer(state, target.dataset.item, target.dataset.answer);

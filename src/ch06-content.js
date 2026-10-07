@@ -175,3 +175,35 @@ export const CH06_S03_TEACHER_SECTIONS = [
   ['LC15 contextual key', 'Public meeting: lc15_sample_public → lc15_public_organiser, a meeting organiser and permission to present a proposal. Familiar colleague: lc15_sample_colleague → lc15_familiar_colleague, arrange a shared practical task. Private conversation: lc15_sample_private → lc15_private_adviser, private advice on how to begin.'],
   ['Teacher preview contract', 'Teacher Mode is read-only. It does not record D12, LC15 answers, support use, completion, signals or progression.']
 ];
+
+export const CH06_SCENE_04 = {
+  id: 'ch06_s04', number: 4, chapter: 'VI', chapterTitle: 'Her Own Voice', sceneCount: 5,
+  title: 'Her Own Statement', kicker: 'Chapter VI · Her Own Voice',
+  location: 'A simple statement space shaped by Eliza’s chosen direction', composition: 'ch06-her-own-statement', visualFallback: true, voice: [],
+  background: { src: '', alt: '' }, plate: { src: '', alt: '' }, eliza: null, supporting: [], props: [],
+  storyBeats: [
+    { type: 'narration', text: 'Eliza looks at the words she might use. The direction is already hers. Now she chooses how to say it.' }
+  ],
+  statement: {
+    prompt: 'How would you like Eliza to express her choice?',
+    shapes: [
+      { id: 'final_statement_declaration', value: 'declaration', text: 'Say clearly what I choose.', leadIn: 'This is what I choose.' },
+      { id: 'final_statement_reflection', value: 'reflection', text: 'Reflect on what I have learned about myself.', leadIn: 'I have learned that…' },
+      { id: 'final_statement_commitment', value: 'commitment', text: 'Name what I will do next.', leadIn: 'My next step is…' }
+    ],
+    directions: {
+      social_success: { place: 'A public meeting room', text: 'I choose to take an active place in public work, using the skills I have learned on my own terms.' },
+      independent_voice: { place: 'Eliza’s modest work space', text: 'I choose to build a life with work and decisions that I can call my own.' },
+      integrated_identity: { place: 'A shared community room connecting her worlds', text: 'I choose to carry my different ways of speaking with me, and use each by choice.' }
+    }
+  },
+  nextScene: 'ch06_s05'
+};
+
+export const CH06_S04_TEACHER_SECTIONS = [
+  ['Scene focus', 'The direction choice answers what future Eliza wants to follow. The rhetorical shape answers how she chooses to express that direction. The two dimensions remain independent; all three shapes remain available for every direction.'],
+  ['Learning goals', 'Notice how declaration, reflection and commitment organise the same underlying statement for different rhetorical purposes.'],
+  ['Agency and self-expression', 'The direction belongs to Eliza. Her statement is self-authored from locked text clauses, and explicit delivery represents her choice to speak for herself. Register is a repertoire, not a measure of intelligence or worth.'],
+  ['Signal contract', 'Rendering, selecting a shape and composing the statement do not change development signals. Only explicit delivery records ch06_final_statement_delivered and grants Confidence +1 once, regardless of shape or history. It is not a grade.'],
+  ['Teacher preview contract', 'Read-only and non-scoring. Teacher Mode cannot select a shape, deliver the statement, grant Confidence, complete S04 or change progression.']
+];
