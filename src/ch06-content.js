@@ -104,7 +104,6 @@ export const CH06_S02_REPLAY_MOMENTS = [
   {
     id: 'ch06-s02-initial-motivation', history: (state) => Boolean(state.origin_motivation),
     category: 'An early reason', label: 'Eliza’s reflection at the flower-shop window',
-    src: './assets/audio/characters/eliza/eliza_ch01_scene05_001.mp3',
     transcript: "People hear how I talk before they see what I can do. Maybe if I could talk another way, it'd open a door or two. Wouldn't make me worth more. Just give me another way to make 'em listen."
   },
   {

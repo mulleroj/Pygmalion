@@ -1,6 +1,6 @@
 # Chapter VI Audio Plan
 
-Status: S01 reuses one already human-approved ambience; no new audio generated. S02–S05 remain design only. Chapter VI story canon is locked. The plan uses the existing range `AM53–AM60`; every spoken asset requires an accessible text counterpart. Story text remains complete with sound off. Do not create nine recordings for three directions by three rhetorical shapes.
+Status: S01 reuses one already human-approved ambience; S02 audio audit is complete with one approved historical voice replay reused and all other S02 moments text-only. No new audio generated. S03–S05 remain design only. Chapter VI story canon is locked. The plan uses the existing range `AM53–AM60`; every spoken asset requires an accessible text counterpart. Story text remains complete with sound off. Do not create nine recordings for three directions by three rhetorical shapes.
 
 | ID | Scene / moment | Plan | Status | Notes |
 |---|---|---|---|---|
@@ -44,6 +44,22 @@ Neutral/missing `next_contact` has no companion line or invented audio. Since no
 | Runtime behavior | `ch06_s01` maps to the existing interior ambience at the approved `0.10` base level. It waits for the normal conscious audio gesture, loops, stops on Sound Off, and resumes ambience only on Sound On. S02 remains unwired. |
 
 No ambience transcript is required. No transcription or speech-recognition credits were used. S01 continues to work fully with sound off.
+
+## S02 — AM55 historical replay / AM56 reflection — AUDIO AUDIT COMPLETE
+
+S02 is reflective and book-first. The canon requires no new speech: AM56 is OPTIONAL, not REQUIRED. Keep both canonical Eliza reflections as readable story text and leave `CH06_SCENE_02.voice` empty. AM56 is deliberately text-only; its 57-character candidate would be approximately 57 TTS text credits if produced under character-based billing, but no generation was requested or needed (0 credits spent). Do not add acting notes or generate a take just to complete the scene.
+
+AM55 permits up to three available historical moments. Keep the transcript cards selected from history, but expose an audio control only for a source whose approval is documented:
+
+| S02 replay card | Source moment / scene | Exact visible transcript | Source runtime path | Approval and S02 treatment |
+|---|---|---|---|---|
+| An early reason | Chapter I `AM09`, `ch01_s05` | “People hear how I talk before they see what I can do. Maybe if I could talk another way, it'd open a door or two. Wouldn't make me worth more. Just give me another way to make 'em listen.” | `assets/audio/characters/eliza/eliza_ch01_scene05_001.mp3` | Existing file is technically verified, but the Chapter I asset manifest records `HUMAN QA PENDING`; it does not satisfy AM55's approved-source requirement. Do not map/play it from S02. Retain the transcript card only. The source clip remains owned by Chapter I and is not duplicated. |
+| A learning moment | Chapter III `AM29-E3`, `ch03_s05` | “I can get it back.” | `assets/audio/characters/eliza/eliza_ch03_scene05_003.mp3` | Existing source is documented as Human Audio QA PASS and the local file is verified by the Chapter III test. Reuse this path directly from the S02 replay button; no copy. |
+| A Chapter V reception moment | Chapter V `AM48`, `ch05_s03` | “I know what I contributed.” | None | AM48 is OPTIONAL and explicitly NOT GENERATED in the Chapter V plan. Retain the visible transcript card when `credit_response` exists; no audio control or invented substitute. |
+
+All replay cards remain optional and read-only. Only an explicit replay button starts the available AM29-E3 clip. The shared `AudioManager` owns one foreground clip; Sound Off stops it, and Sound On restores ambience only without restarting interrupted speech. Replay and render write no choices, signals, events, rewards or completion. S02 has no dedicated or required ambience: `ambienceForScene('ch06_s02')` resolves to silence. Do not carry S01's room tone into this distinct private room or substitute reception, public-room or evening-exterior ambience. Silence is valid.
+
+Accessibility decision: narration, both reflection lines and each historical moment's text remain visible with sound off. Replay is optional, no audio or ambience carries a clue, and explicit Continue remains available without sound. Estimated new speech required: zero; ElevenLabs spend: zero. No binary was copied or generated.
 
 ## Optional companion lines
 

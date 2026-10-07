@@ -45,7 +45,10 @@ test('S02 matches locked script, provides text-first reflection and only optiona
   assert.match(html, /I learned another way to speak\. I did not lose the first\./);
   assert.match(html, /A voice can change with the room\. The person choosing it is still me\./);
   assert.equal((html.match(/class="sample-card"/g) || []).length, 3);
+  assert.equal((html.match(/data-action="play-voice"/g) || []).length, 1, 'only the approved historical voice has a replay control');
+  assert.doesNotMatch(html, /data-src="\.\/assets\/audio\/characters\/eliza\/eliza_ch01_scene05_001\.mp3/);
   for (const moment of CH06_S02_REPLAY_MOMENTS) assert.ok(html.includes(escapeHtml(moment.transcript)));
+  assert.deepEqual(CH06_SCENE_02.voice, [], 'S02 has no autoplay or new scene speech');
   assert.match(html, /type="button" data-action="next-scene"/);
   assert.deepEqual(mounted.state(), before, 'rendering is state-neutral');
   assert.equal(CH06_SCENE_02.voice.length, 0, 'no required scene speech or challenge audio');
@@ -125,10 +128,24 @@ test('historical combinations vary only the optional shelf and do not affect dir
   assert.deepEqual(lateMount.state(), late);
 });
 
-test('replay is read-only and exposes transcript text beside replay control', async (t) => {
-  const before = ready({ origin_motivation: 'respect' });
+test('AM55 uses only the approved available historical replay; transcript-only history stays text-only', async (t) => {
+  const replay = CH06_S02_REPLAY_MOMENTS.find(({ id }) => id === 'ch06-s02-learning-recovery');
+  assert.equal(replay.src, './assets/audio/characters/eliza/eliza_ch03_scene05_003.mp3');
+  assert.ok((await stat(new URL('../assets/audio/characters/eliza/eliza_ch03_scene05_003.mp3', import.meta.url))).size > 0);
+  assert.equal(CH06_S02_REPLAY_MOMENTS.find(({ id }) => id === 'ch06-s02-initial-motivation').src, undefined, 'AM09 remains text-only in S02 while its human QA is pending');
+  assert.equal(CH06_S02_REPLAY_MOMENTS.find(({ id }) => id === 'ch06-s02-reception-credit').src, undefined, 'unproduced AM48 remains text-only');
+  const plan = await readFile(new URL('../docs/chapters/ch06/AUDIO_PLAN.md', import.meta.url), 'utf8');
+  assert.match(plan, /AM56 is OPTIONAL, not REQUIRED/);
+  assert.match(plan, /HUMAN QA PENDING[\s\S]*?Do not map\/play it from S02/);
+  assert.match(plan, /AM29-E3[\s\S]*?Human Audio QA PASS/);
+  assert.match(plan, /AM48 is OPTIONAL and explicitly NOT GENERATED/);
+  assert.ok(plan.includes("`ambienceForScene('ch06_s02')` resolves to silence"));
+});
+
+test('S02 replay is user-triggered, read-only, and exposes transcript text beside the control', async (t) => {
+  const before = ready({ origin_motivation: 'respect', applied_events: ['ch05_s05_complete', 'ch06_s01_complete', 'ch03_s05_complete'] });
   const mounted = await mount(t, before);
-  const replay = CH06_S02_REPLAY_MOMENTS[0];
+  const replay = CH06_S02_REPLAY_MOMENTS.find(({ id }) => id === 'ch06-s02-learning-recovery');
   assert.match(mounted.node('#app').innerHTML, new RegExp(`data-src="${replay.src.replaceAll('.', '\\.')}`));
   const target = { dataset: { action: 'play-voice', src: replay.src }, closest() { return this; } };
   await mounted.handlers.click({ target, isTrusted: false, preventDefault() {} });
@@ -137,7 +154,7 @@ test('replay is read-only and exposes transcript text beside replay control', as
 });
 
 test('explicit Continue records S02 once, leaves signals alone, and stops at S03 boundary', async (t) => {
-  const before = ready({ confidence: 2, pronunciation: 4, independence: 1 });
+  const before = ready({ confidence: 2, pronunciation: 4, independence: 1, soundEnabled: false });
   const mounted = await mount(t, before);
   mounted.app.moveNext();
   const after = mounted.state();
