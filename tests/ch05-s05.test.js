@@ -107,8 +107,8 @@ test('S05 maps directly to the existing AM42 asset and intentionally omits optio
   assert.equal(sha256('assets/audio/characters/eliza/eliza_ch05_scene05_001.mp3'), 'F8978A101CEE737CD238E269699A322B1873E23C5E9F84646681806F1F9C303D');
   assert.equal(ambienceForScene('ch04_s04'), 'ch04_side_corridor');
   assert.equal(ambienceForScene('ch04_s05'), 'ch04_evening_walk');
-  assert.match(app, /The Question in the Mirror is not available yet/);
-  assert.match(app, /The Morning After is complete and saved/);
+  assert.match(app, /Three Ways Forward is not available yet/);
+  assert.match(app, /The Question in the Mirror is complete and saved/);
   assert.match(app, /review-ch06-s01/);
 });
 

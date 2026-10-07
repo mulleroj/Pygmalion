@@ -1,7 +1,7 @@
 import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05, CH03_SCENE_06 } from './ch03-content.js';
 import { CH04_SCENE_01, CH04_SCENE_02, CH04_SCENE_03, CH04_SCENE_04, CH04_SCENE_05 } from './ch04-content.js';
 import { CH05_SCENE_01, CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04, CH05_SCENE_05 } from './ch05-content.js';
-import { CH06_SCENE_01 } from './ch06-content.js';
+import { CH06_SCENE_01, CH06_SCENE_02 } from './ch06-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -382,6 +382,7 @@ export function isChallengeComplete(state, challengeId) {
 }
 
 export function getSceneAdvanceBlock(state, scene) {
+  if (scene.id === CH06_SCENE_02.id && !state.applied_events.includes('ch06_s01_complete')) return 'Complete Chapter VI Scene 01 before opening The Question in the Mirror.';
   if (scene.id === CH05_SCENE_01.id && !state.applied_events.includes('ch04_s05_complete')) return 'Complete Chapter IV Scene 05 before opening The Borough Exhibition Evening.';
   if (scene.id === CH05_SCENE_01.id && !state.reception_register_plan) return 'Choose a register plan before continuing.';
   if (scene.id === CH05_SCENE_02.id && !state.applied_events.includes('ch05_s01_complete')) return 'Complete Chapter V Scene 01 before opening Listening Under Pressure.';
@@ -587,6 +588,11 @@ export function completeScene(state, scene) {
   if (scene.id === CH06_SCENE_01.id) {
     const eventId = 'ch06_s01_complete';
     if (!state.ch05_complete || state.applied_events.includes(eventId)) return state;
+    return { ...state, applied_events: [...state.applied_events, eventId] };
+  }
+  if (scene.id === CH06_SCENE_02.id) {
+    const eventId = 'ch06_s02_complete';
+    if (!state.ch05_complete || !state.applied_events.includes('ch06_s01_complete') || state.applied_events.includes(eventId)) return state;
     return { ...state, applied_events: [...state.applied_events, eventId] };
   }
   if (scene.id === 'ch03_s01') {

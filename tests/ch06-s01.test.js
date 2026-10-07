@@ -174,7 +174,7 @@ test('ineligible direct hash falls back without fabricating Chapter V completion
   assert.equal(mounted.location.hash, '#ch05_s02');
 });
 
-test('Continue records the single completion event, preserves signals, and stops at S02 boundary', async (t) => {
+test('Continue records the single completion event, preserves signals, and opens S02', async (t) => {
   const before = eligible({ next_contact: 'pickering_first', confidence: 2, pronunciation: 3, independence: 1 });
   const mounted = await mount(t, before, '#ch06_s01');
   mounted.app.moveNext();
@@ -183,12 +183,17 @@ test('Continue records the single completion event, preserves signals, and stops
   assert.deepEqual([after.confidence, after.pronunciation, after.independence], [2, 3, 1]);
   assert.equal(after.scene, 'ch06_s02');
   assert.equal(mounted.location.hash, '#ch06_s02');
-  assert.match(mounted.node('#app').innerHTML, /The Question in the Mirror is not available yet/);
+  assert.match(mounted.node('#app').innerHTML, /I learned another way to speak\. I did not lose the first\./);
   assert.doesNotMatch(JSON.stringify(after), /D12|chapter6_direction|final_statement_shape|ch06_final_statement_delivered|ch06_complete/);
+  mounted.app.moveNext();
+  assert.equal(mounted.state().applied_events.filter((event) => event === 'ch06_s02_complete').length, 1);
+  assert.equal(mounted.state().scene, 'ch06_s03');
+  assert.match(mounted.node('#app').innerHTML, /Three Ways Forward is not available yet/);
   const target = { dataset: { action: 'review-ch06-s01' }, closest() { return this; } };
   await mounted.handlers.click({ target, isTrusted: false, preventDefault() {} });
   mounted.app.moveNext();
   assert.equal(mounted.state().applied_events.filter((event) => event === 'ch06_s01_complete').length, 1);
+  assert.equal(mounted.state().applied_events.filter((event) => event === 'ch06_s02_complete').length, 1);
   assert.equal(mounted.state().scene, 'ch06_s02');
 });
 

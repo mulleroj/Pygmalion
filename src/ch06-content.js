@@ -75,8 +75,44 @@ export const CH06_S01_TEACHER_SECTIONS = [
   ['Teacher preview contract', 'Contextual and read-only. Preview does not complete S01, alter next_contact or development signals, save progress, or advance the scene.']
 ];
 
-export const CH06_S02_BOUNDARY = {
+export const CH06_SCENE_02 = {
   id: 'ch06_s02', number: 2, chapter: 'VI', chapterTitle: 'Her Own Voice', sceneCount: 5,
   title: 'The Question in the Mirror', kicker: 'Chapter VI · Her Own Voice',
-  voice: []
+  location: 'A quiet private dressing space', visualFallback: true, voice: [],
+  storyBeats: [
+    { type: 'narration', text: 'Eliza stands before the mirror. For a moment she remembers the quick voice she used at the flower stall, the careful phrases she practised, and the voice she chose at the exhibition. Each belonged to a moment in her life.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'I learned another way to speak. I did not lose the first.' },
+    { type: 'dialogue', speaker: 'Eliza', text: 'A voice can change with the room. The person choosing it is still me.' }
+  ],
+  nextScene: 'ch06_s03'
+};
+
+export const CH06_S02_REPLAY_MOMENTS = [
+  {
+    id: 'ch06-s02-initial-motivation', history: (state) => Boolean(state.origin_motivation),
+    category: 'An early reason', label: 'Eliza’s reflection at the flower-shop window',
+    src: './assets/audio/characters/eliza/eliza_ch01_scene05_001.mp3',
+    transcript: "People hear how I talk before they see what I can do. Maybe if I could talk another way, it'd open a door or two. Wouldn't make me worth more. Just give me another way to make 'em listen."
+  },
+  {
+    id: 'ch06-s02-learning-recovery', history: (state) => state.applied_events.includes('ch03_s05_complete'),
+    category: 'A learning moment', label: 'Eliza finding her place again during practice',
+    src: './assets/audio/characters/eliza/eliza_ch03_scene05_003.mp3',
+    transcript: 'I can get it back.'
+  },
+  {
+    id: 'ch06-s02-reception-credit', history: (state) => Boolean(state.credit_response),
+    category: 'A Chapter V reception moment', label: 'Eliza names her contribution',
+    transcript: 'I know what I contributed.'
+  }
+];
+
+export const CH06_S02_TEACHER_SECTIONS = [
+  ['Scene focus', 'Self-recognition, code-switching, register, identity and accent prejudice. More than one voice can belong to one person. Optional earlier-scene replay is read-only; there is no identity quiz or answer key.'],
+  ['Teacher preview contract', 'Teacher Mode is read-only and non-scoring. Replays do not change saved choices, signals or completion. No register is presented as more authentic, and no identity is ranked.']
+];
+
+export const CH06_S03_BOUNDARY = {
+  id: 'ch06_s03', number: 3, chapter: 'VI', chapterTitle: 'Her Own Voice', sceneCount: 5,
+  title: 'Three Ways Forward', kicker: 'Chapter VI · Her Own Voice', voice: []
 };
