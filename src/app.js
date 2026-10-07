@@ -197,10 +197,6 @@ function sceneCompositionClasses(scene, suffix = '') {
 
 function chapterSixSceneVisual(scene) {
   if (scene.id === CH06_SCENE_03.id) return { ...CH06_SCENE_01, ...scene, supporting: [], props: [] };
-  if (scene.id === CH06_SCENE_04.id) {
-    const direction = CH06_SCENE_04.statement.directions[state.chapter6_direction];
-    return { ...scene, location: direction?.place || scene.location };
-  }
   if (scene.id !== CH06_SCENE_01.id) return scene;
   const route = CH06_SCENE_01.visualRoutes[state.next_contact] || CH06_SCENE_01.visualRoutes.neutral;
   return { ...scene, ...route };
@@ -629,7 +625,7 @@ function renderCh06S04() {
   const delivered = state.applied_events.includes('ch06_final_statement_delivered');
   const choices = CH06_SCENE_04.statement.shapes.map((option) => `<button class="choice-button ${shape?.value === option.value ? 'selected' : ''}" type="button" data-action="choose-ch06-statement-shape" data-option="${option.id}" aria-pressed="${shape?.value === option.value}" ${studentReadOnly() || shape || delivered ? 'disabled' : ''}><strong>${escapeHtml(option.text)}</strong></button>`).join('');
   const statement = shape && direction ? `<section class="learning-reference ch06-statement-preview" aria-labelledby="ch06-statement-preview-title"><h2 id="ch06-statement-preview-title">Eliza’s statement</h2><p class="statement-lead-in">${escapeHtml(shape.leadIn)}</p><blockquote>${escapeHtml(direction.text)}</blockquote></section>` : '';
-  const deliver = shape && !delivered && !studentReadOnly() ? '<button class="secondary-button" type="button" data-action="deliver-ch06-statement">Deliver this statement</button>' : '';
+  const deliver = shape && !delivered && !studentReadOnly() ? '<button class="secondary-button ch06-statement-delivery" type="button" data-action="deliver-ch06-statement">Deliver this statement</button>' : '';
   const completion = delivered
     ? `<p class="challenge-complete" role="status">Eliza’s statement has been delivered.</p><button class="secondary-button next-button" type="button" data-action="next-scene" ${studentReadOnly() ? 'disabled' : ''}>Continue <span aria-hidden="true">→</span></button>`
     : '';

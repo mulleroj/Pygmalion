@@ -179,8 +179,20 @@ export const CH06_S03_TEACHER_SECTIONS = [
 export const CH06_SCENE_04 = {
   id: 'ch06_s04', number: 4, chapter: 'VI', chapterTitle: 'Her Own Voice', sceneCount: 5,
   title: 'Her Own Statement', kicker: 'Chapter VI · Her Own Voice',
-  location: 'A simple statement space shaped by Eliza’s chosen direction', composition: 'ch06-her-own-statement', visualFallback: true, voice: [],
-  background: { src: '', alt: '' }, plate: { src: '', alt: '' }, eliza: null, supporting: [], props: [],
+  location: 'A quiet room for Eliza’s statement', composition: 'ch06-her-own-statement', visualFallback: false, voice: [],
+  background: {
+    src: './assets/images/locations/ch06/ch06_her_own_statement_room.webp',
+    alt: 'A quiet Edwardian room with a broad calm wall, a tall window and modest wooden furniture around an open floor.'
+  },
+  plate: {
+    src: './assets/images/locations/ch06/ch06_her_own_statement_room.webp',
+    alt: 'A quiet Edwardian room with a broad calm wall, a tall window and modest wooden furniture around an open floor.'
+  },
+  eliza: {
+    src: './assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png',
+    alt: 'Eliza, thoughtful and composed, standing ready to speak.'
+  },
+  supporting: [], props: [],
   storyBeats: [
     { type: 'narration', text: 'Eliza looks at the words she might use. The direction is already hers. Now she chooses how to say it.' }
   ],

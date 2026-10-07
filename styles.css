@@ -683,3 +683,26 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch06-three-ways-forward .art-eliza img { left: 58%; bottom: 1%; height: 78%; }
   .ch06-three-ways-forward .art-eliza::before { left: 42%; bottom: 1%; width: 32%; height: 2%; }
 }
+
+/* Chapter VI S04: keep the room and Eliza steady while her words remain the focal event. */
+.ch06-her-own-statement-spread { grid-template-columns: minmax(0, 1.04fr) minmax(0, .96fr); align-items: start; }
+.ch06-her-own-statement.storybook-art { min-width: 0; min-height: 0; height: auto; aspect-ratio: 1672 / 941; background: #c7c4bd; }
+.ch06-her-own-statement .art-background { filter: none; }
+.ch06-her-own-statement .art-background img { object-fit: contain; }
+.ch06-her-own-statement .art-eliza { display: block; padding: 0; opacity: 1; z-index: 3; }
+.ch06-her-own-statement .art-eliza img { position: absolute; left: 68%; bottom: 0; width: auto; height: 86%; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); filter: drop-shadow(0 4px 4px rgba(34, 27, 24, .25)); }
+.ch06-her-own-statement .art-eliza::before { left: 54%; bottom: 1%; width: 29%; height: 2.2%; border-radius: 50%; background: rgba(31, 28, 28, .28); filter: blur(4px); opacity: .65; }
+.ch06-her-own-statement figcaption { display: none; }
+.ch06-her-own-statement-spread .ch06-statement-shapes .choice-button { background: #fffaf3; }
+.ch06-her-own-statement-spread .ch06-statement-shapes .choice-button:hover:not(:disabled) { background: #fffaf3; }
+.ch06-her-own-statement-spread .ch06-statement-shapes .choice-button.selected { background: #edf1f0; }
+.ch06-statement-delivery { margin-top: 1rem; }
+@media (max-width: 1023px) {
+  .ch06-her-own-statement-spread { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 599px) {
+  .ch06-her-own-statement.storybook-art { min-height: 0; height: auto; aspect-ratio: 1.35; }
+  .ch06-her-own-statement .art-background img { object-fit: cover; object-position: 50% center; }
+  .ch06-her-own-statement .art-eliza img { left: 68%; bottom: 0; height: 84%; }
+  .ch06-her-own-statement .art-eliza::before { left: 53%; bottom: 1%; width: 30%; height: 2%; }
+}

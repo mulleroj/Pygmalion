@@ -1,6 +1,6 @@
 # Chapter VI Visual Plan
 
-Status: S01–S03 visuals approved and integrated; S04–S05 remain planned. Preserve canonical Eliza identity and approved stage `Her Own Voice`; use approved Higgins, Pickering and Mrs Pearce art where needed. Do not create unnecessary character variants. Chapter VI's visual change is agency, framing and environment, not a makeover or a new “proper” identity.
+Status: S01–S04 visuals approved and integrated; S05 remains planned. Preserve canonical Eliza identity and approved stage `Her Own Voice`; use approved Higgins, Pickering and Mrs Pearce art where needed. Do not create unnecessary character variants. Chapter VI's visual change is agency, framing and environment, not a makeover or a new “proper” identity.
 
 ## S01 — The Morning After (approved visual)
 
@@ -29,12 +29,21 @@ Status: S01–S03 visuals approved and integrated; S04–S05 remain planned. Pre
 - D12 cards retain their opaque readable backgrounds. The art and story controls remain in separate columns on wide screens and stack on smaller screens; Eliza cannot cover the D12 heading, cards, feedback, LC15 controls or no-audio support.
 - At widths up to 1023 px the story spread stacks. At widths up to 599 px use a scene-specific 1.35 crop centered near `48%`, move Eliza inward to about 58% and reduce her to 78% art height. Check Eliza, doorway/window context, full-body visibility and controls at 390, 430, 480, 768 and 1440 px; avoid horizontal overflow and effective clipping.
 
+## S04 — Her Own Statement (approved visual)
+
+- Approved visual: Candidate B, generation `exec-221149dc-8842-4c47-b26a-a0b4f780daf3` (1672 × 941 px).
+- Canonical runtime asset: `assets/images/locations/ch06/ch06_her_own_statement_room.webp`, converted from the approved PNG to WebP at quality 92 with dimensions and composition unchanged.
+- Reuse the approved `Her Own Voice / thoughtful` cutout at approximately 68% of the art width. Eliza stands alone on the wooden floor, fully visible in the calm central/right part of the room, away from the fireplace and table. No companion, audience, reflection or duplicate is shown.
+- Use one identical room plate for all three D12 directions and all three rhetorical shapes. The ordinary window, table, fireplace and room details do not represent a direction or statement shape. The statement controls retain opaque readable backgrounds; the art remains in its own column, separate from the statement, delivery and Continue controls.
+- The Chapter VI visual progression is: S01 possibilities arrive from outside; S02 is private reflection; S03 is where Eliza chooses a future direction; S04 quiets and simplifies the environment so Eliza’s own statement is the focal event. This reduction in visual complexity does not change story canon or grant visual prestige to a route or rhetorical shape.
+- On layouts up to 1023 px the spread stacks. At widths up to 599 px use the S04-specific 1.35 art crop centered at 50%, with Eliza at about 68% and 84% art height. Window and fireplace may crop; keep Eliza, calm wall and enough room context, with no horizontal overflow or overlap with story controls.
+
 | Scene | Composition / environment | Character and prop needs |
 |---|---|---|
 | S01 — The Morning After | One Wimpole Street morning room adjoining the workroom; quiet light and one table | Reuse Eliza `Her Own Voice`, reflective expression; letters, notes, invitations, pencil. First-contact companion art can be reused. |
 | S02 — The Question in the Mirror | Approved quiet private room; plain wall mirror at left, window near centre-left, open space at right; mirror supports self-recognition, not beauty framing | Reuse the same Eliza thoughtful cutout once at right-of-centre, facing the mirror; no reflected person, duplicate or transformation image. |
 | S03 — Three Ways Forward | Approved S01 morning-room echo with ordinary London view and adjoining workroom; no choice-coded props or visual ranking | Same approved Eliza thoughtful cutout alone at about 68%; no companion or LC15 context character. |
-| S04 — Her Own Statement | One composition selected by `chapter6_direction`: modest meeting room, independent work space, or shared community room | Reuse Eliza master; at most three background compositions. Rhetorical shape does not create a new illustration. |
+| S04 — Her Own Statement | One quiet, modest room plate used across all `chapter6_direction` values; the environment simplifies so Eliza’s statement is the focal event | Reuse the approved Eliza thoughtful cutout alone at about 68%. Keep the room and character composition unchanged across rhetorical shapes and directions. |
 | S05 PUBLIC PARTICIPATION (`social_success`) | Modest public/professional/community room where Eliza participates and directs a practical exchange | Eliza in existing approved clothing/art where possible; meeting table, notes, flowers or organiser's programme. Higgins must not dominate foreground. |
 | S05 independent_voice | Modest work area with clear practical agency | Flowers, ledger, keys, paid-work letter and housing note; avoid luxury symbols that equate independence with wealth. |
 | S05 integrated_identity | Connected community room/doorway between meeting and flower-work space | Flowers plus meeting notes; show movement between contexts without depicting poverty as authentic and cultivated speech as false. |

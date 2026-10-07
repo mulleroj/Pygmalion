@@ -32,6 +32,10 @@ function s04Ready(direction = 'social_success') {
   };
 }
 
+function renderedArt(html) {
+  return html.match(/<figure class="storybook-art[\s\S]*?<\/figure>/)?.[0] || '';
+}
+
 async function click(mounted, action, dataset = {}) {
   const target = { dataset: { action, ...dataset }, closest() { return this; }, focus() {} };
   await mounted.handlers.click({ target, isTrusted: false, preventDefault() {} });
@@ -46,6 +50,28 @@ test('S04 entry guard returns to S03 without fabricating statement state or Conf
   assert.equal(mounted.state().applied_events.includes('ch06_final_statement_delivered'), false);
   assert.equal(mounted.state().confidence, 0);
   assert.doesNotMatch(mounted.node('#app').innerHTML, /How would you like Eliza to express her choice\?/);
+});
+
+test('S04 renders the approved direction-neutral room and one approved Eliza without state effects', async (t) => {
+  let canonicalArt;
+  for (const direction of Object.keys(CH06_SCENE_04.statement.directions)) {
+    const before = s04Ready(direction);
+    const mounted = await mount(t, before);
+    const art = renderedArt(mounted.node('#app').innerHTML);
+    assert.match(art, /class="storybook-art[^\"]*ch06-her-own-statement/);
+    assert.match(art, /ch06_her_own_statement_room\.webp/);
+    assert.equal((art.match(/eliza_her-own-voice_thoughtful_cutout\.png/g) || []).length, 1);
+    assert.equal((art.match(/<img\b/g) || []).length, 2, 'one background and one Eliza image');
+    assert.doesNotMatch(art, /supporting-character|scene-prop|art-plate/);
+    assert.doesNotMatch(art, /higgins|pickering|mrs-pearce/i);
+    canonicalArt ??= art;
+    assert.equal(art, canonicalArt, `S04 art does not change with ${direction}`);
+    assert.deepEqual(mounted.state(), before, 'visual rendering does not record shape or delivery or grant Confidence');
+    await click(mounted, 'choose-ch06-statement-shape', { option: 'final_statement_declaration' });
+    assert.equal(renderedArt(mounted.node('#app').innerHTML), canonicalArt, `${direction}: choosing a rhetorical shape does not alter the visual`);
+    await click(mounted, 'deliver-ch06-statement');
+    assert.equal(renderedArt(mounted.node('#app').innerHTML), canonicalArt, `${direction}: explicit delivery does not alter the visual`);
+  }
 });
 
 test('S04 renders canonical shape options and all three remain available for every D12 direction', async (t) => {
@@ -150,6 +176,8 @@ test('S04 Teacher Mode is contextual, read-only, and cannot shape, deliver, rewa
   await click(mounted, 'teacher-preview');
   const html = mounted.node('#app').innerHTML;
   assert.match(html, /Teacher preview · read-only/);
+  assert.match(renderedArt(html), /ch06_her_own_statement_room\.webp/);
+  assert.equal((renderedArt(html).match(/eliza_her-own-voice_thoughtful_cutout\.png/g) || []).length, 1);
   assert.match(html, /data-action="choose-ch06-statement-shape"[^>]*disabled/);
   assert.doesNotMatch(html, /data-action="deliver-ch06-statement"/);
   const target = { dataset: { action: 'choose-ch06-statement-shape', option: 'final_statement_declaration' }, closest() { return this; } };
@@ -177,6 +205,11 @@ test('S04 native controls retain keyboard focus styling and all essential conten
   assert.doesNotMatch(html, /data-action="play-voice"|data-action="play-challenge"|<audio\b/);
   const css = await (await import('node:fs/promises')).readFile(new URL('../styles.css', import.meta.url), 'utf8');
   assert.match(css, /:focus-visible/);
+  assert.match(css, /\.ch06-her-own-statement-spread/);
+  assert.match(css, /\.ch06-her-own-statement \.art-eliza img \{[^}]*left: 68%/);
+  assert.match(css, /\.ch06-her-own-statement-spread \.ch06-statement-shapes \.choice-button \{ background: #fffaf3; \}/);
+  assert.match(css, /@media \(max-width: 1023px\)[\s\S]*?\.ch06-her-own-statement-spread/);
+  assert.match(css, /@media \(max-width: 599px\)[\s\S]*?\.ch06-her-own-statement\.storybook-art[^}]*aspect-ratio: 1\.35/);
 });
 
 test('S04 Continue routes only to the unimplemented S05 boundary after explicit delivery', async (t) => {
