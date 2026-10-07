@@ -1,7 +1,7 @@
 import { CH03_SCENE_01, CH03_SCENE_02, CH03_SCENE_03, CH03_SCENE_04, CH03_SCENE_05, CH03_SCENE_06 } from './ch03-content.js';
 import { CH04_SCENE_01, CH04_SCENE_02, CH04_SCENE_03, CH04_SCENE_04, CH04_SCENE_05 } from './ch04-content.js';
 import { CH05_SCENE_01, CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04, CH05_SCENE_05 } from './ch05-content.js';
-import { CH06_SCENE_01, CH06_SCENE_02, CH06_SCENE_03, CH06_SCENE_04 } from './ch06-content.js';
+import { CH06_SCENE_01, CH06_SCENE_02, CH06_SCENE_03, CH06_SCENE_04, CH06_SCENE_05 } from './ch06-content.js';
 export const STORAGE_KEY = 'pygmalion.chapter1.progress.v1';
 
 export function createInitialState() {
@@ -72,7 +72,7 @@ function mergeState(raw) {
   const rawReflections = raw.reflections;
   const rawDirection = raw.chapter6_direction;
   const rawStatementShape = raw.final_statement_shape;
-  const { chapter6_direction: _untrustedDirection, final_statement_shape: _untrustedStatementShape, ...rawWithoutDirection } = raw;
+  const { chapter6_direction: _untrustedDirection, final_statement_shape: _untrustedStatementShape, ch06_complete: _untrustedCh06Complete, ...rawWithoutDirection } = raw;
   const allowedCreditResponses = CH05_SCENE_03.decision.choices.map(({ id }) => id);
   const allowedNextContacts = CH05_SCENE_05.decision.choices.map(({ id }) => id);
   return {
@@ -112,7 +112,10 @@ function mergeState(raw) {
       ...(rawLc15 ? { lc15: { answers: {}, completed: false, attempts: 0, firstAttempt: false, noAudioItems: [], ...rawLc15, answers: rawLc15.answers && typeof rawLc15.answers === 'object' ? rawLc15.answers : {}, noAudioItems: Array.isArray(rawLc15.noAudioItems) ? rawLc15.noAudioItems : [] } } : {})
     },
     ...(CH06_SCENE_03.decision.choices.some(({ value }) => value === rawDirection) ? { chapter6_direction: rawDirection } : {}),
-    ...(CH06_SCENE_04.statement.shapes.some(({ value }) => value === rawStatementShape) ? { final_statement_shape: rawStatementShape } : {})
+    ...(CH06_SCENE_04.statement.shapes.some(({ value }) => value === rawStatementShape) ? { final_statement_shape: rawStatementShape } : {}),
+    ...(raw.ch06_complete && Array.isArray(raw.applied_events) &&
+      raw.applied_events.includes('ch06_s04_complete') && raw.applied_events.includes('ch06_completion_recorded')
+      ? { ch06_complete: true } : {})
   };
 }
 
@@ -273,6 +276,13 @@ export function deliverCh06FinalStatement(state) {
   return { ...state, confidence: state.confidence + 1, applied_events: [...state.applied_events, eventId] };
 }
 
+export function finishChapterSix(state) {
+  const eventId = 'ch06_completion_recorded';
+  if (state.scene !== CH06_SCENE_05.id || !state.applied_events.includes('ch06_s04_complete') ||
+      state.ch06_complete || state.applied_events.includes(eventId)) return state;
+  return { ...state, ch06_complete: true, applied_events: [...state.applied_events, eventId] };
+}
+
 export function recordS04Reflection(state, focusId) {
   const eventId = 'ch04_s04_reflection_recorded';
   if (state.scene !== CH04_SCENE_04.id || !state.applied_events.includes('ch04_s03_complete') ||
@@ -421,6 +431,7 @@ export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === CH06_SCENE_04.id && !CH06_SCENE_04.statement.directions[state.chapter6_direction]) return 'Choose a direction in Chapter VI Scene 03 before continuing.';
   if (scene.id === CH06_SCENE_04.id && !CH06_SCENE_04.statement.shapes.some(({ value }) => value === state.final_statement_shape)) return 'Choose how Eliza will express her statement before continuing.';
   if (scene.id === CH06_SCENE_04.id && !state.applied_events.includes('ch06_final_statement_delivered')) return 'Deliver Eliza’s statement before continuing.';
+  if (scene.id === CH06_SCENE_05.id && !state.applied_events.includes('ch06_s04_complete')) return 'Complete Her Own Statement before opening The Voice She Chooses.';
   if (scene.id === CH05_SCENE_01.id && !state.applied_events.includes('ch04_s05_complete')) return 'Complete Chapter IV Scene 05 before opening The Borough Exhibition Evening.';
   if (scene.id === CH05_SCENE_01.id && !state.reception_register_plan) return 'Choose a register plan before continuing.';
   if (scene.id === CH05_SCENE_02.id && !state.applied_events.includes('ch05_s01_complete')) return 'Complete Chapter V Scene 01 before opening Listening Under Pressure.';

@@ -212,7 +212,7 @@ test('S04 native controls retain keyboard focus styling and all essential conten
   assert.match(css, /@media \(max-width: 599px\)[\s\S]*?\.ch06-her-own-statement\.storybook-art[^}]*aspect-ratio: 1\.35/);
 });
 
-test('S04 Continue routes only to the unimplemented S05 boundary after explicit delivery', async (t) => {
+test('S04 Continue opens S05 after explicit delivery without finishing the book', async (t) => {
   let state = recordCh06FinalStatementShape(s04Ready(), 'final_statement_declaration');
   state = deliverCh06FinalStatement(state);
   const mounted = await mount(t, state);
@@ -221,6 +221,7 @@ test('S04 Continue routes only to the unimplemented S05 boundary after explicit 
   assert.ok(mounted.state().applied_events.includes('ch06_s04_complete'));
   assert.equal(mounted.state().applied_events.includes('ch06_complete'), false);
   assert.match(mounted.node('#app').innerHTML, /The Voice She Chooses/);
-  assert.match(mounted.node('#app').innerHTML, /not implemented yet/);
-  assert.doesNotMatch(mounted.node('#app').innerHTML, /I have more ways to speak, and the choice is mine\./);
+  assert.match(mounted.node('#app').innerHTML, /I have more ways to speak, and the choice is mine\./);
+  assert.match(mounted.node('#app').innerHTML, /data-action="finish-ch06"[^>]*>Finish<\/button>/);
+  assert.doesNotMatch(mounted.node('#app').innerHTML, /data-action="play-voice"|<audio\b/);
 });

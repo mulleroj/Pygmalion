@@ -10,7 +10,8 @@ import {
 import { CH02_SCENE_01, CH02_SCENE_02, CH02_SCENE_03, CH02_TEACHER_SECTIONS, CH02_SCENE_02_TEACHER_SECTIONS, CH02_SCENE_03_TEACHER_SECTIONS, CH02_SCENE_04, CH02_SCENE_04_TEACHER_SECTIONS, CH02_SCENE_05, CH02_SCENE_05_TEACHER_SECTIONS } from './ch02-content.js';
 import { CH04_SCENE_01, CH04_SCENE_02, CH04_SCENE_03, CH04_SCENE_04, CH04_SCENE_05, CH04_S01_TEACHER_SECTIONS, CH04_S02_TEACHER_SECTIONS, CH04_S03_TEACHER_SECTIONS, CH04_S04_TEACHER_SECTIONS, CH04_S05_TEACHER_SECTIONS, CH04_TEACHER_REFERENCE_AUDIO } from './ch04-content.js';
 import { CH05_SCENE_01, CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04, CH05_SCENE_05, CH05_S01_TEACHER_SECTIONS, CH05_S02_TEACHER_SECTIONS, CH05_S03_TEACHER_SECTIONS, CH05_S04_TEACHER_SECTIONS, CH05_S05_TEACHER_SECTIONS } from './ch05-content.js';
-import { CH06_SCENE_01, CH06_SCENE_02, CH06_SCENE_03, CH06_SCENE_04, CH06_S01_TEACHER_SECTIONS, CH06_S02_TEACHER_SECTIONS, CH06_S03_TEACHER_SECTIONS, CH06_S04_TEACHER_SECTIONS, CH06_S02_REPLAY_MOMENTS, CH06_S03_BOUNDARY } from './ch06-content.js';
+import { CH06_SCENE_01, CH06_SCENE_02, CH06_SCENE_03, CH06_SCENE_04, CH06_SCENE_05, CH06_S01_TEACHER_SECTIONS, CH06_S02_TEACHER_SECTIONS, CH06_S03_TEACHER_SECTIONS, CH06_S04_TEACHER_SECTIONS, CH06_S05_TEACHER_SECTIONS, CH06_S02_REPLAY_MOMENTS, CH06_S03_BOUNDARY } from './ch06-content.js';
+import { resolveCh06Replay, resolveCh06Summary } from './ch06-summary.js';
 import {
   loadState,
   saveState,
@@ -49,6 +50,7 @@ import {
   recordLc11ApplicationChoice,
   recordS04Reflection,
   completeScene,
+  finishChapterSix,
   recordS03Response,
   completeS04Terms,
   completeChapterTwo,
@@ -69,7 +71,7 @@ const liveRegion = document.querySelector('#live-region');
 const teacherDialog = document.querySelector('#teacher-dialog');
 const teacherContent = document.querySelector('#teacher-content');
 const teacherContext = document.querySelector('#teacher-context');
-const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH03_SCENE_01.id]: CH03_SCENE_01, [CH03_SCENE_02.id]: CH03_SCENE_02, [CH03_SCENE_03.id]: CH03_SCENE_03, [CH03_SCENE_04.id]: CH03_SCENE_04, [CH03_SCENE_05.id]: CH03_SCENE_05, [CH03_SCENE_06.id]: CH03_SCENE_06, [CH02_SCENE_01.id]: CH02_SCENE_01, [CH02_SCENE_02.id]: CH02_SCENE_02, [CH02_SCENE_03.id]: CH02_SCENE_03, [CH02_SCENE_04.id]: CH02_SCENE_04, [CH02_SCENE_05.id]: CH02_SCENE_05, [CH04_SCENE_01.id]: CH04_SCENE_01, [CH04_SCENE_02.id]: CH04_SCENE_02, [CH04_SCENE_03.id]: CH04_SCENE_03, [CH04_SCENE_04.id]: CH04_SCENE_04, [CH04_SCENE_05.id]: CH04_SCENE_05, [CH05_SCENE_01.id]: CH05_SCENE_01, [CH05_SCENE_02.id]: CH05_SCENE_02, [CH05_SCENE_03.id]: CH05_SCENE_03, [CH05_SCENE_04.id]: CH05_SCENE_04, [CH05_SCENE_05.id]: CH05_SCENE_05, [CH06_SCENE_01.id]: CH06_SCENE_01, [CH06_SCENE_02.id]: CH06_SCENE_02, [CH06_SCENE_03.id]: CH06_SCENE_03, [CH06_SCENE_04.id]: CH06_SCENE_04 };
+const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH03_SCENE_01.id]: CH03_SCENE_01, [CH03_SCENE_02.id]: CH03_SCENE_02, [CH03_SCENE_03.id]: CH03_SCENE_03, [CH03_SCENE_04.id]: CH03_SCENE_04, [CH03_SCENE_05.id]: CH03_SCENE_05, [CH03_SCENE_06.id]: CH03_SCENE_06, [CH02_SCENE_01.id]: CH02_SCENE_01, [CH02_SCENE_02.id]: CH02_SCENE_02, [CH02_SCENE_03.id]: CH02_SCENE_03, [CH02_SCENE_04.id]: CH02_SCENE_04, [CH02_SCENE_05.id]: CH02_SCENE_05, [CH04_SCENE_01.id]: CH04_SCENE_01, [CH04_SCENE_02.id]: CH04_SCENE_02, [CH04_SCENE_03.id]: CH04_SCENE_03, [CH04_SCENE_04.id]: CH04_SCENE_04, [CH04_SCENE_05.id]: CH04_SCENE_05, [CH05_SCENE_01.id]: CH05_SCENE_01, [CH05_SCENE_02.id]: CH05_SCENE_02, [CH05_SCENE_03.id]: CH05_SCENE_03, [CH05_SCENE_04.id]: CH05_SCENE_04, [CH05_SCENE_05.id]: CH05_SCENE_05, [CH06_SCENE_01.id]: CH06_SCENE_01, [CH06_SCENE_02.id]: CH06_SCENE_02, [CH06_SCENE_03.id]: CH06_SCENE_03, [CH06_SCENE_04.id]: CH06_SCENE_04, [CH06_SCENE_05.id]: CH06_SCENE_05 };
 let state = loadState();
 let lastTeacherTrigger = null;
 let previousScene = null;
@@ -632,6 +634,25 @@ function renderCh06S04() {
   return `${scenePreview ? '<p class="read-only-note" role="status">Teacher preview · read-only. Statement choices, delivery and progression are inactive.</p><button class="secondary-button" type="button" data-action="return-student">Return to student scene</button>' : ''}<section class="choice-block neutral-choice ch06-statement-shapes" aria-labelledby="ch06-statement-shape-title"><h2 id="ch06-statement-shape-title">${escapeHtml(CH06_SCENE_04.statement.prompt)}</h2><p>These are rhetorical preferences, not another ending decision.</p><div class="choice-grid" role="group" aria-label="Choose how Eliza expresses her choice">${choices}</div></section>${statement}${deliver}${completion}`;
 }
 
+function renderCh06S05() {
+  const direction = CH06_SCENE_03.decision.choices.find(({ value }) => value === state.chapter6_direction);
+  const summary = resolveCh06Summary(state);
+  const replays = resolveCh06Replay(state);
+  const summaryMarkup = summary.map(({ heading, text }) => `<section class="ch06-summary-section"><h3>${escapeHtml(heading)}</h3><p>${escapeHtml(text)}</p></section>`).join('');
+  const replayMarkup = replays.length
+    ? `<section class="ch06-review" aria-labelledby="ch06-review-title"><h2 id="ch06-review-title">Look back at selected moments</h2>${replays.map(({ label, transcript }) => `<details><summary>${escapeHtml(label)}</summary><p>${escapeHtml(transcript)}</p></details>`).join('')}</section>`
+    : '';
+  const teacherNote = scenePreview ? '<p class="read-only-note" role="status">Teacher preview · read-only. Finish and learner progress are inactive.</p><button class="secondary-button" type="button" data-action="return-student">Return to student scene</button>' : '';
+  const finish = state.ch06_complete
+    ? '<a class="secondary-button" href="#book-complete">BOOK COMPLETE</a>'
+    : studentReadOnly() ? '' : '<button class="secondary-button next-button" type="button" data-action="finish-ch06">Finish</button>';
+  return `${teacherNote}${direction ? `<section class="ch06-s05-direction" aria-labelledby="ch06-s05-direction-title"><h2 id="ch06-s05-direction-title">${escapeHtml(direction.label)}</h2><p>${escapeHtml(direction.text)}</p></section>` : ''}<section class="ch06-final-line" aria-label="Eliza’s final statement"><p>${escapeHtml(CH06_SCENE_05.finalLine)}</p></section><section class="ch06-summary" aria-labelledby="ch06-summary-title"><h2 id="ch06-summary-title">My story</h2>${summaryMarkup}</section>${replayMarkup}${finish}`;
+}
+
+function renderBookComplete() {
+  return `<main class="story-page book-complete" id="story-root" tabindex="-1" aria-labelledby="book-complete-title"><p class="eyebrow">Chapter VI · Her Own Voice</p><h1 id="book-complete-title">BOOK COMPLETE</h1><p>The story is complete. Eliza’s choices and the story of how she reached them remain saved.</p><a class="secondary-button" href="#ch06_s05">Review the final scene</a></main>`;
+}
+
 function renderCh06S02() {
   const moments = CH06_S02_REPLAY_MOMENTS.filter(({ history }) => history(state)).slice(0, 3);
   const replayShelf = moments.length ? `<section class="learning-reference" aria-labelledby="ch06-s02-replays"><h2 id="ch06-s02-replays">Earlier moments · optional replay</h2><p>These saved moments are here to revisit, not to score or compare.</p>${moments.map((moment) => `<article class="sample-card"><h3>${escapeHtml(moment.category)}</h3><p>${escapeHtml(moment.label)}</p>${moment.src ? `<button class="audio-button" type="button" data-action="play-voice" data-src="${escapeHtml(moment.src)}" aria-label="Replay ${escapeHtml(moment.category)}">▶ Replay this moment</button>` : ''}<details open class="transcript"><summary>Text</summary><p>${escapeHtml(moment.transcript)}</p></details></article>`).join('')}</section>` : '';
@@ -735,6 +756,7 @@ function renderScene(scene) {
   if (scene.id === CH06_SCENE_02.id) body += renderCh06S02();
   if (scene.id === CH06_SCENE_03.id) body += renderCh06S03();
   if (scene.id === CH06_SCENE_04.id) body += renderCh06S04();
+  if (scene.id === CH06_SCENE_05.id) body += renderCh06S05();
   if (scene.id === 'ch01_s02') body += renderLc01(scene);
   if (scene.id === 'ch01_s04') body += renderLc02(scene);
   if (scene.id === 'ch01_s05') body += renderEnd(scene);
@@ -744,7 +766,7 @@ function renderScene(scene) {
   if (scene.id === 'ch02_s03') body += '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the agreement <span aria-hidden="true">→</span></button>';
   if (scene.id === 'ch02_s05' && state.confirmed_motivation) body += `<section class="chapter-end" aria-labelledby="ch02-end-title"><h2 id="ch02-end-title">Chapter II complete</h2>${renderStoryBeats({ ...scene, storyBeats: scene.ending })}<p class="end-note">Your Chapter II progress is saved locally.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button><button class="secondary-button" type="button" data-action="enter-ch03">Continue to Chapter III</button></section>`;
   if (scene.terms) body += `<section class="terms-card" aria-labelledby="terms-title"><h2 id="terms-title">The lesson agreement</h2><ul>${scene.terms.map((term) => `<li>${escapeHtml(term)}</li>`).join('')}</ul></section><p class="transition-line">${escapeHtml(scene.transition)}</p>${state.lesson_terms_understood ? '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to Why I Am Here <span aria-hidden="true">→</span></button>' : '<button class="secondary-button next-button" type="button" data-action="complete-s04">Continue <span aria-hidden="true">→</span></button>'}`;
-  if (!chapterTwo && scene.id !== 'ch01_s05' && scene.id !== 'ch04_s01' && scene.id !== 'ch04_s02' && scene.id !== 'ch04_s03' && scene.id !== 'ch04_s04' && scene.id !== 'ch04_s05' && !scene.challenge && scene.id !== 'ch05_s01' && scene.id !== 'ch05_s03' && scene.id !== 'ch05_s04' && scene.id !== CH06_SCENE_04.id && decisionSelected && challengeComplete && scene.id !== 'ch01_s01') {
+  if (!chapterTwo && scene.id !== 'ch01_s05' && scene.id !== 'ch04_s01' && scene.id !== 'ch04_s02' && scene.id !== 'ch04_s03' && scene.id !== 'ch04_s04' && scene.id !== 'ch04_s05' && !scene.challenge && scene.id !== 'ch05_s01' && scene.id !== 'ch05_s03' && scene.id !== 'ch05_s04' && scene.id !== CH06_SCENE_04.id && scene.id !== CH06_SCENE_05.id && decisionSelected && challengeComplete && scene.id !== 'ch01_s01') {
     body += `<button class="secondary-button next-button" type="button" data-action="next-scene">Continue the story <span aria-hidden="true">→</span></button>`;
   }
   if (scene.id === 'ch04_s01' && decisionSelected && !scenePreview) body += '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue the story <span aria-hidden="true">→</span></button>';
@@ -782,6 +804,21 @@ function renderScene(scene) {
 function render() {
   let hashScene = window.location.hash.replace(/^#/, '');
   if (!hashScene && state.started && window.history.state?.scene !== null) hashScene = state.scene;
+  if (hashScene === 'book-complete') {
+    if (state.ch06_complete && state.applied_events.includes('ch06_s04_complete') && state.applied_events.includes('ch06_completion_recorded')) {
+      audioManager.leaveScene();
+      app.innerHTML = renderBookComplete();
+      updateHeader();
+      document.querySelector('#story-root')?.focus({ preventScroll: true });
+      previousScene = 'book-complete';
+      return;
+    }
+    const safeScene = state.applied_events.includes('ch06_s03_complete') ? CH06_SCENE_04.id
+      : state.applied_events.includes('ch06_s02_complete') ? CH06_SCENE_03.id
+        : state.applied_events.includes('ch06_s01_complete') ? CH06_SCENE_02.id : CH06_SCENE_01.id;
+    setLocation(safeScene, true);
+    hashScene = safeScene;
+  }
   if (hashScene === CH03_SCENE_06.nextScene && !state.applied_events.includes('ch03_s06_complete')) {
     audioManager.leaveScene();
     app.innerHTML = '<main class="story-page runtime-boundary" id="story-root" tabindex="-1"><p class="eyebrow">Chapter IV</p><h1>The Invitation</h1><p class="end-note">Complete Chapter III before continuing to this scene.</p></main>';
@@ -842,20 +879,16 @@ function render() {
     setLocation(CH06_SCENE_03.id, true);
     hashScene = CH06_SCENE_03.id;
   }
-  if (hashScene === CH06_SCENE_04.nextScene && !state.applied_events.includes('ch06_s04_complete')) {
-    const safeScene = state.applied_events.includes('ch06_s03_complete') ? CH06_SCENE_04.id : CH06_SCENE_03.id;
+  if (hashScene === CH06_SCENE_05.id && !state.applied_events.includes('ch06_s04_complete')) {
+    const safeScene = state.applied_events.includes('ch06_s03_complete') ? CH06_SCENE_04.id
+      : state.applied_events.includes('ch06_s02_complete') ? CH06_SCENE_03.id
+        : state.applied_events.includes('ch06_s01_complete') ? CH06_SCENE_02.id : CH06_SCENE_01.id;
     setLocation(safeScene, true);
     hashScene = safeScene;
   }
-  if (hashScene.startsWith('ch06_') && ![CH06_SCENE_01.id, CH06_SCENE_02.id, CH06_SCENE_03.id, CH06_SCENE_04.id, CH06_SCENE_04.nextScene].includes(hashScene)) {
+  if (hashScene.startsWith('ch06_') && ![CH06_SCENE_01.id, CH06_SCENE_02.id, CH06_SCENE_03.id, CH06_SCENE_04.id, CH06_SCENE_05.id].includes(hashScene)) {
     setLocation(CH06_SCENE_01.id, true);
     hashScene = CH06_SCENE_01.id;
-  }
-  if (hashScene === CH06_SCENE_04.nextScene && state.applied_events.includes('ch06_s04_complete')) {
-    audioManager.leaveScene();
-    if (state.scene !== CH06_SCENE_04.nextScene) { state = setScene(state, CH06_SCENE_04.nextScene); save(); }
-    app.innerHTML = '<main class="story-page runtime-boundary" id="story-root" tabindex="-1"><p class="eyebrow">Chapter VI · Her Own Voice</p><h1>The Voice She Chooses</h1><p class="end-note">Her Own Statement is complete and saved. This next scene is not implemented yet.</p></main>';
-    updateHeader(); previousScene = hashScene; return;
   }
   if (hashScene === CH06_SCENE_01.id && state.ch05_complete) {
     audioManager.leaveScene();
@@ -984,7 +1017,7 @@ function moveNext() {
     if (next === state) return announce(getSceneAdvanceBlock(state, scene) || 'Deliver Eliza’s statement before continuing.');
     state = setScene(next, CH06_SCENE_04.nextScene);
     audioManager.leaveScene(); save(); setLocation(CH06_SCENE_04.nextScene); render();
-    announce('Her Own Statement is complete and saved. The next Chapter VI scene is not implemented yet.'); return;
+    announce('Her Own Statement is complete and saved. The Voice She Chooses is ready.'); return;
   }
   if (scene.id === 'ch03_s01') {
     const next = completeScene(state, scene);
@@ -1164,7 +1197,7 @@ function openTeacher(trigger) {
   const chapterTwo = scene?.id?.startsWith('ch02_');
   teacherContext.textContent = scene ? `Chapter ${chapterLabel(scene)} · ${scene.title}${scene.challenge ? ` · ${scene.id === 'ch03_s02' ? `${scene.challenge.id} · ` : ''}${scene.challenge.title}` : ''}${scene.id.startsWith('ch03_') ? ` · previewMode=${scenePreview}` : ''}` : 'Chapter I · Cover';
   const sections = scene?.id === CH06_SCENE_01.id ? CH06_S01_TEACHER_SECTIONS : scene?.id === CH06_SCENE_02.id ? CH06_S02_TEACHER_SECTIONS : scene?.id === CH06_SCENE_03.id ? CH06_S03_TEACHER_SECTIONS : scene?.id === 'ch05_s05' ? CH05_S05_TEACHER_SECTIONS : scene?.id === 'ch05_s04' ? CH05_S04_TEACHER_SECTIONS : scene?.id === 'ch05_s03' ? CH05_S03_TEACHER_SECTIONS : scene?.id === 'ch05_s02' ? CH05_S02_TEACHER_SECTIONS : scene?.id === 'ch05_s01' ? CH05_S01_TEACHER_SECTIONS : scene?.id === 'ch04_s05' ? CH04_S05_TEACHER_SECTIONS : scene?.id === 'ch04_s04' ? CH04_S04_TEACHER_SECTIONS : scene?.id === 'ch04_s03' ? CH04_S03_TEACHER_SECTIONS : scene?.id === 'ch04_s02' ? CH04_S02_TEACHER_SECTIONS : scene?.id === 'ch04_s01' ? CH04_S01_TEACHER_SECTIONS : scene?.id === 'ch03_s06' ? CH03_S06_TEACHER_SECTIONS : scene?.id === 'ch03_s05' ? CH03_S05_TEACHER_SECTIONS : scene?.id === 'ch03_s04' ? CH03_S04_TEACHER_SECTIONS : scene?.id === 'ch03_s03' ? CH03_S03_TEACHER_SECTIONS : scene?.id === 'ch03_s02' ? CH03_S02_TEACHER_SECTIONS : scene?.id === 'ch03_s01' ? CH03_TEACHER_SECTIONS : scene?.id === 'ch02_s05' ? CH02_SCENE_05_TEACHER_SECTIONS : scene?.id === 'ch02_s04' ? CH02_SCENE_04_TEACHER_SECTIONS : scene?.id === 'ch02_s03' ? CH02_SCENE_03_TEACHER_SECTIONS : scene?.id === 'ch02_s02' ? CH02_SCENE_02_TEACHER_SECTIONS : chapterTwo ? CH02_TEACHER_SECTIONS : TEACHER_SECTIONS;
-  const sceneSections = scene?.id === CH06_SCENE_04.id ? CH06_S04_TEACHER_SECTIONS : sections;
+  const sceneSections = scene?.id === CH06_SCENE_04.id ? CH06_S04_TEACHER_SECTIONS : scene?.id === CH06_SCENE_05.id ? CH06_S05_TEACHER_SECTIONS : sections;
   const d08TeacherEcho = scene?.id === 'ch04_s05' && state.decisions.D08 ? `<section class="teacher-section"><h3>Your first plan · read-only</h3><p>${escapeHtml({ d08_practise_greeting: 'Practise the greeting first.', d08_plan_message: 'Plan what you want to say.', d08_listen_first: 'Listen before answering.' }[state.decisions.D08] || '')}</p></section>` : '';
   const referenceAudio = scene?.id === 'ch04_s02' ? `<section class="teacher-section" aria-labelledby="teacher-reference-title"><h3 id="teacher-reference-title">Cultural reference audio</h3><p>Teacher-facing reference from the later musical adaptation <em>My Fair Lady</em>; it is not learner story dialogue.</p><p class="sample-transcript">Transcript: “${escapeHtml(CH04_TEACHER_REFERENCE_AUDIO.transcript)}”</p><button class="audio-button" type="button" data-action="teacher-play-reference" data-src="${escapeHtml(CH04_TEACHER_REFERENCE_AUDIO.src)}" aria-label="Play the spoken My Fair Lady cultural reference">▶ Play spoken reference</button><p class="read-only-note">Explicit click only · speech, no music · no learner progress or scene changes.</p></section>` : '';
   teacherContent.innerHTML = `${sceneSections.map(([heading, content]) => `<section class="teacher-section"><h3>${escapeHtml(heading)}</h3>${renderTeacherText(content)}</section>`).join('')}
@@ -1242,6 +1275,15 @@ document.addEventListener('click', async (event) => {
   if (action === 'open-teacher') openTeacher(target);
   if (action === 'close-teacher') closeTeacher();
   if (action === 'next-scene') moveNext();
+  if (action === 'finish-ch06' && currentScene().id === CH06_SCENE_05.id && !studentReadOnly()) {
+    const next = finishChapterSix(state);
+    if (next !== state) {
+      state = next;
+      audioManager.leaveScene();
+      save(); setLocation('book-complete'); render();
+      announce('The story is complete.');
+    }
+  }
   if (action === 'review-ch06-s01' && ['ch06_s03', 'ch06_s04'].includes(currentScene().id) && state.applied_events.includes('ch06_s01_complete')) {
     state = setScene(state, CH06_SCENE_01.id); save(); setLocation(CH06_SCENE_01.id); render();
   }

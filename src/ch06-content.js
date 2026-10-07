@@ -219,3 +219,32 @@ export const CH06_S04_TEACHER_SECTIONS = [
   ['Signal contract', 'Rendering, selecting a shape and composing the statement do not change development signals. Only explicit delivery records ch06_final_statement_delivered and grants Confidence +1 once, regardless of shape or history. It is not a grade.'],
   ['Teacher preview contract', 'Read-only and non-scoring. Teacher Mode cannot select a shape, deliver the statement, grant Confidence, complete S04 or change progression.']
 ];
+
+export const CH06_SCENE_05 = {
+  id: 'ch06_s05', number: 5, chapter: 'VI', chapterTitle: 'Her Own Voice', sceneCount: 5,
+  title: 'The Voice She Chooses', kicker: 'Chapter VI · Her Own Voice',
+  location: 'Eliza’s chosen future', composition: 'ch06-the-voice-she-chooses', visualFallback: false, voice: [],
+  // S05 remains visually neutral until its approved final illustration is produced.
+  background: CH06_SCENE_03.background,
+  plate: CH06_SCENE_03.plate,
+  eliza: CH06_SCENE_03.eliza,
+  supporting: [], props: [],
+  storyBeats: [],
+  finalLine: 'I have more ways to speak, and the choice is mine.',
+  summaryHeadings: [
+    'WHERE I STARTED',
+    'HOW I LEARNED',
+    'HOW I HANDLED OTHER PEOPLE',
+    'WHAT I CHOSE NEXT',
+    'HOW I CHOSE TO SAY IT'
+  ],
+  nextScene: 'book-complete'
+};
+
+export const CH06_S05_TEACHER_SECTIONS = [
+  ['Scene focus', 'Agency, economic independence, identity and narrative reflection. The three presentations have no rank. All branches use the same final line before the descriptive summary.'],
+  ['Learning and identity', 'Learning new linguistic tools expands Eliza’s repertoire; it does not replace her identity. Code-switching is a choice across contexts. Accent ≠ intelligence, and register ≠ worth.'],
+  ['Direction equality', 'Public Participation, Independent Voice and Integrated Identity are equally legitimate futures. There is no single correct future for Eliza.'],
+  ['Summary contract', 'The summary describes only available saved history. It does not invent missing details, rank a direction or display development signals as numeric quality scores.'],
+  ['Teacher preview contract', 'Read-only and non-scoring. Teacher Mode cannot finish Chapter VI, change history or signals, or alter completion.']
+];
