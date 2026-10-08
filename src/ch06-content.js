@@ -223,7 +223,8 @@ export const CH06_S04_TEACHER_SECTIONS = [
 export const CH06_SCENE_05 = {
   id: 'ch06_s05', number: 5, chapter: 'VI', chapterTitle: 'Her Own Voice', sceneCount: 5,
   title: 'The Voice She Chooses', kicker: 'Chapter VI · Her Own Voice',
-  location: 'Eliza’s chosen future', composition: 'ch06-the-voice-she-chooses', visualFallback: false, voice: [],
+  location: 'Eliza’s chosen future', composition: 'ch06-the-voice-she-chooses', visualFallback: false,
+  voice: [{ id: 'AM59', src: './assets/audio/characters/eliza/eliza_ch06_scene05_001.mp3', transcript: 'I have more ways to speak, and the choice is mine.', inline: true }],
   // Neutral existing scene art is used only when no valid saved direction exists.
   background: CH06_SCENE_04.background,
   plate: CH06_SCENE_04.plate,

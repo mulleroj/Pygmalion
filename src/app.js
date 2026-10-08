@@ -650,7 +650,9 @@ function renderCh06S05() {
   const finish = state.ch06_complete
     ? '<a class="secondary-button" href="#book-complete">BOOK COMPLETE</a>'
     : studentReadOnly() ? '' : '<button class="secondary-button next-button" type="button" data-action="finish-ch06">Finish</button>';
-  return `${teacherNote}${direction ? `<section class="ch06-s05-direction" aria-labelledby="ch06-s05-direction-title"><h2 id="ch06-s05-direction-title">${escapeHtml(direction.label)}</h2><p>${escapeHtml(direction.text)}</p></section>` : ''}<section class="ch06-final-line" aria-label="Eliza’s final statement"><p>${escapeHtml(CH06_SCENE_05.finalLine)}</p></section><section class="ch06-summary" aria-labelledby="ch06-summary-title"><h2 id="ch06-summary-title">My story</h2>${summaryMarkup}</section>${replayMarkup}${finish}`;
+  const finalVoice = CH06_SCENE_05.voice[0];
+  const finalLine = `<section class="ch06-final-line" aria-label="Eliza’s final statement"><p>${escapeHtml(CH06_SCENE_05.finalLine)}</p><button class="audio-button" type="button" data-action="play-voice" data-src="${escapeHtml(finalVoice.src)}" aria-label="Play Eliza’s final line" ${studentReadOnly() ? 'disabled' : ''}>▶ Play Eliza’s final line</button></section>`;
+  return `${teacherNote}${direction ? `<section class="ch06-s05-direction" aria-labelledby="ch06-s05-direction-title"><h2 id="ch06-s05-direction-title">${escapeHtml(direction.label)}</h2><p>${escapeHtml(direction.text)}</p></section>` : ''}${finalLine}<section class="ch06-summary" aria-labelledby="ch06-summary-title"><h2 id="ch06-summary-title">My story</h2>${summaryMarkup}</section>${replayMarkup}${finish}`;
 }
 
 function renderBookComplete() {
@@ -1256,6 +1258,9 @@ document.addEventListener('click', async (event) => {
     announce('Teacher preview is read-only. Return to the student scene to change progress.'); return;
   }
   if (currentScene().id === 'ch06_s03' && studentReadOnly() && action === 'play-challenge' && CH06_SCENE_03.challenge.samples.some(({ src }) => src === target.dataset.src)) {
+    announce('Teacher preview is read-only. Return to the student scene to play audio.'); return;
+  }
+  if (currentScene().id === CH06_SCENE_05.id && studentReadOnly() && action === 'play-voice' && target.dataset.src === CH06_SCENE_05.voice[0].src) {
     announce('Teacher preview is read-only. Return to the student scene to play audio.'); return;
   }
   const audioGesture = event.isTrusted && AUDIO_UNLOCK_ACTIONS.has(action);

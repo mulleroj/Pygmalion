@@ -1,6 +1,6 @@
 # Chapter VI Audio Plan
 
-Status: S01 reuses one already human-approved ambience; S02 audio audit is complete with one approved historical voice replay reused and all other S02 moments text-only. S03 AM57 is integrated from three human-approved recordings; S04 remains unimplemented and S05 remains design only. Chapter VI story canon is locked. The plan uses the existing range `AM53–AM60`; every spoken asset requires an accessible text counterpart. Story text remains complete with sound off. Do not create nine recordings for three directions by three rhetorical shapes.
+Status: S01 reuses one already human-approved ambience; S02 audio audit is complete with one approved historical voice replay reused and all other S02 moments text-only. S03 AM57 is integrated from three human-approved recordings; S04 remains unimplemented; S05 AM59 is human-approved and integrated. Chapter VI story canon is locked. The plan uses the existing range `AM53–AM60`; every spoken asset requires an accessible text counterpart. Story text remains complete with sound off. Do not create nine recordings for three directions by three rhetorical shapes.
 
 | ID | Scene / moment | Plan | Status | Notes |
 |---|---|---|---|---|
@@ -10,7 +10,7 @@ Status: S01 reuses one already human-approved ambience; S02 audio audit is compl
 | `AM56` | S02 reflection | One short original Eliza reflection, “I learned another way to speak. I did not lose the first.” | OPTIONAL | Same canonical Eliza voice identity and a natural Chapter VI delivery, more at ease than Chapter V rather than simply more formal. |
 | `AM57` | S03 LC15 samples | Three original Eliza samples: public meeting, familiar colleague, private adviser | HUMAN APPROVED / INTEGRATED | These are the only challenge-critical recordings. Keep the underlying intention aligned; contextual clues audible and visible in the equivalent no-audio panels. Individual transcripts are stored for use after solving/support. |
 | `AM58` | S03 response/feedback | No bespoke voice required; optional shared short neutral support cue | OPTIONAL | No audio-only correctness signal. Feedback text names contextual evidence. Do not voice answer labels as a hint before response. |
-| `AM59` | S05 shared final Eliza line after branch convergence | One original Eliza recording: “I have more ways to speak, and the choice is mine.” Reuse the same take across all three directions and all statement shapes | REQUIRED | One required reusable take serves all three directions. Direction-specific story text remains on screen. Do not create three direction-specific closing takes unless a later implementation review proves them dramaturgically necessary. |
+| `AM59` | S05 shared final Eliza line after branch convergence | One original Eliza recording: “I have more ways to speak, and the choice is mine.” Reuse the same take across all three directions and all statement shapes | HUMAN APPROVED / INTEGRATED | One approved reusable take serves all three directions and all statement shapes. Direction-specific story text remains on screen. Do not create three direction-specific closing takes unless a later implementation review proves them dramaturgically necessary. |
 | `AM60` | S05 ending space | Reuse appropriate approved, non-identifying ambience if possible; otherwise one quiet shared bed | REUSE | Avoid three bespoke ambience tracks unless later production shows a clear need. Never encode quality or reward in ambience. |
 
 ## Required new Eliza lines
@@ -80,6 +80,23 @@ All three clips are the human-approved final takes. Asset Library IDs are unavai
 | `AM57-3` / `lc15_sample_private` | “Mrs Pearce, could I speak with you alone about the growers’ market plan and how I might begin?” | Private adviser; asks for guidance on how to begin. | Eliza / young_cockney | `124kaYCknTDsnwUFdWl9` / `eleven_v3` | `gLBsiLeCbx9JlhMtMdpY` | unavailable | `assets/audio/listening/ch06_lc15_sample_03.mp3` | APPROVED / 93.9906 | 5.17 s / `bedb97ea6657200c5c832c0e5f663ee6e9faee7da87e6899a19d1f5b59f13213` |
 
 Playback is explicit and uses the shared foreground `AudioManager`; a new message replaces the previous one. Sound Off stops active speech, while Sound On restores only eligible ambience and never restarts speech. Replay changes no answer, direction, signal, reward, completion or event. The contextual text alternative remains available for unanswered items and LC15 is solvable with Sound Off. The alternative reveals contextual clues only, never the raw transcript or a selected answer. Teacher preview describes the contextual key but cannot play audio or mutate learner state. AM57 is independent of D12 and its three equally legitimate directions. No failed-generation history is part of this runtime mapping.
+
+### AM59 — S05 shared final line — HUMAN APPROVED / INTEGRATED
+
+| Field | Record |
+|---|---|
+| AM ID / canonical text | `AM59` — “I have more ways to speak, and the choice is mine.” |
+| Speaker / voice | Eliza / `Eliza - young_cockney` |
+| Voice ID / model | `124kaYCknTDsnwUFdWl9` / `eleven_v3` |
+| Generation ID / Asset Library ID | `25tc13e59ZU0oQod8H1P` / unavailable |
+| Runtime path | `assets/audio/characters/eliza/eliza_ch06_scene05_001.mp3` |
+| Credits | Estimated 49.995; actual 49.995 |
+| Duration | ElevenLabs reported 2.56 s; local MPEG-frame duration 2.612 s |
+| File / encoding | 58,965 bytes; MP3, MPEG-1 Layer III, 44.1 kHz, 128 kbps CBR |
+| SHA-256 | `4EF1E4435551686E2262611BEFE6A1F5DDF9CA5C025CA08210CDE177AB036875` |
+| Human approval | APPROVED |
+
+This is exactly one approved recording shared across all three `chapter6_direction` values and all three `final_statement_shape` values. The final line remains visible as text; Play/Replay is an optional, user-triggered enhancement through the shared foreground `AudioManager`. No branch-specific take or duplicate file exists. Rendering, playback, replay, Sound Off/On, and playback failure do not change story state, signals, rewards, or completion. Sound Off stops active playback; Sound On never restarts it. Teacher preview does not play it. Finish remains explicit and available with sound off or when playback is unavailable.
 
 ## Ambience
 

@@ -6,7 +6,7 @@ import { CH06_SCENE_03, CH06_SCENE_04, CH06_SCENE_05, CH06_S05_TEACHER_SECTIONS,
 import { resolveCh06Replay, resolveCh06Summary } from '../src/ch06-summary.js';
 
 async function mount(t, savedState, hash = `#${savedState.scene}`) {
-  const keys = ['document', 'window', 'localStorage'];
+  const keys = ['document', 'window', 'localStorage', 'Audio'];
   const originals = Object.fromEntries(keys.map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) descriptor ? Object.defineProperty(globalThis, key, descriptor) : delete globalThis[key]; });
   let saved = JSON.stringify(savedState);
@@ -40,11 +40,24 @@ async function mount(t, savedState, hash = `#${savedState.scene}`) {
     state: () => JSON.parse(saved),
     hash: () => window.location.hash,
     async navigate(nextHash) { window.location.hash = nextHash; await handlers.hashchange(); },
-    async click(action, dataset = {}) {
+    async click(action, dataset = {}, isTrusted = false) {
       const target = { dataset: { action, ...dataset }, closest() { return this; }, focus() {} };
-      await handlers.click({ target, isTrusted: false, preventDefault() {} });
+      await handlers.click({ target, isTrusted, preventDefault() {} });
     }
   };
+}
+
+class FakeAudio {
+  constructor(src) { this.src = src; this.paused = true; this.volume = 1; this.muted = false; this.listeners = new Map(); this.playCalls = 0; }
+  addEventListener(name, fn) { this.listeners.set(name, fn); }
+  removeEventListener(name) { this.listeners.delete(name); }
+  async play() { this.playCalls++; this.paused = false; }
+  pause() { this.paused = true; }
+}
+
+function restoreAudioAfterTest(t) {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'Audio');
+  t.after(() => descriptor ? Object.defineProperty(globalThis, 'Audio', descriptor) : delete globalThis.Audio);
 }
 
 function s05Ready(direction = 'social_success', shape = 'declaration') {
@@ -95,8 +108,73 @@ test('valid S05 renders final line and all summary categories without changing s
   assert.equal((html.match(new RegExp(finalLine, 'g')) || []).length, 1);
   for (const heading of CH06_SCENE_05.summaryHeadings) assert.equal((html.match(new RegExp(heading, 'g')) || []).length, 1);
   assert.match(html, /data-action="finish-ch06"[^>]*>Finish<\/button>/);
-  assert.doesNotMatch(html, /AM59|data-action="play-voice"|<audio\b|Chapter VII|ending_score|final_state/);
+  assert.match(html, /data-action="play-voice" data-src="\.\/assets\/audio\/characters\/eliza\/eliza_ch06_scene05_001\.mp3" aria-label="Play Eliza’s final line"/);
+  assert.doesNotMatch(html, /<audio\b[^>]*autoplay|Chapter VII|ending_score|final_state/);
   assert.deepEqual(mounted.state(), before, 'rendering S05 does not write completion, history or signals');
+});
+
+test('AM59 maps one exact approved asset and transcript across all 9 direction × shape combinations', async (t) => {
+  const expectedPath = './assets/audio/characters/eliza/eliza_ch06_scene05_001.mp3';
+  assert.equal(CH06_SCENE_05.voice.length, 1, 'there is exactly one shared take');
+  assert.deepEqual(CH06_SCENE_05.voice[0], { id: 'AM59', src: expectedPath, transcript: finalLine, inline: true });
+  assert.ok((await stat(new URL(`../${expectedPath.slice(2)}`, import.meta.url))).size > 0);
+  for (const { value: direction } of CH06_SCENE_03.decision.choices) {
+    for (const { value: shape } of CH06_SCENE_04.statement.shapes) {
+      const mounted = await mount(t, s05Ready(direction, shape));
+      const html = mounted.node('#app').innerHTML;
+      assert.equal((html.match(/data-action="play-voice"/g) || []).length, 1, `${direction}/${shape} has one replay control`);
+      assert.equal((html.match(new RegExp(expectedPath.replaceAll('.', '\\.'), 'g')) || []).length, 1, `${direction}/${shape} maps only the same AM59 asset`);
+      assert.equal((html.match(new RegExp(finalLine, 'g')) || []).length, 1, `${direction}/${shape} keeps one visible transcript`);
+      assert.deepEqual(mounted.state(), s05Ready(direction, shape));
+    }
+  }
+});
+
+test('AM59 is user-triggered, uses one shared foreground instance, and Sound Off never replays it', async (t) => {
+  restoreAudioAfterTest(t);
+  const created = [];
+  globalThis.Audio = class extends FakeAudio { constructor(src) { super(src); created.push(this); } };
+  const before = s05Ready('independent_voice', 'commitment');
+  const mounted = await mount(t, before);
+  assert.equal(created.length, 0, 'render does not autoplay or create an audio element');
+  const path = CH06_SCENE_05.voice[0].src;
+  await mounted.click('play-voice', { src: path }, true);
+  assert.equal(created.length, 1);
+  assert.equal(created[0].src, path);
+  assert.equal(created[0].paused, false);
+  assert.deepEqual(mounted.state(), before, 'playback changes no choices, events, signals, rewards or completion');
+  await mounted.click('play-voice', { src: path }, true);
+  assert.equal(created.length, 2, 'replay creates only the replacement foreground take');
+  assert.equal(created[0].paused, true, 'the prior foreground instance is stopped');
+  assert.equal(created[1].paused, false);
+  const afterReplay = mounted.state();
+  assert.equal(afterReplay.chapter6_direction, before.chapter6_direction);
+  assert.equal(afterReplay.final_statement_shape, before.final_statement_shape);
+  assert.deepEqual([afterReplay.pronunciation, afterReplay.confidence, afterReplay.independence], [before.pronunciation, before.confidence, before.independence]);
+  await mounted.click('toggle-sound', {}, true);
+  assert.equal(created[1].paused, true, 'Sound Off stops active AM59');
+  assert.equal(mounted.state().soundEnabled, false);
+  await mounted.click('toggle-sound', {}, true);
+  assert.equal(created[1].playCalls, 1, 'Sound On does not restart interrupted speech');
+  assert.deepEqual([mounted.state().chapter6_direction, mounted.state().final_statement_shape, mounted.state().confidence], [before.chapter6_direction, before.final_statement_shape, before.confidence]);
+});
+
+test('S05 Finish remains available with sound off or after AM59 playback failure', async (t) => {
+  restoreAudioAfterTest(t);
+  const before = { ...s05Ready(), soundEnabled: false };
+  const mounted = await mount(t, before);
+  await mounted.click('play-voice', { src: CH06_SCENE_05.voice[0].src }, true);
+  assert.equal(mounted.state().ch06_complete, undefined, 'attempting optional speech does not complete the story');
+  await mounted.click('finish-ch06');
+  assert.equal(mounted.hash(), '#book-complete');
+  assert.equal(mounted.state().ch06_complete, true, 'Finish works with sound off');
+
+  globalThis.Audio = class extends FakeAudio { async play() { this.playCalls++; throw new Error('simulated unavailable audio'); } };
+  const failed = await mount(t, s05Ready());
+  await failed.click('play-voice', { src: CH06_SCENE_05.voice[0].src }, true);
+  await failed.click('finish-ch06');
+  assert.equal(failed.hash(), '#book-complete', 'playback failure cannot block Finish');
+  assert.equal(failed.state().ch06_complete, true);
 });
 
 test('S05 selects the exact approved background from chapter6_direction only', async (t) => {
@@ -229,6 +307,9 @@ test('explicit Finish routes to BOOK COMPLETE; reload and revisit remain read-on
 });
 
 test('S05 Teacher Mode has locked content and its preview cannot Finish or mutate state', async (t) => {
+  restoreAudioAfterTest(t);
+  const created = [];
+  globalThis.Audio = class extends FakeAudio { constructor(src) { super(src); created.push(this); } };
   assert.ok(CH06_S05_TEACHER_SECTIONS.some(([, text]) => /read-only/i.test(text)));
   for (const direction of Object.keys(CH06_S05_VISUALS)) {
     const before = s05Ready(direction, 'commitment');
@@ -240,6 +321,9 @@ test('S05 Teacher Mode has locked content and its preview cannot Finish or mutat
     assert.match(html, /Teacher preview · read-only/);
     assert.match(html, new RegExp(CH06_S05_VISUALS[direction].background.src.replaceAll('.', '\\.' )));
     assert.doesNotMatch(html, /data-action="finish-ch06"/);
+    assert.match(html, /data-action="play-voice"[^>]*disabled/);
+    await mounted.click('play-voice', { src: CH06_SCENE_05.voice[0].src }, true);
+    assert.equal(created.length, 0, 'Teacher preview cannot start AM59');
     assert.deepEqual(mounted.state(), before, `${direction} Teacher Mode remains read-only`);
   }
 });

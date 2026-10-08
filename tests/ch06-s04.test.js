@@ -223,5 +223,6 @@ test('S04 Continue opens S05 after explicit delivery without finishing the book'
   assert.match(mounted.node('#app').innerHTML, /The Voice She Chooses/);
   assert.match(mounted.node('#app').innerHTML, /I have more ways to speak, and the choice is mine\./);
   assert.match(mounted.node('#app').innerHTML, /data-action="finish-ch06"[^>]*>Finish<\/button>/);
-  assert.doesNotMatch(mounted.node('#app').innerHTML, /data-action="play-voice"|<audio\b/);
+  assert.match(mounted.node('#app').innerHTML, /data-action="play-voice" data-src="\.\/assets\/audio\/characters\/eliza\/eliza_ch06_scene05_001\.mp3"/);
+  assert.doesNotMatch(mounted.node('#app').innerHTML, /<audio\b[^>]*autoplay/);
 });
