@@ -35,6 +35,9 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 
 .app-shell { min-height: calc(100vh - 76px); }
 .cover-page { width: min(1180px, calc(100% - 2rem)); min-height: calc(100vh - 120px); margin: 2rem auto; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); align-items: stretch; background: var(--paper); box-shadow: var(--shadow); overflow: hidden; }
+.cover-art { padding: 0; background: var(--paper-deep); }
+.cover-art::before { display: none; }
+.cover-art img { display: block; width: 100%; height: 100%; min-height: inherit; object-fit: cover; object-position: center; }
 .cover-art { position: relative; min-height: 620px; display: flex; flex-direction: column; justify-content: flex-end; padding: clamp(2rem, 5vw, 5rem); color: #fff8ed; background: radial-gradient(circle at 30% 28%, rgba(223, 190, 145, .28), transparent 28%), linear-gradient(155deg, rgba(37, 58, 65, .18), rgba(47, 35, 42, .6)), url('./assets/images/locations/ch01/covent-garden-rain-wide.webp') center / cover; isolation: isolate; }
 .cover-art::before { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(31, 27, 34, .8), transparent 65%); z-index: -1; }
 .cover-glow { position: absolute; width: 22rem; height: 22rem; right: 12%; top: 12%; border-radius: 50%; background: rgba(226, 186, 115, .2); filter: blur(25px); z-index: -1; }
@@ -53,6 +56,21 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .cover-copy .text-button { align-self: flex-start; margin-top: 1rem; padding-left: 0; }
 .sound-note { display: flex; gap: .5rem; align-items: center; max-width: 27rem; margin: 2.6rem 0 0; color: var(--muted); font-size: .83rem; line-height: 1.5; }
 .sound-note span { color: var(--rain); font-size: 1.3rem; }
+.continue-book { margin-top: .75rem; }
+.story-map-page { width: min(1280px, calc(100% - 2rem)); margin: 1.5rem auto 4rem; }
+.story-map-heading { max-width: 50rem; margin: 0 auto 1.6rem; text-align: center; }
+.story-map-heading h1 { margin: 0; color: var(--rose-dark); font-size: clamp(2.5rem, 6vw, 4.5rem); }
+.story-map-heading > p:not(.eyebrow) { margin: .65rem auto 1.2rem; color: var(--muted); line-height: 1.6; }
+.story-map-heading .primary-button { margin: .3rem auto 0; }
+.chapter-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.chapter-card { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; padding: clamp(1.1rem, 2.4vw, 1.7rem); background: var(--paper); border: 1px solid var(--line); box-shadow: 0 8px 22px rgba(50, 34, 36, .07); }
+.chapter-number { margin: 0 0 .55rem; color: var(--gold); font-size: 1.6rem; }
+.chapter-card h2 { margin: 0; color: var(--rose-dark); font-size: 1.35rem; }
+.chapter-card-copy > p { margin: .65rem 0 1.1rem; color: var(--muted); font-size: .95rem; line-height: 1.6; }
+.chapter-status { margin: auto 0 .75rem; color: var(--rain); font-size: .82rem; font-weight: 700; }
+.chapter-status[data-status="completed"] { color: #526b55; }
+.chapter-status[data-status="not-yet-available"] { color: var(--muted); }
+.chapter-card .secondary-button { font-size: .72rem; }
 
 .story-page { width: min(1280px, calc(100% - 2rem)); margin: 1.5rem auto 4rem; }
 .story-progress { display: flex; justify-content: space-between; gap: 1rem; margin: 0 auto .8rem; width: min(1120px, 100%); color: var(--muted); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; }
@@ -230,6 +248,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 @media (max-width: 850px) {
   .cover-page { grid-template-columns: 1fr; }
   .cover-art { min-height: 430px; }
+  .chapter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .storybook-spread { grid-template-columns: 1fr; }
   .storybook-art { min-height: min(75vw, 560px); height: min(75vw, 560px); }
   .art-plate { opacity: .46; }
@@ -283,6 +302,11 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .brand small { font-size: .6rem; }
   .cover-page, .story-page { width: calc(100% - 1rem); margin-top: .7rem; }
   .cover-art { min-height: 320px; padding: 1.5rem; }
+  .cover-art { padding: 0; }
+  .cover-art img { min-height: 0; height: auto; aspect-ratio: 2 / 3; object-fit: contain; }
+  .chapter-grid { grid-template-columns: 1fr; }
+  .story-map-page { width: calc(100% - 1rem); margin-top: .9rem; }
+  .chapter-card { padding: 1.1rem; }
   .cover-copy { padding: 1.7rem 1.35rem 2rem; }
   .cover-copy h1 { font-size: 3.5rem; }
   .cover-subtitle { font-size: 1.2rem; }

@@ -137,6 +137,10 @@ function currentScene() {
   return RUNTIME_SCENES[state.scene] || (state.scene === CH06_S03_BOUNDARY.id ? CH06_S03_BOUNDARY : SCENES[0]);
 }
 
+function hasLegitimateSavedScene() {
+  return Boolean(RUNTIME_SCENES[state.scene] || state.scene === CH06_S03_BOUNDARY.id);
+}
+
 function hasRecordedChapterTwoMotivation() {
   const motivation = state.confirmed_motivation;
   return ['opportunity', 'respect', 'learning', 'independence'].includes(motivation)
@@ -186,22 +190,62 @@ function setLocation(sceneId = null, replace = false) {
 function renderCover() {
   app.innerHTML = `
     <main class="cover-page" aria-labelledby="cover-title">
-      <div class="cover-art" aria-hidden="true">
-        <div class="cover-glow"></div>
-        <div class="cover-flowers">✦<span>❈</span>✧</div>
-        <p class="cover-chapter">Chapter I</p>
-        <p class="cover-name">The Flower Girl</p>
-      </div>
+      <div class="cover-art"><img src="./assets/images/covers/pygmalion-book-cover-b2.png" alt="Edwardian floral book cover: Eliza stands in Covent Garden beneath the title Pygmalion." /></div>
       <section class="cover-copy">
         <p class="eyebrow">An interactive illustrated storybook</p>
-        <h1 id="cover-title">Pygmalion</h1>
+        <h1 id="cover-title" tabindex="-1">Pygmalion</h1>
         <p class="cover-subtitle">A story about language, opportunity, and choosing your own voice.</p>
-        <p class="cover-description">Rain gathers over Covent Garden. Eliza has flowers to sell, questions to ask, and a future she intends to choose for herself.</p>
-        <button class="primary-button open-book" type="button" data-action="open-story">${state.started ? 'CONTINUE THE BOOK' : 'OPEN THE BOOK'}</button>
-        ${state.started ? '<button class="text-button" type="button" data-action="restart-chapter">Start Chapter I again</button>' : ''}
+        <p class="cover-description">Across six chapters, Eliza weighs new possibilities, makes her own choices, and decides what she wants her voice to mean.</p>
+        <button class="primary-button open-book" type="button" data-action="open-story-map">OPEN THE BOOK</button>
+        ${state.started && hasLegitimateSavedScene() ? '<button class="secondary-button continue-book" type="button" data-action="continue-reading">CONTINUE READING</button>' : ''}
+        <button class="text-button" type="button" data-action="open-story-map">View the Story Map</button>
         <p class="sound-note"><span aria-hidden="true">◌</span> Sound is optional. Your first click may unlock the rain ambience.</p>
       </section>
     </main>`;
+  updateHeader();
+}
+
+const STORY_CHAPTERS = [
+  ['I', 'The Flower Girl', 'Eliza prodává květiny v Covent Garden a začíná přemýšlet o možnostech, které jí jazyk může otevřít.', 'ch01_'],
+  ['II', 'The Bargain', 'Eliza sama požádá o lekce a vyjednává, co pro ni budou znamenat.', 'ch02_'],
+  ['III', 'The Lessons', 'Cvičení přinášejí nové jazykové nástroje, náročné chvíle i prostor pro vlastní volby.', 'ch03_'],
+  ['IV', 'The First Test', 'Eliza zkouší použít to, co se naučila, v nových společenských situacích.', 'ch04_'],
+  ['V', 'The Reception', 'Veřejná událost prověřuje poslech, komunikaci a to, kdo si přisvojí zásluhy.', 'ch05_'],
+  ['VI', 'Her Own Voice', 'Eliza zvažuje, jak naloží s možnostmi, které získala.', 'ch06_']
+];
+
+function storyChapterComplete(index) {
+  if (index === 0) return state.completed;
+  if (index === 1) return hasCompletedChapterTwo();
+  if (index === 2) return state.applied_events.includes('ch03_s06_complete');
+  if (index === 3) return state.applied_events.includes('ch04_s05_complete');
+  if (index === 4) return state.ch05_complete && state.applied_events.includes('ch05_s05_complete');
+  return state.ch06_complete && state.applied_events.includes('ch06_s04_complete') && state.applied_events.includes('ch06_completion_recorded');
+}
+
+function storyChapterAction(index, status) {
+  if (status === 'In progress' && state.scene.startsWith(STORY_CHAPTERS[index][3]) && hasLegitimateSavedScene()) return `<button class="secondary-button" data-action="continue-reading" type="button">Continue reading</button>`;
+  if (index === 0 && status === 'Available') return '<button class="secondary-button" data-action="start-chapter-one" type="button">Begin Chapter I</button>';
+  if (index === 1 && status === 'Available' && state.completed && state.scene === 'ch01_s05') return '<button class="secondary-button" data-action="enter-ch02" type="button">Enter Chapter II</button>';
+  if (index === 2 && status === 'Available' && hasCompletedChapterTwo() && state.scene === 'ch02_s05') return '<button class="secondary-button" data-action="enter-ch03" type="button">Enter Chapter III</button>';
+  if (index === 3 && status === 'Available' && state.applied_events.includes('ch03_s06_complete') && state.scene === 'ch03_s06') return '<button class="secondary-button" data-action="next-scene" type="button">Continue to Chapter IV</button>';
+  if (index === 4 && status === 'Available' && state.applied_events.includes('ch04_s05_complete') && state.scene === 'ch04_s05') return '<button class="secondary-button" data-action="next-scene" type="button">Continue to Chapter V</button>';
+  if (index === 5 && status === 'Available' && state.ch05_complete && state.scene === 'ch05_s05') return '<button class="secondary-button" data-action="next-scene" type="button">Continue to Chapter VI</button>';
+  return '';
+}
+
+function renderStoryMap() {
+  const cards = STORY_CHAPTERS.map((chapter, index) => {
+    const complete = storyChapterComplete(index);
+    const available = index === 0 ? !state.started : storyChapterComplete(index - 1);
+    const inProgress = state.started && state.scene.startsWith(chapter[3]) && !complete;
+    const status = complete ? 'Completed' : inProgress ? 'In progress' : available ? 'Available' : 'Not yet available';
+    return `<article class="chapter-card" aria-labelledby="chapter-title-${index + 1}">
+      <p class="chapter-number">${chapter[0]}</p><div class="chapter-card-copy"><h2 id="chapter-title-${index + 1}">${chapter[1]}</h2><p>${chapter[2]}</p></div>
+      <p class="chapter-status" data-status="${status.toLowerCase().replaceAll(' ', '-')}">${status}</p>${storyChapterAction(index, status)}
+    </article>`;
+  }).join('');
+  app.innerHTML = `<main class="story-map-page" id="story-map-root" tabindex="-1" aria-labelledby="story-map-title"><div class="story-map-heading"><p class="eyebrow">Pygmalion · The whole story</p><h1 id="story-map-title" tabindex="-1">Story Map</h1><p>Six chapters follow Eliza’s choices and the possibilities she makes her own.</p>${state.started && hasLegitimateSavedScene() ? '<button class="primary-button" data-action="continue-reading" type="button">CONTINUE READING</button>' : ''}</div><section class="chapter-grid" aria-label="Chapters">${cards}</section></main>`;
   updateHeader();
 }
 
@@ -852,7 +896,26 @@ function renderScene(scene) {
 
 function render() {
   let hashScene = window.location.hash.replace(/^#/, '');
-  if (!hashScene && state.started && window.history.state?.scene !== null) hashScene = state.scene;
+  if (!hashScene || hashScene === 'cover') {
+    s04AudioPreview = false;
+    scenePreview = false;
+    audioManager.leaveScene();
+    renderCover();
+    if (previousScene !== 'cover') window.scrollTo?.({ top: 0, left: 0, behavior: 'instant' });
+    document.querySelector('#cover-title')?.focus({ preventScroll: true });
+    previousScene = 'cover';
+    return;
+  }
+  if (hashScene === 'story-map') {
+    s04AudioPreview = false;
+    scenePreview = false;
+    audioManager.leaveScene();
+    renderStoryMap();
+    if (previousScene !== 'story-map') window.scrollTo?.({ top: 0, left: 0, behavior: 'instant' });
+    document.querySelector('#story-map-title')?.focus({ preventScroll: true });
+    previousScene = 'story-map';
+    return;
+  }
   if (hashScene === 'book-complete') {
     if (state.ch06_complete && state.applied_events.includes('ch06_s04_complete') && state.applied_events.includes('ch06_completion_recorded')) {
       audioManager.leaveScene();
@@ -992,14 +1055,7 @@ function render() {
     state = setScene(state, hashScene);
     save();
   }
-  if (!hashScene && (!state.started || window.history.state?.scene === null)) {
-    s04AudioPreview = false;
-    scenePreview = false;
-    if (!state.started && window.history.state?.scene !== null) setLocation(null, true);
-    audioManager.leaveScene();
-    renderCover();
-  }
-  else {
+  {
     const baseScene = RUNTIME_SCENES[hashScene] || currentScene();
     const scene = baseScene.id === 'ch05_s04'
       ? { ...baseScene, ...baseScene.branches[state.credit_response], challenge: { id: 'LC14', title: 'Questioning for Purpose' } }
@@ -1235,12 +1291,24 @@ function moveNext() {
 }
 
 function openStory() {
-  state = startChapter(state);
-  save();
-  const sceneId = state.scene || 'ch01_s01';
-  setLocation(sceneId);
+  setLocation('story-map');
   render();
-  announce(`Chapter ${chapterLabel(RUNTIME_SCENES[sceneId])}, ${RUNTIME_SCENES[sceneId].title}.`);
+}
+
+function continueReading() {
+  if (!state.started || !hasLegitimateSavedScene()) return;
+  setLocation(state.scene);
+  render();
+}
+
+function startChapterOne() {
+  if (state.started) return;
+  state = startChapter(state);
+  state = setScene(state, 'ch01_s01');
+  save();
+  setLocation('ch01_s01');
+  render();
+  announce('Chapter I, The Flower Girl.');
 }
 
 // Shared Teacher content formatting for prose, lists and canonical item tables.
@@ -1334,6 +1402,9 @@ document.addEventListener('click', async (event) => {
     announce(state.soundEnabled ? 'Sound on.' : 'Sound off. The story remains complete without sound.');
   }
   if (action === 'open-story') openStory();
+  if (action === 'open-story-map') openStory();
+  if (action === 'continue-reading') continueReading();
+  if (action === 'start-chapter-one') startChapterOne();
   if (action === 'enter-ch02') {
     state = setScene(state, CH02_SCENE_01.id);
     save(); setLocation(CH02_SCENE_01.id); render(); announce('Chapter II, The Door She Chooses.');

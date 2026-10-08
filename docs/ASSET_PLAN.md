@@ -9,6 +9,8 @@ Assety jsou předgenerované, vlastní a uložené lokálně. V bootstrap fázi 
 ```text
 assets/
 ├── images/
+│   ├── covers/
+│   │   └── pygmalion-book-cover-b2.png
 │   ├── characters/
 │   │   └── eliza/
 │   └── locations/
@@ -92,6 +94,14 @@ Budoucí textový audio manifest bude pro každý asset nebo variantu evidovat:
 Manifest může odkazovat na více souborů v rámci jednoho audio momentu.
 
 ## Počáteční asset backlog
+
+### Book cover
+
+- Runtime cover artwork: `assets/images/covers/pygmalion-book-cover-b2.png` (1024 × 1536 PNG).
+- Generation ID: `exec-e5e5478e-dd36-4699-844c-baee0a8273a8`.
+- Imported from the approved B2 candidate at `C:/Users/mulle/.codex/generated_images/01a11d3b-fdaa-7060-af80-0258c2035830/exec-e5e5478e-dd36-4699-844c-baee0a8273a8.png`; copied without image edits or re-encoding.
+- Direction: full-book Edwardian floral emblem with the approved Flower Girl Eliza identity. Candidate B2 is approved for this opening-flow implementation; this record does not imply final artwork approval.
+- The cover is decorative artwork with descriptive alternative text. It does not replace the canonical Flower Girl master or any chapter scene artwork.
 
 ### Characters – Eliza
 

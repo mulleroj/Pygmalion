@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createInitialState, STORAGE_KEY } from '../src/state.js';
 import { AudioManager } from '../src/audio.js';
 
-async function restoreScene(t, savedState, hash = '') {
+async function restoreScene(t, savedState, hash = `#${savedState.scene}`) {
   const originals = Object.fromEntries(['document', 'window', 'localStorage'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => {
     for (const [key, descriptor] of Object.entries(originals)) {
@@ -13,6 +13,7 @@ async function restoreScene(t, savedState, hash = '') {
   });
 
   let saved = JSON.stringify(savedState);
+  let writes = 0;
   const nodes = new Map();
   const events = {};
   const node = (key) => {
@@ -36,7 +37,7 @@ async function restoreScene(t, savedState, hash = '') {
   };
   globalThis.localStorage = {
     getItem(key) { assert.equal(key, STORAGE_KEY); return saved; },
-    setItem(key, value) { assert.equal(key, STORAGE_KEY); saved = value; }
+    setItem(key, value) { assert.equal(key, STORAGE_KEY); writes++; saved = value; }
   };
 
   const originalsAudio = Object.fromEntries(['ensureAmbience', 'setEnabled', 'leaveScene'].map((key) => [key, AudioManager.prototype[key]]));
@@ -46,7 +47,7 @@ async function restoreScene(t, savedState, hash = '') {
   const moduleId = `${Date.now()}-${Math.random()}`;
   const app = await import(`../src/app.js?restored-scene-test=${moduleId}`);
   const parsedState = () => JSON.parse(saved);
-  return { app, events, node, parsedState, location: window.location, history: window.history };
+  return { app, events, node, parsedState, location: window.location, history: window.history, writeCount: () => writes };
 }
 
 function unchangedProgress(before, after) {
@@ -98,4 +99,35 @@ test('hash navigation guards remain unchanged and do not mutate completion state
   assert.doesNotMatch(app.node('#app').innerHTML, /The Walk Home/);
   assert.equal(app.parsedState().scene, 'ch04_s04');
   unchangedProgress(state, app.parsedState());
+});
+
+test('Story Map derives chapter state from the save and Continue Reading restores the saved scene without writing progress', async (t) => {
+  const savedState = { ...createInitialState(), started: true, scene: 'ch01_s03' };
+  const cover = await restoreScene(t, savedState, '');
+  assert.match(cover.node('#app').innerHTML, /CONTINUE READING/);
+  assert.equal(cover.writeCount(), 0);
+  const continueAction = (events) => events.click({
+    isTrusted: false,
+    target: { closest: (selector) => selector === '[data-action]' ? { dataset: { action: 'continue-reading' } } : null }
+  });
+  await continueAction(cover.events);
+  assert.equal(cover.location.hash, '#ch01_s03');
+  assert.equal(cover.writeCount(), 0);
+
+  const map = await restoreScene(t, savedState, '#story-map');
+  const markup = map.node('#app').innerHTML;
+  assert.equal((markup.match(/class="chapter-card"/g) || []).length, 6);
+  assert.match(markup, /The Flower Girl/);
+  assert.match(markup, /In progress/);
+  assert.match(markup, /Not yet available/);
+  assert.equal(map.writeCount(), 0);
+  assert.equal(map.parsedState().scene, 'ch01_s03');
+
+  await map.events.click({ isTrusted: false, target: { closest: (selector) => selector === '[data-action]' ? { dataset: { action: 'open-story-map' } } : null } });
+  assert.equal(map.location.hash, '#story-map');
+  assert.equal(map.writeCount(), 0);
+  await continueAction(map.events);
+  assert.equal(map.location.hash, '#ch01_s03');
+  assert.equal(map.parsedState().scene, 'ch01_s03');
+  assert.equal(map.writeCount(), 0);
 });
