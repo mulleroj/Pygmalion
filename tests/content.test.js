@@ -77,6 +77,9 @@ test('Higgins\' Ear keeps the three-character hierarchy without a notebook inset
   const scene03 = SCENES.find((scene) => scene.id === 'ch01_s03');
   const scene04 = SCENES.find((scene) => scene.id === 'ch01_s04');
   assert.equal(scene03.props.some((asset) => asset.src.includes('higgins-notebook')), true);
+  assert.equal(scene03.composition, 'ch01-notebook');
+  assert.deepEqual(scene03.supporting.map(({ placement }) => placement), ['freddy', 'higgins', 'pickering']);
+  assert.equal(scene03.props[0].src, './assets/images/props/ch01/runtime/higgins-notebook_cutout.png');
   assert.deepEqual(scene04.props, []);
   assert.deepEqual(scene04.supporting.map((asset) => asset.src), [
     './assets/images/characters/higgins/runtime/higgins_master_cutout.png',

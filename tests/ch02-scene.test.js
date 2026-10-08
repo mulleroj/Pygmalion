@@ -350,13 +350,15 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   const events = {};
   globalThis.document = { querySelector: node, addEventListener(name, fn) { events[name] = fn; } };
   const historyEvents = {};
+  const scrollCalls = [];
   globalThis.window = {
     location: { hash: '#ch02_s02', pathname: '/' },
     history: { state: { scene: 'ch02_s02' }, pushState(value, unused, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(value, unused, url) { this.pushState(value, unused, url); } },
-    setTimeout(fn) { fn(); }, addEventListener(name, fn) { historyEvents[name] = fn; }
+    setTimeout(fn) { fn(); }, scrollTo(options) { scrollCalls.push(options); }, addEventListener(name, fn) { historyEvents[name] = fn; }
   };
   globalThis.localStorage = { getItem() { return saved; }, setItem(key, value) { saved = value; } };
   const { render, moveNext } = await import('../src/app.js');
+  assert.deepEqual(scrollCalls.at(-1), { top: 0, left: 0, behavior: 'instant' }, 'restored scene starts at the top');
   const click = (action, data = {}) => events.click({ isTrusted: false, target: { closest() { return { dataset: { action, ...data }, focus() {} }; } } });
   assert.doesNotMatch(node('#app').innerHTML, /Continue to Mrs Pearce/);
   moveNext(); assert.equal(JSON.parse(saved).scene, 'ch02_s02');
@@ -365,6 +367,7 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   const completed = JSON.parse(saved);
   await click('next-scene');
   assert.deepEqual(JSON.parse(saved), { ...completed, scene: 'ch02_s03' });
+  assert.deepEqual(scrollCalls.at(-1), { top: 0, left: 0, behavior: 'instant' }, 'scene transition returns to the top');
   assert.match(node('#app').innerHTML, /This response is optional/);
   await click('next-scene');
   assert.equal(JSON.parse(saved).scene, 'ch02_s04');
@@ -384,7 +387,9 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   await click('play-voice', { src: CH02_SCENE_03.voice[0].src });
   await click('play-voice', { src: CH02_SCENE_03.voice[1].src });
   assert.equal(saved, before);
+  const beforePreviewScroll = scrollCalls.length;
   render(); await click('open-teacher'); await click('teacher-preview');
+  assert.equal(scrollCalls.length, beforePreviewScroll, 'Teacher preview does not move the viewport');
   assert.equal(saved, before);
   await click('respond-s03', { option: 's03_confirm_understanding' });
   assert.equal(saved, before);

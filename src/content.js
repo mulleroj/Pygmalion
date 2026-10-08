@@ -65,7 +65,7 @@ export const VISUALS = {
   shop: canonical('images/locations/ch01/flower-shop-window-dusk.webp', 'A warm, grounded flower-shop window at dusk in Covent Garden.'),
   basket: canonical('images/props/ch01/flower-basket.webp', 'A practical woven basket filled with flowers.'),
   fallen: runtimeCutout('images/props/ch01/runtime/fallen-flowers-wet_cutout.png', 'Damaged stems, petals, wrapping paper, and an overturned basket after the market accident.'),
-  notebook: canonical('images/props/ch01/higgins-notebook.webp', 'A research notebook with observations about speech.')
+  notebook: runtimeCutout('images/props/ch01/runtime/higgins-notebook_cutout.png', 'A research notebook with observations about speech.')
 };
 
 const choice = (id, title, text) => ({ id, title, text });
@@ -114,7 +114,11 @@ export const SCENES = [
   },
   {
     id: 'ch01_s03', number: 3, title: 'The Notebook', kicker: 'Who gets to be observed?',
-    background: VISUALS.rainWide, plate: VISUALS.portico, eliza: VISUALS.guarded, props: [VISUALS.notebook], supporting: [VISUALS.higgins, VISUALS.freddy, VISUALS.pickering],
+    background: VISUALS.rainWide, plate: VISUALS.portico, eliza: VISUALS.guarded, props: [VISUALS.notebook], supporting: [
+      { ...VISUALS.freddy, placement: 'freddy' },
+      { ...VISUALS.higgins, placement: 'higgins' },
+      { ...VISUALS.pickering, placement: 'pickering' }
+    ], composition: 'ch01-notebook',
     narration: ['Higgins closes his notebook halfway, as if that makes the watching less obvious. It does not. Eliza sees the pencil, the wet page, and the line of marks beside her words.'],
     dialogue: [
       ['Higgins', 'Your speech carries a local pattern. I can hear where a person has learned to live.'],

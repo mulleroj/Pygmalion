@@ -980,6 +980,7 @@ function render() {
     updateHeader();
     document.querySelector('#story-root')?.focus({ preventScroll: true });
     const currentSceneId = scene.id;
+    if ((!previousScene || previousScene !== currentSceneId) && !scenePreview) window.scrollTo?.({ top: 0, left: 0, behavior: 'instant' });
     audioManager.setSceneAudioReadOnly(scene.id === 'ch02_s04' && (s04AudioPreview || teacherDialog.open));
     audioManager.setEnabled(state.soundEnabled);
     if (scene.id === 'ch06_s01' || (!scene.id.startsWith('ch06_')

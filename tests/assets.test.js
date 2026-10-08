@@ -16,7 +16,8 @@ const DERIVED_RUNTIME_VISUALS = [
   'images/characters/higgins/runtime/higgins_master_cutout.png',
   'images/characters/pickering/runtime/pickering_master_cutout.png',
   'images/characters/pickering/runtime/pickering_full-body_master_cutout.png',
-  'images/props/ch01/runtime/fallen-flowers-wet_cutout.png'
+  'images/props/ch01/runtime/fallen-flowers-wet_cutout.png',
+  'images/props/ch01/runtime/higgins-notebook_cutout.png'
 ];
 
 test('all canonical Chapter I audio files exist and are non-empty', () => {
@@ -25,6 +26,13 @@ test('all canonical Chapter I audio files exist and are non-empty', () => {
     assert.equal(fs.existsSync(filename), true, `missing audio: ${relative}`);
     assert.ok(fs.statSync(filename).size > 0, `empty audio: ${relative}`);
   }
+});
+
+test('Chapter I notebook runtime asset has an alpha channel for its cutout', () => {
+  const filename = path.join(root, 'assets', 'images/props/ch01/runtime/higgins-notebook_cutout.png');
+  const png = fs.readFileSync(filename);
+  assert.equal(png.toString('ascii', 1, 4), 'PNG');
+  assert.ok([4, 6].includes(png[25]), 'notebook cutout PNG must encode alpha transparency');
 });
 
 test('all canonical visual files exist and are non-empty', () => {

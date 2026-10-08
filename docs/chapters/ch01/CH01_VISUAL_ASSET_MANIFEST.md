@@ -2,7 +2,7 @@
 
 Canonical visual inventory for `story/chapter-1-vertical-slice`.
 
-Runtime assets use WebP. PNG files are preserved as source mastery. The canonical set contains 15 assets; additional location candidates are explicitly marked `ALTERNATE` or `REFERENCE` and are not part of the canonical runtime set.
+Canonical runtime assets use WebP. PNG files are preserved as source mastery or transparent presentation derivatives. The canonical set contains 15 assets; additional location candidates are explicitly marked `ALTERNATE` or `REFERENCE` and are not part of the canonical runtime set.
 
 ## Canonical asset set
 
@@ -39,6 +39,7 @@ These PNGs are non-canonical presentation derivatives. Their corresponding appro
 | `assets/images/characters/higgins/runtime/higgins_master_cutout.png` | `CHAR-HIGGINS-MASTER` | `ch01_s03`–`ch01_s04` | Transparent cutout |
 | `assets/images/characters/pickering/runtime/pickering_master_cutout.png` | `CHAR-PICKERING-MASTER` | `ch01_s03`–`ch01_s04` | Transparent cutout |
 | `assets/images/props/ch01/runtime/fallen-flowers-wet_cutout.png` | `PROP-FALLEN-FLOWERS-WET` | `ch01_s02` | Transparent object cutout; wet detail retained |
+| `assets/images/props/ch01/runtime/higgins-notebook_cutout.png` | `PROP-HIGGINS-NOTEBOOK` | `ch01_s03` | Transparent cutout from the existing notebook source; notebook and pencil retained |
 
 The standalone `flower-basket.webp` remains canonical but is no longer rendered as a second photo tile in Chapter I; the basket carried by Eliza is already present in each canonical Eliza cutout.
 
