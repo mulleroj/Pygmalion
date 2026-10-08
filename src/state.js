@@ -633,7 +633,18 @@ export function completeS04Terms(state) {
 }
 
 export function completeChapterTwo(state) {
-  if (state.scene !== 'ch02_s05' || !state.confirmed_motivation || !state.applied_events.includes('ch02_d05_confirmed_motivation')) return state;
+  const requestStrategies = { d04_direct_request: 'direct', d04_polite_request: 'polite', d04_request_with_boundary: 'boundary' };
+  const motivation = state.confirmed_motivation;
+  const requiredEvents = ['ch02_d04_request_strategy', 'ch02_lc03_completed', 'ch02_lc04_completed', 'ch02_s04_terms_understood', 'ch02_d05_confirmed_motivation'];
+  if (state.scene !== 'ch02_s05'
+      || !requestStrategies[state.decisions.D04]
+      || state.request_strategy !== requestStrategies[state.decisions.D04]
+      || !state.ch02_lc03_completed
+      || !state.ch02_lc04_completed
+      || !state.lesson_terms_understood
+      || !['opportunity', 'respect', 'learning', 'independence'].includes(motivation)
+      || state.decisions.D05 !== `d05_${motivation}`
+      || !requiredEvents.every((eventId) => state.applied_events.includes(eventId))) return state;
   if (state.ch02_complete && state.applied_events.includes('ch02_complete')) return state;
   return { ...state, ch02_complete: true,
     applied_events: state.applied_events.includes('ch02_complete') ? state.applied_events : [...state.applied_events, 'ch02_complete'] };

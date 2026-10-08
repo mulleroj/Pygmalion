@@ -3,10 +3,23 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import { CH03_SCENE_01 as scene, CH03_TEACHER_SECTIONS, chapterThreeCallback } from '../src/ch03-content.js';
-import { createInitialState, setScene, applyDecision, recordLc05Answer, completeScene, getSceneAdvanceBlock, loadState, STORAGE_KEY } from '../src/state.js';
+import { createInitialState, setScene, applyDecision, recordLc03Answer, recordLc04Answer, completeS04Terms, completeChapterTwo, recordLc05Answer, completeScene, getSceneAdvanceBlock, loadState, STORAGE_KEY } from '../src/state.js';
 import { AudioManager } from '../src/audio.js';
 import { ambienceForScene } from '../src/content.js';
 const fresh = () => setScene(createInitialState(), scene.id);
+function completedChapterTwoAtS01() {
+  let state = setScene(createInitialState(), 'ch02_s01');
+  state = applyDecision(state, 'D04', 'd04_request_with_boundary');
+  state = recordLc03Answer(state, 'lc03_clear_polite_request');
+  state = setScene(state, 'ch02_s02');
+  for (const [sample, answer] of [['lc04_sample_offer', 'lc04_offer'], ['lc04_sample_evaluation', 'lc04_evaluation'], ['lc04_sample_condition', 'lc04_condition']]) state = recordLc04Answer(state, sample, answer);
+  state = setScene(state, 'ch02_s04');
+  state = completeS04Terms(state);
+  state = setScene(state, 'ch02_s05');
+  state = applyDecision(state, 'D05', 'd05_learning');
+  state = completeChapterTwo(state);
+  return setScene(state, scene.id);
+}
 const solve = state => scene.challenge.samples.reduce((s, sample) => recordLc05Answer(s, sample.id, sample.answer), state);
 
 test('S01 locked story, callbacks, scene metadata, Teacher sections and exact asset identity', () => {
@@ -75,7 +88,7 @@ test('shared runtime: render/refresh, Teacher preview and review do not save; cl
   const plays=[], originalPlay=AudioManager.prototype.playVoice, originalStop=AudioManager.prototype.stopForeground; let stops=0;
   AudioManager.prototype.playVoice=async function(src){plays.push(src);}; AudioManager.prototype.stopForeground=function(...args){stops++;return originalStop.apply(this,args);};
   t.after(()=>{AudioManager.prototype.playVoice=originalPlay;AudioManager.prototype.stopForeground=originalStop;});
-  let saved=JSON.stringify(fresh()),writes=0; const nodes=new Map(),events={};
+  let saved=JSON.stringify(completedChapterTwoAtS01()),writes=0; const nodes=new Map(),events={};
   const node=k=>{if(!nodes.has(k))nodes.set(k,{innerHTML:'',textContent:'',open:false,focus(){},scrollIntoView(){},setAttribute(){},removeAttribute(){},addEventListener(){},querySelector(){return node('close');},showModal(){this.open=true;},close(){this.open=false;}});return nodes.get(k);};
   globalThis.document={querySelector:node,addEventListener(n,fn){events[n]=fn;}};
   globalThis.window={location:{hash:'#ch03_s01',pathname:'/'},history:{state:{scene:scene.id},pushState(_state,_title,url){this.state=_state;window.location.hash=url.startsWith('#')?url:'';},replaceState(_state,_title,url){this.state=_state;window.location.hash=url.startsWith('#')?url:'';}},setTimeout(fn){fn();},addEventListener(){}};

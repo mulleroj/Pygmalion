@@ -4,7 +4,21 @@ import fs from 'node:fs';
 import { createHash } from 'node:crypto';
 import { AudioManager } from '../src/audio.js';
 import { CH02_SCENE_05 as scene, CH02_SCENE_05_TEACHER_SECTIONS as teacher } from '../src/ch02-content.js';
-import { createInitialState, setScene, applyDecision, completeChapterTwo, loadState } from '../src/state.js';
+import { createInitialState, setScene, applyDecision, recordLc03Answer, recordLc04Answer, completeS04Terms, completeChapterTwo, loadState } from '../src/state.js';
+
+function validChapterTwoBeforeD05() {
+  let state = setScene(createInitialState(), 'ch02_s01');
+  state = applyDecision(state, 'D04', 'd04_request_with_boundary');
+  state = recordLc03Answer(state, 'lc03_clear_polite_request');
+  state = setScene(state, 'ch02_s02');
+  for (const [sample, answer] of [['lc04_sample_offer', 'lc04_offer'], ['lc04_sample_evaluation', 'lc04_evaluation'], ['lc04_sample_condition', 'lc04_condition']]) {
+    state = recordLc04Answer(state, sample, answer);
+  }
+  state = setScene(state, 'ch02_s03');
+  state = setScene(state, 'ch02_s04');
+  state = completeS04Terms(state);
+  return setScene(state, 'ch02_s05');
+}
 
 test('s05 locked book-first story, four motivation texts and ending', () => {
   assert.equal(scene.id, 'ch02_s05');
@@ -38,29 +52,103 @@ test('s05 locked book-first story, four motivation texts and ending', () => {
 
 test('each D05 value and completion writes once, preserves inherited state and survives refresh', () => {
   for (const motivation of ['opportunity', 'respect', 'learning', 'independence']) {
-    const initial = { ...setScene(createInitialState(), scene.id), request_strategy: 'boundary', lesson_terms_understood: true,
+    const initial = { ...validChapterTwoBeforeD05(), request_strategy: 'boundary', lesson_terms_understood: true,
       motivation_shift: true, motivation_nuance: { prior: 'respect' }, boundary_questioned: true,
       origin_motivation: 'd03_respect', confidence: 3, pronunciation: 2, independence: 4 };
     assert.equal(completeChapterTwo(initial), initial);
     const chosen = applyDecision(initial, 'D05', 'd05_' + motivation);
-    assert.deepEqual(chosen, { ...initial, confirmed_motivation: motivation, decisions: { D05: 'd05_' + motivation }, applied_events: ['ch02_d05_confirmed_motivation'] });
+    assert.deepEqual(chosen, { ...initial, confirmed_motivation: motivation, decisions: { ...initial.decisions, D05: 'd05_' + motivation }, applied_events: [...initial.applied_events, 'ch02_d05_confirmed_motivation'] });
     const complete = completeChapterTwo(chosen);
     assert.equal(scene.voice.find(voice => voice.transcript === scene.ending[0].text).src, './assets/audio/characters/eliza/eliza_ch02_scene05_001.mp3');
-    assert.deepEqual(complete, { ...chosen, ch02_complete: true, applied_events: ['ch02_d05_confirmed_motivation', 'ch02_complete'] });
+    assert.deepEqual(complete, { ...chosen, ch02_complete: true, applied_events: [...chosen.applied_events, 'ch02_complete'] });
     assert.equal(completeChapterTwo(complete), complete);
     assert.equal(applyDecision(complete, 'D05', 'd05_learning'), complete);
     const refreshed = loadState({ getItem: () => JSON.stringify(complete) });
     assert.deepEqual(refreshed, complete);
     assert.equal(applyDecision(refreshed, 'D05', 'd05_respect'), refreshed);
     assert.equal(completeChapterTwo(refreshed), refreshed);
+    const missingCompletionEvent = { ...refreshed, ch02_complete: false, applied_events: refreshed.applied_events.filter((id) => id !== 'ch02_complete') };
+    const recovered = completeChapterTwo(missingCompletionEvent);
+    assert.equal(recovered.ch02_complete, true, 'a saved D05 and all prior required events repair only the missing completion event');
+    assert.equal(recovered.applied_events.filter((id) => id === 'ch02_complete').length, 1);
+    assert.equal(recovered.confidence, refreshed.confidence);
+    assert.equal(recovered.pronunciation, refreshed.pronunciation);
+    assert.equal(recovered.independence, refreshed.independence);
   }
   const initial = createInitialState();
   assert.equal(applyDecision(initial, 'D05', 'd05_opportunity'), initial);
   const entered = setScene(initial, scene.id);
   assert.equal(applyDecision(entered, 'D05', 'invalid'), entered);
+  const skippedChallenges = { ...validChapterTwoBeforeD05(), ch02_lc04_completed: false,
+    applied_events: validChapterTwoBeforeD05().applied_events.filter((id) => id !== 'ch02_lc04_completed') };
+  const prematureChoice = applyDecision(skippedChallenges, 'D05', 'd05_respect');
+  assert.equal(completeChapterTwo(prematureChoice), prematureChoice, 'D05 alone cannot complete Chapter II when LC04 is incomplete');
   const legacy = loadState({ getItem: () => JSON.stringify({ scene: scene.id }) });
   assert.equal(legacy.confirmed_motivation, null);
   assert.equal(legacy.ch02_complete, false);
+});
+
+test('Chapter III hash entry blocks incomplete Chapter II and repairs only a proven saved D05 completion', async (t) => {
+  const originals = Object.fromEntries(['document', 'window', 'localStorage'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
+  t.after(() => { for (const [key, descriptor] of Object.entries(originals)) { if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; } });
+  const mount = async (savedState, hash, importKey) => {
+    let saved = JSON.stringify(savedState);
+    const nodes = new Map(), events = {}, scrollCalls = [], focusCalls = [], scrollRoot = { scrollTop: 0, scrollTo(options) { this.scrollTop = options.top; } };
+    const node = (key) => {
+      if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus(options) { focusCalls.push({ key, options }); }, scrollIntoView(options) { scrollCalls.push({ key, options }); }, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
+      return nodes.get(key);
+    };
+    globalThis.document = { querySelector: node, scrollingElement: scrollRoot, addEventListener(name, fn) { events[name] = fn; } };
+    globalThis.window = { location: { hash, pathname: '/' }, history: { state: { scene: savedState.scene }, scrollRestoration: 'auto', pushState(value, unused, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(value, unused, url) { this.pushState(value, unused, url); } }, setTimeout(fn) { fn(); }, requestAnimationFrame(fn) { fn(); return 1; }, addEventListener() {} };
+    globalThis.localStorage = { getItem() { return saved; }, setItem(key, value) { saved = value; } };
+    const runtime = await import(`../src/app.js?ch02-transition-${importKey}`);
+    return { runtime, events, node, scrollCalls, focusCalls, scrollRoot, getSaved: () => JSON.parse(saved), click(action) { events.click({ isTrusted: false, target: { closest() { return { dataset: { action }, focus() {} }; } } }); } };
+  };
+
+  const skipped = validChapterTwoBeforeD05();
+  skipped.ch02_lc04_completed = false;
+  skipped.applied_events = skipped.applied_events.filter((id) => id !== 'ch02_lc04_completed');
+  const premature = applyDecision(skipped, 'D05', 'd05_respect');
+  const blocked = await mount(premature, '#ch03_s01', 'incomplete');
+  assert.equal(window.location.hash, '#ch02_s05');
+  assert.equal(blocked.node('#app').innerHTML.includes('The Mouth Is a Muscle'), false);
+  assert.equal(blocked.node('#app').innerHTML.includes('data-action="enter-ch03"'), false);
+  assert.equal(blocked.getSaved().ch02_complete, false);
+  assert.equal(blocked.getSaved().applied_events.includes('ch02_complete'), false);
+
+  const withChoice = applyDecision(validChapterTwoBeforeD05(), 'D05', 'd05_learning');
+  const olderSave = { ...completeChapterTwo(withChoice), ch02_complete: false,
+    applied_events: completeChapterTwo(withChoice).applied_events.filter((id) => id !== 'ch02_complete') };
+  const restored = await mount(olderSave, '#ch03_s01', 'legacy-save');
+  assert.equal(window.location.hash, '#ch02_s05', 'a saved D05 choice returns to the final Chapter II scene for explicit recovery');
+  assert.equal(restored.getSaved().ch02_complete, false, 'restore itself does not create the completion event');
+  assert.equal(restored.getSaved().applied_events.filter((id) => id === 'ch02_complete').length, 0);
+  const continueMarkup = restored.node('#app').innerHTML.match(/<button class="secondary-button"[^>]*data-action="enter-ch03"[^>]*>/)?.[0];
+  assert.ok(continueMarkup, 'restored D05 save offers an enabled semantic button');
+  assert.equal(restored.scrollCalls.at(-1).key, '[data-action="enter-ch03"]', 'restoration brings Continue into view once');
+  assert.deepEqual(restored.scrollCalls.at(-1).options, { block: 'center', behavior: 'instant' });
+  assert.equal(restored.getSaved().confirmed_motivation, 'learning');
+  assert.equal(restored.getSaved().decisions.D05, 'd05_learning');
+  const scrollCountBeforeTeacher = restored.scrollCalls.length;
+  restored.scrollRoot.scrollTop = 860;
+  restored.click('open-teacher'); restored.click('teacher-preview');
+  assert.deepEqual(restored.scrollCalls.length, scrollCountBeforeTeacher, 'Teacher preview does not move the restored viewport');
+  assert.equal(restored.scrollRoot.scrollTop, 860, 'Teacher preview preserves the current scroll offset');
+  assert.ok(restored.focusCalls.some(({ key, options }) => key === '#story-root' && options?.preventScroll), 'Teacher preview focus preserves scroll position');
+  restored.click('return-student');
+  assert.equal(restored.scrollCalls.length, scrollCountBeforeTeacher, 'returning from preview does not move the viewport');
+  assert.equal(restored.scrollRoot.scrollTop, 860, 'returning from Teacher preview preserves the current scroll offset');
+  const signalsBeforeContinue = ['pronunciation', 'confidence', 'independence'].map((signal) => restored.getSaved()[signal]);
+  assert.equal(restored.getSaved().ch02_complete, false, 'Teacher interactions do not complete the chapter');
+  restored.click('enter-ch03');
+  const entered = restored.getSaved();
+  assert.equal(window.location.hash, '#ch03_s01');
+  assert.equal(entered.scene, 'ch03_s01');
+  assert.equal(entered.ch02_complete, true);
+  assert.equal(entered.applied_events.filter((id) => id === 'ch02_complete').length, 1);
+  assert.equal(entered.confirmed_motivation, 'learning');
+  assert.deepEqual(['pronunciation', 'confidence', 'independence'].map((signal) => entered[signal]), signalsBeforeContinue);
+  assert.equal(restored.node('#app').innerHTML.includes('The Mouth Is a Muscle'), true);
 });
 
 test('s05 Teacher follows twelve-section structure and explains perspective without assessment', () => {
@@ -97,34 +185,51 @@ test('all four runtime D05 paths expose only the common AM19C ending; replay and
   const originals = Object.fromEntries(['document', 'window', 'localStorage'].map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) { if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; } });
   const requests = [];
+  const actionScrolls = [];
   t.mock.method(AudioManager.prototype, 'playVoice', async src => { requests.push(src); });
   for (const motivation of ['opportunity', 'respect', 'learning', 'independence']) {
-    let saved = JSON.stringify(setScene(createInitialState(), scene.id));
+    let saved = JSON.stringify(validChapterTwoBeforeD05());
     let writes = 0;
     const nodes = new Map();
     const node = key => {
-      if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
+      if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, scrollIntoView(options) { actionScrolls.push({ key, options }); }, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
       return nodes.get(key);
     };
     const events = {};
     globalThis.document = { querySelector: node, addEventListener(name, fn) { events[name] = fn; } };
-    globalThis.window = { location: { hash: '#ch02_s05', pathname: '/' }, history: { state: { scene: scene.id } }, setTimeout(fn) { fn(); }, addEventListener() {} };
+    globalThis.window = { location: { hash: '#ch02_s05', pathname: '/' }, history: { state: { scene: scene.id }, scrollRestoration: 'auto', pushState(value, unused, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(value, unused, url) { this.pushState(value, unused, url); } }, setTimeout(fn) { fn(); }, addEventListener() {} };
     globalThis.localStorage = { getItem() { return saved; }, setItem(key, value) { saved = value; writes++; } };
     const { render } = await import('../src/app.js?s05-am19c=' + motivation);
     const click = (action, data = {}) => events.click({ isTrusted: false, target: { closest() { return { dataset: { action, ...data }, focus() {} }; } } });
     assert.doesNotMatch(node('#app').innerHTML, /data-action="play-voice"/);
     await click('choose-decision', { decision: 'D05', option: 'd05_' + motivation });
     assert.equal(JSON.parse(saved).confirmed_motivation, motivation);
+    assert.equal(JSON.parse(saved).ch02_complete, false, 'choosing D05 does not complete the chapter before Continue');
+    assert.equal(JSON.parse(saved).applied_events.filter(id => id === 'ch02_complete').length, 0);
+    assert.equal(actionScrolls.at(-1).options.block, 'center', 'the newly available chapter action is brought into view');
+    assert.equal(node('#app').innerHTML.includes('data-action="enter-ch03"'), true);
     assert.equal((node('#app').innerHTML.match(/data-action="play-voice"/g) || []).length, 1);
     assert.match(node('#app').innerHTML, /eliza_ch02_scene05_001\.mp3/);
     const done = saved, doneWrites = writes;
     await click('play-voice', { src: scene.voice[0].src });
     await click('play-voice', { src: scene.voice[0].src });
     await click('open-teacher'); await click('teacher-preview');
+    assert.doesNotMatch(node('#app').innerHTML, /data-action="enter-ch03"/, 'Teacher preview cannot expose progression');
+    assert.match(node('#app').innerHTML, /data-action="return-student"/);
+    await click('return-student');
     await click('play-voice', { src: scene.voice[0].src }); render();
     assert.equal(saved, done);
     assert.equal(writes, doneWrites);
     assert.equal(requests.at(-1), scene.voice[0].src);
-    assert.equal(JSON.parse(saved).applied_events.filter(id => id === 'ch02_complete').length, 1);
+    assert.equal(JSON.parse(saved).applied_events.filter(id => id === 'ch02_complete').length, 0, 'replays and Teacher preview do not record completion before Continue');
+    const signals = ['pronunciation', 'confidence', 'independence'].map((signal) => JSON.parse(saved)[signal]);
+    await click('enter-ch03');
+    const entered = JSON.parse(saved);
+    assert.equal(entered.applied_events.filter(id => id === 'ch02_complete').length, 1);
+    assert.equal(window.location.hash, '#ch03_s01');
+    assert.equal(entered.scene, 'ch03_s01');
+    assert.equal(entered.applied_events.filter(id => id === 'ch02_complete').length, 1);
+    assert.deepEqual(['pronunciation', 'confidence', 'independence'].map((signal) => entered[signal]), signals);
+    assert.match(node('#app').innerHTML, /The Mouth Is a Muscle/);
   }
 });

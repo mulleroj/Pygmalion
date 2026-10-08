@@ -75,11 +75,13 @@ const RUNTIME_SCENES = { ...SCENE_BY_ID, [CH03_SCENE_01.id]: CH03_SCENE_01, [CH0
 let state = loadState();
 let lastTeacherTrigger = null;
 let previousScene = null;
+let sceneScrollFrame = null;
 let lastLc03Answer = null;
 let lastS03Response = null;
 let ch05S02FirstResponder = null;
 let s04AudioPreview = false;
 let s05Preview = false;
+let s05PreviewMinHeight = null;
 let scenePreview = false;
 let lc06Draft = {};
 let lc06SupportedOpen = false;
@@ -99,6 +101,20 @@ const audioManager = new AudioManager({
     if (status.type === 'unavailable') announce('This sound is unavailable. You can continue with the visible text.');
   }
 });
+if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual';
+
+function scrollSceneToTop(sceneId) {
+  if (sceneScrollFrame !== null) window.cancelAnimationFrame?.(sceneScrollFrame);
+  const scroll = () => {
+    sceneScrollFrame = null;
+    if (scenePreview || currentScene().id !== sceneId) return;
+    const scrollRoot = document.scrollingElement;
+    if (scrollRoot?.scrollTo) scrollRoot.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    else window.scrollTo?.({ top: 0, left: 0, behavior: 'instant' });
+  };
+  if (window.requestAnimationFrame) sceneScrollFrame = window.requestAnimationFrame(scroll);
+  else scroll();
+}
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]);
@@ -119,6 +135,32 @@ function focusLc06Next() {
 
 function currentScene() {
   return RUNTIME_SCENES[state.scene] || (state.scene === CH06_S03_BOUNDARY.id ? CH06_S03_BOUNDARY : SCENES[0]);
+}
+
+function hasRecordedChapterTwoMotivation() {
+  const motivation = state.confirmed_motivation;
+  return ['opportunity', 'respect', 'learning', 'independence'].includes(motivation)
+    && state.decisions.D05 === `d05_${motivation}`
+    && state.applied_events.includes('ch02_d05_confirmed_motivation');
+}
+
+function hasChapterTwoPrerequisites() {
+  const requestStrategies = { d04_direct_request: 'direct', d04_polite_request: 'polite', d04_request_with_boundary: 'boundary' };
+  const events = ['ch02_d04_request_strategy', 'ch02_lc03_completed', 'ch02_lc04_completed', 'ch02_s04_terms_understood'];
+  return Boolean(requestStrategies[state.decisions.D04])
+    && state.request_strategy === requestStrategies[state.decisions.D04]
+    && state.ch02_lc03_completed
+    && state.ch02_lc04_completed
+    && state.lesson_terms_understood
+    && events.every((eventId) => state.applied_events.includes(eventId));
+}
+
+function canCompleteChapterTwo() {
+  return hasChapterTwoPrerequisites() && hasRecordedChapterTwoMotivation();
+}
+
+function hasCompletedChapterTwo() {
+  return canCompleteChapterTwo() && state.ch02_complete && state.applied_events.includes('ch02_complete');
 }
 
 function updateHeader() {
@@ -770,7 +812,8 @@ function renderScene(scene) {
     body += `<section class="scene-response" aria-labelledby="response-title"><h2 id="response-title">A practical question</h2><p>${escapeHtml(scene.response.prompt)}</p><div class="answer-stack">${scene.response.choices.map((option) => `<button class="answer-button" type="button" data-action="respond-s03" data-option="${option.id}"><strong>${escapeHtml(option.title)}</strong><br>“${escapeHtml(option.text)}”</button>`).join('')}</div>${lastS03Response ? `<p class="answer-feedback" role="status">${escapeHtml(scene.response.consequences[lastS03Response])}</p>` : ''}</section>`;
   }
   if (scene.id === 'ch02_s03') body += '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the agreement <span aria-hidden="true">→</span></button>';
-  if (scene.id === 'ch02_s05' && state.confirmed_motivation) body += `<section class="chapter-end" aria-labelledby="ch02-end-title"><h2 id="ch02-end-title">Chapter II complete</h2>${renderStoryBeats({ ...scene, storyBeats: scene.ending })}<p class="end-note">Your Chapter II progress is saved locally.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button><button class="secondary-button" type="button" data-action="enter-ch03">Continue to Chapter III</button></section>`;
+  if (scene.id === 'ch02_s05' && s05Preview) body = '<p class="read-only-note" role="status">Teacher preview · read-only. The motivation choice and chapter transition are inactive.</p><button class="secondary-button" type="button" data-action="return-student">Return to student scene</button>' + body;
+  if (scene.id === 'ch02_s05' && canCompleteChapterTwo() && !s05Preview) body += `<section class="chapter-end" aria-labelledby="ch02-end-title"><h2 id="ch02-end-title">Chapter II complete</h2>${renderStoryBeats({ ...scene, storyBeats: scene.ending })}<p class="end-note">Your Chapter II progress is saved locally.</p><button class="text-button" type="button" data-action="review-scene">Review this scene</button><button class="secondary-button" type="button" data-action="enter-ch03">Continue to Chapter III <span aria-hidden="true">→</span></button></section>`;
   if (scene.terms) body += `<section class="terms-card" aria-labelledby="terms-title"><h2 id="terms-title">The lesson agreement</h2><ul>${scene.terms.map((term) => `<li>${escapeHtml(term)}</li>`).join('')}</ul></section><p class="transition-line">${escapeHtml(scene.transition)}</p>${state.lesson_terms_understood ? '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to Why I Am Here <span aria-hidden="true">→</span></button>' : '<button class="secondary-button next-button" type="button" data-action="complete-s04">Continue <span aria-hidden="true">→</span></button>'}`;
   if (!chapterTwo && scene.id !== 'ch01_s05' && scene.id !== 'ch04_s01' && scene.id !== 'ch04_s02' && scene.id !== 'ch04_s03' && scene.id !== 'ch04_s04' && scene.id !== 'ch04_s05' && !scene.challenge && scene.id !== 'ch05_s01' && scene.id !== 'ch05_s03' && scene.id !== 'ch05_s04' && scene.id !== CH06_SCENE_04.id && scene.id !== CH06_SCENE_05.id && decisionSelected && challengeComplete && scene.id !== 'ch01_s01') {
     body += `<button class="secondary-button next-button" type="button" data-action="next-scene">Continue the story <span aria-hidden="true">→</span></button>`;
@@ -937,6 +980,13 @@ function render() {
     setLocation(safeScene, true);
     hashScene = safeScene;
   }
+  if (hashScene === CH03_SCENE_01.id && !hasCompletedChapterTwo()) {
+    const savedScene = RUNTIME_SCENES[state.scene]?.id;
+    const safeScene = canCompleteChapterTwo() ? CH02_SCENE_05.id
+      : savedScene?.startsWith('ch02_') || savedScene?.startsWith('ch01_') ? savedScene : null;
+    setLocation(safeScene, true);
+    hashScene = safeScene || '';
+  }
   if (hashScene && RUNTIME_SCENES[hashScene] && !state.started) {
     state = startChapter(state);
     state = setScene(state, hashScene);
@@ -955,7 +1005,7 @@ function render() {
       ? { ...baseScene, ...baseScene.branches[state.credit_response], challenge: { id: 'LC14', title: 'Questioning for Purpose' } }
       : chapterSixSceneVisual(baseScene);
     if (previousScene !== scene.id && scene.id === 'ch03_s02') audioManager.leaveScene();
-    if (previousScene !== scene.id) { lastS03Response = null; ch05S02FirstResponder = null; s04AudioPreview = false; s05Preview = false; scenePreview = false; }
+    if (previousScene !== scene.id) { lastS03Response = null; ch05S02FirstResponder = null; s04AudioPreview = false; s05Preview = false; s05PreviewMinHeight = null; scenePreview = false; }
     if (state.scene !== scene.id) {
       state = setScene(state, scene.id);
       save();
@@ -977,10 +1027,20 @@ function render() {
       if (nextState !== state) { state = nextState; save(); }
     }
     app.innerHTML = renderScene(scene);
+    if (s05Preview && s05PreviewMinHeight) {
+      const storyRoot = document.querySelector('#story-root');
+      if (storyRoot?.style) storyRoot.style.minHeight = `${s05PreviewMinHeight}px`;
+    }
     updateHeader();
     document.querySelector('#story-root')?.focus({ preventScroll: true });
     const currentSceneId = scene.id;
-    if ((!previousScene || previousScene !== currentSceneId) && !scenePreview) window.scrollTo?.({ top: 0, left: 0, behavior: 'instant' });
+    const restoreChapterTwoContinue = !previousScene && scene.id === CH02_SCENE_05.id && canCompleteChapterTwo() && !s05Preview;
+    if (restoreChapterTwoContinue) {
+      window.requestAnimationFrame?.(() => {
+        if (currentScene().id !== CH02_SCENE_05.id || s05Preview) return;
+        document.querySelector('[data-action="enter-ch03"]')?.scrollIntoView?.({ block: 'center', behavior: 'instant' });
+      });
+    } else if ((!previousScene || previousScene !== currentSceneId) && !scenePreview) scrollSceneToTop(currentSceneId);
     audioManager.setSceneAudioReadOnly(scene.id === 'ch02_s04' && (s04AudioPreview || teacherDialog.open));
     audioManager.setEnabled(state.soundEnabled);
     if (scene.id === 'ch06_s01' || (!scene.id.startsWith('ch06_')
@@ -1219,7 +1279,7 @@ function openTeacher(trigger) {
 function closeTeacher() {
   if (teacherDialog.open) teacherDialog.close();
   else teacherDialog.removeAttribute('open');
-  lastTeacherTrigger?.focus();
+  lastTeacherTrigger?.focus({ preventScroll: true });
   audioManager.setSceneAudioReadOnly(currentScene().id === 'ch02_s04' && s04AudioPreview);
 }
 
@@ -1278,7 +1338,10 @@ document.addEventListener('click', async (event) => {
     state = setScene(state, CH02_SCENE_01.id);
     save(); setLocation(CH02_SCENE_01.id); render(); announce('Chapter II, The Door She Chooses.');
   }
-  if (action === 'enter-ch03' && currentScene().id === 'ch02_s05' && state.ch02_complete && !teacherDialog.open && !s05Preview) {
+  if (action === 'enter-ch03' && currentScene().id === 'ch02_s05' && canCompleteChapterTwo() && !teacherDialog.open && !s05Preview) {
+    const completed = completeChapterTwo(state);
+    if (completed !== state) { state = completed; save(); }
+    if (!hasCompletedChapterTwo()) return;
     state = setScene(state, CH03_SCENE_01.id); save(); setLocation(CH03_SCENE_01.id); render(); announce('Chapter III, The Mouth Is a Muscle.');
   }
   if (action === 'go-cover') { event.preventDefault(); setLocation(null); render(); }
@@ -1323,9 +1386,14 @@ document.addEventListener('click', async (event) => {
     state = applyDecision(state, target.dataset.decision, target.dataset.option);
     if (state === beforeChoice) return;
     if (target.dataset.decision === 'D06') state = ensureChallengeOptionOrders(state, 'LC05', CH03_SCENE_01.challenge.samples.map(({ id, options }) => ({ key: id, optionIds: options.map(({ id }) => id) })));
-    if (target.dataset.decision === 'D05') state = completeChapterTwo(state);
     if (target.dataset.decision === 'D03') state = markChapterComplete(state);
-    save(); render(); announce('Choice saved.');
+    save(); render();
+    if (target.dataset.decision === 'D05') {
+      const continueAction = document.querySelector('[data-action="enter-ch03"]');
+      continueAction?.scrollIntoView?.({ block: 'center', behavior: 'instant' });
+      continueAction?.focus({ preventScroll: true });
+    }
+    announce('Choice saved.');
   }
   if (action === 'choose-ch06-direction' && currentScene().id === CH06_SCENE_03.id && !studentReadOnly()) {
     const beforeChoice = state;
@@ -1374,7 +1442,7 @@ document.addEventListener('click', async (event) => {
       announce(state.ch02_lc03_completed ? 'LC03 complete.' : 'Try another form that keeps the request clear.');
     }
   }
-  if (action === 'return-student' && scenePreview) { audioManager.stopForeground(); scenePreview = false; render(); announce('Student scene restored.'); }
+  if (action === 'return-student' && (scenePreview || s05Preview)) { audioManager.stopForeground(); scenePreview = false; s05Preview = false; s05PreviewMinHeight = null; render(); announce('Student scene restored.'); }
   if (action === 'return-ch04-s02' && state.applied_events.includes('ch04_s02_complete')) {
     state = setScene(state, CH04_SCENE_02.id); save(); setLocation(CH04_SCENE_02.id); render(); announce('Names and Weather, ready for review.');
   }
@@ -1575,12 +1643,26 @@ document.addEventListener('click', async (event) => {
   if (action === 'play-challenge') await audioManager.playChallenge(target.dataset.src);
   if (action === 'play-sfx') await audioManager.playOneShot('flowers_fall', target.dataset.src);
   if (action === 'teacher-preview') {
+    const previewSceneId = currentScene().id;
+    const previewScrollRoot = document.scrollingElement;
+    const previewScrollTop = previewScrollRoot?.scrollTop;
+    const previewRootHeight = previewSceneId === CH02_SCENE_05.id
+      ? document.querySelector('#story-root')?.getBoundingClientRect?.().height
+      : null;
     scenePreview = currentScene().id.startsWith('ch03_') || currentScene().id.startsWith('ch06_') || currentScene().id === 'ch04_s01' || currentScene().id === 'ch04_s02' || currentScene().id === 'ch04_s03' || currentScene().id === 'ch04_s04' || currentScene().id === 'ch04_s05' || currentScene().id === 'ch05_s01' || currentScene().id === 'ch05_s02' || currentScene().id === 'ch05_s03' || currentScene().id === 'ch05_s04' || currentScene().id === 'ch05_s05';
     s05Preview = currentScene().id === 'ch02_s05';
+    s05PreviewMinHeight = s05Preview ? previewRootHeight : null;
     s04AudioPreview = currentScene().id === 'ch02_s04';
     closeTeacher();
     if (s05Preview || scenePreview) render();
-    document.querySelector('#story-root')?.focus();
+    document.querySelector('#story-root')?.focus({ preventScroll: true });
+    if (previewScrollRoot && currentScene().id === previewSceneId) {
+      const restorePreviewScroll = () => {
+        if (currentScene().id === previewSceneId) previewScrollRoot.scrollTop = previewScrollTop;
+      };
+      if (window.requestAnimationFrame) window.requestAnimationFrame(() => window.setTimeout(restorePreviewScroll, 0));
+      else restorePreviewScroll();
+    }
     announce('Read-only scene preview. Student progress was not changed.');
   }
   if (action === 'restart-chapter') {

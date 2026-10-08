@@ -10,6 +10,13 @@ import { AudioManager, AMBIENCE_FILES } from '../src/audio.js';
 import { createHash } from 'node:crypto';
 import { createInitialState, applyDecision, recordLc03Answer, recordLc04Answer, ensureChallengeOptionOrders, ensureChallengePresentationOrder, loadState, setScene, canAdvanceScene, getSceneAdvanceBlock } from '../src/state.js';
 
+function ch02S02RuntimeStart() {
+  let state = setScene(createInitialState(), 'ch02_s01');
+  state = applyDecision(state, 'D04', 'd04_request_with_boundary');
+  state = recordLc03Answer(state, 'lc03_clear_polite_request');
+  return setScene(state, 'ch02_s02');
+}
+
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (relative) => fs.readFileSync(path.join(root, relative), 'utf8');
 
@@ -341,24 +348,27 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   t.mock.method(AudioManager.prototype, 'playVoice', async (src, afterVoice) => { voiceRequests.push({ src, afterVoice }); return null; });
   const originals = Object.fromEntries(['document', 'window', 'localStorage'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) { if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; } });
-  let saved = JSON.stringify(setScene(createInitialState(), 'ch02_s02'));
+  let saved = JSON.stringify(ch02S02RuntimeStart());
   const nodes = new Map();
   const node = (key) => {
     if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, scrollIntoView() {}, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
     return nodes.get(key);
   };
   const events = {};
-  globalThis.document = { querySelector: node, addEventListener(name, fn) { events[name] = fn; } };
+  const documentScrollRoot = { scrollTop: 0, scrollTo(options) { documentScrollRoot.scrollTop = options.top; scrollCalls.push(options); } };
+  globalThis.document = { querySelector: node, scrollingElement: documentScrollRoot, addEventListener(name, fn) { events[name] = fn; } };
   const historyEvents = {};
   const scrollCalls = [];
   globalThis.window = {
     location: { hash: '#ch02_s02', pathname: '/' },
-    history: { state: { scene: 'ch02_s02' }, pushState(value, unused, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(value, unused, url) { this.pushState(value, unused, url); } },
-    setTimeout(fn) { fn(); }, scrollTo(options) { scrollCalls.push(options); }, addEventListener(name, fn) { historyEvents[name] = fn; }
+    history: { state: { scene: 'ch02_s02' }, scrollRestoration: 'auto', pushState(value, unused, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(value, unused, url) { this.pushState(value, unused, url); } },
+    setTimeout(fn) { fn(); }, requestAnimationFrame(fn) { fn(); return 1; }, scrollTo() { assert.fail('scene entry should scroll the document root'); }, addEventListener(name, fn) { historyEvents[name] = fn; }
   };
   globalThis.localStorage = { getItem() { return saved; }, setItem(key, value) { saved = value; } };
   const { render, moveNext } = await import('../src/app.js');
+  assert.equal(window.history.scrollRestoration, 'manual', 'the app owns restoration for its hash-routed scenes');
   assert.deepEqual(scrollCalls.at(-1), { top: 0, left: 0, behavior: 'instant' }, 'restored scene starts at the top');
+  assert.equal(documentScrollRoot.scrollTop, 0);
   const click = (action, data = {}) => events.click({ isTrusted: false, target: { closest() { return { dataset: { action, ...data }, focus() {} }; } } });
   assert.doesNotMatch(node('#app').innerHTML, /Continue to Mrs Pearce/);
   moveNext(); assert.equal(JSON.parse(saved).scene, 'ch02_s02');
@@ -471,7 +481,7 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   assert.equal(saved, finished);
   assert.doesNotMatch(node('#app').innerHTML, /\[controlled\]|\[self possessed\]|&#39;ere|t&#39; learn/);
   assert.equal(JSON.parse(saved).confirmed_motivation, 'independence');
-  assert.equal(JSON.parse(saved).ch02_complete, true);
+  assert.equal(JSON.parse(saved).ch02_complete, false, 'D05 is saved independently; Continue owns Chapter II completion');
   assert.match(node('#app').innerHTML, /I am here to learn more ways to speak/);
   assert.match(node('#app').innerHTML, /The door to the lesson room stays open/);
   await click('choose-decision', { decision: 'D05', option: 'd05_learning' });
