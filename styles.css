@@ -106,6 +106,13 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch01-notebook .support-pickering { left: 75%; bottom: 7%; height: 58%; z-index: 2; filter: saturate(.94) drop-shadow(0 4px 5px rgba(34, 27, 24, .28)); }
 .ch01-notebook .art-eliza::before { left: 15%; bottom: 2%; width: 29%; height: 2%; filter: blur(5px); opacity: .62; }
 .ch01-notebook .scene-prop { position: absolute; top: 4%; right: 3%; width: 23%; max-width: none; max-height: none; }
+.ch01-higgins-ear .art-support, .ch01-higgins-ear .art-eliza { display: block; padding: 0; opacity: 1; }
+.ch01-higgins-ear .supporting-character, .ch01-higgins-ear .art-eliza img { position: absolute; width: auto; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); }
+.ch01-higgins-ear .support-higgins { left: 26.8%; bottom: 3%; height: 60%; z-index: 2; filter: saturate(.94) contrast(1.02) drop-shadow(0 4px 5px rgba(34, 27, 24, .28)); }
+.ch01-higgins-ear .support-pickering { left: 72.8%; bottom: 3%; height: 59%; z-index: 2; filter: saturate(.94) drop-shadow(0 4px 5px rgba(34, 27, 24, .28)); }
+.ch01-higgins-ear .art-eliza { z-index: 3; }
+.ch01-higgins-ear .art-eliza img { left: 50%; bottom: 0; height: 78%; z-index: 3; filter: saturate(.94) drop-shadow(0 4px 5px rgba(34, 27, 24, .28)); }
+.ch01-higgins-ear .art-eliza::before { left: 30%; bottom: 1%; width: 40%; height: 2%; filter: blur(5px); opacity: .62; }
 .storybook-art::after { content: ''; position: absolute; inset: 0; z-index: 5; pointer-events: none; background: linear-gradient(145deg, rgba(225, 231, 222, .08), rgba(35, 35, 42, .17)); mix-blend-mode: soft-light; }
 .storybook-art figcaption { position: absolute; right: 1rem; bottom: 1rem; z-index: 6; padding: .35rem .6rem; color: rgba(255, 250, 239, .9); background: rgba(39, 35, 40, .48); border-radius: 3px; font-size: .7rem; letter-spacing: .06em; }
 .ch02-exterior .art-background { filter: none; }
@@ -232,6 +239,9 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch01-notebook .support-higgins { left: 62%; bottom: 7%; height: 52%; }
   .ch01-notebook .support-pickering { left: 76%; bottom: 7%; height: 48%; }
   .ch01-notebook .scene-prop { top: 3%; right: 3%; width: 24%; }
+  .ch01-higgins-ear .support-higgins { left: 18%; bottom: 2%; height: 57%; }
+  .ch01-higgins-ear .support-pickering { left: 82%; bottom: 2%; height: 55%; }
+  .ch01-higgins-ear .art-eliza img { height: 76%; }
   .ch05-exhibition-hall-opening .support-higgins { left: 17%; bottom: 3%; height: 76%; }
   .ch05-exhibition-hall-opening .support-pickering { left: 83%; bottom: 3%; height: 78%; }
   .ch05-exhibition-hall-opening .art-eliza img { left: 50%; bottom: 0; height: 89%; }
@@ -250,6 +260,9 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch05-exhibition-hall-opening .support-higgins { left: 16%; bottom: 2%; height: 73%; }
   .ch05-exhibition-hall-opening .support-pickering { left: 84%; bottom: 2%; height: 75%; }
   .ch05-exhibition-hall-opening .art-eliza img { left: 50%; bottom: 0; height: 85%; }
+  .ch01-higgins-ear .support-higgins { left: 20%; bottom: 2%; height: 54%; }
+  .ch01-higgins-ear .support-pickering { left: 80%; bottom: 2%; height: 52%; }
+  .ch01-higgins-ear .art-eliza img { left: 50%; bottom: 0; height: 73%; }
   .ch01-notebook.storybook-art { min-height: 390px; height: 390px; }
   .ch01-notebook .art-background img { object-position: 57% center; }
   .ch01-notebook .art-eliza img { left: 36%; bottom: 3%; height: 74%; }

@@ -148,7 +148,9 @@ export const SCENES = [
   },
   {
     id: 'ch01_s04', number: 4, title: "Higgins' Ear", kicker: 'Listen for context, not intelligence',
-    background: VISUALS.rainWide, plate: VISUALS.portico, eliza: VISUALS.listening, props: [], supporting: [VISUALS.higgins, VISUALS.pickering],
+    background: VISUALS.rainWide, plate: VISUALS.portico, eliza: VISUALS.listening, props: [], composition: 'ch01-higgins-ear', supporting: [
+      { ...VISUALS.higgins, placement: 'higgins' }, { ...VISUALS.pickering, placement: 'pickering' }
+    ],
     narration: ['Higgins turns the notebook so Pickering can see it. Three brief voices rise above the rain. The task is not to rank the speakers. It is to hear what each person is trying to do in a particular situation.'],
     dialogue: [['Higgins', "Listen to who is speaking, where they are, and what they want. A voice gives clues, but it doesn't tell you everything."], ['Pickering', 'And the clues can be wrong.'], ['Higgins', "Yes. Context matters. So does asking."], ['Pickering', 'What do you think, Eliza?'], ['Eliza', 'I reckon people hear what they expect to hear.'], ['Higgins', "Perhaps. That's worth writing down."]],
     voice: [STORY_VOICE.s04h, STORY_VOICE.s04p],
