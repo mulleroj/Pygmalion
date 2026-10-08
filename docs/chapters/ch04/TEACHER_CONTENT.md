@@ -30,7 +30,7 @@ Eliza's line “It rained on the way here, but today the sky is clearing.” con
 
 ## 5. LC11 Teacher Notes
 
-The three samples and stable answer IDs are documented in `STATE_AND_BRANCHING.md`: sample 1 opens, sample 2 continues, sample 3 closes. Before a sample's first attempt, do not expose its transcript or answer. After that attempt, the learner may explicitly request replay and transcript/support. Support is accessible and carries no penalty. Correct answers persist; an incorrect answer may be tried again. LC11 adds no Pronunciation, Confidence, Independence or score.
+The three samples and stable answer IDs are documented in `STATE_AND_BRANCHING.md`: sample 1 opens, sample 2 continues, sample 3 closes. For each sample, transcript support is available before the first attempt, while the canonical transcript stays hidden until the learner requests it. A learner need not guess or attempt playback to access support. It works with Sound On and Sound Off and carries no penalty or reward. Correct answers persist; an incorrect answer may be tried again. LC11 adds no Pronunciation, Confidence, Independence or score.
 
 ## 6. Decisions and signals
 

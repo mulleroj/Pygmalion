@@ -548,7 +548,7 @@ function renderLc11(scene) {
       ${renderAudioControl({ ...sample, label: `Replay sample ${index + 1}`, ariaLabel: `Replay LC11 sample ${index + 1}, spoken by ${sample.speaker}` }, 'challenge')}
       <div class="answer-stack">${scene.challenge.options.map(({ category, label }) => `<button class="answer-button" type="button" data-action="answer-lc11" data-sample="${sample.id}" data-answer="${prefix}${category}">${escapeHtml(label)}</button>`).join('')}</div>
       ${attempted && !challenge.answers[sample.id].correct ? '<p class="lc11-feedback" role="status">That turn may serve a different purpose. Listen again, or open transcript support.</p>' : ''}
-      ${attempted && !supported ? `<button class="text-button" type="button" data-action="open-lc11-support" data-sample="${sample.id}">Open transcript support for sample ${index + 1}</button>` : ''}
+      ${!supported ? `<button class="text-button" type="button" data-action="open-lc11-support" data-sample="${sample.id}">Open transcript support for sample ${index + 1}</button>` : ''}
       ${supported ? `<p class="lc11-transcript"><strong>Transcript:</strong> “${escapeHtml(sample.transcript)}”</p>` : ''}
     </article>
   </section>`;

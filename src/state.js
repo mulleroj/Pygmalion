@@ -580,7 +580,7 @@ export function recordLc11Answer(state, sampleId, answerId) {
 export function markLc11SupportUsed(state, sampleId) {
   const challenge = state.challenges.lc11;
   const sampleExists = CH04_SCENE_02.challenge.samples.some(({ id }) => id === sampleId);
-  if (state.scene !== CH04_SCENE_02.id || !sampleExists || !challenge.answers[sampleId] ||
+  if (state.scene !== CH04_SCENE_02.id || !sampleExists ||
       challenge.supportSamples.includes(sampleId)) return state;
   return {
     ...state,

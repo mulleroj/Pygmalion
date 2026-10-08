@@ -57,7 +57,7 @@ Eliza's weather sentence is an original story line. Its `/eɪ/` sound in “rain
 
 ### LC11 — Reading the conversational turn
 
-LC11 has three samples, presented one at a time. For each, classify the conversational function as opening, continuing or closing. The stable sample IDs, answer IDs and key are specified in `STATE_AND_BRANCHING.md`. Do not display sample transcript before that sample's first attempt. After a first attempt, learners may explicitly request replay or transcript/support; support carries no penalty. Replay remains available. Each correct sample is retained; an incorrect response can be tried again. No score or development signal is awarded by the challenge.
+LC11 has three samples, presented one at a time. For each, classify the conversational function as opening, continuing or closing. The stable sample IDs, answer IDs and key are specified in `STATE_AND_BRANCHING.md`. For every sample, learners may explicitly request transcript support before their first attempt; the canonical transcript stays hidden until requested. No guess or playback attempt is required to access support. Support is available with Sound On and Sound Off and has no penalty or reward. Replay remains available. Each correct sample is retained; an incorrect response can be tried again. No score or development signal is awarded by the challenge.
 
 After LC11, the player may choose one of the two equally valid local follow-up replies specified in `STATE_AND_BRANCHING.md`, or continue without choosing. This application choice is optional, does not branch the story, and cannot block Continue.
 

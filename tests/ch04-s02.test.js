@@ -90,15 +90,28 @@ test('LC11 rejects unknown sample IDs and answers from another sample', () => {
   assert.equal(state.challenges.lc11.attempts, 0);
 });
 
-test('LC11 first attempt is unsupported and transcript support is sample-specific', () => {
-  let state = ready();
-  assert.equal(markLc11SupportUsed(state, 'lc11_sample_01'), state);
-  state = recordLc11Answer(state, 'lc11_sample_01', 'lc11_01_closing');
-  assert.equal(state.challenges.lc11.answers.lc11_sample_01.correct, false);
-  const supported = markLc11SupportUsed(state, 'lc11_sample_01');
-  assert.deepEqual(supported.challenges.lc11.supportSamples, ['lc11_sample_01']);
-  assert.equal(markLc11SupportUsed(supported, 'lc11_sample_01'), supported);
-  assert.equal(supported.challenges.lc11.answers.lc11_sample_02, undefined);
+test('LC11 pre-answer transcript support is available per sample and leaves answers, attempts and signals unchanged', () => {
+  for (const soundEnabled of [false, true]) {
+    let state = { ...ready(), soundEnabled };
+    const baselineSignals = [state.pronunciation, state.confidence, state.independence];
+    for (const [index, sample] of CH04_SCENE_02.challenge.samples.entries()) {
+      const before = state;
+      const attemptsBeforeSupport = state.challenges.lc11.attempts;
+      state = markLc11SupportUsed(state, sample.id);
+      assert.notEqual(state, before, `${sample.id} can request support before answering with sound ${soundEnabled ? 'on' : 'off'}`);
+      assert.deepEqual(state.challenges.lc11.supportSamples, CH04_SCENE_02.challenge.samples.slice(0, index + 1).map(({ id }) => id));
+      assert.equal(state.challenges.lc11.answers[sample.id], undefined);
+      assert.equal(state.challenges.lc11.attempts, attemptsBeforeSupport);
+      assert.deepEqual([state.pronunciation, state.confidence, state.independence], baselineSignals);
+      assert.equal(state.soundEnabled, soundEnabled);
+      assert.equal(state.challenges.lc11.completed, false);
+      assert.equal(state.applied_events.includes('ch04_lc11_complete'), false);
+      assert.equal(markLc11SupportUsed(state, sample.id), state, 'support request is idempotent');
+      state = recordLc11Answer(state, sample.id, sample.answer);
+    }
+    assert.equal(state.challenges.lc11.completed, true);
+    assert.equal(state.applied_events.filter((id) => id === 'ch04_lc11_complete').length, 1);
+  }
 });
 
 test('LC11 permits replay without writing learner state', () => {
@@ -129,8 +142,10 @@ test('LC11 completion is idempotent and changes no development signals', () => {
 });
 
 test('LC11 answers, attempts, support and completion survive a local-storage round trip', () => {
-  let state = recordLc11Answer(ready(), 'lc11_sample_01', 'lc11_01_closing');
-  state = markLc11SupportUsed(state, 'lc11_sample_01');
+  let state = markLc11SupportUsed(ready(), 'lc11_sample_01');
+  assert.equal(state.challenges.lc11.answers.lc11_sample_01, undefined);
+  assert.equal(state.challenges.lc11.attempts, 0);
+  state = recordLc11Answer(state, 'lc11_sample_01', 'lc11_01_closing');
   state = recordLc11Answer(state, 'lc11_sample_01', 'lc11_01_opening');
   const store = new Map();
   saveState(state, { getItem: (key) => store.get(key), setItem: (key, value) => store.set(key, value) });
@@ -138,6 +153,19 @@ test('LC11 answers, attempts, support and completion survive a local-storage rou
   assert.equal(state.challenges.lc11.answers.lc11_sample_01.correct, true);
   assert.equal(state.challenges.lc11.attempts, 2);
   assert.deepEqual(state.challenges.lc11.supportSamples, ['lc11_sample_01']);
+});
+
+test('LC11 transcript support before answering persists through restored challenge state', () => {
+  const original = ready();
+  const baselineSignals = [original.pronunciation, original.confidence, original.independence];
+  let state = markLc11SupportUsed(original, 'lc11_sample_01');
+  const store = new Map();
+  saveState(state, { getItem: (key) => store.get(key), setItem: (key, value) => store.set(key, value) });
+  state = loadState({ getItem: (key) => store.get(key), setItem() {} });
+  assert.deepEqual(state.challenges.lc11.supportSamples, ['lc11_sample_01']);
+  assert.equal(state.challenges.lc11.answers.lc11_sample_01, undefined);
+  assert.equal(state.challenges.lc11.attempts, 0);
+  assert.deepEqual([state.pronunciation, state.confidence, state.independence], baselineSignals);
 });
 
 test('LC11 transcript support remains available after a correct first attempt', () => {
@@ -413,7 +441,7 @@ test('all eight downloaded files have ID3 metadata and a valid MPEG audio frame 
   }
 });
 
-test('browser view keeps story voice optional and reveals LC11 transcript only after that sample attempt', async (t) => {
+test('browser view keeps story voice optional and reveals LC11 transcript only after explicit pre-answer support request', async (t) => {
   const names = ['document', 'window', 'localStorage', 'Audio'];
   const originals = Object.fromEntries(names.map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; });
@@ -442,20 +470,47 @@ test('browser view keeps story voice optional and reveals LC11 transcript only a
   assert.match(html, /It rained on the way here, but today the sky is clearing\.[\s\S]*?Replay Eliza/);
   assert.doesNotMatch(html, /Miss Doolittle, have you been in London long\?/);
   assert.equal((html.match(/data-action="play-voice"/g) || []).length, 3);
-  await click('answer-lc11', { sample: 'lc11_sample_01', answer: 'lc11_01_closing' });
-  html = node('#app').innerHTML;
   assert.match(html, /Open transcript support for sample 1/);
   assert.doesNotMatch(html, /Transcript:<\/strong> “Miss Doolittle/);
+  assert.equal(saved.includes('"attempts":0'), true, 'render exposes support before any answer attempt');
+  const initialSignals = JSON.parse(saved);
   await click('open-lc11-support', { sample: 'lc11_sample_01' });
   html = node('#app').innerHTML;
   assert.match(html, /Transcript:<\/strong> “Miss Doolittle, have you been in London long\?/);
-  assert.equal(saved.includes('ch04_lc11_complete'), false);
+  assert.equal((html.match(/data-action="answer-lc11"/g) || []).length, 3, 'revealed support leaves every answer available');
+  const preAnswerSupported = JSON.parse(saved);
+  assert.equal(preAnswerSupported.challenges.lc11.attempts, 0);
+  assert.equal(preAnswerSupported.challenges.lc11.answers.lc11_sample_01, undefined);
+  assert.equal(preAnswerSupported.challenges.lc11.completed, false);
+  assert.equal(preAnswerSupported.applied_events.includes('ch04_lc11_complete'), false);
+  assert.deepEqual([preAnswerSupported.pronunciation, preAnswerSupported.confidence, preAnswerSupported.independence], [initialSignals.pronunciation, initialSignals.confidence, initialSignals.independence]);
+  assert.deepEqual(played, [], 'support does not trigger audio playback');
+  await click('answer-lc11', { sample: 'lc11_sample_01', answer: 'lc11_01_closing' });
+  html = node('#app').innerHTML;
+  assert.match(html, /Transcript:<\/strong> “Miss Doolittle, have you been in London long\?/);
+  const supportedState = JSON.parse(saved);
+  assert.equal(supportedState.challenges.lc11.attempts, 1, 'only the answer increments attempts');
+  assert.deepEqual([supportedState.pronunciation, supportedState.confidence, supportedState.independence], [initialSignals.pronunciation, initialSignals.confidence, initialSignals.independence]);
+  assert.equal(supportedState.challenges.lc11.answers.lc11_sample_01.correct, false, 'support does not replace the attempted answer');
   await click('answer-lc11', { sample: 'lc11_sample_01', answer: 'lc11_01_opening' });
   html = node('#app').innerHTML;
-  assert.match(html, /Replay LC11 sample 1, spoken by Clarice/);
+  assert.match(html, /Open transcript support for sample 2/);
+  await click('open-lc11-support', { sample: 'lc11_sample_02' });
+  html = node('#app').innerHTML;
+  assert.match(html, /Transcript:<\/strong> “I see\. And what do you think of the weather today\?/);
+  assert.equal(JSON.parse(saved).challenges.lc11.answers.lc11_sample_02, undefined, 'pre-answer support does not choose an answer');
+  assert.deepEqual(played, [], 'sample 2 support does not trigger audio playback');
   await click('answer-lc11', { sample: 'lc11_sample_02', answer: 'lc11_02_continuing' });
   html = node('#app').innerHTML;
-  assert.match(html, /Open transcript support for sample 2/);
+  assert.match(html, /Open transcript support for sample 3/);
+  await click('open-lc11-support', { sample: 'lc11_sample_03' });
+  html = node('#app').innerHTML;
+  assert.match(html, /Transcript:<\/strong> “Well, it was lovely speaking with you\./);
+  assert.deepEqual(played, [], 'sample 3 support does not trigger audio playback');
+  await click('answer-lc11', { sample: 'lc11_sample_03', answer: 'lc11_03_closing' });
+  html = node('#app').innerHTML;
+  assert.match(html, /LC11 complete/);
+  assert.match(html, /Continue to the next scene/);
   await click('open-teacher');
   const beforeTeacherAudio = saved;
   assert.match(node('#teacher-content').innerHTML, /teacher-play-reference/);
