@@ -109,8 +109,9 @@ test('S01 layers full-body Higgins left and full-body Pickering right in the exh
   assert.equal(runtime[25], 6, 'runtime cutout keeps its RGBA alpha channel');
 
   const css = fs.readFileSync(path.join(root, 'styles.css'), 'utf8');
-  assert.match(css, /\.ch05-exhibition-hall-opening \.support-higgins\s*\{\s*left:\s*20%;\s*bottom:\s*8%;\s*height:\s*50%;/);
-  assert.match(css, /\.ch05-exhibition-hall-opening \.support-pickering\s*\{\s*left:\s*80%;\s*bottom:\s*8%;\s*height:\s*52%;/);
+  assert.match(css, /\.ch05-exhibition-hall-opening \.support-higgins\s*\{\s*left:\s*20%;\s*bottom:\s*5%;\s*height:\s*72%;/);
+  assert.match(css, /\.ch05-exhibition-hall-opening \.support-pickering\s*\{\s*left:\s*80%;\s*bottom:\s*5%;\s*height:\s*74%;/);
+  assert.match(css, /\.ch05-exhibition-hall-opening \.art-eliza img\s*\{[^}]*height:\s*86%;/);
   assert.match(css, /\.ch05-exhibition-hall-opening \.supporting-character\s*\{[^}]*object-fit:\s*contain/);
 });
 
@@ -120,7 +121,7 @@ test('S01 Teacher Mode explains open register choice and remains read-only; visu
   assert.match(CH05_S01_TEACHER_SECTIONS.flat().join(' '), /no single correct answer/i);
   assert.equal(CH05_SCENE_01.visualFallback, false);
   assert.equal(CH05_SCENE_01.background.src.endsWith('ch05_exhibition_hall.webp'), true);
-  assert.equal(CH05_SCENE_01.eliza.src, '');
+  assert.equal(CH05_SCENE_01.eliza.src, './assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png');
 });
 
 test('S01 AM43 is the sole inline Organiser replay with approved provenance and valid audio', () => {

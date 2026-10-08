@@ -7,7 +7,7 @@ export const CH05_SCENE_01 = {
   composition: 'ch05-exhibition-hall-opening', visualFallback: false,
   background: { src: './assets/images/locations/ch05/ch05_exhibition_hall.webp', alt: 'Flower exhibition in Lambeth Public Rooms.' },
   plate: { src: './assets/images/locations/ch05/ch05_exhibition_hall.webp', alt: 'Flower exhibition in Lambeth Public Rooms.' },
-  eliza: { src: '', alt: '' },
+  eliza: { src: './assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png', alt: 'Eliza stands confidently at the flower exhibition.' },
   supporting: [
     cutout('./assets/images/characters/higgins/runtime/higgins_master_cutout.png', 'Henry Higgins stands among the guests.', 'higgins'),
     cutout('./assets/images/characters/pickering/runtime/pickering_full-body_master_cutout.png', 'Colonel Pickering stands at the right of the flower display, holding his hat.', 'pickering')

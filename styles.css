@@ -65,8 +65,9 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch05-exhibition-hall, .ch05-exhibition-hall-opening { min-height: 20rem; }
 .ch05-exhibition-hall-opening .art-support, .ch05-exhibition-hall-opening .art-eliza { display: block; padding: 0; opacity: 1; }
 .ch05-exhibition-hall-opening .supporting-character { position: absolute; width: auto; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); }
-.ch05-exhibition-hall-opening .support-higgins { left: 20%; bottom: 8%; height: 50%; z-index: 1; }
-.ch05-exhibition-hall-opening .support-pickering { left: 80%; bottom: 8%; height: 52%; z-index: 1; }
+.ch05-exhibition-hall-opening .support-higgins { left: 20%; bottom: 5%; height: 72%; z-index: 1; filter: saturate(.94) contrast(1.02) drop-shadow(0 4px 5px rgba(34, 27, 24, .28)); }
+.ch05-exhibition-hall-opening .support-pickering { left: 80%; bottom: 5%; height: 74%; z-index: 1; filter: saturate(.94) drop-shadow(0 4px 5px rgba(34, 27, 24, .28)); }
+.ch05-exhibition-hall-opening .art-eliza img { position: absolute; left: 50%; bottom: 1%; height: 86%; max-width: none; max-height: none; width: auto; object-fit: contain; transform: translateX(-50%); z-index: 3; filter: saturate(.94) drop-shadow(0 4px 5px rgba(34, 27, 24, .28)); }
 .ch05-side-room { min-height: 20rem; }
 .ch05-side-room .art-support, .ch05-side-room .art-eliza { display: block; padding: 0; opacity: 1; }
 .ch05-side-room .art-background img { object-position: 82% center; }
@@ -231,6 +232,9 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch01-notebook .support-higgins { left: 62%; bottom: 7%; height: 52%; }
   .ch01-notebook .support-pickering { left: 76%; bottom: 7%; height: 48%; }
   .ch01-notebook .scene-prop { top: 3%; right: 3%; width: 24%; }
+  .ch05-exhibition-hall-opening .support-higgins { left: 17%; bottom: 3%; height: 76%; }
+  .ch05-exhibition-hall-opening .support-pickering { left: 83%; bottom: 3%; height: 78%; }
+  .ch05-exhibition-hall-opening .art-eliza img { left: 50%; bottom: 0; height: 89%; }
   .story-copy { padding: clamp(1.25rem, 5vw, 2.4rem); }
 }
 
@@ -243,6 +247,9 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 }
 
 @media (max-width: 560px) {
+  .ch05-exhibition-hall-opening .support-higgins { left: 16%; bottom: 2%; height: 73%; }
+  .ch05-exhibition-hall-opening .support-pickering { left: 84%; bottom: 2%; height: 75%; }
+  .ch05-exhibition-hall-opening .art-eliza img { left: 50%; bottom: 0; height: 85%; }
   .ch01-notebook.storybook-art { min-height: 390px; height: 390px; }
   .ch01-notebook .art-background img { object-position: 57% center; }
   .ch01-notebook .art-eliza img { left: 36%; bottom: 3%; height: 74%; }
