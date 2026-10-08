@@ -224,9 +224,9 @@ export const CH06_SCENE_05 = {
   id: 'ch06_s05', number: 5, chapter: 'VI', chapterTitle: 'Her Own Voice', sceneCount: 5,
   title: 'The Voice She Chooses', kicker: 'Chapter VI · Her Own Voice',
   location: 'Eliza’s chosen future', composition: 'ch06-the-voice-she-chooses', visualFallback: false, voice: [],
-  // S05 remains visually neutral until its approved final illustration is produced.
-  background: CH06_SCENE_03.background,
-  plate: CH06_SCENE_03.plate,
+  // Neutral existing scene art is used only when no valid saved direction exists.
+  background: CH06_SCENE_04.background,
+  plate: CH06_SCENE_04.plate,
   eliza: CH06_SCENE_03.eliza,
   supporting: [], props: [],
   storyBeats: [],
@@ -239,6 +239,26 @@ export const CH06_SCENE_05 = {
     'HOW I CHOSE TO SAY IT'
   ],
   nextScene: 'book-complete'
+};
+
+export const CH06_S05_VISUALS = {
+  social_success: {
+    background: { src: './assets/images/locations/ch06/ch06_final_public_participation.webp', alt: 'A modest Edwardian community meeting room with a shared table and chairs.' },
+    compositionVariant: 'public-participation'
+  },
+  independent_voice: {
+    background: { src: './assets/images/locations/ch06/ch06_final_independent_voice.webp', alt: 'A modest Edwardian work space with flowers, a ledger, keys and a letter.' },
+    compositionVariant: 'independent-voice'
+  },
+  integrated_identity: {
+    background: { src: './assets/images/locations/ch06/ch06_final_integrated_identity.webp', alt: 'Two modest adjoining work and community rooms connected by a doorway.' },
+    compositionVariant: 'integrated-identity'
+  }
+};
+
+export const CH06_S05_VISUAL_FALLBACK = {
+  background: CH06_SCENE_04.background,
+  compositionVariant: 'neutral'
 };
 
 export const CH06_S05_TEACHER_SECTIONS = [
