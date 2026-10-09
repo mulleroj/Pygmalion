@@ -1,0 +1,86 @@
+# Chapter VI Visual Plan
+
+Status: S01–S05 visuals approved and integrated. Preserve canonical Eliza identity and approved stage `Her Own Voice`; use approved Higgins, Pickering and Mrs Pearce art where needed. Do not create unnecessary character variants. Chapter VI's visual change is agency, framing and environment, not a makeover or a new “proper” identity.
+
+## S01 — The Morning After (approved visual)
+
+- Approved background: Candidate B, generated as `exec-496f8c96-01f6-42d8-806b-f6bad7e6b096` (1672 × 941 px).
+- Canonical runtime asset: `assets/images/locations/ch06/ch06_morning_after_room.webp`, converted from the approved PNG to WebP at quality 92 with dimensions unchanged.
+- Preserve the cool morning window light, table and letters, adjoining workroom doorway and visible floor. The scene uses the same background in every route; the generated plate contains no people.
+- Reuse Eliza `assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png`; Higgins `assets/images/characters/higgins/runtime/higgins_master_cutout.png`; Pickering `assets/images/characters/pickering/runtime/pickering_full-body_master_cutout.png`; and Mrs Pearce `assets/images/characters/mrs-pearce/runtime/mrs-pearce_practical-questioning_cutout.png`. Character binaries are referenced in place, not duplicated.
+- `next_contact` selects only the first-contact composition: Eliza at the right with Higgins, Pickering or Mrs Pearce at the left. Eliza uses the larger scale; Higgins remains secondary. Missing or unknown `next_contact` uses the same plate with Eliza alone at left-of-centre; it adds no companion and does not change story state.
+- The art panel stays at 1672:941 on wide layouts. At widths up to 1023 px the story spread stacks; up to 599 px the room uses a 1.35 crop biased slightly toward the adjoining workroom, with companions moved inward and both figures scaled to fit. The neutral route remains a deliberate solo composition. Verify future art or crop changes against the letters, doorway, full-body feet and dialogue controls.
+
+## S02 — The Question in the Mirror (approved visual)
+
+- Approved background: Candidate B, generation `exec-9ee725cf-3161-4082-af45-be320192be59` (1672 × 941 px). Source: `C:/Users/mulle/.codex/generated_images/01a11300-5dc6-70d0-b6c8-a07a03fe2205/exec-9ee725cf-3161-4082-af45-be320192be59.png`.
+- Canonical runtime asset: `assets/images/locations/ch06/ch06_question_in_mirror_room.webp`, converted from the approved PNG to WebP at quality 92 with dimensions unchanged.
+- The approved empty room has a plain wall mirror and small table on the left, a window near centre-left, and open floor on the right. Its reflection contains only the empty room. Preserve the image without cropping at wide sizes.
+- Reuse Eliza `assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png` once. Place her right-of-centre, at approximately 69% of the art width, grounded on the floor and oriented left toward the mirror; CSS flips only the displayed cutout to match that orientation. Keep clear lateral distance from the mirror. Do not add a reflected Eliza, a second figure, a before/after composition or a transformation cue.
+- At widths up to 1023 px the story spread stacks. At widths up to 599 px use the 1.35 art crop with a left bias (`object-position: 25% center`) so the mirror remains visible while Eliza stays on the right. Check both the mirror and Eliza together at mobile widths; replay cards remain in the text column below the art.
+
+## S03 — Three Ways Forward (approved visual)
+
+- Approved visual: Candidate A, generation `exec-cd81fea9-cec2-441e-ae35-93bb74562fa7` (1672 × 941 px); source: `C:/Users/mulle/.codex/generated_images/01a11724-393f-7312-b82e-530415b5e3b7/exec-cd81fea9-cec2-441e-ae35-93bb74562fa7.png`.
+- Canonical runtime asset: `assets/images/locations/ch06/ch06_three_ways_forward_room.webp`, converted from the approved PNG to WebP at quality 92 with dimensions and composition unchanged.
+- Reuse the approved Eliza `Her Own Voice / thoughtful` cutout at approximately 68% of the art width. Eliza is the only character; ground her on the visible floor and retain the table, window and open doorway around her.
+- The S01 room intentionally returns here: S01 possibilities arrive from outside; S02 is private self-reflection; S03 brings Eliza back to practical life so she can make the choice herself. Eliza-only framing, S03 content and D12/LC15 distinguish the moment without altering the room plate.
+- Keep D12's three directions equally legitimate. The window and doorway are ordinary architecture, with no route coding, arrows, highlighted props or lighting hierarchy. The background contains no LC15 contextual clues for a public meeting, colleague/community or private adviser.
+- D12 cards retain their opaque readable backgrounds. The art and story controls remain in separate columns on wide screens and stack on smaller screens; Eliza cannot cover the D12 heading, cards, feedback, LC15 controls or no-audio support.
+- At widths up to 1023 px the story spread stacks. At widths up to 599 px use a scene-specific 1.35 crop centered near `48%`, move Eliza inward to about 58% and reduce her to 78% art height. Check Eliza, doorway/window context, full-body visibility and controls at 390, 430, 480, 768 and 1440 px; avoid horizontal overflow and effective clipping.
+
+## S04 — Her Own Statement (approved visual)
+
+- Approved visual: Candidate B, generation `exec-221149dc-8842-4c47-b26a-a0b4f780daf3` (1672 × 941 px).
+- Canonical runtime asset: `assets/images/locations/ch06/ch06_her_own_statement_room.webp`, converted from the approved PNG to WebP at quality 92 with dimensions and composition unchanged.
+- Reuse the approved `Her Own Voice / thoughtful` cutout at approximately 68% of the art width. Eliza stands alone on the wooden floor, fully visible in the calm central/right part of the room, away from the fireplace and table. No companion, audience, reflection or duplicate is shown.
+- Use one identical room plate for all three D12 directions and all three rhetorical shapes. The ordinary window, table, fireplace and room details do not represent a direction or statement shape. The statement controls retain opaque readable backgrounds; the art remains in its own column, separate from the statement, delivery and Continue controls.
+- The Chapter VI visual progression is: S01 possibilities arrive from outside; S02 is private reflection; S03 is where Eliza chooses a future direction; S04 quiets and simplifies the environment so Eliza’s own statement is the focal event. This reduction in visual complexity does not change story canon or grant visual prestige to a route or rhetorical shape.
+- On layouts up to 1023 px the spread stacks. At widths up to 599 px use the S04-specific 1.35 art crop centered at 50%, with Eliza at about 68% and 84% art height. Window and fireplace may crop; keep Eliza, calm wall and enough room context, with no horizontal overflow or overlap with story controls.
+
+| Scene | Composition / environment | Character and prop needs |
+|---|---|---|
+| S01 — The Morning After | One Wimpole Street morning room adjoining the workroom; quiet light and one table | Reuse Eliza `Her Own Voice`, reflective expression; letters, notes, invitations, pencil. First-contact companion art can be reused. |
+| S02 — The Question in the Mirror | Approved quiet private room; plain wall mirror at left, window near centre-left, open space at right; mirror supports self-recognition, not beauty framing | Reuse the same Eliza thoughtful cutout once at right-of-centre, facing the mirror; no reflected person, duplicate or transformation image. |
+| S03 — Three Ways Forward | Approved S01 morning-room echo with ordinary London view and adjoining workroom; no choice-coded props or visual ranking | Same approved Eliza thoughtful cutout alone at about 68%; no companion or LC15 context character. |
+| S04 — Her Own Statement | One quiet, modest room plate used across all `chapter6_direction` values; the environment simplifies so Eliza’s statement is the focal event | Reuse the approved Eliza thoughtful cutout alone at about 68%. Keep the room and character composition unchanged across rhetorical shapes and directions. |
+| S05 PUBLIC PARTICIPATION (`social_success`) | Modest public/professional/community room where Eliza participates and directs a practical exchange | Eliza in existing approved clothing/art where possible; meeting table, notes, flowers or organiser's programme. Higgins must not dominate foreground. |
+| S05 independent_voice | Modest work area with clear practical agency | Flowers, ledger, keys, paid-work letter and housing note; avoid luxury symbols that equate independence with wealth. |
+| S05 integrated_identity | Connected community room/doorway between meeting and flower-work space | Flowers plus meeting notes; show movement between contexts without depicting poverty as authentic and cultivated speech as false. |
+
+Prefer S01/S03 background reuse and one canonical Eliza master across the chapter. Visual branch differences should come mainly from setting and props. All crucial information remains in text, never color alone. Keep approved responsive crops and character placements consistent with the S05 implementation details below.
+
+## S05 — The Voice She Chooses (approved final visuals)
+
+The three backgrounds below were human-approved for runtime. Direction selects the environment; `final_statement_shape` never selects or changes the image. A different environment means a different chosen future, not a different ending quality. All three use the same shared final line, summary structure, card styling and Finish treatment. Each composition reuses the approved `Her Own Voice / thoughtful` Eliza cutout once, at the same full-body scale, without companions.
+
+### PUBLIC PARTICIPATION (`social_success`)
+
+- Status: HUMAN APPROVED.
+- Generation: `exec-95665178-284c-4620-ad05-336ece0c53eb`.
+- Approved source: `C:/Users/mulle/.codex/generated_images/01a1181e-1805-7232-8fe5-791a51e8508f/exec-95665178-284c-4620-ad05-336ece0c53eb.png` (1672 × 941 px).
+- Runtime asset: `assets/images/locations/ch06/ch06_final_public_participation.webp` (1672 × 941 px, WebP quality 92).
+- Place Eliza at 68% of the art width, 86% art height, grounded on the open floor slightly right of centre. Keep the shared table, several chairs and the modest meeting-room identity visible. She is a participant, not a lecturer or performer.
+- At widths up to 1023 px, stack the spread without changing the image. At widths up to 599 px, use the 1.35 crop with `object-position: 44% center` and place Eliza at 76% of the art width, 78% art height; retain enough of the table and chairs to identify the meeting room.
+
+### INDEPENDENT VOICE (`independent_voice`)
+
+- Status: HUMAN APPROVED.
+- Generation: `exec-32057464-c158-43ac-8f35-215678c9091d`.
+- Approved source: `C:/Users/mulle/.codex/generated_images/01a1181e-1805-7232-8fe5-791a51e8508f/exec-32057464-c158-43ac-8f35-215678c9091d.png` (1672 × 941 px).
+- Runtime asset: `assets/images/locations/ch06/ch06_final_independent_voice.webp` (1672 × 941 px, WebP quality 92).
+- Place Eliza at 68% of the art width, 86% art height, grounded on the clear floor slightly right of centre. Keep the flowers, ledger, keys, letter and practical worktable visible; Eliza's agency stays central rather than presenting her as decoration beside the flowers.
+- At widths up to 1023 px, stack the spread without changing the image. At widths up to 599 px, use the 1.35 crop with `object-position: 44% center` and place Eliza at 76% of the art width, 78% art height; preserve the worktable and ledger/flower cues.
+
+### INTEGRATED IDENTITY (`integrated_identity`)
+
+- Status: HUMAN APPROVED. Replacement C supersedes rejected generation `exec-d2160672-454d-4257-9ea2-3ebc6b524be9`; the rejected image is not imported.
+- Generation: `exec-28a1cda0-ab49-4fd1-8d02-03c483a86b01`.
+- Approved source: `C:/Users/mulle/.codex/generated_images/01a1181e-1805-7232-8fe5-791a51e8508f/exec-28a1cda0-ab49-4fd1-8d02-03c483a86b01.png` (1672 × 941 px).
+- Runtime asset: `assets/images/locations/ch06/ch06_final_integrated_identity.webp` (1672 × 941 px, WebP quality 92).
+- Place Eliza at 70% of the art width, 86% art height, grounded just right of the threshold and outside the central doorway axis. Keep the doorway clearly visible; the image represents movement between contexts by choice, not departure from an inferior room.
+- At widths up to 1023 px, stack the spread without changing the image. At widths up to 599 px, use the 1.35 crop centred at `50%` and place Eliza at 78% of the art width, 78% art height; retain Eliza, the doorway and enough of both rooms.
+
+### Missing or unknown direction fallback
+
+When `chapter6_direction` is absent or unknown, do not select or label a branch. Use the existing neutral S04 room plate `assets/images/locations/ch06/ch06_her_own_statement_room.webp` as the smallest neutral fallback. This changes no saved state and does not imply a direction. The S05 summary continues to describe missing history neutrally.

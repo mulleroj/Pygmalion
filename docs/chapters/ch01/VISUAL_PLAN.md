@@ -1,0 +1,257 @@
+# Chapter I Visual Plan – The Flower Girl
+
+Production plan and approved asset mapping. Canonical source images remain locked; the runtime may use transparent presentation derivatives when needed for compositing.
+
+## Visual direction
+
+Chapter I stays in Eliza’s canonical `Flower Girl` phase. The visual arc is not `ugly → beautiful`; it is `spontaneous and socially constrained → skilled, self-aware, and able to choose`. Eliza remains the same 19–22-year-old person in every image: young oval/soft heart-shaped face, lively eyes, light European complexion, dark-blond to light-brown slightly wavy hair, slim young build, and expressive features.
+
+Her clothing is practical, worn Edwardian layering in muted earth colours. She must not look like a dirty poverty caricature or a helpless victim. Do not copy a film likeness, iconic *My Fair Lady* costume, or specific film staging.
+
+## Runtime compositing treatment
+
+The approved WebP sources remain the identity authority. Chapter I runtime presentation uses non-canonical transparent PNG derivatives for character and interaction overlays, removing only the neutral studio/scene rectangle. Eliza’s carried basket remains part of her canonical cutouts; the standalone basket prop is retained as a canonical source/reference but is not rendered as a second photo tile. Runtime CSS adds a restrained contact shadow, atmospheric color blend, and explicit foreground layering over the canonical rain/shop plates.
+
+## Expression and character assets
+
+The five requested expressions are planned as five distinct exported variants because gaze, posture, and silhouette carry scene information. They may share one approved base character design and turnaround; production should not create five unrelated Elizas. `Alert` and `listening` may share the same base render with different gaze/crop treatment if the final composition remains clear.
+
+### Approved canonical Flower Girl master
+
+- Asset ID: `ELZ-FG-MASTER`
+- Canonical filename: `eliza_flower-girl_master.webp`
+- Scene use: all Chapter I scenes as the canonical Flower Girl identity reference
+- Type: canonical character master
+- Runtime path: `assets/images/characters/eliza/eliza_flower-girl_master.webp`
+- Source path: `assets/images/characters/eliza/source/eliza_flower-girl_master.png`
+- Status: `CANONICAL / LOCKED`
+- Approval status: `APPROVED`
+
+### V01 – Eliza alert
+
+- Asset ID: `ELZ-FG-ALERT`
+- Canonical filename: `eliza_flower-girl_alert.webp`
+- Scene use: `ch01_s01`, opening sales pitch
+- Type: character expression variant
+- Aspect/use case: half-body, portrait-safe, looking across the market with one hand near the basket
+- Continuity notes: spontaneous posture, quick eyes, practical sales energy; Flower Girl clothing and basket visible
+- Runtime path: `assets/images/characters/eliza/eliza_flower-girl_alert.webp`
+- Source path: `assets/images/characters/eliza/source/eliza_flower-girl_alert.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P0 – required for vertical slice**
+
+### V02 – Eliza defiant
+
+- Asset ID: `ELZ-FG-DEFIANT`
+- Canonical filename: `eliza_flower-girl_defiant.webp`
+- Scene use: `ch01_s02`, fallen flowers and D01
+- Type: character expression variant
+- Aspect/use case: half-body or three-quarter, angled toward Freddy, protective hand near fallen flowers
+- Continuity notes: proud and direct, not aggressive caricature; same face, hair, age, and clothing as V01
+- Runtime path: `assets/images/characters/eliza/eliza_flower-girl_defiant.webp`
+- Source path: `assets/images/characters/eliza/source/eliza_flower-girl_defiant.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P0 – required for vertical slice**
+
+### V03 – Eliza guarded
+
+- Asset ID: `ELZ-FG-GUARDED`
+- Canonical filename: `eliza_flower-girl_guarded.webp`
+- Scene use: `ch01_s03`, Higgins’ notebook and D02
+- Type: character expression variant
+- Aspect/use case: medium portrait, shoulders slightly closed, eyes on Higgins’ notebook
+- Continuity notes: defensive because she is being observed; never fearful, passive, or unintelligent
+- Runtime path: `assets/images/characters/eliza/eliza_flower-girl_guarded.webp`
+- Source path: `assets/images/characters/eliza/source/eliza_flower-girl_guarded.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P0 – required for vertical slice**
+
+### V04 – Eliza listening
+
+- Asset ID: `ELZ-FG-LISTENING`
+- Canonical filename: `eliza_flower-girl_listening.webp`
+- Scene use: `ch01_s04`, LC02
+- Type: character expression variant
+- Aspect/use case: medium portrait, head turned toward an off-screen sample, clear attentive gaze
+- Continuity notes: retain Flower Girl styling; expression shows concentration, not submission
+- Runtime path: `assets/images/characters/eliza/eliza_flower-girl_listening.webp`
+- Source path: `assets/images/characters/eliza/source/eliza_flower-girl_listening.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P0 – required for vertical slice**
+
+### V05 – Eliza thoughtful
+
+- Asset ID: `ELZ-FG-THOUGHTFUL`
+- Canonical filename: `eliza_flower-girl_thoughtful.webp`
+- Scene use: `ch01_s05`, flower-shop window and D03
+- Type: character expression variant
+- Aspect/use case: three-quarter portrait beside warm window light, looking toward the opportunity
+- Continuity notes: reflective and purposeful; no makeover and no sudden Stage 2 clothing
+- Runtime path: `assets/images/characters/eliza/eliza_flower-girl_thoughtful.webp`
+- Source path: `assets/images/characters/eliza/source/eliza_flower-girl_thoughtful.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P0 – required for vertical slice**
+
+## Environments
+
+### V06 – Covent Garden rain wide
+
+- Asset ID: `LOC-COVENT-GARDEN-RAIN-WIDE`
+- Canonical filename: `covent-garden-rain-wide.webp`
+- Scene use: `ch01_s01` establishing view; optional transition into `ch01_s02`
+- Type: location background
+- Aspect/use case: wide landscape scene background with wet paving, market movement, portico edge, and rain depth
+- Continuity notes: original composition; no iconic film recreation; enough negative space for readable dialogue
+- Runtime path: `assets/images/locations/ch01/covent-garden-rain-wide.webp`
+- Source path: `assets/images/locations/ch01/source/covent-garden-rain-wide.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P0 – required for vertical slice**
+
+### V07 – Under the portico
+
+- Asset ID: `LOC-PORTICO-RAIN`
+- Canonical filename: `portico-rain.webp`
+- Scene use: `ch01_s01`–`ch01_s04`
+- Type: location background / reusable scene plate
+- Aspect/use case: medium-wide playable stage with sheltered foreground and visible rain beyond
+- Continuity notes: must support the basket, fallen flowers, notebook, and three-character blocking; lighting can shift from afternoon to dusk
+- Runtime path: `assets/images/locations/ch01/portico-rain.webp`
+- Source path: `assets/images/locations/ch01/source/portico-rain.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P0 – required for vertical slice**
+
+### V08 – Flower-shop window at dusk
+
+- Asset ID: `LOC-FLOWER-SHOP-WINDOW-DUSK`
+- Canonical filename: `flower-shop-window-dusk.webp`
+- Scene use: `ch01_s05`
+- Type: location background
+- Aspect/use case: medium-wide street view with a warm, non-luxury shop window and readable door area
+- Continuity notes: opportunity is shown as access to work, not as a magical class transformation; keep Covent Garden continuity
+- Runtime path: `assets/images/locations/ch01/flower-shop-window-dusk.webp`
+- Source path: `assets/images/locations/ch01/source/flower-shop-window-dusk.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P0 – required for vertical slice**
+
+## Detail assets
+
+### V09 – Flower basket
+
+- Asset ID: `PROP-FLOWER-BASKET-FG`
+- Canonical filename: `flower-basket.webp`
+- Scene use: `ch01_s01`–`ch01_s02`
+- Type: prop / foreground detail
+- Aspect/use case: close detail and character-held prop
+- Continuity notes: practical woven basket, recognisable across scenes; flowers must look sellable, not decorative fantasy props
+- Runtime path: `assets/images/props/ch01/flower-basket.webp`
+- Source path: `assets/images/props/ch01/source/flower-basket.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P0 – required for vertical slice**
+
+### V10 – Fallen flowers
+
+- Asset ID: `PROP-FALLEN-FLOWERS-WET`
+- Canonical filename: `fallen-flowers-wet.webp`
+- Scene use: `ch01_s02`
+- Type: prop / interaction detail
+- Aspect/use case: close detail on wet paving, a few damaged stems and petals
+- Continuity notes: communicates the cost of the accident without slapstick; compatible with D01 options
+- Runtime path: `assets/images/props/ch01/fallen-flowers-wet.webp`
+- Source path: `assets/images/props/ch01/source/fallen-flowers-wet.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P0 – required for vertical slice**
+
+### V11 – Higgins notebook
+
+- Asset ID: `PROP-HIGGINS-NOTEBOOK`
+- Canonical filename: `higgins-notebook.webp`
+- Scene use: `ch01_s03`–`ch01_s04`
+- Type: prop / interaction detail
+- Aspect/use case: close crop showing handwritten observation marks without exposing unreadable pseudo-text as story content
+- Continuity notes: a research notebook, not a magical diagnostic object; the marks describe speech observations, not intelligence scores
+- Runtime path: `assets/images/props/ch01/higgins-notebook.webp`
+- Source path: `assets/images/props/ch01/source/higgins-notebook.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P1 – important detail**
+
+## Supporting character assets
+
+### V12 – Freddy master at the portico
+
+- Asset ID: `CHAR-FREDDY-MASTER`
+- Canonical filename: `freddy_master.webp`
+- Scene use: `ch01_s02` and brief `ch01_s03` presence
+- Type: supporting character figure
+- Aspect/use case: three-quarter standing figure with a readable apologetic/embarrassed pose
+- Continuity notes: original Edwardian everyday clothing; no likeness of a film or stage performer
+- Runtime path: `assets/images/characters/freddy/freddy_master.webp`
+- Source path: `assets/images/characters/freddy/source/freddy_master.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P1 – required for complete scene blocking**
+
+### V13 – Higgins master with notebook
+
+- Asset ID: `CHAR-HIGGINS-MASTER`
+- Canonical filename: `higgins_master.webp`
+- Scene use: `ch01_s03`–`ch01_s04`
+- Type: supporting character figure
+- Aspect/use case: three-quarter figure with notebook, usable in observation and listening compositions
+- Continuity notes: intelligent and self-assured, not a caricature villain; visual authority must not erase Eliza’s agency
+- Runtime path: `assets/images/characters/higgins/higgins_master.webp`
+- Source path: `assets/images/characters/higgins/source/higgins_master.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P1 – required for complete scene blocking**
+
+### V14 – Pickering master arrival
+
+- Asset ID: `CHAR-PICKERING-MASTER`
+- Canonical filename: `pickering_master.webp`
+- Scene use: `ch01_s03`–`ch01_s04`
+- Type: supporting character figure
+- Aspect/use case: three-quarter arrival pose under the portico
+- Continuity notes: respectful listener; visually distinct from Higgins through posture and stillness, not exaggerated costume
+- Runtime path: `assets/images/characters/pickering/pickering_master.webp`
+- Source path: `assets/images/characters/pickering/source/pickering_master.png`
+- Status: `CANONICAL`
+- Approval status: `APPROVED`
+- Production priority: **P1 – required for complete scene blocking**
+
+### V15 – Market background figures
+
+- Asset ID: `CHAR-MARKET-SUPPORTING-GROUP`
+- Scene use: `ch01_s01`, `ch01_s02`, optional `ch01_s05`
+- Type: reusable supporting silhouettes / background figures
+- Aspect/use case: small group layers for market depth; no individual dialogue portrait required
+- Continuity notes: varied age, clothing, and movement; never use background figures to imply that a social group is unintelligent or comic
+- Production priority: **P2 – useful atmosphere layer**
+
+## Asset sharing decision
+
+- Share one approved Eliza identity base, colour treatment, hair design, and Flower Girl costume across V01–V05.
+- Export five scene-readable expression variants because the story needs visible differences between sales attention, defence, guarded observation, listening, and reflection.
+- Reuse V07 as the stage plate for scenes 1–4 with lighting/crop changes rather than creating four nearly identical locations.
+- Reuse V09 and V11 as detail assets across scenes; V10 is a one-scene interaction detail.
+- Keep V12–V14 separate from Eliza so dialogue blocking remains legible, but do not create extra expression libraries in this pass.
+
+## Visual production gate
+
+Before approval, check same-person continuity against `visual-bible-eliza.md`, scene readability at the planned responsive crops, original ownership, accessible alternative descriptions, and the absence of copied film likenesses or iconic *My Fair Lady* staging.
+
+## Planning total
+
+Canonical visual assets: **15** (`ELZ-FG-MASTER`, `V01–V05`, `V06–V14`).
+
+Alternate/reference location candidates: **10**; see `CH01_VISUAL_ASSET_MANIFEST.md`.

@@ -201,7 +201,7 @@ Poznámky mohou propojit Edwardian employment, peníze, gender expectations a p�
 ### 7. Decisions – Teacher Notes
 
 - `D04` zkoumá, jak Eliza žádá o lekce. Všechny tři strategie mohou být účinné; mění `request_strategy` a případné narativní nuance.
-- `D05` zapisuje `confirmed_motivation`; při rozdílu oproti `origin_motivation` také `motivation_shift`, případně `motivation_nuance`. Neexistuje consistency bonus ani penalty.
+- `D05` zapisuje `confirmed_motivation`. V book-first checkpointu S05 (2026-10-01) zachovává `motivation_shift` i `motivation_nuance` beze změny; zapisuje perspektivu, nikoli dosažený výkon. Neexistuje consistency bonus ani penalty.
 
 ### 8. Challenge Key
 
@@ -315,11 +315,13 @@ Společný poslech s replay a transcript support, poté práce ve dvojicích na 
 
 ### 1. Chapter Overview
 
-Eliza použije nově naučený způsob řeči v malém společenském setkání. Zjistí, že perfektní pronunciation nestačí, pokud nerozumí turn-taking, implied meaning nebo účelu situace. Kapitola rozšiřuje její repertoár, ne opravuje její osobnost.
+Eliza přechází od kontrolovaného tréninku k použití řeči v sociálních situacích. S01 otevírá kapitolu pozváním a přípravou; S02 je první skutečné společenské setkání. Její voice-stage je Emerging New Speech: přirozenější rytmus, větší jistota a méně self-conscious articulation při zachování stejné hlasové identity. Kapitola rozšiřuje její repertoár, ne opravuje její osobnost.
 
 ### 2. Learning Goals
 
 - zahájit, držet a ukončit small talk;
+- slyšet, kdy společenský tah otevírá, pokračuje nebo končí rozhovor;
+- rozpoznat, proč další otázka po jasném closing signal nemusí být vhodná;
 - rozeznat literal meaning a intended meaning;
 - použít social repair po nedorozumění;
 - spojit pronunciation s audience awareness;
@@ -327,15 +329,16 @@ Eliza použije nově naučený způsob řeči v malém společenském setkání.
 
 ### 3. Language Focus
 
-- vocabulary: weather, name, guest, joke, quiet, answer, explain;
-- functional language: follow-up question, polite closing, repair and clarification;
+- S02 vocabulary: weather, journey, guest, reading, answer, story;
+- S02 functional language: opening a conversation, follow-up question, polite closing;
+- later Chapter IV functional language: repair and clarification;
 - register: small talk, careful vs spontaneous;
 - discourse: turn-taking, implied meaning, humor;
-- pronunciation: srozumitelnost pod mírným tlakem.
+- pronunciation: srozumitelnost pod mírným tlakem; `/eɪ/` in Eliza's original S02 weather line is a secondary observation, not LC11 assessment.
 
 ### 4. Listening Focus
 
-Žák má slyšet, zda host rozhovor otevírá, drží nebo ukončuje, a kdy je věta literal joke nebo social signal. Teacher Mode rozlišuje hearing intonation od judging personality.
+V LC11 má žák slyšet, zda host rozhovor otevírá, drží nebo ukončuje. Po closing signal může další otázka ignorovat zdvořilý signál druhé osoby. Teacher Mode rozlišuje hearing intonation od judging personality. Elizina věta `It rained on the way here, but today the sky is clearing.` obsahuje `/eɪ/` v `rained`, `way` a `today`; jde o původní story text a vedlejší pozorování, nikoli challenge sample.
 
 ### 5. Key Vocabulary
 
@@ -345,15 +348,18 @@ Eliza použije nově naučený způsob řeči v malém společenském setkání.
 
 Small talk v Edwardian social setting může fungovat jako bezpečný rituál, ale zároveň ukazuje přístup k moci a příslušnosti. Chyba v sociální inference není důkaz hlouposti.
 
+**Teacher-only cultural note — later musical adaptation *My Fair Lady*:** The later musical made Eliza's phonetic training famous through “The rain in Spain stays mainly in the plain.” This is a reference to the later musical adaptation, not text from Shaw's original *Pygmalion*. Our game uses original dialogue, including “It rained on the way here, but today the sky is clearing.” Teachers may compare the examples to notice `/eɪ/`. The quotation is not learner-facing story dialogue and is separate from LC11 and AM36. Its optional Teacher Mode audio is speech only, uses a neutral British narrator (casting pending), and runs through existing foreground audio infrastructure in read-only preview; it does not write learner state or progress.
+
 ### 7. Decisions – Teacher Notes
 
-- `D08` zkoumá plán prvního testu: pečlivý registr, přepínání podle adresáta nebo spontánní začátek. Uloží `first_test_strategy`.
-- `D09` zkoumá social repair po doslovné odpovědi. Všechny varianty jsou legitimní; uloží `recovery_style` a mohou ovlivnit pozdější formulaci.
+- `D08` používá prompt “Where should Eliza begin?” a tři přípravné volby. Stabilní option ID se ukládá pouze do `decisions.D08`; event `ch04_d08_recorded` právě jednou. Volba je non-punitive character choice, žádná není správná ani nesprávná, nemění score/signals a všechny vedou ke stejnému pokračování.
+- `D09` následuje až po LC12 a zaznamenává osobní recovery preference po doslovné interpretaci vtipné personifikace. Všechny tři varianty jsou legitimní, bez answer key a bez development reward. Stabilní hodnota se uloží pouze do `decisions.D09` (`rephrase`, `acknowledge_literal`, `wait_for_cue`) a event `ch04_d09_recorded` se zapíše jednou; žádné paralelní `recovery_style` pole nevzniká.
+- S02 po LC11 může nabídnout volitelnou lokální aplikační odpověď. Obě varianty jsou legitimní, sbíhají se a mohou jednou přidat `Confidence +1`; mikrovolba není LC11 gate, major decision ani S03 gate.
 
 ### 8. Challenge Key
 
-- `LC11`: správně určit, zda signál small talk otevírá, drží nebo ukončuje turn; běžná chyba je položit další otázku po jasném closing signal.
-- `LC12`: správně odlišit literal content od implied joke/meaning v kontextu; vlastní styl opravy nemá answer key.
+- `LC11`: tři stabilní samples; `lc11_sample_01` (“Miss Doolittle, have you been in London long?”) = opening; `lc11_sample_02` (“I see. And what do you think of the weather today?”) = continuing; `lc11_sample_03` (“Well, it was lovely speaking with you.”) = closing. Answer IDs jsou rozepsané v `docs/chapters/ch04/STATE_AND_BRANCHING.md`. Transcript/support zůstává skrytý do prvního pokusu daného sample; poté je explicitně dostupný, bez penalizace. Replay je povolen. Completion event `ch04_lc11_complete` se zapíše jednou po třech správných klasifikacích. LC11 nemění Pronunciation, Confidence, Independence ani score. Dokončení LC11 odemyká explicitní Continue do S03.
+- `LC12`: přesně dva po sobě jdoucí interpretační úkoly, `lc12_literal_meaning` a `lc12_implied_meaning`. Literal key je `literal_city_decided` (“London made a decision about the rain.”); implied key je `implied_rain_joke` (“It has been raining a lot, and the Guest is joking about it.”). Ostatní stabilní možnosti, prompt, support/replay a event kontrakt jsou v `docs/chapters/ch04/STATE_AND_BRANCHING.md`. LC12 testuje porozumění, nikoli D09 recovery styl. Po obou správných odpovědích se jednou zaznamená `ch04_lc12_complete`; bez skóre, signálů nebo automatického přechodu.
 
 ### 9. Discussion Questions
 
@@ -364,7 +370,7 @@ Small talk v Edwardian social setting může fungovat jako bezpečný rituál, a
 
 ### 10. Sensitive Framing
 
-Pronunciation není complete communicative competence. Sociální konvence mohou být nespravedlivé nebo nejasné; hra testuje strategii a porozumění, ne hodnotu člověka.
+Pronunciation není complete communicative competence. Cockney není vadný registr ani důkaz nízké inteligence a upper-class speech není morálně lepší. Sociální konvence mohou být nespravedlivé nebo nejasné; hra zkoumá jejich tlak, ne hodnotu člověka. Eliza získává kontrolu, volbu a srozumitelnost, nikoli vymazání identity.
 
 ### 11. Suggested Classroom Use
 
@@ -374,13 +380,37 @@ Práce ve dvojicích s role-play small talku, potom společný replay `LC12`. Or
 
 | Scene ID | Scene title | Decisions | Challenges | Language focus | Audio moments |
 | --- | --- | --- | --- | --- | --- |
-| `ch04_s01` | The Invitation | `D08` | — | greeting register, audience | `AM33–AM34` |
-| `ch04_s02` | Names and Weather | — | `LC11` | small talk, turn-taking | `AM35–AM36` |
-| `ch04_s03` | The Wrong Answer | `D09` | `LC12` | literal/implied meaning, repair | `AM37–AM38` |
-| `ch04_s04` | After the Laughter | — | — | reflection, feedback | `AM39–AM40` |
+| `ch04_s01` | The Invitation | `D08` | — | preparation, listening, social transfer | `AM34` |
+| `ch04_s02` | Names and Weather | optional local reply | `LC11` | small talk, conversational signals, `/eɪ/` observation | `AM35–AM36` |
+| `ch04_s03` | The Wrong Answer | `D09` after LC12 | `LC12` · 2 interpretation items | literal/implied meaning, pragmatic repair | `AM37–AM38` |
+| `ch04_s04` | After the Laughter | reflection focus | — | reflection, feedback | `AM39` + corridor ambience (`AM40` superseded) |
 | `ch04_s05` | The Walk Home | — | — | register repertoire | `AM41–AM42` |
 
+S03's Guest joke and Eliza's literal reply are original adaptation dialogue. Eliza's pronunciation is successful; the mismatch is pragmatic inference, not accent or intelligence. D09 choices all converge and receive no score or signal. Explicit S03 Continue requires both `ch04_lc12_complete` and `ch04_d09_recorded`, records `ch04_s03_complete` once and moves to S04. Teacher preview of S03 remains read-only: no autoplay, answer/attempt/state/reward writes or scene progression.
+
+S04 — **After the Laughter** is set several minutes later in a side corridor; tea-room voices are muffled behind a closed or partly closed door. Its objective is to distinguish language accuracy from pragmatic understanding and reflect on who controls feedback and communication goals. Clear pronunciation does not guarantee shared meaning; context, audience and implied meaning also matter. Eliza questions who decides what her progress is for. Her recorded reflection focus (`language`, `audience` or `feeling`) is required, non-graded and has no answer key. All three options are legitimate and converge; none changes S05, score, Pronunciation, Confidence or Independence. Preserve `Accent ≠ intelligence`; social conventions are learned and culturally variable, and misunderstanding them is not evidence of lower ability. Discuss: “Who should decide what counts as successful communication?” Optionally ask: “Can feedback be useful without becoming a judgment about the person?” S04 preview is read-only and does not play audio or write reflection/progression state. All S04 dialogue is original project adaptation, not quoted from Shaw or *My Fair Lady*; no musical wording or cultural note is used.
+
+S04 requires `ch04_s03_complete` on entry. First valid reflection selection writes only `reflections.ch04_s04_focus` and appends `ch04_s04_reflection_recorded` once. Explicit Continue is available only after that event; it writes `ch04_s04_complete` once and moves to S05. D09 and prior Confidence do not branch or alter the scene. S04 has no challenge, development increment or hidden reward. Its audio plan uses the new `ch04_side_corridor` ambience identity; the earlier proposed AM40 hallway/distant-guests one-shot is superseded by continuous ambience.
+
+## S05 — The Walk Home
+
+### Objective and teaching points
+
+Students understand code-switching as a communicative repertoire: speakers can adjust how they speak for context without changing who they are. A speaker may choose more careful or more spontaneous speech depending on context; changing register is not the same as pretending to be a different person. Eliza begins to treat speech choices as tools she controls rather than rules imposed on her.
+
+### Equity and discussion
+
+Preserve `Accent ≠ intelligence`. No single accent or register is appropriate for every context, and successful communication does not require giving up linguistic identity. Ask: “When do you change the way you speak, and does that change who you are?” Optional: “Is adapting your speech a skill, a disguise, or can it be both in different situations?”
+
+S05 is narrative closure, not pass/fail, a grade, or a verdict about intelligence or identity. It has no challenge, answer key, score, new decision, reflection write or development increment. `reflections.ch04_s04_focus` stays local to S04. D08 can appear only as a read-only recap from existing learner state; missing D08 omits the card without a fallback write or gate. Teacher preview is read-only and does not play AM41, start AM42, write state or advance.
+
+### Canonical scene navigation
+
+`ch04_s05` — **The Walk Home** is the final Chapter IV scene. It requires `ch04_s04_complete`; explicit Continue writes `ch04_s05_complete` once and transitions to `ch05_s01`. Completion is idempotent, with no auto-transition. Eliza is alone on a quiet evening street; there is no farewell scene. The complete story, D08 echo mapping, audio/visual contracts and locked dialogue are in `docs/chapters/ch04/` and `docs/SCENE_MAP.md`.
+
 ## 8. Chapter V – The Reception
+
+Status: chapter-specific content, state, audio, visual and Teacher Mode details are locked in docs/chapters/ch05/. The scene map is a spine summary; it is not the Chapter V script.
 
 ### 1. Chapter Overview
 
@@ -416,13 +446,16 @@ Událost je vlastní fiktivní adaptace, nikoli mechanická obdoba plesu z `My F
 
 ### 7. Decisions – Teacher Notes
 
-- `D10` zkoumá plán registru pro organizátorku, patrona a kolegyni. Uloží `reception_register_plan`.
-- `D11` zkoumá reakci na Higginsovo a Pickeringovo přivlastnění kreditu. Uloží `credit_response`; strategický odklad není špatná volba.
+- `D10` stores `reception_register_plan`: tailor by role, listen then adjust, or keep a core voice with pragmatic changes. All are valid; no signal/reward.
+- `D11` stores `credit_response`: accept for now, redirect publicly, or ask for a private conversation. Delay is not submission; no choice is scored.
+- `future_question_style` and `next_contact` are open choices without a moral key. The temporary S02 first-responder choice is not persisted.
+- Only explicit S05 Continue grants Independence +1, once and regardless of previous choices. LC13/LC14 and personal choices grant no signal.
 
 ### 8. Challenge Key
 
-- `LC13`: správně určit vztah, účel a vhodný vstup z hlasu, textu a situace. Běžná chyba je zaměnit hlasovou autoritu za pravdivost nebo inteligenci.
-- `LC14`: objektivní část ověřuje, zda otázka obsahuje jasný účel a vhodnou míru zdvořilosti; konkrétní přímá/nepřímá formulace je otevřená.
+- `LC13`: answer key matches relationship, purpose and formality for the organiser, patron/guest and flower-worker colleague. Context and intention matter; accent or authority does not prove intelligence or truth.
+- `LC14`: branch-specific answer key selects a question fitting the listener and information need. Many real-world phrasings can work; the contextual key is not a universal hierarchy of directness/formality.
+- Full samples, stable item/answer IDs, contextual branches, retry/support and transcripts are in docs/chapters/ch05/STATE_AND_BRANCHING.md and AUDIO_PLAN.md.
 
 ### 9. Discussion Questions
 
@@ -433,7 +466,7 @@ Událost je vlastní fiktivní adaptace, nikoli mechanická obdoba plesu z `My F
 
 ### 10. Sensitive Framing
 
-Formální registr není vyšší lidská hodnota. Elizin veřejný úspěch nesmí být vyprávěn pouze jako Higginsův experiment. Společenské předsudky jsou předmět kritické diskuse, ne hidden morality systému.
+Formální registr není vyšší lidská hodnota. Elizin veřejný úspěch nesmí být vyprávěn pouze jako Higginsův experiment. Pickering offers a partial correction and remains respectful but imperfect. D10, D11, future_question_style and next_contact have no morally correct answer. Společenské předsudky jsou předmět kritické diskuse, ne hidden morality systému.
 
 ### 11. Suggested Classroom Use
 
@@ -453,7 +486,7 @@ Společný poslech jedné skupiny hostů, práce ve trojicích s různými adres
 
 ### 1. Chapter Overview
 
-Eliza po veřejné zkoušce řeší, kdo bude rozhodovat o její další podobě. Chapter VI syntetizuje historii hry a nabídne tři legitimní směry: `Social Success`, `Independent Voice`, `Integrated Identity`. Dramatickým výsledkem je agency a identita, ne známka z výslovnosti.
+Eliza po veřejné zkoušce řeší, kdo bude rozhodovat o její další podobě. Chapter VI syntetizuje historii hry popisně a nabídne tři legitimní směry: `Public Participation` (interní `social_success`), `Independent Voice` a `Integrated Identity`. Public Participation neznamená vyšší status ani nejlepší ending. Dramatickým výsledkem je agency a identita, ne známka z výslovnosti.
 
 ### 2. Learning Goals
 
@@ -486,12 +519,16 @@ Teacher Mode může spojit accent and identity, employment and opportunity, gend
 ### 7. Decisions – Teacher Notes
 
 - `D12` je explicitní volba směru, nikoli výpočet vítězného skóre. Všechny tři directions zůstávají dostupné.
-- `origin_motivation`, `confirmed_motivation`/`motivation_shift`, practice preference, intonation, first-test strategy, recovery, reception plan a credit response mění formulaci, delivery, vedlejší reakce, vizuál, epilog a Teacher summary.
+- `origin_motivation`, `confirmed_motivation`/`motivation_shift`, practice preference, intonation, D08, D09, `reception_register_plan`, `credit_response`, `future_question_style` and `next_contact` may shape wording, delivery, secondary reactions, visuals, epilogue and Teacher summary. They provide context only; no Chapter V choice removes an ending.
 - Nízký interní development signal nesmí směr zablokovat. Teacher Mode nesmí řadit směry od nejlepšího po nejhorší.
 
 ### 8. Challenge Key
 
-- `LC15` je integrovaná register/identity choice. Objektivně lze ověřit, zda žák zvolil vhodný adresát, účel a srozumitelný obsah; neexistuje jediný správný osobní registr ani answer key pro identitu.
+- `LC15` je objective pragmatic/context challenge with three samples. Jeho answer key určuje pravděpodobný kontext, adresáta a účel podle situace; nehodnotí identitu, přízvuk ani prestiž registru. No-audio alternativu lze použít bez penalizace.
+- `D12` je osobní volba mezi třemi stejně legitimními směry; nemá answer key.
+- `final_statement_shape` (`declaration`, `reflection`, `commitment`) je rétorická preference; nemá answer key a nemění `chapter6_direction`.
+- Vykreslení složeného statementu v S04 reward nepřidává. Až explicitní potvrzení/doručení statementu zapíše `ch06_final_statement_delivered` a udělí `Confidence +1` právě jednou, bez ohledu na `final_statement_shape`. Replay, reload, Teacher Mode, Back/Forward a změna viewportu reward nespouští. Chapter VI completion nepřidává žádný signal.
+- S05 ukládá pouze `ch06_complete` po explicitním Finish a vede na finální book-complete screen. Nepoužívat `ending_direction` ani aggregate `final_state`.
 
 ### 9. Discussion Questions
 
@@ -514,9 +551,9 @@ Samostatná nebo skupinová rekapitulace: žáci porovnají různé ending direc
 | --- | --- | --- | --- | --- | --- |
 | `ch06_s01` | The Morning After | — | — | reading offers, agency | `AM53–AM54` |
 | `ch06_s02` | The Question in the Mirror | — | — | reflection, register repertoire | `AM55–AM56` |
-| `ch06_s03` | Three Ways Forward | `D12` | `LC15` | integrated register, identity | `AM57–AM58` |
-| `ch06_s04` | Her Own Statement | — | — | self-presentation, audience | `AM59–AM60` |
-| `ch06_s05` | The Voice She Chooses | — | — | summary and replay | replay of `AM59–AM60` |
+| `ch06_s03` | Three Ways Forward | `D12` | `LC15` | pragmatic context, addressee and purpose | `AM57–AM58` |
+| `ch06_s04` | Her Own Statement | statement shape (no answer key) | — | rhetorical purpose, self-definition | — |
+| `ch06_s05` | The Voice She Chooses | — | — | descriptive summary and read-only replay | `AM59–AM60` |
 
 ## 5. Future implementation checklist
 

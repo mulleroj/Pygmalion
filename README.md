@@ -1,6 +1,6 @@
 # Pygmalion Adventure
 
-**Stav: `PRE-PRODUCTION`**
+**Stav: `LOCAL CHAPTER I VERTICAL SLICE`**
 
 Vzdělávací anglická story adventure pro studenty střední školy na úrovni přibližně A2+/B1. Jde o vlastní adaptaci inspirovanou především hrou *Pygmalion* George Bernarda Shawa. Projekt rozvíjí příběh Elizy prostřednictvím jazyka, hlasu, společenského registru a identity.
 
@@ -30,4 +30,26 @@ Hra bude statická nebo velmi lehká, bez runtime AI. Audio, obrázky a další 
 
 ## Aktuální rozsah
 
-Bootstrap obsahuje znalostní a vývojovou strukturu, nikoli webovou aplikaci. Asset adresáře jsou připravené pro budoucí lokální soubory; zatím se negeneruje ani nekopíruje žádné UI, audio nebo artwork.
+Lokální vertical slice obsahuje `Cover → Open the Book → Chapter I → všech 5 scén → ending Chapter I`. Chapter II není součástí runtime a projekt se v tomto checkpointu nedeployuje.
+
+## Implementace
+
+Frontend používá vanilla HTML, CSS a ES modules bez bundleru nebo frameworku. To drží statický Netlify deploy jednoduchý a dovoluje, aby canonical příběhová data, state a audio management zůstaly oddělené a testovatelné. Neexistuje backend ani runtime AI.
+
+- `index.html` – shell aplikace, header, Cover a Teacher dialog
+- `styles.css` – storybook layout, responsive behavior, focus states a reduced-motion pravidla
+- `src/content.js` – canonical Chapter I scény, copy, decisions, challenges a asset map
+- `src/state.js` – lokální progress, idempotentní eventy a save/restore
+- `src/audio.js` – centrální ambience, voice, challenge, SFX, ducking a autoplay-safe playback
+- `src/app.js` – accessible rendering, hash navigation, Teacher Mode a orchestrace story flow
+- `tests/` – content, branching, audio contract a local asset existence tests
+
+Spuštění lokální QA serveru:
+
+```text
+python -m http.server 4173
+```
+
+Poté otevři `http://localhost:4173/`. Testy se spouštějí příkazem `npm test`.
+
+Audio status: A04, A05, and A06 are `APPROVED / CANONICAL`; remaining unreviewed audio stays `HUMAN QA PENDING`. Technická existence souborů je kontrolována automaticky. Produkční deploy není součástí tohoto checkpointu.

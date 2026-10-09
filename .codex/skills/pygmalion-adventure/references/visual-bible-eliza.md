@@ -13,6 +13,25 @@ Eliza je přibližně 19–22 let. V každé vizuální fázi musí být jasně 
 
 Sociální původ nesmí být zobrazen jako morální nebo intelektuální nedostatek. Eliza nesmí působit jako špinavá karikatura chudoby ani jako bezmocná oběť.
 
+## Flower Girl canonical visual lock
+
+Flower Girl canonical visual identity: APPROVED / LOCKED
+
+- Canonical Flower Girl visual master: `assets/images/characters/eliza/eliza_flower-girl_master.webp`.
+- The PNG mastery is preserved at `assets/images/characters/eliza/source/eliza_flower-girl_master.png`.
+- The five expression variants are APPROVED: `ELZ-FG-ALERT`, `ELZ-FG-DEFIANT`, `ELZ-FG-GUARDED`, `ELZ-FG-LISTENING`, and `ELZ-FG-THOUGHTFUL`.
+- All five variants represent the same Eliza as the canonical Flower Girl master.
+- These assets are the reference base for future `In Training` and `Her Own Voice` artwork.
+
+Budoucí generování Elizy musí zachovat stejný obličej, stejné vlasy, stejný věk, stejnou základní tělesnou stavbu a stejnou vizuální identitu. Měnit se smí výraz, póza, lighting, prostředí a pozdější outfit podle canonical stage. Bez explicitního pokynu se nesmí vytvořit nová odlišná „verze tváře“ Elizy.
+
+## Chapter I supporting character visual locks
+
+- Higgins canonical master: `assets/images/characters/higgins/higgins_master.webp` — APPROVED.
+- Pickering canonical master: `assets/images/characters/pickering/pickering_master.webp` — APPROVED.
+- Freddy canonical master: `assets/images/characters/freddy/freddy_master.webp` — APPROVED.
+- Budoucí generování těchto postav musí zachovat stejnou tvář a základní vizuální identitu; měnit se smí pouze scéna, póza, výraz, lighting nebo canonical stage context.
+
 ## Vývojové fáze
 
 ### Stage 1 – Flower Girl
@@ -41,6 +60,14 @@ Sociální původ nesmí být zobrazen jako morální nebo intelektuální nedos
 - kultivovanější gesta;
 - stále jasně tatáž Eliza;
 - žádná pohádková princezna.
+
+Her Own Voice thoughtful canonical visual: APPROVED / LOCKED
+
+- Master: `assets/images/characters/eliza/eliza_her-own-voice_thoughtful.webp`.
+- Source PNG: `assets/images/characters/eliza/source/eliza_her-own-voice_thoughtful.png`.
+- Runtime cutout: `assets/images/characters/eliza/runtime/eliza_her-own-voice_thoughtful_cutout.png`.
+- This is the same Eliza as the approved Flower Girl master, with a composed, reflective expression, elegant blue-grey Edwardian dress and both boots visible.
+- S04 uses this cutout. Preserve the full body and transparent silhouette; do not crop either boot or treat this later stage as a new face.
 
 Možné finální směry: `Social Success`, `Independent Voice`, `Integrated Identity`. Všechny zachovávají stejnou Elizu; případná vnitřní konfliktnost je vlastnost cesty, ne samostatný trestný ending.
 
