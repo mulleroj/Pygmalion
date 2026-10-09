@@ -111,6 +111,11 @@ function scrollSceneToTop(sceneId) {
     const scrollRoot = document.scrollingElement;
     if (scrollRoot?.scrollTo) scrollRoot.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     else window.scrollTo?.({ top: 0, left: 0, behavior: 'instant' });
+    if (sceneId === 'ch05_s02' && state.challenges.lc13.completed) {
+      const continueAction = document.querySelector('[data-action="next-scene"]');
+      continueAction?.scrollIntoView?.({ block: 'center', behavior: 'instant' });
+      continueAction?.focus?.({ preventScroll: true });
+    }
   };
   if (window.requestAnimationFrame) sceneScrollFrame = window.requestAnimationFrame(scroll);
   else scroll();
@@ -657,7 +662,7 @@ function renderLc13(scene) {
     const supportButton = !supported && !attempted && !review ? `<button class="text-button" type="button" data-action="open-lc13-support" data-sample="${item.id}">Open text support for ${escapeHtml(item.speaker)}</button>` : '';
     return `<article class="lc11-sample-card lc13-sample-card" aria-labelledby="${item.id}-title"><h3 id="${item.id}-title">Exchange ${index + 1} of 3 · ${escapeHtml(item.speaker)}</h3>${renderAudioControl({ ...item, label: `Play ${item.speaker} exchange`, ariaLabel: `Play ${item.speaker} exchange` }, 'challenge')}${transcript}${supportButton}${dimensions}</article>`;
   };
-  if (challenge.completed) return `<section class="challenge-block lc13-block" aria-labelledby="lc13-title"><p class="eyebrow">Social inference · LC13</p><h2 id="lc13-title">${escapeHtml(scene.challenge.title)}</h2><p class="challenge-complete" role="status">${escapeHtml(scene.challenge.completionText)}</p><div class="lc13-samples">${scene.challenge.samples.map((item, index) => renderSample(item, index, true)).join('')}</div></section>`;
+  if (challenge.completed) return `<section class="challenge-block lc13-block" aria-labelledby="lc13-title"><p class="eyebrow">Social inference · LC13</p><h2 id="lc13-title">${escapeHtml(scene.challenge.title)}</h2><p class="challenge-complete" role="status">${escapeHtml(scene.challenge.completionText)}</p><button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the next scene <span aria-hidden="true">→</span></button><div class="lc13-samples">${scene.challenge.samples.map((item, index) => renderSample(item, index, true)).join('')}</div></section>`;
   const index = scene.challenge.samples.indexOf(sample);
   return `<section class="challenge-block lc13-block" aria-labelledby="lc13-title"><div class="challenge-heading"><div><p class="eyebrow">Social inference · LC13</p><h2 id="lc13-title">${escapeHtml(scene.challenge.title)}</h2></div><span class="challenge-badge">Exchange ${index + 1} of 3</span></div><p>${escapeHtml(scene.challenge.intro)}</p><p class="read-only-note">Listen to each exchange, then choose the interpretation that best fits its context. You can open the text support at any time.</p><div class="lc13-samples">${completedSamples.map((item) => renderSample(item, scene.challenge.samples.indexOf(item), true)).join('')}${renderSample(sample, index)}</div></section>`;
 }
@@ -866,7 +871,6 @@ function renderScene(scene) {
   if (scene.id === 'ch04_s05' && !scenePreview) body += '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue <span aria-hidden="true">→</span></button>';
   if (scene.id === 'ch05_s01' && state.reception_register_plan && !scenePreview) body += '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue <span aria-hidden="true">→</span></button>';
   if (scene.id === 'ch05_s01' && scenePreview) body = '<p class="read-only-note" role="status">Teacher preview · read-only. Choice controls and progression are inactive.</p><button class="secondary-button" type="button" data-action="return-student">Return to student scene</button>' + body;
-  if (scene.id === 'ch05_s02' && state.challenges.lc13.completed && !scenePreview) body += '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the next scene <span aria-hidden="true">→</span></button>';
   if (scene.id === 'ch05_s03' && state.credit_response && !scenePreview) body += '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the next scene <span aria-hidden="true">→</span></button>';
   if (scene.id === 'ch05_s04' && state.future_question_style && state.challenges.lc14.completed && !scenePreview) body += '<button class="secondary-button next-button" type="button" data-action="next-scene">Continue to the next scene <span aria-hidden="true">→</span></button>';
   if (scene.id === 'ch05_s05' && state.next_contact && !scenePreview) body += `${state.applied_events.includes('ch05_s05_complete') ? '<p class="challenge-complete" role="status">Chapter V complete. Independence was increased once.</p>' : ''}<button class="secondary-button next-button" type="button" data-action="next-scene">Continue <span aria-hidden="true">→</span></button>`;

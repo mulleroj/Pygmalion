@@ -207,7 +207,8 @@ test('all nine LC13 answers complete once; explicit Continue saves S02 once and 
 });
 
 test('S02 Continue is explicit and Teacher preview remains read-only with scene-specific guidance', () => {
-  assert.match(appSource, /scene\.id === 'ch05_s02' && state\.challenges\.lc13\.completed[\s\S]*?data-action="next-scene"/);
+  const lc13Renderer = appSource.match(/function renderLc13\(scene\) \{[\s\S]*?(?=function renderCh05FirstResponse)/)?.[0] || '';
+  assert.match(lc13Renderer, /if \(challenge\.completed\) return[\s\S]*?class="challenge-complete"[\s\S]*?data-action="next-scene"[\s\S]*?lc13-samples/);
   assert.match(appSource, /scene\?\.id === 'ch05_s02' \? CH05_S02_TEACHER_SECTIONS/);
   assert.match(appSource, /currentScene\(\)\.id === 'ch05_s02' && studentReadOnly\(\)[\s\S]*?answer-lc13[\s\S]*?choose-s02-first-response/);
   assert.match(appSource, /LC13 answers, support and completion are inactive\./);
