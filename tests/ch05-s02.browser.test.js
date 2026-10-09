@@ -89,7 +89,7 @@ test('Chromium: LC13 completion remains discoverable through reload and advances
     await new Promise((resolve) => server.close(resolve));
   });
 
-  for (const [width, height] of [[390, 844], [768, 1024], [1440, 960]]) {
+  for (const [width, height] of [[390, 844], [430, 932], [768, 1024], [1440, 960]]) {
     const context = await browser.newContext({ viewport: { width, height } });
     const checkpoint = JSON.stringify(validS02Checkpoint());
     await context.addInitScript(`if (!localStorage.getItem(${JSON.stringify(STORAGE_KEY)})) localStorage.setItem(${JSON.stringify(STORAGE_KEY)}, ${JSON.stringify(checkpoint)});`);

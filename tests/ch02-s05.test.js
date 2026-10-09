@@ -118,6 +118,13 @@ test('Chapter III hash entry blocks incomplete Chapter II and repairs only a pro
   assert.equal(blocked.getSaved().applied_events.includes('ch02_complete'), false);
 
   const withChoice = applyDecision(validChapterTwoBeforeD05(), 'D05', 'd05_learning');
+  const mapReturn = await mount(withChoice, '#ch02_s05', 'story-map-read-only');
+  await mapReturn.click('open-story-map');
+  assert.equal(window.location.hash, '#story-map');
+  assert.equal(mapReturn.getSaved().ch02_complete, false, 'opening Story Map from the eligible Chapter II ending is read-only');
+  assert.equal(mapReturn.getSaved().applied_events.filter((id) => id === 'ch02_complete').length, 0, 'navigation does not fabricate chapter completion');
+  assert.equal(mapReturn.node('#app').innerHTML.includes('data-action="open-chapter"'), true);
+
   const olderSave = { ...completeChapterTwo(withChoice), ch02_complete: false,
     applied_events: completeChapterTwo(withChoice).applied_events.filter((id) => id !== 'ch02_complete') };
   const restored = await mount(olderSave, '#ch03_s01', 'legacy-save');

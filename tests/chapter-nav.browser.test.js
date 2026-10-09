@@ -27,11 +27,11 @@ function serve() {
   });
 }
 
-test('Chromium: all six Story Map entries, separate resume checkpoints, and last-active restore at 390/768/1440 px', { timeout: 120_000 }, async (t) => {
+test('Chromium: all six Story Map entries, separate resume checkpoints, and last-active restore at 390/430/768/1440 px', { timeout: 120_000 }, async (t) => {
   const { server, url } = await serve();
   const browser = await chromium.launch({ headless: true });
   t.after(async () => { await browser.close(); await new Promise((resolve) => server.close(resolve)); });
-  for (const width of [390, 768, 1440]) {
+  for (const width of [390, 430, 768, 1440]) {
     const page = await browser.newPage({ viewport: { width, height: 920 } });
     const errors = []; page.on('pageerror', (error) => errors.push(error.message));
     await page.goto(`${url}/#story-map`);

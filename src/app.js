@@ -1419,13 +1419,7 @@ document.addEventListener('click', async (event) => {
     announce(state.soundEnabled ? 'Sound on.' : 'Sound off. The story remains complete without sound.');
   }
   if (action === 'open-story') openStory();
-  if (action === 'open-story-map') {
-    if (currentScene().id === 'ch02_s05' && canCompleteChapterTwo() && !teacherDialog.open && !s05Preview) {
-      const completed = completeChapterTwo(state);
-      if (completed !== state) { state = completed; save(); }
-    }
-    openStory();
-  }
+  if (action === 'open-story-map') openStory();
   if (action === 'continue-reading') continueReading();
   if (action === 'start-chapter-one') startChapterOne();
   if (['open-chapter', 'resume-chapter', 'revisit-chapter'].includes(action)) enterChapterFromMap(target.dataset.chapter);
