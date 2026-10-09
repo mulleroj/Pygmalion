@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -92,7 +93,7 @@ test('Chapter III hash entry blocks incomplete Chapter II and repairs only a pro
   const originals = Object.fromEntries(['document', 'window', 'localStorage'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) { if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; } });
   const mount = async (savedState, hash, importKey) => {
-    let saved = JSON.stringify(savedState);
+    let saved = savedProgress(savedState);
     const nodes = new Map(), events = {}, scrollCalls = [], focusCalls = [], scrollRoot = { scrollTop: 0, scrollTo(options) { this.scrollTop = options.top; } };
     const node = (key) => {
       if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus(options) { focusCalls.push({ key, options }); }, scrollIntoView(options) { scrollCalls.push({ key, options }); }, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
@@ -102,7 +103,7 @@ test('Chapter III hash entry blocks incomplete Chapter II and repairs only a pro
     globalThis.window = { location: { hash, pathname: '/' }, history: { state: { scene: savedState.scene }, scrollRestoration: 'auto', pushState(value, unused, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(value, unused, url) { this.pushState(value, unused, url); } }, setTimeout(fn) { fn(); }, requestAnimationFrame(fn) { fn(); return 1; }, addEventListener() {} };
     globalThis.localStorage = { getItem() { return saved; }, setItem(key, value) { saved = value; } };
     const runtime = await import(`../src/app.js?ch02-transition-${importKey}`);
-    return { runtime, events, node, scrollCalls, focusCalls, scrollRoot, getSaved: () => JSON.parse(saved), click(action) { events.click({ isTrusted: false, target: { closest() { return { dataset: { action }, focus() {} }; } } }); } };
+    return { runtime, events, node, scrollCalls, focusCalls, scrollRoot, getSaved: () => readSavedProgress(saved), click(action) { events.click({ isTrusted: false, target: { closest() { return { dataset: { action }, focus() {} }; } } }); } };
   };
 
   const skipped = validChapterTwoBeforeD05();
@@ -188,7 +189,7 @@ test('all four runtime D05 paths expose only the common AM19C ending; replay and
   const actionScrolls = [];
   t.mock.method(AudioManager.prototype, 'playVoice', async src => { requests.push(src); });
   for (const motivation of ['opportunity', 'respect', 'learning', 'independence']) {
-    let saved = JSON.stringify(validChapterTwoBeforeD05());
+    let saved = savedProgress(validChapterTwoBeforeD05());
     let writes = 0;
     const nodes = new Map();
     const node = key => {
@@ -203,9 +204,9 @@ test('all four runtime D05 paths expose only the common AM19C ending; replay and
     const click = (action, data = {}) => events.click({ isTrusted: false, target: { closest() { return { dataset: { action, ...data }, focus() {} }; } } });
     assert.doesNotMatch(node('#app').innerHTML, /data-action="play-voice"/);
     await click('choose-decision', { decision: 'D05', option: 'd05_' + motivation });
-    assert.equal(JSON.parse(saved).confirmed_motivation, motivation);
-    assert.equal(JSON.parse(saved).ch02_complete, false, 'choosing D05 does not complete the chapter before Continue');
-    assert.equal(JSON.parse(saved).applied_events.filter(id => id === 'ch02_complete').length, 0);
+    assert.equal(readSavedProgress(saved).confirmed_motivation, motivation);
+    assert.equal(readSavedProgress(saved).ch02_complete, false, 'choosing D05 does not complete the chapter before Continue');
+    assert.equal(readSavedProgress(saved).applied_events.filter(id => id === 'ch02_complete').length, 0);
     assert.equal(actionScrolls.at(-1).options.block, 'center', 'the newly available chapter action is brought into view');
     assert.equal(node('#app').innerHTML.includes('data-action="enter-ch03"'), true);
     assert.equal((node('#app').innerHTML.match(/data-action="play-voice"/g) || []).length, 1);
@@ -221,10 +222,10 @@ test('all four runtime D05 paths expose only the common AM19C ending; replay and
     assert.equal(saved, done);
     assert.equal(writes, doneWrites);
     assert.equal(requests.at(-1), scene.voice[0].src);
-    assert.equal(JSON.parse(saved).applied_events.filter(id => id === 'ch02_complete').length, 0, 'replays and Teacher preview do not record completion before Continue');
-    const signals = ['pronunciation', 'confidence', 'independence'].map((signal) => JSON.parse(saved)[signal]);
+    assert.equal(readSavedProgress(saved).applied_events.filter(id => id === 'ch02_complete').length, 0, 'replays and Teacher preview do not record completion before Continue');
+    const signals = ['pronunciation', 'confidence', 'independence'].map((signal) => readSavedProgress(saved)[signal]);
     await click('enter-ch03');
-    const entered = JSON.parse(saved);
+    const entered = readSavedProgress(saved);
     assert.equal(entered.applied_events.filter(id => id === 'ch02_complete').length, 1);
     assert.equal(window.location.hash, '#ch03_s01');
     assert.equal(entered.scene, 'ch03_s01');

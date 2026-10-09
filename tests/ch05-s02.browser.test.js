@@ -8,6 +8,7 @@ import { chromium } from 'playwright';
 import {
   applyDecision, completeScene, createInitialState, saveState, setScene, STORAGE_KEY
 } from '../src/state.js';
+import { composeState, SAVE_KEY } from '../src/progress.js';
 import { CH05_SCENE_01, CH05_SCENE_02 } from '../src/ch05-content.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -63,7 +64,8 @@ function startStaticServer() {
 }
 
 async function savedState(page) {
-  return page.evaluate((key) => JSON.parse(localStorage.getItem(key)), STORAGE_KEY);
+  const envelope = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)), SAVE_KEY);
+  return composeState(envelope, 'ch05');
 }
 
 async function buttonViewportState(button) {
@@ -104,7 +106,7 @@ test('Chromium: LC13 completion remains discoverable through reload and advances
       await page.goto(`${url}/#ch05_s03`);
       await page.waitForFunction(() => location.hash === '#ch05_s02');
       assert.equal(new URL(page.url()).hash, '#ch05_s02', 'the S03 hash guard returns to incomplete S02');
-      assert.equal((await savedState(page)).applied_events.includes('ch05_s02_complete'), false);
+      assert.equal((await savedState(page)).applied_events.includes('ch05_s02_complete'), false, JSON.stringify((await savedState(page)).applied_events));
     }
 
     if (width === 768) {

@@ -58,10 +58,10 @@ test('D10 is an open three-option decision with stable values and no scoring or 
   }
 });
 
-test('S01 entry requires Chapter IV completion; selected value survives local restore', () => {
+test('S01 is directly playable without Chapter IV history and retains its local D10 requirement', () => {
   const blocked = setScene(createInitialState(), CH05_SCENE_01.id);
-  assert.match(getSceneAdvanceBlock(blocked, CH05_SCENE_01), /Complete Chapter IV Scene 05/);
-  assert.equal(applyDecision(blocked, 'D10', ids[0]), blocked);
+  assert.equal(getSceneAdvanceBlock(blocked, CH05_SCENE_01), 'Choose a register plan before continuing.');
+  assert.notEqual(applyDecision(blocked, 'D10', ids[0]), blocked);
   const state = applyDecision(ready(), 'D10', ids[1]);
   const values = new Map();
   saveState(state, { getItem: (key) => values.get(key), setItem: (key, value) => values.set(key, value) });

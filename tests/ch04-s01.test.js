@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { CH03_SCENE_06 } from '../src/ch03-content.js';
@@ -109,10 +110,10 @@ test('D08 blocks completion until one choice and records a single stable event w
   }
 });
 
-test('S01 cannot be completed or selected before Chapter III S06 completion', () => {
+test('S01 is directly playable without Chapter III history but keeps its local D08 requirement', () => {
   const blocked = { ...ready(), applied_events: [] };
-  assert.equal(getSceneAdvanceBlock(blocked, CH04_SCENE_01), 'Complete Chapter III Scene 06 before opening The Invitation.');
-  assert.equal(applyDecision(blocked, 'D08', options[0]), blocked);
+  assert.equal(getSceneAdvanceBlock(blocked, CH04_SCENE_01), 'Choose a response to continue.');
+  assert.notEqual(applyDecision(blocked, 'D08', options[0]), blocked);
   assert.equal(completeScene(blocked, CH04_SCENE_01), blocked);
 });
 
@@ -166,7 +167,7 @@ test('S01 UI presents neutral D08 controls, read-only Teacher preview, then expl
     if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, scrollIntoView() {}, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
     return nodes.get(key);
   };
-  let saved = JSON.stringify({ ...ready(), soundEnabled: false }), writes = 0;
+  let saved = savedProgress({ ...ready(), soundEnabled: false }), writes = 0;
   globalThis.document = { querySelector: node, addEventListener(name, fn) { events[name] = fn; } };
   globalThis.Audio = FakeAudio;
   globalThis.window = { location: { hash: '#ch04_s01', pathname: '/' }, history: { state: { scene: 'ch04_s01' }, pushState(_state, _title, url) { this.state = _state; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(_state, _title, url) { this.state = _state; window.location.hash = url.startsWith('#') ? url : ''; } }, setTimeout(fn) { fn(); }, addEventListener() {} };
@@ -204,7 +205,7 @@ test('S01 UI presents neutral D08 controls, read-only Teacher preview, then expl
   assert.doesNotMatch(html, /choice-feedback|correct|incorrect|first_test_strategy/);
   await click('next-scene');
   assert.equal(window.location.hash, '#ch04_s02');
-  assert.equal(JSON.parse(saved).scene, 'ch04_s02');
-  assert.equal(JSON.parse(saved).applied_events.filter((id) => id === 'ch04_s01_complete').length, 1);
+  assert.equal(readSavedProgress(saved).scene, 'ch04_s02');
+  assert.equal(readSavedProgress(saved).applied_events.filter((id) => id === 'ch04_s01_complete').length, 1);
   assert.match(node('#app').innerHTML, /Names and Weather/);
 });

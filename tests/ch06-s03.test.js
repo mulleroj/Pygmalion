@@ -1,4 +1,6 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
+import { loadReaderProgress } from '../src/progress.js';
 import assert from 'node:assert/strict';
 import { readFile, stat } from 'node:fs/promises';
 import { createInitialState, applyDecision, recordLc15Answer, markLc15NoAudioUsed, completeScene, getSceneAdvanceBlock, saveState, loadState, STORAGE_KEY } from '../src/state.js';
@@ -9,7 +11,7 @@ async function mount(t, savedState) {
   const keys = ['document', 'window', 'localStorage'];
   const originals = Object.fromEntries(keys.map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) descriptor ? Object.defineProperty(globalThis, key, descriptor) : delete globalThis[key]; });
-  let saved = JSON.stringify(savedState);
+  let saved = savedProgress(savedState);
   const nodes = new Map();
   const handlers = {};
   const node = (key) => {
@@ -18,13 +20,13 @@ async function mount(t, savedState) {
   };
   globalThis.document = { querySelector: node, addEventListener(name, handler) { handlers[name] = handler; } };
   globalThis.window = { location: { hash: '#ch06_s03', pathname: '/' }, history: { state: null, pushState(value, _title, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(value, _title, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; } }, setTimeout(handler) { handler(); }, addEventListener(name, handler) { handlers[name] = handler; } };
-  globalThis.localStorage = { getItem(key) { assert.equal(key, STORAGE_KEY); return saved; }, setItem(key, value) { assert.equal(key, STORAGE_KEY); saved = value; } };
+  globalThis.localStorage = { getItem(key) { assert.equal(key, SAVE_KEY); return saved; }, setItem(key, value) { assert.equal(key, SAVE_KEY); saved = value; } };
   const methods = ['ensureAmbience', 'setEnabled', 'leaveScene', 'setSceneAudioReadOnly', 'playVoice', 'playChallenge'];
   const originalsAudio = Object.fromEntries(methods.map((name) => [name, AudioManager.prototype[name]]));
   for (const name of methods) AudioManager.prototype[name] = name === 'ensureAmbience' ? () => Promise.resolve() : () => {};
   t.after(() => { for (const [name, method] of Object.entries(originalsAudio)) if (method) AudioManager.prototype[name] = method; });
   const app = await import(`../src/app.js?ch06-s03=${Date.now()}-${Math.random()}`);
-  return { app, handlers, node, state: () => JSON.parse(saved) };
+  return { app, handlers, node, state: () => readSavedProgress(saved) };
 }
 
 const ready = () => ({ ...createInitialState(), started: true, ch05_complete: true, scene: 'ch06_s03', chapter6_direction: undefined, applied_events: ['ch05_s05_complete', 'ch06_s01_complete', 'ch06_s02_complete'] });
@@ -93,9 +95,8 @@ test('LC15 retries, no-audio context and completion persist without signals or a
   assert.equal(state.challenges.lc15.completed, true);
   assert.equal(state.applied_events.filter((event) => event === 'ch06_lc15_completed').length, 1);
   assert.deepEqual([state.pronunciation, state.confidence, state.independence], [0, 0, 0]);
-  const storage = { value: null, setItem(key, value) { assert.equal(key, STORAGE_KEY); this.value = value; }, getItem(key) { assert.equal(key, STORAGE_KEY); return this.value; } };
-  saveState(state, storage);
-  assert.deepEqual(loadState(storage).challenges.lc15, state.challenges.lc15);
+  const storage = { value: JSON.stringify(state), getItem(key) { return key === STORAGE_KEY ? this.value : null; }, setItem(_key, value) { this.value = value; } };
+  assert.deepEqual(loadReaderProgress(storage).state.challenges.lc15, state.challenges.lc15);
 });
 
 test('S03 entry and explicit completion guards require both D12 and LC15; Teacher key remains contextual', () => {

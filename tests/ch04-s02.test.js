@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -457,7 +458,7 @@ test('browser view keeps story voice optional and reveals LC11 transcript only a
     addEventListener(name, fn) { this.listeners.set(name, fn); }
     removeEventListener(name) { this.listeners.delete(name); }
   }
-  const savedValue = JSON.stringify(ready());
+  const savedValue = savedProgress(ready());
   let saved = savedValue;
   globalThis.document = { querySelector: node, addEventListener(name, fn) { events[name] = fn; } };
   globalThis.Audio = FakeAudio;
@@ -473,12 +474,12 @@ test('browser view keeps story voice optional and reveals LC11 transcript only a
   assert.match(html, /Open transcript support for sample 1/);
   assert.doesNotMatch(html, /Transcript:<\/strong> “Miss Doolittle/);
   assert.equal(saved.includes('"attempts":0'), true, 'render exposes support before any answer attempt');
-  const initialSignals = JSON.parse(saved);
+  const initialSignals = readSavedProgress(saved);
   await click('open-lc11-support', { sample: 'lc11_sample_01' });
   html = node('#app').innerHTML;
   assert.match(html, /Transcript:<\/strong> “Miss Doolittle, have you been in London long\?/);
   assert.equal((html.match(/data-action="answer-lc11"/g) || []).length, 3, 'revealed support leaves every answer available');
-  const preAnswerSupported = JSON.parse(saved);
+  const preAnswerSupported = readSavedProgress(saved);
   assert.equal(preAnswerSupported.challenges.lc11.attempts, 0);
   assert.equal(preAnswerSupported.challenges.lc11.answers.lc11_sample_01, undefined);
   assert.equal(preAnswerSupported.challenges.lc11.completed, false);
@@ -488,7 +489,7 @@ test('browser view keeps story voice optional and reveals LC11 transcript only a
   await click('answer-lc11', { sample: 'lc11_sample_01', answer: 'lc11_01_closing' });
   html = node('#app').innerHTML;
   assert.match(html, /Transcript:<\/strong> “Miss Doolittle, have you been in London long\?/);
-  const supportedState = JSON.parse(saved);
+  const supportedState = readSavedProgress(saved);
   assert.equal(supportedState.challenges.lc11.attempts, 1, 'only the answer increments attempts');
   assert.deepEqual([supportedState.pronunciation, supportedState.confidence, supportedState.independence], [initialSignals.pronunciation, initialSignals.confidence, initialSignals.independence]);
   assert.equal(supportedState.challenges.lc11.answers.lc11_sample_01.correct, false, 'support does not replace the attempted answer');
@@ -498,7 +499,7 @@ test('browser view keeps story voice optional and reveals LC11 transcript only a
   await click('open-lc11-support', { sample: 'lc11_sample_02' });
   html = node('#app').innerHTML;
   assert.match(html, /Transcript:<\/strong> “I see\. And what do you think of the weather today\?/);
-  assert.equal(JSON.parse(saved).challenges.lc11.answers.lc11_sample_02, undefined, 'pre-answer support does not choose an answer');
+  assert.equal(readSavedProgress(saved).challenges.lc11.answers.lc11_sample_02, undefined, 'pre-answer support does not choose an answer');
   assert.deepEqual(played, [], 'sample 2 support does not trigger audio playback');
   await click('answer-lc11', { sample: 'lc11_sample_02', answer: 'lc11_02_continuing' });
   html = node('#app').innerHTML;

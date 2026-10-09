@@ -119,6 +119,10 @@ function mergeState(raw) {
   };
 }
 
+export function normalizeState(raw) {
+  return mergeState(raw);
+}
+
 export function loadState(storage = globalThis.localStorage) {
   try {
     const raw = storage?.getItem(STORAGE_KEY);
@@ -182,7 +186,7 @@ export function applyDecision(state, decisionId, optionId) {
   if (decisionId === 'D10') {
     const allowed = CH05_SCENE_01.decision.choices.some(({ id }) => id === optionId);
     const eventId = 'ch05_d10_recorded';
-    if (state.scene !== CH05_SCENE_01.id || !state.applied_events.includes('ch04_s05_complete') || !allowed || state.reception_register_plan || state.applied_events.includes(eventId)) return state;
+    if (state.scene !== CH05_SCENE_01.id || !allowed || state.reception_register_plan || state.applied_events.includes(eventId)) return state;
     return { ...state, reception_register_plan: optionId, applied_events: [...state.applied_events, eventId] };
   }
   if (decisionId === 'D09') {
@@ -194,7 +198,7 @@ export function applyDecision(state, decisionId, optionId) {
   if (decisionId === 'D08') {
     const allowed = CH04_SCENE_01.decision.choices.some(({ id }) => id === optionId);
     const eventId = 'ch04_d08_recorded';
-    if (state.scene !== CH04_SCENE_01.id || !state.applied_events.includes('ch03_s06_complete') || !allowed || state.decisions.D08 || state.applied_events.includes(eventId)) return state;
+    if (state.scene !== CH04_SCENE_01.id || !allowed || state.decisions.D08 || state.applied_events.includes(eventId)) return state;
     return { ...state, decisions: { ...state.decisions, D08: optionId }, applied_events: [...state.applied_events, eventId] };
   }
   if (decisionId === 'D07') {
@@ -432,7 +436,6 @@ export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === CH06_SCENE_04.id && !CH06_SCENE_04.statement.shapes.some(({ value }) => value === state.final_statement_shape)) return 'Choose how Eliza will express her statement before continuing.';
   if (scene.id === CH06_SCENE_04.id && !state.applied_events.includes('ch06_final_statement_delivered')) return 'Deliver Eliza’s statement before continuing.';
   if (scene.id === CH06_SCENE_05.id && !state.applied_events.includes('ch06_s04_complete')) return 'Complete Her Own Statement before opening The Voice She Chooses.';
-  if (scene.id === CH05_SCENE_01.id && !state.applied_events.includes('ch04_s05_complete')) return 'Complete Chapter IV Scene 05 before opening The Borough Exhibition Evening.';
   if (scene.id === CH05_SCENE_01.id && !state.reception_register_plan) return 'Choose a register plan before continuing.';
   if (scene.id === CH05_SCENE_02.id && !state.applied_events.includes('ch05_s01_complete')) return 'Complete Chapter V Scene 01 before opening Listening Under Pressure.';
   if (scene.id === CH05_SCENE_03.id && !state.applied_events.includes('ch05_s02_complete')) return 'Complete Chapter V Scene 02 before opening The Display and the Question.';
@@ -441,7 +444,6 @@ export function getSceneAdvanceBlock(state, scene) {
   if (scene.id === CH05_SCENE_04.id && !state.challenges.lc14.completed) return 'Complete LC14 before continuing.';
   if (scene.id === CH05_SCENE_05.id && !state.applied_events.includes('ch05_s04_complete')) return 'Complete Chapter V Scene 04 before opening Leaving the Hall.';
   if (scene.id === CH05_SCENE_05.id && !state.next_contact) return 'Choose whom Eliza would like to contact before continuing.';
-  if (scene.id === CH04_SCENE_01.id && !state.applied_events.includes('ch03_s06_complete')) return 'Complete Chapter III Scene 06 before opening The Invitation.';
   if (scene.id === CH04_SCENE_02.id && !state.challenges.lc11.completed) return 'Complete all three LC11 samples before continuing.';
   if (scene.id === CH04_SCENE_03.id && !state.applied_events.includes('ch04_s02_complete')) return 'Complete Chapter IV Scene 02 before opening The Wrong Answer.';
   if (scene.id === CH04_SCENE_03.id && !state.applied_events.includes('ch04_lc12_complete')) return 'Complete LC12 before continuing.';
@@ -669,12 +671,12 @@ export function completeScene(state, scene) {
   if (state.scene !== scene.id || getSceneAdvanceBlock(state, scene)) return state;
   if (scene.id === CH06_SCENE_01.id) {
     const eventId = 'ch06_s01_complete';
-    if (!state.ch05_complete || state.applied_events.includes(eventId)) return state;
+    if (state.applied_events.includes(eventId)) return state;
     return { ...state, applied_events: [...state.applied_events, eventId] };
   }
   if (scene.id === CH06_SCENE_02.id) {
     const eventId = 'ch06_s02_complete';
-    if (!state.ch05_complete || !state.applied_events.includes('ch06_s01_complete') || state.applied_events.includes(eventId)) return state;
+    if (!state.applied_events.includes('ch06_s01_complete') || state.applied_events.includes(eventId)) return state;
     return { ...state, applied_events: [...state.applied_events, eventId] };
   }
   if (scene.id === CH06_SCENE_03.id) {
