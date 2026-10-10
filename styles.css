@@ -700,7 +700,6 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch06-morning-after-neutral .art-eliza img { left: 40%; height: 80%; }
 .ch06-morning-after .art-eliza::before { left: 55%; bottom: 1%; width: 27%; height: 2%; filter: blur(4px); }
 .ch06-morning-after-neutral .art-eliza::before { left: 28%; width: 24%; }
-.ch06-morning-after figcaption { display: none; }
 @media (max-width: 1023px) {
   .ch06-morning-after-spread { grid-template-columns: minmax(0, 1fr); }
 }
@@ -722,7 +721,6 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch06-question-mirror .art-eliza { display: block; padding: 0; opacity: 1; z-index: 3; }
 .ch06-question-mirror .art-eliza img { position: absolute; left: 69%; bottom: 1%; width: auto; height: 92%; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%) scaleX(-1); filter: drop-shadow(0 4px 4px rgba(34, 27, 24, .25)); }
 .ch06-question-mirror .art-eliza::before { left: 54%; bottom: 1%; width: 31%; height: 2.2%; border-radius: 50%; background: rgba(31, 28, 28, .28); filter: blur(4px); opacity: .65; }
-.ch06-question-mirror figcaption { display: none; }
 @media (max-width: 1023px) {
   .ch06-question-mirror-spread { grid-template-columns: minmax(0, 1fr); }
 }
@@ -740,7 +738,6 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch06-three-ways-forward .art-eliza { display: block; padding: 0; opacity: 1; z-index: 3; }
 .ch06-three-ways-forward .art-eliza img { position: absolute; left: 68%; bottom: 1%; width: auto; height: 86%; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); filter: drop-shadow(0 4px 4px rgba(34, 27, 24, .25)); }
 .ch06-three-ways-forward .art-eliza::before { left: 53%; bottom: 1%; width: 31%; height: 2.2%; border-radius: 50%; background: rgba(31, 28, 28, .28); filter: blur(4px); opacity: .65; }
-.ch06-three-ways-forward figcaption { display: none; }
 .ch06-three-ways-forward-spread .neutral-choice .choice-button { background: #fffaf3; }
 .ch06-three-ways-forward-spread .neutral-choice .choice-button:hover:not(:disabled) { background: #fffaf3; }
 .ch06-three-ways-forward-spread .neutral-choice .choice-button.selected { background: #edf1f0; }
@@ -762,7 +759,6 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch06-her-own-statement .art-eliza { display: block; padding: 0; opacity: 1; z-index: 3; }
 .ch06-her-own-statement .art-eliza img { position: absolute; left: 68%; bottom: 0; width: auto; height: 86%; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); filter: drop-shadow(0 4px 4px rgba(34, 27, 24, .25)); }
 .ch06-her-own-statement .art-eliza::before { left: 54%; bottom: 1%; width: 29%; height: 2.2%; border-radius: 50%; background: rgba(31, 28, 28, .28); filter: blur(4px); opacity: .65; }
-.ch06-her-own-statement figcaption { display: none; }
 .ch06-her-own-statement-spread .ch06-statement-shapes .choice-button { background: #fffaf3; }
 .ch06-her-own-statement-spread .ch06-statement-shapes .choice-button:hover:not(:disabled) { background: #fffaf3; }
 .ch06-her-own-statement-spread .ch06-statement-shapes .choice-button.selected { background: #edf1f0; }
@@ -784,7 +780,6 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch06-the-voice-she-chooses .art-background img { object-fit: contain; }
 .ch06-the-voice-she-chooses .art-eliza { display: block; padding: 0; opacity: 1; z-index: 3; }
 .ch06-the-voice-she-chooses .art-eliza img { position: absolute; left: 68%; bottom: 1%; width: auto; height: 86%; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); filter: drop-shadow(0 4px 4px rgba(34, 27, 24, .25)); }
-.ch06-the-voice-she-chooses figcaption { display: none; }
 .ch06-the-voice-she-chooses.integrated-identity .art-eliza img { left: 70%; }
 .ch06-summary-section { margin-block: 1.1rem; }
 .ch06-summary-section h3 { margin-bottom: .35rem; font-size: 1rem; letter-spacing: .04em; }

@@ -53,6 +53,8 @@ test('LC15 replay is explicit, replaces foreground audio, and does not change le
   const before = { ...ready(), chapter6_direction: 'integrated_identity', applied_events: ['ch05_s05_complete', 'ch06_s01_complete', 'ch06_s02_complete', 'ch06_d12_recorded'] };
   const mounted = await mount(t, before);
   const html = mounted.node('#app').innerHTML;
+  assert.equal((html.match(/<figcaption>/g) || []).length, 1);
+  assert.match(html, /<figcaption>Chapter VI · Three Ways Forward<\/figcaption>/);
   assert.equal((html.match(/data-action="play-challenge"/g) || []).length, 3);
   assert.doesNotMatch(html, /\bautoplay\b/);
   assert.match(html, /Read the situation clues instead/);

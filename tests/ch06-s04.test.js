@@ -177,6 +177,8 @@ test('S04 Teacher Mode is contextual, read-only, and cannot shape, deliver, rewa
   assert.match(mounted.node('#teacher-content').innerHTML, /rhetorical purpose|direction choice/);
   await click(mounted, 'teacher-preview');
   const html = mounted.node('#app').innerHTML;
+  assert.equal((html.match(/<figcaption>/g) || []).length, 1);
+  assert.match(html, /<figcaption>Chapter VI · Her Own Statement<\/figcaption>/);
   assert.match(html, /Teacher preview · read-only/);
   assert.match(renderedArt(html), /ch06_her_own_statement_room\.webp/);
   assert.equal((renderedArt(html).match(/eliza_her-own-voice_thoughtful_cutout\.png/g) || []).length, 1);

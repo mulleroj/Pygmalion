@@ -41,6 +41,8 @@ test('S02 matches locked script, provides text-first reflection and only optiona
   const before = ready({ origin_motivation: 'respect', applied_events: ['ch05_s05_complete', 'ch06_s01_complete', 'ch03_s05_complete'], credit_response: 'd11_redirect_publicly' });
   const mounted = await mount(t, before);
   const html = mounted.node('#app').innerHTML;
+  assert.equal((html.match(/<figcaption>/g) || []).length, 1);
+  assert.match(html, /<figcaption>Chapter VI · The Question in the Mirror<\/figcaption>/);
   assert.match(html, /The Question in the Mirror/);
   assert.match(html, /wall mirror and small table on the left/);
   assert.match(html, /I learned another way to speak\. I did not lose the first\./);
