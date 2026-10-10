@@ -128,6 +128,8 @@ test('valid S01 restore renders all visual routes with shared story convergence 
     const mounted = await mount(t, before, '#ch06_s01');
     const html = mounted.node('#app').innerHTML;
     assert.match(html, /The Morning After/);
+    assert.equal((html.match(/<figcaption>/g) || []).length, 1);
+    assert.match(html, /<figcaption>Chapter VI · The Morning After<\/figcaption>/);
     assert.match(html, /The first conversation ends without choosing for Eliza/);
     assert.match(html, /I know what is possible\. I need to decide what I want\./);
     assert.match(html, new RegExp(`ch06-morning-after-${companion || 'neutral'}`));

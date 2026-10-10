@@ -123,6 +123,8 @@ test('AM59 maps one exact approved asset and transcript across all 9 direction Ã
     for (const { value: shape } of CH06_SCENE_04.statement.shapes) {
       const mounted = await mount(t, s05Ready(direction, shape));
       const html = mounted.node('#app').innerHTML;
+      assert.equal((html.match(/<figcaption>/g) || []).length, 1, `${direction}/${shape} renders one caption`);
+      assert.match(html, /<figcaption>Chapter VI Â· The Voice She Chooses<\/figcaption>/);
       assert.equal((html.match(/data-action="play-voice"/g) || []).length, 1, `${direction}/${shape} has one replay control`);
       assert.equal((html.match(new RegExp(expectedPath.replaceAll('.', '\\.'), 'g')) || []).length, 1, `${direction}/${shape} maps only the same AM59 asset`);
       assert.equal((html.match(new RegExp(finalLine, 'g')) || []).length, 1, `${direction}/${shape} keeps one visible transcript`);
