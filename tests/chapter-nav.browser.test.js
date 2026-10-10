@@ -29,8 +29,9 @@ function serve() {
 
 test('Chromium: all six Story Map entries, separate resume checkpoints, and last-active restore at 390/430/768/1440 px', { timeout: 120_000 }, async (t) => {
   const { server, url } = await serve();
-  const browser = await chromium.launch({ headless: true });
-  t.after(async () => { await browser.close(); await new Promise((resolve) => server.close(resolve)); });
+  let browser;
+  t.after(async () => { await browser?.close(); await new Promise((resolve) => server.close(resolve)); });
+  browser = await chromium.launch({ headless: true });
   for (const [width, height] of [[390, 844], [430, 932], [768, 1024], [1440, 960]]) {
     const page = await browser.newPage({ viewport: { width, height } });
     const errors = []; page.on('pageerror', (error) => errors.push(error.message));
@@ -71,8 +72,9 @@ test('Chromium: all six Story Map entries, separate resume checkpoints, and last
 
 test('Chromium: legacy reader data migrates once without deleting the old key or inventing previous chapter completion', { timeout: 60_000 }, async (t) => {
   const { server, url } = await serve();
-  const browser = await chromium.launch({ headless: true });
-  t.after(async () => { await browser.close(); await new Promise((resolve) => server.close(resolve)); });
+  let browser;
+  t.after(async () => { await browser?.close(); await new Promise((resolve) => server.close(resolve)); });
+  browser = await chromium.launch({ headless: true });
   const page = await browser.newPage({ viewport: { width: 768, height: 920 } });
   const legacy = { ...createInitialState(), started: true, scene: 'ch05_s02', reception_register_plan: 'd10_keep_core_voice', applied_events: ['ch05_s01_complete'], challenges: { ...createInitialState().challenges, lc13: { ...createInitialState().challenges.lc13, answers: { lc13_organiser_relationship: { answer: 'lc13_professional_organiser_to_participant', correct: true } }, attempts: 1 } } };
   await page.addInitScript(([key, value]) => localStorage.setItem(key, JSON.stringify(value)), [STORAGE_KEY, legacy]);

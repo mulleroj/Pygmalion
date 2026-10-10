@@ -41,11 +41,12 @@ async function start(page, url, chapter) {
 }
 async function next(page, id) { await click(page, 'next-scene'); await scene(page, id); }
 async function fixture(t, width) {
-  const { server, url } = await serve(); const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({ viewport: { width, height: width === 390 ? 844 : 960 } }); const page = await context.newPage(); const consoleErrors = [];
+  const { server, url } = await serve(); let browser; let context;
+  t.after(async () => { await context?.close(); await browser?.close(); await new Promise((resolve) => server.close(resolve)); });
+  browser = await chromium.launch({ headless: true });
+  context = await browser.newContext({ viewport: { width, height: width === 390 ? 844 : 960 } }); const page = await context.newPage(); const consoleErrors = [];
   page.on('pageerror', (e) => consoleErrors.push(`pageerror: ${e.message}`));
   page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(`console: ${m.text()}`); });
-  t.after(async () => { await context.close(); await browser.close(); await new Promise((resolve) => server.close(resolve)); });
   return { page, url, consoleErrors };
 }
 async function chooseFirstDecision(page, sceneData) {

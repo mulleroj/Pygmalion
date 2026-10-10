@@ -260,7 +260,7 @@ export const CH05_SCENE_05 = {
       { id: 'mrs_pearce_first', title: 'I want to ask Mrs Pearce for practical support first.' }
     ]
   },
-  transition: 'After you choose a contact, Continue will complete Chapter V. Chapter VI is not yet available in this runtime.',
+  transition: 'After you choose a contact, Continue will complete Chapter V. You can then continue to Chapter VI.',
   nextScene: 'ch06_s01'
 };
 
@@ -296,7 +296,7 @@ export const CH05_S05_TEACHER_SECTIONS = [
   ['State handoff', 'Chapter VI may later read origin_motivation, reception_register_plan, credit_response, future_question_style and next_contact as context. They are not combined into a score or ending value.'],
   ['Completion', 'Only explicit Continue after the contact choice completes Chapter V and adds Independence +1 once. Revisiting, reload and replay do not repeat the increment.'],
   ['Teacher preview contract', 'Read-only. Preview does not select a contact, write learner state, change signals, complete Chapter V, play audio or advance the scene.'],
-  ['Scene navigation', 'ch05_s05 — Leaving the Hall · next_contact · explicit Continue completes Chapter V. Chapter VI runtime is not implemented.']
+  ['Scene navigation', 'ch05_s05 — Leaving the Hall · next_contact · explicit Continue completes Chapter V; the completed chapter then offers Continue to Chapter VI (ch06_s01).']
 ];
 
 export function ch05S04CompanionFor(creditResponse) {
