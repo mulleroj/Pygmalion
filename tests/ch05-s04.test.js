@@ -75,9 +75,13 @@ test('S04 has canonical identity, approved character art and its canonical side-
   }
   const css = fs.readFileSync(path.join(root, 'styles.css'), 'utf8');
   assert.match(css, /\.ch05-side-room \.art-eliza img, \.ch05-side-room \.supporting-character\s*\{[^}]*object-fit:\s*contain/);
-  assert.match(css, /\.ch05-side-room \.art-eliza img\s*\{\s*left:\s*25%/);
-  assert.match(css, /\.ch05-side-room \.supporting-character\s*\{\s*left:\s*75%/);
-  assert.match(css, /\.ch05-side-room \.art-background img\s*\{\s*object-position:\s*82% center/);
+  assert.match(css, /\.ch05-side-room \.art-eliza img\s*\{\s*left:\s*26%;\s*z-index:\s*3/);
+  assert.match(css, /\.ch05-side-room \.supporting-character\s*\{\s*left:\s*60%;\s*z-index:\s*2/);
+  assert.match(css, /@media \(min-width:\s*561px\)\s*\{\s*\.ch05-side-room \.supporting-character\s*\{\s*left:\s*50%/);
+  assert.match(css, /@media \(min-width:\s*1101px\)\s*\{\s*\.ch05-side-room \.supporting-character\s*\{\s*left:\s*47%/);
+  assert.match(css, /\.ch05-side-room \.art-eliza img, \.ch05-side-room \.supporting-character\s*\{[^}]*width:\s*48%;[^}]*height:\s*68%/);
+  assert.match(css, /\.storybook-art\.ch05-side-room::after\s*\{\s*display:\s*none/);
+  assert.match(css, /\.ch05-side-room \.art-background img\s*\{\s*object-position:\s*100% center/);
   assert.match(app, /baseScene\.id === 'ch05_s04'[\s\S]*?\.\.\.baseScene\.branches\[state\.credit_response\]/);
   const imagePath = path.join(root, CH05_SCENE_04.background.src.slice(2));
   const image = fs.readFileSync(imagePath);
