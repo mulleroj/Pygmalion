@@ -31,8 +31,8 @@ test('Chromium: all six Story Map entries, separate resume checkpoints, and last
   const { server, url } = await serve();
   const browser = await chromium.launch({ headless: true });
   t.after(async () => { await browser.close(); await new Promise((resolve) => server.close(resolve)); });
-  for (const width of [390, 430, 768, 1440]) {
-    const page = await browser.newPage({ viewport: { width, height: 920 } });
+  for (const [width, height] of [[390, 844], [430, 932], [768, 1024], [1440, 960]]) {
+    const page = await browser.newPage({ viewport: { width, height } });
     const errors = []; page.on('pageerror', (error) => errors.push(error.message));
     await page.goto(`${url}/#story-map`);
     assert.equal(await page.locator('.chapter-card').count(), 6);
@@ -52,7 +52,8 @@ test('Chromium: all six Story Map entries, separate resume checkpoints, and last
       assert.equal(new URL(page.url()).hash, `#${entry}`);
       await page.goto(`${url}/#story-map`);
     }
-    const chapterSixResume = page.locator('[data-action="resume-chapter"][data-chapter="ch06"]');
+    const chapterSixResume = page.getByRole('button', { name: /resume chapter vi/i });
+    assert.equal(await chapterSixResume.count(), 1, 'chapter action exposes an accessible button name');
     await chapterSixResume.focus();
     assert.equal(await chapterSixResume.evaluate((element) => document.activeElement === element), true);
     await page.keyboard.press('Enter');
