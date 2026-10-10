@@ -88,13 +88,20 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch05-exhibition-hall-opening .art-eliza img { position: absolute; left: 50%; bottom: 1%; height: 86%; max-width: none; max-height: none; width: auto; object-fit: contain; transform: translateX(-50%); z-index: 3; filter: saturate(.94) drop-shadow(0 4px 5px rgba(34, 27, 24, .28)); }
 .ch05-side-room { min-height: 20rem; }
 .ch05-side-room .art-support, .ch05-side-room .art-eliza { display: block; padding: 0; opacity: 1; }
-.ch05-side-room .art-background img { object-position: 82% center; }
+.ch05-side-room .art-background img { object-position: 100% center; }
 .ch05-side-room figcaption { top: 1rem; right: 1rem; bottom: auto; }
-.ch05-side-room .art-eliza img, .ch05-side-room .supporting-character { position: absolute; bottom: 8%; width: auto; height: 54%; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); }
-.ch05-side-room .art-eliza img { left: 25%; }
-.ch05-side-room .supporting-character { left: 75%; }
+.ch05-side-room .art-eliza img, .ch05-side-room .supporting-character { position: absolute; bottom: 4%; width: 48%; height: 68%; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); }
+.ch05-side-room .art-eliza img { left: 26%; z-index: 3; }
+.ch05-side-room .supporting-character { left: 60%; z-index: 2; }
+.storybook-art.ch05-side-room::after { display: none; }
 .ch05-side-room .art-eliza::before { left: 9%; bottom: 6%; width: 34%; height: 5%; }
 .ch05-side-room .supporting-character { filter: saturate(.9) contrast(.98) drop-shadow(0 9px 9px rgba(42, 31, 37, .25)); }
+@media (min-width: 561px) {
+  .ch05-side-room .supporting-character { left: 50%; }
+}
+@media (min-width: 1101px) {
+  .ch05-side-room .supporting-character { left: 47%; }
+}
 .ch05-front-steps { min-height: 20rem; }
 .ch05-front-steps .art-support, .ch05-front-steps .art-eliza { display: block; padding: 0; opacity: 1; }
 .ch05-front-steps .art-background img { object-position: center; }
@@ -327,9 +334,7 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .ch02-exterior .supporting-character { left: 53%; bottom: 24%; height: 50%; }
   .ch02-exterior .art-eliza::before { left: 9%; bottom: 12%; width: 35%; }
   .ch02-exterior .art-support::before { left: 42%; bottom: 23%; width: 23%; }
-  .ch05-side-room .art-eliza img, .ch05-side-room .supporting-character { height: 60%; }
-  .ch05-side-room .art-eliza img { left: 25%; }
-  .ch05-side-room .supporting-character { left: 75%; }
+  .ch05-side-room .art-eliza img, .ch05-side-room .supporting-character { height: 68%; }
   .ch02-study.storybook-art { min-height: 440px; height: 440px; aspect-ratio: auto; }
   .ch02-study .art-background img { object-fit: cover; object-position: 62% center; }
   .ch02-study .support-pickering { left: 38%; top: 18%; height: 37%; clip-path: inset(0 0 32% 0); }
