@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { CH03_SCENE_03, CH03_SCENE_04, CH03_S04_TEACHER_SECTIONS } from '../src/ch03-content.js';
@@ -179,7 +180,7 @@ test('S04 UI keeps neutral answer labels, replay state-neutral, Teacher read-onl
     addEventListener(name, fn) { this.listeners.set(name, fn); }
     removeEventListener(name) { this.listeners.delete(name); }
   }
-  let saved = JSON.stringify(ready()), writes = 0;
+  let saved = savedProgress(ready()), writes = 0;
   const node = (key) => {
     if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, scrollIntoView() {}, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
     return nodes.get(key);
@@ -213,12 +214,12 @@ test('S04 UI keeps neutral answer labels, replay state-neutral, Teacher read-onl
   assert.ok(audioInstances.some(({ src, paused }) => src === CH03_SCENE_04.voice[0].src && paused), 'new foreground audio interrupts the prior story take');
 
   await click('choose-decision', { decision: 'D07', option: 'd07_hear_naturally' });
-  assert.equal(JSON.parse(saved).decisions.D07, 'd07_hear_naturally');
+  assert.equal(readSavedProgress(saved).decisions.D07, 'd07_hear_naturally');
   assert.match(node('#app').innerHTML, /Notice where the message comes forward/);
   await click('answer-lc08', { sample: 'lc08_sample_01', answer: 'lc08_focus_flowers' });
   assert.match(node('#app').innerHTML, /data-action="open-lc08-support"/);
   await click('open-lc08-support');
-  assert.equal(JSON.parse(saved).challenges.lc08.supportUsed, true);
+  assert.equal(readSavedProgress(saved).challenges.lc08.supportUsed, true);
   assert.match(node('#app').innerHTML, /I wanted the red flowers\. — red/);
 
   await click('open-teacher');
@@ -238,12 +239,12 @@ test('S04 UI keeps neutral answer labels, replay state-neutral, Teacher read-onl
   for (const [sample, answerId] of [['lc08_sample_01', 'lc08_focus_red'], ['lc08_sample_02', 'lc08_focus_three'], ['lc08_sample_03', 'lc08_focus_monday']]) {
     await click('answer-lc08', { sample, answer: answerId });
   }
-  assert.equal(JSON.parse(saved).challenges.lc08.completed, true);
-  assert.equal(JSON.parse(saved).pronunciation, 0);
-  assert.equal(JSON.parse(saved).applied_events.includes('ch03_s04_complete'), false);
+  assert.equal(readSavedProgress(saved).challenges.lc08.completed, true);
+  assert.equal(readSavedProgress(saved).pronunciation, 0);
+  assert.equal(readSavedProgress(saved).applied_events.includes('ch03_s04_complete'), false);
   await click('next-scene');
-  assert.ok(JSON.parse(saved).applied_events.includes('ch03_s04_complete'));
-  assert.equal(JSON.parse(saved).scene, 'ch03_s05');
+  assert.ok(readSavedProgress(saved).applied_events.includes('ch03_s04_complete'));
+  assert.equal(readSavedProgress(saved).scene, 'ch03_s05');
   assert.match(node('#app').innerHTML, /The Bad Day/);
   assert.match(node('#app').innerHTML, /data-action="answer-lc09"/);
 });

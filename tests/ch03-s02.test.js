@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { CH03_SCENE_01, CH03_SCENE_02, CH03_S02_TEACHER_SECTIONS } from '../src/ch03-content.js';
@@ -152,7 +153,7 @@ test('S02 UI plays approved files, hides transcripts until support and keeps pre
   const originals = Object.fromEntries(['document', 'window', 'localStorage'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; });
   const nodes = new Map(), events = {};
-  let saved = JSON.stringify(ready()), writes = 0;
+  let saved = savedProgress(ready()), writes = 0;
   const node = (key) => {
     if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, scrollIntoView() {}, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
     return nodes.get(key);
@@ -197,7 +198,7 @@ test('S02 UI plays approved files, hides transcripts until support and keeps pre
   await click('lc06-cannot-hear');
   assert.match(node('#app').innerHTML, /Supported practice/);
   assert.match(node('#app').innerHTML, /I&#39;d like three flowers\./);
-  assert.equal(JSON.parse(saved).challenges.lc06.supportUsed, true);
+  assert.equal(readSavedProgress(saved).challenges.lc06.supportUsed, true);
   const answers = [
     ['lc06_sample_01', 'lc06_word_three', 'lc06_meaning_three_flowers'],
     ['lc06_sample_02', 'lc06_word_free', 'lc06_meaning_no_payment']
@@ -207,11 +208,11 @@ test('S02 UI plays approved files, hides transcripts until support and keeps pre
     await click('select-lc06', { sample, kind: 'meaning', answer: meaning });
     await click('submit-lc06', { sample });
   }
-  assert.equal(JSON.parse(saved).challenges.lc06.completed, true);
-  assert.equal(JSON.parse(saved).pronunciation, 0);
+  assert.equal(readSavedProgress(saved).challenges.lc06.completed, true);
+  assert.equal(readSavedProgress(saved).pronunciation, 0);
   await click('next-scene');
-  assert.ok(JSON.parse(saved).applied_events.includes('ch03_s02_complete'));
-  assert.equal(JSON.parse(saved).scene, 'ch03_s03');
+  assert.ok(readSavedProgress(saved).applied_events.includes('ch03_s02_complete'));
+  assert.equal(readSavedProgress(saved).scene, 'ch03_s03');
   assert.equal(window.location.hash, '#ch03_s03');
   assert.match(node('#app').innerHTML, /Finding the Main Stress/);
   assert.match(node('#app').innerHTML, /Replay recording 1/);

@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
@@ -88,11 +89,11 @@ test('shared runtime: render/refresh, Teacher preview and review do not save; cl
   const plays=[], originalPlay=AudioManager.prototype.playVoice, originalStop=AudioManager.prototype.stopForeground; let stops=0;
   AudioManager.prototype.playVoice=async function(src){plays.push(src);}; AudioManager.prototype.stopForeground=function(...args){stops++;return originalStop.apply(this,args);};
   t.after(()=>{AudioManager.prototype.playVoice=originalPlay;AudioManager.prototype.stopForeground=originalStop;});
-  let saved=JSON.stringify(completedChapterTwoAtS01()),writes=0; const nodes=new Map(),events={};
+  let saved=savedProgress(completedChapterTwoAtS01()),writes=0; const nodes=new Map(),events={};
   const node=k=>{if(!nodes.has(k))nodes.set(k,{innerHTML:'',textContent:'',open:false,focus(){},scrollIntoView(){},setAttribute(){},removeAttribute(){},addEventListener(){},querySelector(){return node('close');},showModal(){this.open=true;},close(){this.open=false;}});return nodes.get(k);};
   globalThis.document={querySelector:node,addEventListener(n,fn){events[n]=fn;}};
   globalThis.window={location:{hash:'#ch03_s01',pathname:'/'},history:{state:{scene:scene.id},pushState(_state,_title,url){this.state=_state;window.location.hash=url.startsWith('#')?url:'';},replaceState(_state,_title,url){this.state=_state;window.location.hash=url.startsWith('#')?url:'';}},setTimeout(fn){fn();},addEventListener(){}};
-  globalThis.localStorage={getItem(){return saved;},setItem(k,v){assert.equal(k,STORAGE_KEY);saved=v;writes++;}};
+  globalThis.localStorage={getItem(){return saved;},setItem(k,v){assert.equal(k,SAVE_KEY);saved=v;writes++;}};
   const {render,moveNext}=await import('../src/app.js?ch03-test');
   const click=(action,data={})=>events.click({isTrusted:false,target:{closest(){return{dataset:{action,...data},focus(){}};}}});
   render(); assert.equal(writes,0); assert.match(node('#app').innerHTML,/Chapter III · The Lessons/); assert.equal((node('#app').innerHTML.match(/data-action="play-voice"/g)||[]).length,2); assert.doesNotMatch(node('#app').innerHTML,/data-action="play-challenge"/);
@@ -103,8 +104,8 @@ test('shared runtime: render/refresh, Teacher preview and review do not save; cl
   const stopBefore=stops; await click('play-voice',{src:scene.voice[1].src}); assert.equal(writes,0); await click('return-student'); assert.ok(stops>stopBefore); await click('choose-decision',{decision:'D06',option:'d06_slow_repeat'}); const choice=saved;
   render();assert.equal(saved,choice);assert.match(node('#app').innerHTML,/Open transcript/);
   for(const sample of scene.challenge.samples)await click('answer-lc05',{sample:sample.id,answer:sample.answer});
-  assert.equal(JSON.parse(saved).ch03_s01_complete,false);
+  assert.equal(readSavedProgress(saved).ch03_s01_complete,false);
   const before=saved,count=writes;await click('open-teacher');await click('teacher-preview');moveNext();render();assert.equal(saved,before);assert.equal(writes,count);
-  await click('return-student');await click('next-scene');assert.equal(JSON.parse(saved).ch03_s01_complete,true);assert.equal(JSON.parse(saved).scene,'ch03_s02');
+  await click('return-student');await click('next-scene');assert.equal(readSavedProgress(saved).ch03_s01_complete,true);assert.equal(readSavedProgress(saved).scene,'ch03_s02');
   assert.match(node('#app').innerHTML,/The Listening Room/);
 });

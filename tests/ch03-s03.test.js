@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { CH03_SCENE_02, CH03_SCENE_03, CH03_S03_TEACHER_SECTIONS } from '../src/ch03-content.js';
@@ -104,7 +105,7 @@ test('approved story voice and LC07 recordings render with transcript parity and
   const originals = Object.fromEntries(['document', 'window', 'localStorage'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; });
   const nodes = new Map(), events = {};
-  let saved = JSON.stringify(ready()), writes = 0;
+  let saved = savedProgress(ready()), writes = 0;
   const node = (key) => {
     if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, scrollIntoView() {}, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
     return nodes.get(key);
@@ -149,26 +150,26 @@ test('approved story voice and LC07 recordings render with transcript parity and
   await click('return-student');
 
   await click('answer-lc07', { sample: 'lc07_sample_01', answer: 'lc07_stress_customer_2' });
-  assert.equal(JSON.parse(saved).challenges.lc07.answers.lc07_sample_01.correct, false);
+  assert.equal(readSavedProgress(saved).challenges.lc07.answers.lc07_sample_01.correct, false);
   assert.match(node('#app').innerHTML, /data-action="open-lc07-support"/);
   assert.doesNotMatch(node('#app').innerHTML, /CUS-to-mer/);
   await click('open-lc07-support');
-  assert.equal(JSON.parse(saved).challenges.lc07.supportUsed, true);
+  assert.equal(readSavedProgress(saved).challenges.lc07.supportUsed, true);
   assert.match(node('#app').innerHTML, /CUS-to-mer.*ex-PEN-sive.*de-LIV-er-y/s);
   for (const [sample, answer] of [
     ['lc07_sample_01', 'lc07_stress_customer_1'],
     ['lc07_sample_02', 'lc07_stress_expensive_2'],
     ['lc07_sample_03', 'lc07_stress_delivery_2']
   ]) await click('answer-lc07', { sample, answer });
-  assert.equal(JSON.parse(saved).challenges.lc07.completed, true);
-  assert.equal(JSON.parse(saved).pronunciation, 0);
-  assert.equal(JSON.parse(saved).applied_events.includes('ch03_s03_complete'), false);
+  assert.equal(readSavedProgress(saved).challenges.lc07.completed, true);
+  assert.equal(readSavedProgress(saved).pronunciation, 0);
+  assert.equal(readSavedProgress(saved).applied_events.includes('ch03_s03_complete'), false);
   await click('next-scene');
-  assert.ok(JSON.parse(saved).applied_events.includes('ch03_s03_complete'));
-  assert.equal(JSON.parse(saved).scene, 'ch03_s04');
+  assert.ok(readSavedProgress(saved).applied_events.includes('ch03_s03_complete'));
+  assert.equal(readSavedProgress(saved).scene, 'ch03_s04');
   assert.match(node('#app').innerHTML, /A Sentence Has Shape/);
   assert.match(node('#app').innerHTML, /Sentence stress · LC08/);
-  assert.equal(JSON.parse(saved).scene, 'ch03_s04');
+  assert.equal(readSavedProgress(saved).scene, 'ch03_s04');
 
   const appSource = fs.readFileSync(new URL('../src/app.js', import.meta.url), 'utf8');
   assert.doesNotMatch(appSource, /speechSynthesis/);

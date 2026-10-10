@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { CH03_SCENE_06, CH03_S06_TEACHER_SECTIONS } from '../src/ch03-content.js';
@@ -191,7 +192,7 @@ test('S06 UI hides all transcripts initially, uses neutral controls, and Teacher
   }
   FakeAudio.instances = [];
   FakeAudio.played = [];
-  let saved = JSON.stringify(ready()), writes = 0;
+  let saved = savedProgress(ready()), writes = 0;
   const node = (key) => {
     if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, scrollIntoView() {}, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
     return nodes.get(key);
@@ -244,7 +245,7 @@ test('S06 UI hides all transcripts initially, uses neutral controls, and Teacher
   assert.equal((html.match(/data-action="lc10-cannot-hear"/g) || []).length, 2, 'only the used sample hides its no-audio trigger');
   assert.doesNotMatch(html, /The blue book—no, the green one, please\.|She means the green book, not the blue one\./, 'accessible input does not disclose the recording transcript or answer explanation');
   assert.doesNotMatch(html, /aria-pressed="true"/);
-  let afterNoAudio = JSON.parse(saved);
+  let afterNoAudio = readSavedProgress(saved);
   assert.equal(afterNoAudio.challenges.lc10.answers.lc10_sample_02, undefined, 'no-audio route records no fabricated answer');
   assert.deepEqual(afterNoAudio.challenges.lc10.noAudioSamples, ['lc10_sample_02']);
   assert.equal(afterNoAudio.challenges.lc10.supportUsed, true);
@@ -284,17 +285,22 @@ test('S06 UI hides all transcripts initially, uses neutral controls, and Teacher
   assert.match(html, /I can hear it myself\./);
   assert.match(html, /The lesson is over\. The learning is not\./);
   assert.match(html, /data-action="next-scene"/);
-  let finalState = JSON.parse(saved);
+  let finalState = readSavedProgress(saved);
   assert.equal(finalState.pronunciation, 0, 'opened target-revealing support cancels reward');
   assert.equal(finalState.challenges.lc10.completed, true);
   assert.equal(finalState.applied_events.filter((event) => event === 'ch03_lc10_completed').length, 1);
   await click('next-scene');
   html = node('#app').innerHTML;
-  finalState = JSON.parse(saved);
+  finalState = readSavedProgress(saved);
+  assert.equal(window.location.hash, '#ch03_s06', 'Chapter III keeps its own completed checkpoint until the reader chooses the next chapter');
+  assert.equal(finalState.scene, 'ch03_s06');
+  assert.equal(finalState.applied_events.filter((event) => event === 'ch03_s06_complete').length, 1);
+  assert.match(html, /Continue to Chapter IV/);
+  await click('continue-next-chapter');
+  finalState = readSavedProgress(saved);
   assert.equal(window.location.hash, '#ch04_s01');
   assert.equal(finalState.scene, 'ch04_s01');
-  assert.equal(finalState.applied_events.filter((event) => event === 'ch03_s06_complete').length, 1);
-  assert.match(html, /The Invitation/);
+  assert.match(node('#app').innerHTML, /The Invitation/);
   assert.equal(FakeAudio.instances.filter((audio) => !audio.src.includes('ch03_higgins_house_lesson_ambient.mp3')).every((audio) => audio.paused), true, 'scene transition cleans up all foreground and one-shot audio');
   assert.equal(FakeAudio.instances.some((audio) => audio.src.includes('ch03_higgins_house_lesson_ambient.mp3') && !audio.paused), true, 'Chapter IV reuses the Chapter III lesson-room ambience loop');
 });

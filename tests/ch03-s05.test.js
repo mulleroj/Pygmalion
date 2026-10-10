@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
@@ -171,7 +172,7 @@ test('S05 renders approved story and LC09 replay without answer leakage; playbac
     addEventListener(name, fn) { this.listeners.set(name, fn); }
     removeEventListener(name) { this.listeners.delete(name); }
   }
-  let saved = JSON.stringify(ready()), writes = 0;
+  let saved = savedProgress(ready()), writes = 0;
   const node = (key) => {
     if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, scrollIntoView() {}, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
     return nodes.get(key);

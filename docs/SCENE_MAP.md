@@ -4,6 +4,10 @@ Tento dokument je canonical detailní mapa všech šesti kapitol. Určuje stabil
 
 Scénově specifické Teacher Mode poznámky zůstávají u jednotlivých scén. Jednotnou chapter-level strukturu, contextualitu, answer keys a progress-safe replay definuje [`TEACHER_MODE_SPEC.md`](TEACHER_MODE_SPEC.md).
 
+### Story Map a nezávislý progress
+
+Všech šest kapitol lze otevřít přímo ze Story Map. Story Map ukládá samostatný checkpoint pro každou kapitolu; `RESUME CHAPTER` obnovuje checkpoint dané kapitoly a `CONTINUE READING` obnovuje naposledy aktivní scénu. Hranice scén a všechny místní volby, výzvy i explicitní Continue zůstávají zachované. Dokončení pozdější kapitoly nevytváří události dokončení dřívějších kapitol. Save envelope, migraci v1 a hash guardy popisuje [`PROGRESS_NAVIGATION_ARCHITECTURE.md`](PROGRESS_NAVIGATION_ARCHITECTURE.md).
+
 ## Map conventions
 
 - Hlavní storybook smyčka: `Read / Story → Decision or Challenge → Consequence → Transition`.

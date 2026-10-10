@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import { createInitialState, STORAGE_KEY } from '../src/state.js';
 import { AudioManager } from '../src/audio.js';
@@ -12,7 +13,7 @@ async function restoreScene(t, savedState, hash = `#${savedState.scene}`) {
     }
   });
 
-  let saved = JSON.stringify(savedState);
+  let saved = savedProgress(savedState);
   let writes = 0;
   const nodes = new Map();
   const events = {};
@@ -36,8 +37,8 @@ async function restoreScene(t, savedState, hash = `#${savedState.scene}`) {
     addEventListener() {}
   };
   globalThis.localStorage = {
-    getItem(key) { assert.equal(key, STORAGE_KEY); return saved; },
-    setItem(key, value) { assert.equal(key, STORAGE_KEY); writes++; saved = value; }
+    getItem(key) { assert.equal(key, SAVE_KEY); return saved; },
+    setItem(key, value) { assert.equal(key, SAVE_KEY); writes++; saved = value; }
   };
 
   const originalsAudio = Object.fromEntries(['ensureAmbience', 'setEnabled', 'leaveScene'].map((key) => [key, AudioManager.prototype[key]]));
@@ -46,7 +47,7 @@ async function restoreScene(t, savedState, hash = `#${savedState.scene}`) {
 
   const moduleId = `${Date.now()}-${Math.random()}`;
   const app = await import(`../src/app.js?restored-scene-test=${moduleId}`);
-  const parsedState = () => JSON.parse(saved);
+  const parsedState = () => readSavedProgress(saved);
   return { app, events, node, parsedState, location: window.location, history: window.history, writeCount: () => writes };
 }
 
@@ -119,7 +120,8 @@ test('Story Map derives chapter state from the save and Continue Reading restore
   assert.equal((markup.match(/class="chapter-card"/g) || []).length, 6);
   assert.match(markup, /The Flower Girl/);
   assert.match(markup, /In progress/);
-  assert.match(markup, /Not yet available/);
+  assert.match(markup, /Not started/);
+  assert.equal((markup.match(/data-action="open-chapter"/g) || []).length, 5);
   assert.equal(map.writeCount(), 0);
   assert.equal(map.parsedState().scene, 'ch01_s03');
 

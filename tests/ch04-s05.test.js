@@ -165,12 +165,12 @@ test('evening walk ambience crossfades from the running corridor without restart
   assert.equal(elements.filter(({ src }) => src.endsWith('ch04_evening_walk_ambient.mp3')).length, 1);
 });
 
-test('S05 completion remains the guarded entry boundary for Chapter V S01', () => {
+test('Chapter V can be opened independently while S05 still gates natural chapter continuation', () => {
   const app = fs.readFileSync(path.join(root, 'src/app.js'), 'utf8');
   assert.match(app, /\[CH04_SCENE_05\.id\]: CH04_SCENE_05/);
-  assert.equal(getSceneAdvanceBlock(setScene(createInitialState(), CH05_SCENE_01.id), CH05_SCENE_01), 'Complete Chapter IV Scene 05 before opening The Borough Exhibition Evening.');
-  assert.match(app, /hashScene === 'ch05_s01'[\s\S]*?ch04_s05_complete/);
-  assert.match(app, /hashScene === 'ch05_s01' && state\.applied_events\.includes\('ch04_s05_complete'\)/);
+  assert.equal(getSceneAdvanceBlock(setScene(createInitialState(), CH05_SCENE_01.id), CH05_SCENE_01), 'Choose a register plan before continuing.');
+  assert.doesNotMatch(app, /hashScene === 'ch05_s01'[\s\S]*?ch04_s05_complete/);
+  assert.doesNotMatch(app, /hashScene === 'ch05_s01' && state\.applied_events\.includes\('ch04_s05_complete'\)/);
   assert.match(app, /CH05_SCENE_01\.nextScene/);
   assert.match(app, /scene\?\.id === 'ch04_s05' \? CH04_S05_TEACHER_SECTIONS/);
   assert.match(app, /scene\.id === 'ch04_s05' && !scenePreview/);

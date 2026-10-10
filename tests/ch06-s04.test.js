@@ -1,4 +1,6 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
+import { loadReaderProgress } from '../src/progress.js';
 import assert from 'node:assert/strict';
 import { createInitialState, saveState, loadState, STORAGE_KEY, recordCh06FinalStatementShape, deliverCh06FinalStatement, completeScene, getSceneAdvanceBlock } from '../src/state.js';
 import { CH06_SCENE_04, CH06_S04_TEACHER_SECTIONS } from '../src/ch06-content.js';
@@ -7,7 +9,7 @@ async function mount(t, savedState, hash = `#${savedState.scene}`) {
   const keys = ['document', 'window', 'localStorage'];
   const originals = Object.fromEntries(keys.map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) descriptor ? Object.defineProperty(globalThis, key, descriptor) : delete globalThis[key]; });
-  let saved = JSON.stringify(savedState);
+  let saved = savedProgress(savedState);
   const nodes = new Map();
   const handlers = {};
   const node = (key) => {
@@ -16,9 +18,9 @@ async function mount(t, savedState, hash = `#${savedState.scene}`) {
   };
   globalThis.document = { querySelector: node, addEventListener(name, handler) { handlers[name] = handler; } };
   globalThis.window = { location: { hash, pathname: '/' }, history: { state: null, pushState(value, _title, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(value, _title, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; } }, setTimeout(handler) { handler(); }, addEventListener(name, handler) { handlers[name] = handler; } };
-  globalThis.localStorage = { getItem(key) { assert.equal(key, STORAGE_KEY); return saved; }, setItem(key, value) { assert.equal(key, STORAGE_KEY); saved = value; } };
+  globalThis.localStorage = { getItem(key) { assert.equal(key, SAVE_KEY); return saved; }, setItem(key, value) { assert.equal(key, SAVE_KEY); saved = value; } };
   const app = await import(`../src/app.js?ch06-s04=${Date.now()}-${Math.random()}`);
-  return { app, handlers, node, state: () => JSON.parse(saved), hash: () => window.location.hash, async navigate(hash) { window.location.hash = hash; await handlers.hashchange(); } };
+  return { app, handlers, node, state: () => readSavedProgress(saved), hash: () => window.location.hash, async navigate(hash) { window.location.hash = hash; await handlers.hashchange(); } };
 }
 
 function s04Ready(direction = 'social_success') {
@@ -117,8 +119,8 @@ test('S04 shape is immutable, composes the exact direction clause and persists w
     await mounted.navigate('#ch06_s04');
     assert.equal(mounted.state().final_statement_shape, 'reflection', 'Forward preserves the saved shape');
     assert.equal(mounted.state().confidence, 0, 'Forward does not award Confidence');
-    const storage = { value: JSON.stringify(selected), getItem() { return this.value; } };
-    assert.equal(loadState(storage).final_statement_shape, 'reflection');
+    const storage = { value: savedProgress(selected), getItem() { return this.value; } };
+    assert.equal(loadReaderProgress(storage).state.final_statement_shape, 'reflection');
     assert.strictEqual(recordCh06FinalStatementShape(selected, 'final_statement_commitment'), selected, 'saved shape cannot be overwritten');
   }
   for (const direction of Object.keys(CH06_SCENE_04.statement.directions)) {

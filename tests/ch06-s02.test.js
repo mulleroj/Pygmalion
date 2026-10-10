@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import { readFile, stat } from 'node:fs/promises';
 import { createInitialState, STORAGE_KEY, completeScene, getSceneAdvanceBlock } from '../src/state.js';
@@ -9,7 +10,7 @@ async function mount(t, savedState, hash = '#ch06_s02') {
   const keys = ['document', 'window', 'localStorage'];
   const originals = Object.fromEntries(keys.map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) descriptor ? Object.defineProperty(globalThis, key, descriptor) : delete globalThis[key]; });
-  let saved = JSON.stringify(savedState);
+  let saved = savedProgress(savedState);
   const nodes = new Map();
   const handlers = {};
   const node = (key) => {
@@ -18,7 +19,7 @@ async function mount(t, savedState, hash = '#ch06_s02') {
   };
   globalThis.document = { querySelector: node, addEventListener(name, handler) { handlers[name] = handler; } };
   globalThis.window = { location: { hash, pathname: '/' }, history: { state: null, pushState(value, _title, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; }, replaceState(value, _title, url) { this.state = value; window.location.hash = url.startsWith('#') ? url : ''; } }, setTimeout(handler) { handler(); }, addEventListener(name, handler) { handlers[name] = handler; } };
-  globalThis.localStorage = { getItem(key) { assert.equal(key, STORAGE_KEY); return saved; }, setItem(key, value) { assert.equal(key, STORAGE_KEY); saved = value; } };
+  globalThis.localStorage = { getItem(key) { assert.equal(key, SAVE_KEY); return saved; }, setItem(key, value) { assert.equal(key, SAVE_KEY); saved = value; } };
   const methods = ['ensureAmbience', 'setEnabled', 'leaveScene', 'setSceneAudioReadOnly', 'playVoice'];
   const originalsAudio = Object.fromEntries(methods.map((name) => [name, AudioManager.prototype[name]]));
   const audioCalls = { ambience: [], voice: [] };
@@ -28,7 +29,7 @@ async function mount(t, savedState, hash = '#ch06_s02') {
       : () => {};
   t.after(() => { for (const [name, method] of Object.entries(originalsAudio)) if (method) AudioManager.prototype[name] = method; });
   const app = await import(`../src/app.js?ch06-s02=${Date.now()}-${Math.random()}`);
-  return { app, audioCalls, handlers, node, state: () => JSON.parse(saved), location: window.location };
+  return { app, audioCalls, handlers, node, state: () => readSavedProgress(saved), location: window.location };
 }
 
 const ready = (extra = {}) => ({ ...createInitialState(), started: true, ch05_complete: true, scene: 'ch06_s02', applied_events: ['ch05_s05_complete', 'ch06_s01_complete'], ...extra });

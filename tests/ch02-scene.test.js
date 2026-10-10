@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -348,7 +349,7 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   t.mock.method(AudioManager.prototype, 'playVoice', async (src, afterVoice) => { voiceRequests.push({ src, afterVoice }); return null; });
   const originals = Object.fromEntries(['document', 'window', 'localStorage'].map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) { if (descriptor) Object.defineProperty(globalThis, key, descriptor); else delete globalThis[key]; } });
-  let saved = JSON.stringify(ch02S02RuntimeStart());
+  let saved = savedProgress(ch02S02RuntimeStart());
   const nodes = new Map();
   const node = (key) => {
     if (!nodes.has(key)) nodes.set(key, { innerHTML: '', textContent: '', open: false, focus() {}, scrollIntoView() {}, setAttribute() {}, removeAttribute() {}, addEventListener() {}, querySelector() { return node('close'); }, showModal() { this.open = true; }, close() { this.open = false; } });
@@ -371,18 +372,19 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   assert.equal(documentScrollRoot.scrollTop, 0);
   const click = (action, data = {}) => events.click({ isTrusted: false, target: { closest() { return { dataset: { action, ...data }, focus() {} }; } } });
   assert.doesNotMatch(node('#app').innerHTML, /Continue to Mrs Pearce/);
-  moveNext(); assert.equal(JSON.parse(saved).scene, 'ch02_s02');
+  moveNext(); assert.equal(readSavedProgress(saved).scene, 'ch02_s02');
   for (const [sample, answer] of [['lc04_sample_offer', 'lc04_offer'], ['lc04_sample_evaluation', 'lc04_evaluation'], ['lc04_sample_condition', 'lc04_condition']]) await click('answer-lc04', { sample, answer });
   assert.match(node('#app').innerHTML, /Continue to Mrs Pearce/);
-  const completed = JSON.parse(saved);
+  const completed = readSavedProgress(saved);
   await click('next-scene');
-  assert.deepEqual(JSON.parse(saved), { ...completed, scene: 'ch02_s03' });
+  assert.deepEqual(readSavedProgress(saved), { ...completed, scene: 'ch02_s03' });
   assert.deepEqual(scrollCalls.at(-1), { top: 0, left: 0, behavior: 'instant' }, 'scene transition returns to the top');
   assert.match(node('#app').innerHTML, /This response is optional/);
   await click('next-scene');
-  assert.equal(JSON.parse(saved).scene, 'ch02_s04');
-  assert.equal(JSON.parse(saved).boundary_questioned, false);
-  assert.equal(JSON.parse(saved).lesson_terms_understood, false);
+  assert.equal(readSavedProgress(saved).scene, 'ch02_s04');
+  assert.equal(readSavedProgress(saved).boundary_questioned, false);
+  assert.equal(readSavedProgress(saved).lesson_terms_understood, false);
+  window.history.state = { pygmalionRoute: true, scene: 'ch02_s03', chapter: 'ch02' };
   window.location.hash = '#ch02_s03';
   historyEvents.hashchange();
   assert.doesNotMatch(node('#app').innerHTML, /pickering_master|ch02_s04/);
@@ -406,18 +408,18 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   assert.match(node('#app').innerHTML, /Mrs Pearce continues toward/);
   await click('respond-s03', { option: 's03_ask_for_clarification' });
   const asked = saved;
-  assert.equal(JSON.parse(saved).boundary_questioned, true);
+  assert.equal(readSavedProgress(saved).boundary_questioned, true);
   await click('respond-s03', { option: 's03_ask_for_clarification' });
   await click('respond-s03', { option: 's03_confirm_understanding' });
   render(); historyEvents.popstate(); historyEvents.hashchange();
   await click('open-teacher'); await click('teacher-preview'); await click('review-scene');
   assert.equal(saved, asked);
-  assert.equal(JSON.parse(saved).applied_events.filter((id) => id === 'ch02_s03_boundary_questioned').length, 1);
-  assert.deepEqual(loadState({ getItem: () => saved }), JSON.parse(asked));
-  assert.equal(JSON.parse(saved).scene, 'ch02_s03');
+  assert.equal(readSavedProgress(saved).applied_events.filter((id) => id === 'ch02_s03_boundary_questioned').length, 1);
+  assert.deepEqual(readSavedProgress(saved), readSavedProgress(asked));
+  assert.equal(readSavedProgress(saved).scene, 'ch02_s03');
   await click('next-scene');
-  assert.equal(JSON.parse(saved).scene, 'ch02_s04');
-  assert.equal(JSON.parse(saved).lesson_terms_understood, false);
+  assert.equal(readSavedProgress(saved).scene, 'ch02_s04');
+  assert.equal(readSavedProgress(saved).lesson_terms_understood, false);
   const beforeTerms = saved;
   const ordinaryGesture = { isTrusted: true, type: 'pointerdown', target: { closest() { return null; } } };
   const beforeUnlock = unlocks;
@@ -449,14 +451,15 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   assert.equal(saved, beforeTerms);
   await click('complete-s04');
   assert.equal(saved, beforeTerms); // Teacher preview cannot accept the agreement.
+  window.history.state = { pygmalionRoute: true, scene: 'ch02_s03', chapter: 'ch02' };
   window.location.hash = '#ch02_s03'; render();
   await click('next-scene');
   await click('complete-s04');
   const termsComplete = saved;
-  assert.equal(JSON.parse(saved).lesson_terms_understood, true);
+  assert.equal(readSavedProgress(saved).lesson_terms_understood, true);
   await click('complete-s04'); moveNext(); render();
   assert.equal(saved, termsComplete);
-  assert.equal(JSON.parse(saved).scene, 'ch02_s05');
+  assert.equal(readSavedProgress(saved).scene, 'ch02_s05');
   assert.match(node('#app').innerHTML, /Why I Am Here/);
   assert.doesNotMatch(node('#app').innerHTML, /data-action="play-voice"/);
   await click('open-teacher');
@@ -466,6 +469,7 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   await click('teacher-preview');
   await click('choose-decision', { decision: 'D05', option: 'd05_learning' });
   assert.equal(saved, beforeD05);
+  window.history.state = { pygmalionRoute: true, scene: 'ch02_s04', chapter: 'ch02' };
   window.location.hash = '#ch02_s04'; render();
   await click('next-scene');
   await click('choose-decision', { decision: 'D05', option: 'd05_independence' });
@@ -480,8 +484,8 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   assert.equal(voiceRequests.at(-1).afterVoice, undefined);
   assert.equal(saved, finished);
   assert.doesNotMatch(node('#app').innerHTML, /\[controlled\]|\[self possessed\]|&#39;ere|t&#39; learn/);
-  assert.equal(JSON.parse(saved).confirmed_motivation, 'independence');
-  assert.equal(JSON.parse(saved).ch02_complete, false, 'D05 is saved independently; Continue owns Chapter II completion');
+  assert.equal(readSavedProgress(saved).confirmed_motivation, 'independence');
+  assert.equal(readSavedProgress(saved).ch02_complete, false, 'D05 is saved independently; Continue owns Chapter II completion');
   assert.match(node('#app').innerHTML, /I am here to learn more ways to speak/);
   assert.match(node('#app').innerHTML, /The door to the lesson room stays open/);
   await click('choose-decision', { decision: 'D05', option: 'd05_learning' });
@@ -491,7 +495,7 @@ test('runtime clicks gate LC04, enter s03, stop safely and keep render/history/T
   await click('play-voice', { src: am19Src });
   assert.equal(voiceRequests.at(-1).src, am19Src);
   assert.equal(saved, finished);
-  assert.equal(JSON.parse(saved).scene, 'ch02_s05');
+  assert.equal(readSavedProgress(saved).scene, 'ch02_s05');
 });
 
 test('s04 locked story and terms use approved Higgins and Eliza story voice and no quiz', async () => {

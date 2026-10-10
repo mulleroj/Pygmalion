@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { SAVE_KEY, savedProgress, readSavedProgress } from './progress-test-helpers.js';
 import assert from 'node:assert/strict';
 import { readFile, stat } from 'node:fs/promises';
 import { createInitialState, finishChapterSix, loadState, STORAGE_KEY } from '../src/state.js';
@@ -9,7 +10,7 @@ async function mount(t, savedState, hash = `#${savedState.scene}`) {
   const keys = ['document', 'window', 'localStorage', 'Audio'];
   const originals = Object.fromEntries(keys.map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   t.after(() => { for (const [key, descriptor] of Object.entries(originals)) descriptor ? Object.defineProperty(globalThis, key, descriptor) : delete globalThis[key]; });
-  let saved = JSON.stringify(savedState);
+  let saved = savedProgress(savedState);
   const nodes = new Map();
   const handlers = {};
   const node = (key) => {
@@ -31,13 +32,13 @@ async function mount(t, savedState, hash = `#${savedState.scene}`) {
     addEventListener(name, handler) { handlers[name] = handler; }
   };
   globalThis.localStorage = {
-    getItem(key) { assert.equal(key, STORAGE_KEY); return saved; },
-    setItem(key, value) { assert.equal(key, STORAGE_KEY); saved = value; }
+    getItem(key) { assert.equal(key, SAVE_KEY); return saved; },
+    setItem(key, value) { assert.equal(key, SAVE_KEY); saved = value; }
   };
   const app = await import(`../src/app.js?ch06-s05=${Date.now()}-${Math.random()}`);
   return {
     app, handlers, node,
-    state: () => JSON.parse(saved),
+    state: () => readSavedProgress(saved),
     hash: () => window.location.hash,
     async navigate(nextHash) { window.location.hash = nextHash; await handlers.hashchange(); },
     async click(action, dataset = {}, isTrusted = false) {
@@ -284,20 +285,20 @@ test('Finish writes ch06_complete and its guard once without changing signals or
   assert.equal(Boolean(forged.ch06_complete), false, 'a restored flag without both locked events is not treated as complete');
 });
 
-test('explicit Finish routes to BOOK COMPLETE; reload and revisit remain read-only', async (t) => {
+test('explicit Finish records Chapter VI completion; reload and revisit remain read-only', async (t) => {
   const before = { ...s05Ready(), soundEnabled: false };
   const mounted = await mount(t, before);
   await mounted.click('finish-ch06');
   const completed = mounted.state();
   assert.equal(mounted.hash(), '#book-complete');
-  assert.match(mounted.node('#app').innerHTML, /<h1 id="book-complete-title">BOOK COMPLETE<\/h1>/);
+  assert.match(mounted.node('#app').innerHTML, /<h1 id="book-complete-title">CHAPTER VI COMPLETE<\/h1>/);
   assert.equal(completed.ch06_complete, true);
   assert.deepEqual(completed.applied_events.filter((event) => event === 'ch06_completion_recorded'), ['ch06_completion_recorded']);
   assert.deepEqual([completed.pronunciation, completed.confidence, completed.independence], [7, 4, 3]);
   assert.doesNotMatch(mounted.node('#app').innerHTML, /Chapter VII|restart|Start again/i);
 
   const reloaded = await mount(t, completed, '#book-complete');
-  assert.match(reloaded.node('#app').innerHTML, /BOOK COMPLETE/);
+  assert.match(reloaded.node('#app').innerHTML, /CHAPTER VI COMPLETE/);
   assert.deepEqual(reloaded.state(), completed);
   await reloaded.navigate('#ch06_s05');
   assert.match(reloaded.node('#app').innerHTML, /The Voice She Chooses/);
