@@ -83,11 +83,12 @@ async function buttonViewportState(button) {
 
 test('Chromium: LC13 completion remains discoverable through reload and advances once at 390/768/1440 px', { timeout: 120_000 }, async (t) => {
   const { server, url } = await startStaticServer();
-  const browser = await chromium.launch({ headless: true });
+  let browser;
   t.after(async () => {
-    await browser.close();
+    await browser?.close();
     await new Promise((resolve) => server.close(resolve));
   });
+  browser = await chromium.launch({ headless: true });
 
   for (const [width, height] of [[390, 844], [430, 932], [768, 1024], [1440, 960]]) {
     const context = await browser.newContext({ viewport: { width, height } });

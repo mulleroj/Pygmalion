@@ -118,13 +118,15 @@ async function finishChapterSix(page, url, directionId, visited) {
 
 async function fixture(t, viewport, label) {
   const { server, url } = await serve();
-  const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({ viewport: { width: viewport, height: viewport === 390 ? 844 : 960 } });
+  let browser;
+  let context;
+  t.after(async () => { await context?.close(); await browser?.close(); await new Promise((resolve) => server.close(resolve)); });
+  browser = await chromium.launch({ headless: true });
+  context = await browser.newContext({ viewport: { width: viewport, height: viewport === 390 ? 844 : 960 } });
   const page = await context.newPage();
   const consoleErrors = [];
   page.on('pageerror', (error) => consoleErrors.push(`pageerror: ${error.message}`));
   page.on('console', (message) => { if (message.type() === 'error') consoleErrors.push(`console: ${message.text()}`); });
-  t.after(async () => { await context.close(); await browser.close(); await new Promise((resolve) => server.close(resolve)); });
   return { page, url, consoleErrors, label };
 }
 

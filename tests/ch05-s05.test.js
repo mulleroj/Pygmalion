@@ -47,9 +47,11 @@ test('S05 uses the approved location and canonical Chapter V character cutouts w
   assert.equal(CH05_SCENE_05.eliza.src, eliza);
   assert.deepEqual(CH05_SCENE_05.supporting.map(({ src }) => src), [higgins]);
   assert.notEqual(CH05_SCENE_05.background.src, CH05_SCENE_04.background.src, 'S05 must not fall back to the S04 side room');
-  assert.match(styles, /\.ch05-front-steps \.art-eliza img \{ left: 29%; height: 64%; z-index: 2; \}/);
-  assert.match(styles, /\.ch05-front-steps \.supporting-character \{ left: 71%; height: 51%; z-index: 1;/);
-  assert.match(styles, /@media \(max-width: 599px\)\s*\{\s*\.ch05-front-steps\.storybook-art \{ width: 100%; min-width: 0; aspect-ratio: 1\.35; \}/, 'S05 art fits the available mobile spread width instead of clipping a character');
+  assert.match(styles, /\.ch05-front-steps \.art-eliza img \{ left: 31%; height: 82%; z-index: 2; \}/, 'S05 keeps Eliza prominent with a scene-specific placement');
+  assert.match(styles, /\.ch05-front-steps \.supporting-character \{ left: 70%; bottom: 7%; height: 78%; z-index: 1;/, 'S05 enlarges Higgins while preserving his ground line and supporting position');
+  assert.match(styles, /@media \(max-width: 599px\)\s*\{\s*\.ch05-front-steps\.storybook-art \{ width: 100%; min-width: 0; aspect-ratio: 1\.35; \}[\s\S]*?\.ch05-front-steps \.art-eliza img \{ left: 30%; height: 82%; \}[\s\S]*?\.ch05-front-steps \.supporting-character \{ left: 71%; height: 78%; \}/, 'S05 mobile composition scales Higgins up while preserving full-body placement');
+  assert.match(styles, /\.storybook-art figcaption \{[^}]*right: 1rem; bottom: 1rem;/, 'S05 uses the shared bottom-right caption placement');
+  assert.doesNotMatch(styles, /\.ch05-front-steps\s+figcaption/, 'S05 does not override the shared caption layout or background');
   assert.deepEqual(
     [CH05_SCENE_01, CH05_SCENE_02, CH05_SCENE_03, CH05_SCENE_04].map(({ background: image }) => image.src),
     [
@@ -217,4 +219,14 @@ test('S05 Teacher Mode remains read-only and now hands off to the Chapter VI ope
   assert.match(app, /Chapter V complete/);
   assert.match(app, /CH06_SCENE_01/);
   assert.match(app, /target\.dataset\.decision === 'NEXT_CONTACT' && \(currentScene\(\)\.id !== 'ch05_s05' \|\| studentReadOnly\(\)\)/);
+});
+
+test('S05 transition and Teacher navigation explain the two-step Chapter VI handoff accurately', () => {
+  const expectedTransition = 'After you choose a contact, Continue will complete Chapter V. You can then continue to Chapter VI.';
+  const sceneNavigation = CH05_S05_TEACHER_SECTIONS.find(([title]) => title === 'Scene navigation')?.[1];
+
+  assert.equal(CH05_SCENE_05.transition, expectedTransition);
+  assert.equal(CH05_SCENE_05.nextScene, 'ch06_s01');
+  assert.match(sceneNavigation, /explicit Continue completes Chapter V; the completed chapter then offers Continue to Chapter VI \(ch06_s01\)/);
+  assert.match(app, /if \(scene\.id === 'ch05_s05'\)[\s\S]*?completeScene\(state, scene\)[\s\S]*?Chapter V is complete and saved/);
 });
