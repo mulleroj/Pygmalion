@@ -89,7 +89,6 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
 .ch05-side-room { min-height: 20rem; }
 .ch05-side-room .art-support, .ch05-side-room .art-eliza { display: block; padding: 0; opacity: 1; }
 .ch05-side-room .art-background img { object-position: 100% center; }
-.ch05-side-room figcaption { top: 1rem; right: 1rem; bottom: auto; }
 .ch05-side-room .art-eliza img, .ch05-side-room .supporting-character { position: absolute; bottom: 4%; width: 48%; height: 68%; max-width: none; max-height: none; object-fit: contain; transform: translateX(-50%); }
 .ch05-side-room .art-eliza img { left: 26%; z-index: 3; }
 .ch05-side-room .supporting-character { left: 60%; z-index: 2; }
@@ -320,7 +319,6 @@ button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px soli
   .story-progress { font-size: .62rem; }
   .storybook-art { min-height: 390px; height: 390px; }
   .storybook-art figcaption { right: .5rem; bottom: .5rem; font-size: .6rem; }
-  .ch05-side-room figcaption { top: .5rem; right: .5rem; bottom: auto; }
   .dialogue-line { grid-template-columns: 1fr; gap: .2rem; padding: .65rem 0; }
   .choice-button { grid-template-columns: 1fr; gap: .25rem; }
   .challenge-heading, .sample-top { flex-direction: column; }
