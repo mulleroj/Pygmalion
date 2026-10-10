@@ -61,7 +61,7 @@ async function completeChapterOne(page) {
   for (const sample of (await import('../src/content.js')).LISTENING.lc02) await click(page, 'answer-lc02', { sample: sample.id, answer: sample.answer });
   await next(page, 'ch01_s05'); await chooseFirstDecision(page, CH01[4]);
 }
-async function completeChapterTwo(page) {
+async function completeChapterTwo(page, { verifyStoryMapIsReadOnly = false } = {}) {
   await chooseFirstDecision(page, CH02_SCENE_01);
   await click(page, 'answer-lc03', { answer: CH02_SCENE_01.challenge.answer });
   await next(page, 'ch02_s02');
@@ -71,12 +71,30 @@ async function completeChapterTwo(page) {
   await next(page, 'ch02_s04');
   await click(page, 'complete-s04'); await scene(page, 'ch02_s05');
   await chooseFirstDecision(page, CH02_SCENE_05);
+  if (verifyStoryMapIsReadOnly) {
+    const beforeMap = await saved(page);
+    await click(page, 'open-story-map'); await page.locator('#story-map-root').waitFor({ state: 'visible' });
+    const afterMap = await saved(page);
+    assert.equal(afterMap.completionRecords.ch02, false, 'Story Map navigation does not complete Chapter II');
+    assert.equal(afterMap.chapters.ch02.events.includes('ch02_complete'), false);
+    assert.deepEqual(afterMap.chapters.ch02.decisions, beforeMap.chapters.ch02.decisions);
+    const chapterTwoCard = page.locator('.chapter-card').filter({ has: page.locator('h2', { hasText: 'The Bargain' }) });
+    assert.equal(await chapterTwoCard.locator('.chapter-status').innerText(), 'In progress');
+    await click(page, 'resume-chapter', { chapter: 'ch02' }); await scene(page, 'ch02_s05');
+    assert.equal((await saved(page)).completionRecords.ch02, false, 'resume alone does not complete the chapter');
+  }
   await click(page, 'enter-ch03'); await scene(page, 'ch03_s01');
 }
 async function completeChapterThree(page) {
   await chooseFirstDecision(page, CH03_SCENE_01);
-  for (const sample of CH03_SCENE_01.challenge.samples) await click(page, 'answer-lc05', { sample: sample.id, answer: sample.answer });
+  const retrySample = CH03_SCENE_01.challenge.samples[0];
+  const incorrect = retrySample.options.find(({ id }) => id !== retrySample.answer).id;
+  await click(page, 'answer-lc05', { sample: retrySample.id, answer: incorrect });
+  assert.equal((await saved(page)).chapters.ch03.challenges.lc05.answers[retrySample.id].correct, false, 'incorrect answer is recorded for retry');
+  await click(page, 'answer-lc05', { sample: retrySample.id, answer: retrySample.answer });
+  for (const sample of CH03_SCENE_01.challenge.samples.slice(1)) await click(page, 'answer-lc05', { sample: sample.id, answer: sample.answer });
   await next(page, 'ch03_s02');
+  await click(page, 'lc06-cannot-hear');
   for (const sample of CH03_SCENE_02.challenge.samples) {
     await click(page, 'select-lc06', { sample: sample.id, kind: 'word', answer: sample.word });
     await click(page, 'select-lc06', { sample: sample.id, kind: 'meaning', answer: sample.meaning });
@@ -89,6 +107,7 @@ async function completeChapterThree(page) {
   await next(page, 'ch03_s05');
   for (const sample of CH03_SCENE_05.challenge.samples) await click(page, 'answer-lc09', { sample: sample.id, answer: sample.answer });
   await next(page, 'ch03_s06');
+  await click(page, 'lc10-cannot-hear', { sample: CH03_SCENE_06.challenge.samples[0].id });
   for (const sample of CH03_SCENE_06.challenge.samples) await click(page, 'answer-lc10', { sample: sample.id, answer: sample.answer });
   await click(page, 'next-scene');
 }
@@ -96,6 +115,12 @@ async function completeChapterFour(page) {
   await chooseFirstDecision(page, CH04_SCENE_01); await next(page, 'ch04_s02');
   for (const sample of CH04_SCENE_02.challenge.samples) await click(page, 'answer-lc11', { sample: sample.id, answer: sample.answer });
   await click(page, 'choose-lc11-reply', { option: CH04_SCENE_02.application.choices[0].id });
+  const beforeTeacher = await saved(page);
+  await click(page, 'open-teacher'); await click(page, 'close-teacher');
+  assert.equal(new URL(page.url()).hash, '#ch04_s02', 'Teacher Mode does not advance the scene');
+  assert.deepEqual(await saved(page), beforeTeacher, 'Teacher Mode is read-only');
+  await click(page, 'play-challenge', { src: CH04_SCENE_02.challenge.samples[0].src });
+  assert.equal(new URL(page.url()).hash, '#ch04_s02', 'optional challenge audio does not advance the scene');
   await next(page, 'ch04_s03');
   for (const item of CH04_SCENE_03.challenge.items) await click(page, 'answer-lc12', { item: item.id, answer: item.answer });
   await chooseFirstDecision(page, CH04_SCENE_03);
@@ -135,7 +160,7 @@ async function checkCompletion(page, chapter, finalEvent) {
 
 for (const [chapter, run, lastScene, event] of [
   ['ch01', completeChapterOne, 'ch01_s05', 'ch01_d03_origin_motivation'],
-  ['ch02', completeChapterTwo, 'ch02_s05', 'ch02_complete'],
+  ['ch02', (page) => completeChapterTwo(page, { verifyStoryMapIsReadOnly: true }), 'ch02_s05', 'ch02_complete'],
   ['ch03', completeChapterThree, 'ch03_s06', 'ch03_s06_complete'],
   ['ch04', completeChapterFour, 'ch04_s05', 'ch04_s05_complete']
 ]) test(`Phase 2 independent Chapter ${chapter.slice(-1)} complete playthrough at 390 and 1440 px`, { timeout: 240_000 }, async (t) => {
@@ -145,6 +170,9 @@ for (const [chapter, run, lastScene, event] of [
     await scene(page, chapter === 'ch01' ? 'ch01_s05' : chapter === 'ch02' ? 'ch03_s01' : chapter === 'ch03' ? 'ch03_s06' : 'ch04_s05');
     const progress = event ? await checkCompletion(page, chapter, event) : await saved(page);
     if (chapter === 'ch01') assert.equal(progress.completionRecords.ch01, true, 'Chapter I ending marks the chapter complete');
+    for (const otherChapter of ['ch01','ch02','ch03','ch04','ch05','ch06'].filter((id) => id !== chapter)) {
+      assert.equal(progress.completionRecords[otherChapter], false, `${otherChapter} remains Not started in the independent profile`);
+    }
     assert.equal(progress.chapters[chapter].scene, lastScene);
     await click(page, 'open-story-map'); await page.locator('#story-map-root').waitFor({ state: 'visible' });
     const title = { ch01: 'The Flower Girl', ch02: 'The Bargain', ch03: 'The Lessons', ch04: 'The First Test' }[chapter];
@@ -154,10 +182,14 @@ for (const [chapter, run, lastScene, event] of [
     const restored = await saved(page);
     assert.equal(restored.completionRecords[chapter], true);
     if (event) assert.equal(restored.chapters[chapter].events.filter((e) => e === event).length, 1);
+    for (const otherChapter of ['ch01','ch02','ch03','ch04','ch05','ch06'].filter((id) => id !== chapter)) assert.equal(restored.completionRecords[otherChapter], false);
     await click(page, 'revisit-chapter', { chapter }); await scene(page, lastScene);
     const revisited = await saved(page);
     assert.equal(revisited.chapters[chapter].events.filter((e) => e === event).length, 1, 'revisiting does not duplicate the final decision/completion event');
     assert.equal(revisited.completionRecords[chapter], true);
+    assert.deepEqual(revisited.chapters[chapter].decisions, restored.chapters[chapter].decisions, 'decisions survive refresh and revisit');
+    assert.deepEqual(revisited.chapters[chapter].challenges, restored.chapters[chapter].challenges, 'challenge answers survive refresh and revisit');
+    assert.deepEqual(revisited.chapters[chapter].signals, restored.chapters[chapter].signals, 'signals do not change on revisit');
     assert.deepEqual(consoleErrors, []);
   }
 });
@@ -165,7 +197,7 @@ for (const [chapter, run, lastScene, event] of [
 test('Phase 2 sequential reading completes Chapters I–VI through rendered controls without seeding', { timeout: 360_000 }, async (t) => {
   const { page, url, consoleErrors } = await fixture(t, 1440);
   await start(page, url, 'ch01'); await completeChapterOne(page);
-  await click(page, 'open-story-map'); await click(page, 'open-chapter', { chapter: 'ch02' }); await scene(page, 'ch02_s01'); await completeChapterTwo(page);
+  await click(page, 'continue-next-chapter'); await scene(page, 'ch02_s01'); await completeChapterTwo(page);
   await scene(page, 'ch03_s01'); await completeChapterThree(page);
   await click(page, 'continue-next-chapter'); await scene(page, 'ch04_s01'); await completeChapterFour(page);
   await click(page, 'continue-next-chapter'); await scene(page, 'ch05_s01'); await completeChapterFive(page);

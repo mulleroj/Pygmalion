@@ -159,6 +159,20 @@ test('Chromium acceptance A: complete Chapter V independently at 390 and 1440 px
       assert.equal(restored.chapters.ch05.events.filter((event) => event === 'ch05_lc13_completed').length, 1);
       assert.equal(restored.chapters.ch05.signals.independence, 1);
       assert.deepEqual(visited, ['ch05_s01', 'ch05_s02', 'ch05_s03', 'ch05_s04', 'ch05_s05', 'ch05_s05']);
+      await returnToMap(page);
+      await click(page, 'open-chapter', { chapter: 'ch06' }); await scene(page, 'ch06_s01', visited);
+      const bookmarkBeforeMap = await saved(page);
+      await returnToMap(page);
+      const bookmarkAfterMap = await saved(page);
+      assert.equal(bookmarkAfterMap.lastActiveBookmark.chapter, 'ch06', 'viewing Story Map alone preserves the VI bookmark');
+      assert.equal(bookmarkAfterMap.lastActiveBookmark.scene, 'ch06_s01');
+      assert.deepEqual(bookmarkAfterMap.chapters.ch05, bookmarkBeforeMap.chapters.ch05);
+      await click(page, 'revisit-chapter', { chapter: 'ch05' }); await scene(page, 'ch05_s05', visited);
+      const completedRevisit = await saved(page);
+      assert.equal(completedRevisit.completionRecords.ch05, true, 'completed Chapter V can be revisited after Chapter VI becomes active');
+      assert.equal(completedRevisit.chapters.ch05.events.filter((event) => event === 'ch05_s05_complete').length, 1);
+      assert.equal(completedRevisit.chapters.ch05.events.filter((event) => event === 'ch05_lc13_completed').length, 1);
+      assert.equal(completedRevisit.chapters.ch05.signals.independence, 1);
       assert.deepEqual(consoleErrors, []);
     });
   }
